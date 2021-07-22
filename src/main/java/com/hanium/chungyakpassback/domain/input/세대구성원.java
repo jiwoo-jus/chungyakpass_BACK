@@ -5,13 +5,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table
 public class 세대구성원 {
 
@@ -25,11 +23,7 @@ public class 세대구성원 {
 
     @OneToOne
     @JoinColumn(name = "배우자_세대구성원id")
-    private 세대구성원 배우자;
-
-    @OneToOne(mappedBy = "배우자")
-    @JoinColumn(name = "세대구성원id")
-    private 세대구성원 상대배우자;
+    private 세대구성원 세대구성원배우자;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -41,10 +35,6 @@ public class 세대구성원 {
     @Column
     private LocalDate 생년월일;
 
-//    @Column
-//    @Enumerated(EnumType.STRING)
-//    private 여부 외국인여부;
-
     @Column
     private LocalDate 혼인신고일;
 
@@ -54,13 +44,16 @@ public class 세대구성원 {
     @Column
     private LocalDate 전입일자;
 
-//    @Column
-//    private LocalDate 전출일자;
 
     @Builder
-    public 세대구성원(세대 세대, 여부 세대주여부, String 이름){
+    public 세대구성원(세대 세대, 세대구성원 세대구성원배우자, 여부 세대주여부, String 이름, LocalDate 생년월일, LocalDate 혼인신고일, LocalDate 무주택시작일, LocalDate 전입일자) {
         this.세대 = 세대;
+        this.세대구성원배우자 = 세대구성원배우자;
         this.세대주여부 = 세대주여부;
         this.이름 = 이름;
+        this.생년월일 = 생년월일;
+        this.혼인신고일 = 혼인신고일;
+        this.무주택시작일 = 무주택시작일;
+        this.전입일자 = 전입일자;
     }
 }
