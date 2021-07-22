@@ -4,10 +4,7 @@ import com.hanium.chungyakpassback.domain.enumtype.*;
 import com.hanium.chungyakpassback.domain.input.세대;
 import com.hanium.chungyakpassback.domain.input.세대구성원;
 import com.hanium.chungyakpassback.domain.input.주소;
-import com.hanium.chungyakpassback.domain.standard.월평균소득기준;
-import com.hanium.chungyakpassback.domain.standard.일순위_가입기간;
-import com.hanium.chungyakpassback.domain.standard.자산보유기준;
-import com.hanium.chungyakpassback.domain.standard.청약통장;
+import com.hanium.chungyakpassback.domain.standard.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,5 +43,11 @@ public class RepositoryTest_std {
         일순위_가입기간 일순위_가입기간2 = new 일순위_가입기간(공급유형.특별공급, 특별공급유형.노부모부양, 여부.y, 여부.y, 여부.n, 여부.y, 24);
         em.persist(일순위_가입기간1);
         em.persist(일순위_가입기간2);
+
+        일순위_납입횟수 일순위_납입횟수1 = new 일순위_납입횟수(공급유형.일반공급, null, 여부.y, 여부.y, 여부.n, 여부.y, 24);
+        일순위_납입횟수 일순위_납입횟수2 = new 일순위_납입횟수(공급유형.특별공급, 특별공급유형.노부모부양, 여부.y, 여부.y, 여부.n, 여부.y, 24);
+        em.persist(일순위_납입횟수1);
+        em.persist(일순위_납입횟수2);
     }
 }
+
