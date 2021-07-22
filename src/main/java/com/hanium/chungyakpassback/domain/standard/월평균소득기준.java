@@ -26,7 +26,7 @@ public class 월평균소득기준 {
     @Enumerated(EnumType.STRING)
     private 특별공급유형 특별공급유형;
 
-    @Column(insertable = false, updatable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private 공급방법 공급방법;
 
