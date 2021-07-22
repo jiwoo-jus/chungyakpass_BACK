@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.repository;
 
 import com.hanium.chungyakpassback.domain.enumtype.*;
+import com.hanium.chungyakpassback.domain.enumtype.지역_레벨1;
 import com.hanium.chungyakpassback.domain.input.세대;
 import com.hanium.chungyakpassback.domain.input.세대구성원;
 import com.hanium.chungyakpassback.domain.input.주소;
@@ -48,6 +49,16 @@ public class RepositoryTest_std {
         일순위_납입횟수 일순위_납입횟수2 = new 일순위_납입횟수(공급유형.특별공급, 특별공급유형.노부모부양, 여부.y, 여부.y, 여부.n, 여부.y, 24);
         em.persist(일순위_납입횟수1);
         em.persist(일순위_납입횟수2);
+
+        일순위_납입금 일순위_납입금1 = new 일순위_납입금(0, 85, 예치금액지역구분.서울부산, 300);
+        일순위_납입금 일순위_납입금2 = new 일순위_납입금(135, null, 예치금액지역구분.서울부산, 1500);
+        em.persist(일순위_납입금1);
+        em.persist(일순위_납입금2);
+
+        지역_레벨_1 지역_레벨_1_1 = new 지역_레벨_1(지역_레벨1.서울시, 1, 예치금액지역구분.서울부산, 여부.y);
+        지역_레벨_1 지역_레벨_1_2 = new 지역_레벨_1(지역_레벨1금.인천시, 1, 예치금액지역구분.기타광역시, 여부.y);
+        em.persist(지역_레벨_1_1);
+        em.persist(지역_레벨_1_2);
     }
 }
 

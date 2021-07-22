@@ -1,0 +1,43 @@
+package com.hanium.chungyakpassback.domain.standard;
+
+import com.hanium.chungyakpassback.domain.enumtype.여부;
+import com.hanium.chungyakpassback.domain.enumtype.예치금액지역구분;
+import com.hanium.chungyakpassback.domain.enumtype.지역_레벨1;
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Table
+public class 지역_레벨_1 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "지역_레벨1id")
+    private Long id;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private 지역_레벨1 서울시;
+
+    @Column
+    private int 인근지역구분;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private 예치금액지역구분 서울부산;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private 여부 수도권여부;
+
+    @Builder
+    public 지역_레벨_1(지역_레벨1 서울시, int 인근지역구분, 예치금액지역구분 서울부산, 여부 수도권여부) {
+        this.서울시 = 서울시;
+        this.인근지역구분 = 인근지역구분;
+        this.서울부산 = 서울부산;
+        this.수도권여부 = 수도권여부;
+    }
+}
