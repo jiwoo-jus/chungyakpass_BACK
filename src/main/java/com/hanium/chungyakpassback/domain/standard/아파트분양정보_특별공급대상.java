@@ -15,7 +15,7 @@ public class 아파트분양정보_특별공급대상 {
     @Column(name = "아파트분양정보_특별공급대상id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "아파트분양정보id")
     private 아파트분양정보 아파트분양정보;
 

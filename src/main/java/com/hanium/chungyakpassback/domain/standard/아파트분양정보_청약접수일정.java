@@ -19,7 +19,7 @@ public class 아파트분양정보_청약접수일정 {
     @Column(name = "아파트분양정보_청약접수일정id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "아파트분양정보id")
     private 아파트분양정보 아파트분양정보;
 

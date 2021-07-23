@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.YearMonth;
-import java.util.Date;
 
 @SpringBootTest
 @Transactional
@@ -80,4 +77,3 @@ public class RepositoryTest_std {
         em.persist(공급금액_1);
     }
 }
-
