@@ -2,9 +2,6 @@ package com.hanium.chungyakpassback.repository;
 
 import com.hanium.chungyakpassback.domain.enumtype.*;
 import com.hanium.chungyakpassback.domain.enumtype.지역_레벨1;
-import com.hanium.chungyakpassback.domain.input.세대;
-import com.hanium.chungyakpassback.domain.input.세대구성원;
-import com.hanium.chungyakpassback.domain.input.주소;
 import com.hanium.chungyakpassback.domain.standard.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,10 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.Date;
 
 @SpringBootTest
 @Transactional
@@ -63,6 +64,8 @@ public class RepositoryTest_std {
         지역_레벨_2 지역_레벨_2_1 = new 지역_레벨_2(지역_레벨_1_1, 지역_레벨2.종로구);
         em.persist(지역_레벨_2_1);
 
+        아파트분양정보 아파트분양정보1 = new 아파트분양정보(지역_레벨1.서울시, 지역_레벨2.종로구, 1, "서울특별시 서초구 신반포로", 주택유형.민영주택, 여부.y, "래미안", "삼성물산", "02-403-0224", LocalDate.of(2021, 6, 7), LocalDate.of(2021, 6, 25), LocalDate.of(2021, 7, 9), LocalDate.of(2021, 7, 13), LocalDate.of(2023,8,1), 여부.y, 여부.y, 여부.y, 여부.n, 여부.n, 여부.n, 여부.n, 여부.n);
+        em.persist(아파트분양정보1);
     }
 }
 
