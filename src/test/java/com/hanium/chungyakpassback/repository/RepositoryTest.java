@@ -1,12 +1,7 @@
 package com.hanium.chungyakpassback.repository;
 
-import com.hanium.chungyakpassback.domain.enumtype.여부;
-import com.hanium.chungyakpassback.domain.input.세대;
-import com.hanium.chungyakpassback.domain.input.세대구성원;
-import com.hanium.chungyakpassback.domain.input.주소;
-import com.hanium.chungyakpassback.domain.enumtype.지역_레벨1;
-import com.hanium.chungyakpassback.domain.enumtype.지역_레벨2;
-import com.hanium.chungyakpassback.domain.input.회원;
+import com.hanium.chungyakpassback.domain.enumtype.*;
+import com.hanium.chungyakpassback.domain.input.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,6 +42,8 @@ public class RepositoryTest {
 
         회원 회원1 = 회원.builder().이메일("jyj@naver.com").비밀번호("password1234").세대구성원본인(세대구성원1).장기복무중인군인여부(여부.n).build();
 
+        회원_청약통장 회원_청약통장1 = 회원_청약통장.builder().개설은행(개설은행.우리).예치금액(7200000).납입횟수(38).청약통장종류(청약통장종류.주택청약종합저축).회원(회원1).유효여부(여부.y).build();
+
 
 
 
@@ -62,5 +59,6 @@ public class RepositoryTest {
         em.persist(세대구성원4);
         em.persist(세대구성원5);
         em.persist(회원1);
+        em.persist(회원_청약통장1);
     }
 }
