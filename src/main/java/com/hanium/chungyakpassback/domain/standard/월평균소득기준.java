@@ -35,31 +35,32 @@ public class 월평균소득기준 {
     private 여부 맞벌이;
 
     @Column
-    private int 월평균소득백분율_초과;
+    private Integer 월평균소득백분율_초과;
 
     @Column
     private int 월평균소득백분율_이하;
 
     @Column
-    private int 월평균소득액_3인이하_초과;
+    private Integer 월평균소득액_3인이하_초과;
 
     @Column
     private int 월평균소득액_3인이하_이하;
 
     @Column
-    private int 월평균소득액_4인_초과;
+    private Integer 월평균소득액_4인_초과;
 
     @Column
-    private int 월평균소득액_4인_이하;
+    private Integer 월평균소득액_4인_이하;
 
     @Column
-    private int 월평균소득액_5인_초과;
+    private Integer 월평균소득액_5인_초과;
 
     @Column
-    private int 월평균소득액_5인_이하;
+    private Integer 월평균소득액_5인_이하;
 
     @Builder
-    public 월평균소득기준(여부 공공주택특별법적용, com.hanium.chungyakpassback.domain.enumtype.특별공급유형 특별공급유형, com.hanium.chungyakpassback.domain.enumtype.공급방법 공급방법, 여부 맞벌이, int 월평균소득백분율_초과, int 월평균소득백분율_이하, int 월평균소득액_3인이하_초과, int 월평균소득액_3인이하_이하, int 월평균소득액_4인_초과, int 월평균소득액_4인_이하, int 월평균소득액_5인_초과, int 월평균소득액_5인_이하) {
+
+    public 월평균소득기준(여부 공공주택특별법적용, 특별공급유형 특별공급유형, 공급방법 공급방법, 여부 맞벌이, Integer 월평균소득백분율_초과, int 월평균소득백분율_이하, Integer 월평균소득액_3인이하_초과, int 월평균소득액_3인이하_이하, Integer 월평균소득액_4인_초과, Integer 월평균소득액_4인_이하, Integer 월평균소득액_5인_초과, Integer 월평균소득액_5인_이하) {
         this.공공주택특별법적용 = 공공주택특별법적용;
         this.특별공급유형 = 특별공급유형;
         this.공급방법 = 공급방법;

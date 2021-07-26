@@ -26,10 +26,10 @@ public class 아파트분양정보_공급금액 {
     private int 공급금액;
 
     @Column
-    private int 이순위청약금;
+    private Integer 이순위청약금;
 
     @Builder
-    public 아파트분양정보_공급금액(아파트분양정보 아파트분양정보, String 주택형, int 공급금액, int 이순위청약금) {
+    public 아파트분양정보_공급금액(아파트분양정보 아파트분양정보, String 주택형, int 공급금액, Integer 이순위청약금) {
         this.아파트분양정보 = 아파트분양정보;
         this.주택형 = 주택형;
         this.공급금액 = 공급금액;
