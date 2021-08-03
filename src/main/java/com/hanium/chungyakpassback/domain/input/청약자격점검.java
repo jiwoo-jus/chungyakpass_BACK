@@ -1,6 +1,10 @@
 package com.hanium.chungyakpassback.domain.input;
 
-import com.hanium.chungyakpassback.domain.enumtype.*;
+import com.hanium.chungyakpassback.domain.enumtype.공급유형;
+import com.hanium.chungyakpassback.domain.enumtype.순위;
+import com.hanium.chungyakpassback.domain.enumtype.여부;
+import com.hanium.chungyakpassback.domain.enumtype.특별공급유형;
+import com.hanium.chungyakpassback.domain.standard.아파트분양정보;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +28,7 @@ public class 청약자격점검 {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "아파트분양정보id")
-    private 아파트분양정보 아파트분양정보;
+    private com.hanium.chungyakpassback.domain.standard.아파트분양정보 아파트분양정보;
 
     @Column
     @Enumerated(EnumType.STRING)

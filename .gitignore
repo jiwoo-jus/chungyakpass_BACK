@@ -2,11 +2,6 @@ src/main/resources/application.yml
 
 
 HELP.md
-#.gradle
-#build/
-#!gradle/wrapper/gradle-wrapper.jar
-#!**/src/main/**/build/
-#!**/src/test/**/build/
 
 ### STS ###
 .apt_generated
@@ -21,7 +16,6 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-#.idea
 *.iws
 *.iml
 *.ipr
@@ -40,11 +34,7 @@ out/
 .vscode/
 
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows
-
 ### macOS ###
-# General
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -98,14 +88,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,windows
-
-
-# Created by https://www.toptal.com/developers/gitignore/api/gradle,java
-# Edit at https://www.toptal.com/developers/gitignore?templates=gradle,java
-
 ### Java ###
-# Compiled class file
 *.class
 
 # Log file
@@ -138,8 +121,6 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
 
 ### Gradle Patch ###
 **/build/

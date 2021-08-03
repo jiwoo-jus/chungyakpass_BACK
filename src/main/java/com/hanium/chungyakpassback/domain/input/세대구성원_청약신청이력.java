@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.domain.input;
 
 import com.hanium.chungyakpassback.domain.enumtype.*;
+import com.hanium.chungyakpassback.domain.standard.아파트분양정보;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class 세대구성원_청약신청이력 {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "아파트분양정보id")
-    private 아파트분양정보 아파트분양정보;
+    private com.hanium.chungyakpassback.domain.standard.아파트분양정보 아파트분양정보;
 
     @Column
     private LocalDate 신청일;
