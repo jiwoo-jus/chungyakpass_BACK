@@ -26,9 +26,17 @@ public class 주소 {
     @Enumerated(EnumType.STRING)
     private 지역_레벨2 지역_레벨2;
 
+    @Column
+    private String 상세주소;
+
+    @Column
+    private Integer 우편번호;
+
     @Builder
-    public 주소(지역_레벨1 지역_레벨1, 지역_레벨2 지역_레벨2){
+    public 주소(지역_레벨1 지역_레벨1, 지역_레벨2 지역_레벨2, String 상세주소, Integer 우편번호){
         this.지역_레벨1 = 지역_레벨1;
         this.지역_레벨2 = 지역_레벨2;
+        this.상세주소 = 상세주소;
+        this.우편번호 = 우편번호;
     }
 }
