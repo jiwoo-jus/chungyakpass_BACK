@@ -16,18 +16,16 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table
-public class 세대구성원_소득자산 {
+public class 세대구성원_자산 {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "세대구성원_소득자산id")
+    @Column(name = "세대구성원_자산id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "세대구성원id")
     private 세대구성원 세대구성원;
 
-    @Column
-    private int 월평균소득;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -66,9 +64,8 @@ public class 세대구성원_소득자산 {
 
 
     @Builder
-    public 세대구성원_소득자산(세대구성원 세대구성원, int 월평균소득, 자산유형 자산유형, 여부 분양권여부, 여부 주거용여부, 주거용건물유형 주거용건물유형, 비주거용건물유형 비주거용건물유형, LocalDate 취득일, LocalDate 처분일, Integer 전용면적, Integer 금액, LocalDate 과세기준일) {
+    public 세대구성원_자산(세대구성원 세대구성원, 자산유형 자산유형, 여부 분양권여부, 여부 주거용여부, 주거용건물유형 주거용건물유형, 비주거용건물유형 비주거용건물유형, LocalDate 취득일, LocalDate 처분일, Integer 전용면적, Integer 금액, LocalDate 과세기준일) {
         this.세대구성원 = 세대구성원;
-        this.월평균소득 = 월평균소득;
         this.자산유형 = 자산유형;
         this.분양권여부 = 분양권여부;
         this.주거용여부 = 주거용여부;
