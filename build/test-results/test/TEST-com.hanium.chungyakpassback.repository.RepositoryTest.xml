@@ -1,0 +1,1136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.hanium.chungyakpassback.repository.RepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-08-03T08:09:18" hostname="DESKTOP-AESF0S2" time="0.345">
+  <properties/>
+  <testcase name="엔티티생성()" classname="com.hanium.chungyakpassback.repository.RepositoryTest" time="0.345"/>
+  <system-out><![CDATA[17:09:11.692 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+17:09:11.708 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+17:09:11.766 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.hanium.chungyakpassback.repository.RepositoryTest] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+17:09:11.781 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.hanium.chungyakpassback.repository.RepositoryTest], using SpringBootContextLoader
+17:09:11.787 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.hanium.chungyakpassback.repository.RepositoryTest]: class path resource [com/hanium/chungyakpassback/repository/RepositoryTest-context.xml] does not exist
+17:09:11.788 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.hanium.chungyakpassback.repository.RepositoryTest]: class path resource [com/hanium/chungyakpassback/repository/RepositoryTestContext.groovy] does not exist
+17:09:11.788 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.hanium.chungyakpassback.repository.RepositoryTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+17:09:11.789 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.hanium.chungyakpassback.repository.RepositoryTest]: RepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:09:11.850 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.hanium.chungyakpassback.repository.RepositoryTest]
+17:09:11.976 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\WorkSpace\intellij\chungyakpass-back\build\classes\java\main\com\hanium\chungyakpassback\ChungyakpassBackApplication.class]
+17:09:11.978 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.hanium.chungyakpassback.ChungyakpassBackApplication for test class com.hanium.chungyakpassback.repository.RepositoryTest
+17:09:12.159 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.hanium.chungyakpassback.repository.RepositoryTest]: using defaults.
+17:09:12.161 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+17:09:12.208 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@5f0a219c, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@519ccac9, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@2d5e1542, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@510248d, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@b18f372, org.springframework.test.context.support.DirtiesContextTestExecutionListener@3c65aa5a, org.springframework.test.context.transaction.TransactionalTestExecutionListener@61cc5c91, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@65fc2869, org.springframework.test.context.event.EventPublishingTestExecutionListener@2933c4c7, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@38158cc1, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@3b3e7786, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3f05afe8, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@8a75133, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@1c40a762, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@540a712b]
+17:09:12.213 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@4b65dec8 testClass = RepositoryTest, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@7169c334 testClass = RepositoryTest, locations = '{}', classes = '{class com.hanium.chungyakpassback.ChungyakpassBackApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@185f42b4, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@62cd4ec6, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@59845862, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4c8e16c4, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@1b2861e7, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@6e415d79], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -> true]], class annotated with @DirtiesContext [false] with mode [null].
+17:09:12.266 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.5.2)
+
+2021-08-03 17:09:12.722  INFO 8512 --- [    Test worker] c.h.c.repository.RepositoryTest          : Starting RepositoryTest using Java 11.0.10 on DESKTOP-AESF0S2 with PID 8512 (started by parkj in C:\WorkSpace\intellij\chungyakpass-back)
+2021-08-03 17:09:12.724  INFO 8512 --- [    Test worker] c.h.c.repository.RepositoryTest          : No active profile set, falling back to default profiles: default
+2021-08-03 17:09:13.701  INFO 8512 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-08-03 17:09:13.888  INFO 8512 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 166 ms. Found 15 JPA repository interfaces.
+2021-08-03 17:09:14.690  INFO 8512 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-08-03 17:09:14.778  INFO 8512 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-08-03 17:09:14.989  INFO 8512 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-08-03 17:09:15.156  INFO 8512 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-08-03 17:09:15.261  INFO 8512 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-08-03 17:09:15.323  INFO 8512 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2021-08-03 17:09:16.321 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대 CASCADE 
+2021-08-03 17:09:16.325 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대구성원 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대구성원 CASCADE 
+2021-08-03 17:09:16.328 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대구성원_관계 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대구성원_관계 CASCADE 
+2021-08-03 17:09:16.331 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대구성원_소득 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대구성원_소득 CASCADE 
+2021-08-03 17:09:16.333 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대구성원_자산 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대구성원_자산 CASCADE 
+2021-08-03 17:09:16.335 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대구성원_청약신청이력 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대구성원_청약신청이력 CASCADE 
+2021-08-03 17:09:16.338 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 세대구성원_청약제한사항 CASCADE 
+Hibernate: 
+    
+    drop table if exists 세대구성원_청약제한사항 CASCADE 
+2021-08-03 17:09:16.340 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 아파트분양정보 CASCADE 
+Hibernate: 
+    
+    drop table if exists 아파트분양정보 CASCADE 
+2021-08-03 17:09:16.341 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 주소 CASCADE 
+Hibernate: 
+    
+    drop table if exists 주소 CASCADE 
+2021-08-03 17:09:16.343 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 청약자격점검 CASCADE 
+Hibernate: 
+    
+    drop table if exists 청약자격점검 CASCADE 
+2021-08-03 17:09:16.344 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 청약자격점검_노부모부양 CASCADE 
+Hibernate: 
+    
+    drop table if exists 청약자격점검_노부모부양 CASCADE 
+2021-08-03 17:09:16.346 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 청약자격점검_다자녀가구 CASCADE 
+Hibernate: 
+    
+    drop table if exists 청약자격점검_다자녀가구 CASCADE 
+2021-08-03 17:09:16.347 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 청약자격점검_생애최초 CASCADE 
+Hibernate: 
+    
+    drop table if exists 청약자격점검_생애최초 CASCADE 
+2021-08-03 17:09:16.349 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 청약자격점검_신혼부부 CASCADE 
+Hibernate: 
+    
+    drop table if exists 청약자격점검_신혼부부 CASCADE 
+2021-08-03 17:09:16.350 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 회원 CASCADE 
+Hibernate: 
+    
+    drop table if exists 회원 CASCADE 
+2021-08-03 17:09:16.353 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    drop table if exists 회원_청약통장 CASCADE 
+Hibernate: 
+    
+    drop table if exists 회원_청약통장 CASCADE 
+2021-08-03 17:09:16.357 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대 (
+       세대id bigint generated by default as identity,
+        주소id bigint,
+        primary key (세대id)
+    )
+Hibernate: 
+    
+    create table 세대 (
+       세대id bigint generated by default as identity,
+        주소id bigint,
+        primary key (세대id)
+    )
+2021-08-03 17:09:16.359 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대구성원 (
+       세대구성원id bigint generated by default as identity,
+        무주택시작일 date,
+        생년월일 date,
+        세대주여부 varchar(255),
+        이름 varchar(255),
+        전입일자 date,
+        혼인신고일 date,
+        세대id bigint,
+        배우자_세대구성원id bigint,
+        primary key (세대구성원id)
+    )
+Hibernate: 
+    
+    create table 세대구성원 (
+       세대구성원id bigint generated by default as identity,
+        무주택시작일 date,
+        생년월일 date,
+        세대주여부 varchar(255),
+        이름 varchar(255),
+        전입일자 date,
+        혼인신고일 date,
+        세대id bigint,
+        배우자_세대구성원id bigint,
+        primary key (세대구성원id)
+    )
+2021-08-03 17:09:16.361 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대구성원_관계 (
+       세대구성원_관계id bigint generated by default as identity,
+        관계 varchar(255),
+        세대구성원id bigint,
+        회원id bigint,
+        primary key (세대구성원_관계id)
+    )
+Hibernate: 
+    
+    create table 세대구성원_관계 (
+       세대구성원_관계id bigint generated by default as identity,
+        관계 varchar(255),
+        세대구성원id bigint,
+        회원id bigint,
+        primary key (세대구성원_관계id)
+    )
+2021-08-03 17:09:16.363 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대구성원_소득 (
+       세대구성원_소득id bigint generated by default as identity,
+        월평균소득 integer,
+        세대구성원id bigint,
+        primary key (세대구성원_소득id)
+    )
+Hibernate: 
+    
+    create table 세대구성원_소득 (
+       세대구성원_소득id bigint generated by default as identity,
+        월평균소득 integer,
+        세대구성원id bigint,
+        primary key (세대구성원_소득id)
+    )
+2021-08-03 17:09:16.366 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대구성원_자산 (
+       세대구성원_자산id bigint generated by default as identity,
+        과세기준일 date,
+        금액 integer,
+        분양권여부 varchar(255),
+        비주거용건물유형 varchar(255),
+        자산유형 varchar(255),
+        전용면적 integer,
+        주거용건물유형 varchar(255),
+        주거용여부 varchar(255),
+        처분일 date,
+        취득일 date,
+        세대구성원id bigint,
+        primary key (세대구성원_자산id)
+    )
+Hibernate: 
+    
+    create table 세대구성원_자산 (
+       세대구성원_자산id bigint generated by default as identity,
+        과세기준일 date,
+        금액 integer,
+        분양권여부 varchar(255),
+        비주거용건물유형 varchar(255),
+        자산유형 varchar(255),
+        전용면적 integer,
+        주거용건물유형 varchar(255),
+        주거용여부 varchar(255),
+        처분일 date,
+        취득일 date,
+        세대구성원id bigint,
+        primary key (세대구성원_자산id)
+    )
+2021-08-03 17:09:16.369 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대구성원_청약신청이력 (
+       세대구성원_청약신청이력id bigint generated by default as identity,
+        결과 varchar(255),
+        공급유형 varchar(255),
+        당첨일 date,
+        당첨취소여부 varchar(255),
+        순위 varchar(255),
+        신청일 date,
+        예비번호 integer,
+        주택형 varchar(255),
+        추첨방식 varchar(255),
+        특별공급유형 varchar(255),
+        세대구성원id bigint,
+        아파트분양정보id bigint,
+        primary key (세대구성원_청약신청이력id)
+    )
+Hibernate: 
+    
+    create table 세대구성원_청약신청이력 (
+       세대구성원_청약신청이력id bigint generated by default as identity,
+        결과 varchar(255),
+        공급유형 varchar(255),
+        당첨일 date,
+        당첨취소여부 varchar(255),
+        순위 varchar(255),
+        신청일 date,
+        예비번호 integer,
+        주택형 varchar(255),
+        추첨방식 varchar(255),
+        특별공급유형 varchar(255),
+        세대구성원id bigint,
+        아파트분양정보id bigint,
+        primary key (세대구성원_청약신청이력id)
+    )
+2021-08-03 17:09:16.372 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 세대구성원_청약제한사항 (
+       세대구성원_청약제한사항id bigint generated by default as identity,
+        가점제당첨제한 date,
+        당첨일 date,
+        부적격당첨자제한 date,
+        재당첨제한 date,
+        투기과열지구청약과열지역1순위제한 date,
+        특별공급제한 varchar(255),
+        세대구성원id bigint,
+        primary key (세대구성원_청약제한사항id)
+    )
+Hibernate: 
+    
+    create table 세대구성원_청약제한사항 (
+       세대구성원_청약제한사항id bigint generated by default as identity,
+        가점제당첨제한 date,
+        당첨일 date,
+        부적격당첨자제한 date,
+        재당첨제한 date,
+        투기과열지구청약과열지역1순위제한 date,
+        특별공급제한 varchar(255),
+        세대구성원id bigint,
+        primary key (세대구성원_청약제한사항id)
+    )
+2021-08-03 17:09:16.374 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 아파트분양정보 (
+       아파트분양정보id bigint generated by default as identity,
+        primary key (아파트분양정보id)
+    )
+Hibernate: 
+    
+    create table 아파트분양정보 (
+       아파트분양정보id bigint generated by default as identity,
+        primary key (아파트분양정보id)
+    )
+2021-08-03 17:09:16.376 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 주소 (
+       주소id bigint generated by default as identity,
+        상세주소 varchar(255),
+        우편번호 integer,
+        지역_레벨1 varchar(255),
+        지역_레벨2 varchar(255),
+        primary key (주소id)
+    )
+Hibernate: 
+    
+    create table 주소 (
+       주소id bigint generated by default as identity,
+        상세주소 varchar(255),
+        우편번호 integer,
+        지역_레벨1 varchar(255),
+        지역_레벨2 varchar(255),
+        primary key (주소id)
+    )
+2021-08-03 17:09:16.379 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 청약자격점검 (
+       청약자격점검id bigint generated by default as identity,
+        결과_점수 integer,
+        결과_청약자격 boolean,
+        공급유형 varchar(255),
+        부양가족수 integer,
+        순위 varchar(255),
+        주택처분서약 varchar(255),
+        주택형 varchar(255),
+        청약지역거주기간 integer,
+        특별공급유형 varchar(255),
+        아파트분양정보id bigint,
+        회원id bigint,
+        primary key (청약자격점검id)
+    )
+Hibernate: 
+    
+    create table 청약자격점검 (
+       청약자격점검id bigint generated by default as identity,
+        결과_점수 integer,
+        결과_청약자격 boolean,
+        공급유형 varchar(255),
+        부양가족수 integer,
+        순위 varchar(255),
+        주택처분서약 varchar(255),
+        주택형 varchar(255),
+        청약지역거주기간 integer,
+        특별공급유형 varchar(255),
+        아파트분양정보id bigint,
+        회원id bigint,
+        primary key (청약자격점검id)
+    )
+2021-08-03 17:09:16.385 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 청약자격점검_노부모부양 (
+       청약자격점검_노부모부양id bigint generated by default as identity,
+        노부모부양여부 varchar(255),
+        청약자격점검id bigint,
+        primary key (청약자격점검_노부모부양id)
+    )
+Hibernate: 
+    
+    create table 청약자격점검_노부모부양 (
+       청약자격점검_노부모부양id bigint generated by default as identity,
+        노부모부양여부 varchar(255),
+        청약자격점검id bigint,
+        primary key (청약자격점검_노부모부양id)
+    )
+2021-08-03 17:09:16.393 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 청약자격점검_다자녀가구 (
+       청약자격점검_다자녀가구id bigint generated by default as identity,
+        다자녀가구유형 varchar(255),
+        미성년자녀수 integer,
+        영유아자녀수 integer,
+        청약자격점검id bigint,
+        primary key (청약자격점검_다자녀가구id)
+    )
+Hibernate: 
+    
+    create table 청약자격점검_다자녀가구 (
+       청약자격점검_다자녀가구id bigint generated by default as identity,
+        다자녀가구유형 varchar(255),
+        미성년자녀수 integer,
+        영유아자녀수 integer,
+        청약자격점검id bigint,
+        primary key (청약자격점검_다자녀가구id)
+    )
+2021-08-03 17:09:16.396 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 청약자격점검_생애최초 (
+       청약자격점검_생애최초id bigint generated by default as identity,
+        소득세5년이상납부여부 varchar(255),
+        저축액 integer,
+        청약자격점검id bigint,
+        primary key (청약자격점검_생애최초id)
+    )
+Hibernate: 
+    
+    create table 청약자격점검_생애최초 (
+       청약자격점검_생애최초id bigint generated by default as identity,
+        소득세5년이상납부여부 varchar(255),
+        저축액 integer,
+        청약자격점검id bigint,
+        primary key (청약자격점검_생애최초id)
+    )
+2021-08-03 17:09:16.399 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 청약자격점검_신혼부부 (
+       청약자격점검_신혼부부id bigint generated by default as identity,
+        미성년자녀수 integer,
+        신혼부부유형 varchar(255),
+        한부모가족자녀나이 integer,
+        청약자격점검id bigint,
+        primary key (청약자격점검_신혼부부id)
+    )
+Hibernate: 
+    
+    create table 청약자격점검_신혼부부 (
+       청약자격점검_신혼부부id bigint generated by default as identity,
+        미성년자녀수 integer,
+        신혼부부유형 varchar(255),
+        한부모가족자녀나이 integer,
+        청약자격점검id bigint,
+        primary key (청약자격점검_신혼부부id)
+    )
+2021-08-03 17:09:16.402 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 회원 (
+       회원id bigint generated by default as identity,
+        비밀번호 varchar(255),
+        이메일 varchar(255),
+        장기복무중인군인여부 varchar(255),
+        세대구성원id bigint,
+        primary key (회원id)
+    )
+Hibernate: 
+    
+    create table 회원 (
+       회원id bigint generated by default as identity,
+        비밀번호 varchar(255),
+        이메일 varchar(255),
+        장기복무중인군인여부 varchar(255),
+        세대구성원id bigint,
+        primary key (회원id)
+    )
+2021-08-03 17:09:16.404 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    create table 회원_청약통장 (
+       회원_청약통장id bigint generated by default as identity,
+        개설은행 varchar(255),
+        납입횟수 integer,
+        예치금액 integer,
+        유효여부 varchar(255),
+        청약통장종류 varchar(255),
+        회원id bigint,
+        primary key (회원_청약통장id)
+    )
+Hibernate: 
+    
+    create table 회원_청약통장 (
+       회원_청약통장id bigint generated by default as identity,
+        개설은행 varchar(255),
+        납입횟수 integer,
+        예치금액 integer,
+        유효여부 varchar(255),
+        청약통장종류 varchar(255),
+        회원id bigint,
+        primary key (회원_청약통장id)
+    )
+2021-08-03 17:09:16.406 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대 
+       add constraint FKmj98869wcoi4nnaovbew78r8h 
+       foreign key (주소id) 
+       references 주소
+Hibernate: 
+    
+    alter table 세대 
+       add constraint FKmj98869wcoi4nnaovbew78r8h 
+       foreign key (주소id) 
+       references 주소
+2021-08-03 17:09:16.411 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원 
+       add constraint FKhowfgy2m1v0pj5ngadnmpymu7 
+       foreign key (세대id) 
+       references 세대
+Hibernate: 
+    
+    alter table 세대구성원 
+       add constraint FKhowfgy2m1v0pj5ngadnmpymu7 
+       foreign key (세대id) 
+       references 세대
+2021-08-03 17:09:16.416 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원 
+       add constraint FKk4nfamsfo52fdyer5qme53rc8 
+       foreign key (배우자_세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 세대구성원 
+       add constraint FKk4nfamsfo52fdyer5qme53rc8 
+       foreign key (배우자_세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.419 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_관계 
+       add constraint FK7mx8nen823cn9w8jpai3hq1mr 
+       foreign key (세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 세대구성원_관계 
+       add constraint FK7mx8nen823cn9w8jpai3hq1mr 
+       foreign key (세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.423 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_관계 
+       add constraint FKnlh81e236ep5ttmjewtx0bxu 
+       foreign key (회원id) 
+       references 회원
+Hibernate: 
+    
+    alter table 세대구성원_관계 
+       add constraint FKnlh81e236ep5ttmjewtx0bxu 
+       foreign key (회원id) 
+       references 회원
+2021-08-03 17:09:16.426 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_소득 
+       add constraint FKe5p57x9oljria47y6wug1um7y 
+       foreign key (세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 세대구성원_소득 
+       add constraint FKe5p57x9oljria47y6wug1um7y 
+       foreign key (세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.431 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_자산 
+       add constraint FK556uh177uc7ijmqn2m9prnnhr 
+       foreign key (세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 세대구성원_자산 
+       add constraint FK556uh177uc7ijmqn2m9prnnhr 
+       foreign key (세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.435 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_청약신청이력 
+       add constraint FK5tvkbosu78ojbmi4wh5n386w0 
+       foreign key (세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 세대구성원_청약신청이력 
+       add constraint FK5tvkbosu78ojbmi4wh5n386w0 
+       foreign key (세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.438 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_청약신청이력 
+       add constraint FKt2yxw3jv42bfu73ijs3ygch3u 
+       foreign key (아파트분양정보id) 
+       references 아파트분양정보
+Hibernate: 
+    
+    alter table 세대구성원_청약신청이력 
+       add constraint FKt2yxw3jv42bfu73ijs3ygch3u 
+       foreign key (아파트분양정보id) 
+       references 아파트분양정보
+2021-08-03 17:09:16.442 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 세대구성원_청약제한사항 
+       add constraint FKt28j352ojt21q9j3nhsdvrbmt 
+       foreign key (세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 세대구성원_청약제한사항 
+       add constraint FKt28j352ojt21q9j3nhsdvrbmt 
+       foreign key (세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.445 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 청약자격점검 
+       add constraint FKm2b8cqmbd72pjuej8mehlufjg 
+       foreign key (아파트분양정보id) 
+       references 아파트분양정보
+Hibernate: 
+    
+    alter table 청약자격점검 
+       add constraint FKm2b8cqmbd72pjuej8mehlufjg 
+       foreign key (아파트분양정보id) 
+       references 아파트분양정보
+2021-08-03 17:09:16.448 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 청약자격점검 
+       add constraint FKcoacko7x879jmtf8c3nqtx1vt 
+       foreign key (회원id) 
+       references 회원
+Hibernate: 
+    
+    alter table 청약자격점검 
+       add constraint FKcoacko7x879jmtf8c3nqtx1vt 
+       foreign key (회원id) 
+       references 회원
+2021-08-03 17:09:16.453 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 청약자격점검_노부모부양 
+       add constraint FKd7p74fw758ltjxj5jyu1pb2h2 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+Hibernate: 
+    
+    alter table 청약자격점검_노부모부양 
+       add constraint FKd7p74fw758ltjxj5jyu1pb2h2 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+2021-08-03 17:09:16.457 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 청약자격점검_다자녀가구 
+       add constraint FKd8wsa22hmljowmvxxmda3axcw 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+Hibernate: 
+    
+    alter table 청약자격점검_다자녀가구 
+       add constraint FKd8wsa22hmljowmvxxmda3axcw 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+2021-08-03 17:09:16.460 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 청약자격점검_생애최초 
+       add constraint FK3s9s268hoehfy30yso7gpqxrk 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+Hibernate: 
+    
+    alter table 청약자격점검_생애최초 
+       add constraint FK3s9s268hoehfy30yso7gpqxrk 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+2021-08-03 17:09:16.464 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 청약자격점검_신혼부부 
+       add constraint FK5qrdtpe39isnm6bojp7sxo6gk 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+Hibernate: 
+    
+    alter table 청약자격점검_신혼부부 
+       add constraint FK5qrdtpe39isnm6bojp7sxo6gk 
+       foreign key (청약자격점검id) 
+       references 청약자격점검
+2021-08-03 17:09:16.467 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 회원 
+       add constraint FK9ewl67uo9rjyc7a4ryibnhbhl 
+       foreign key (세대구성원id) 
+       references 세대구성원
+Hibernate: 
+    
+    alter table 회원 
+       add constraint FK9ewl67uo9rjyc7a4ryibnhbhl 
+       foreign key (세대구성원id) 
+       references 세대구성원
+2021-08-03 17:09:16.471 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    
+    alter table 회원_청약통장 
+       add constraint FK2pra1j04tiryjbhe6caqx9glm 
+       foreign key (회원id) 
+       references 회원
+Hibernate: 
+    
+    alter table 회원_청약통장 
+       add constraint FK2pra1j04tiryjbhe6caqx9glm 
+       foreign key (회원id) 
+       references 회원
+2021-08-03 17:09:16.477  INFO 8512 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-08-03 17:09:16.497  INFO 8512 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-08-03 17:09:16.801  WARN 8512 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-08-03 17:09:18.371  INFO 8512 --- [    Test worker] c.h.c.repository.RepositoryTest          : Started RepositoryTest in 6.096 seconds (JVM running for 8.061)
+2021-08-03 17:09:18.412  INFO 8512 --- [    Test worker] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context [DefaultTestContext@4b65dec8 testClass = RepositoryTest, testInstance = com.hanium.chungyakpassback.repository.RepositoryTest@4a47b0ff, testMethod = 엔티티생성@RepositoryTest, testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@7169c334 testClass = RepositoryTest, locations = '{}', classes = '{class com.hanium.chungyakpassback.ChungyakpassBackApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@185f42b4, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@62cd4ec6, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@59845862, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4c8e16c4, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@1b2861e7, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@6e415d79], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -> true, 'org.springframework.test.context.web.ServletTestExecutionListener.populatedRequestContextHolder' -> true, 'org.springframework.test.context.web.ServletTestExecutionListener.resetRequestContextHolder' -> true, 'org.springframework.test.context.event.ApplicationEventsTestExecutionListener.recordApplicationEvents' -> false]]; transaction manager [org.springframework.orm.jpa.JpaTransactionManager@4259a07c]; rollback [false]
+2021-08-03 17:09:18.570 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        주소
+        (주소id, 상세주소, 우편번호, 지역_레벨1, 지역_레벨2) 
+    values
+        (null, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        주소
+        (주소id, 상세주소, 우편번호, 지역_레벨1, 지역_레벨2) 
+    values
+        (null, ?, ?, ?, ?)
+2021-08-03 17:09:18.586 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        주소
+        (주소id, 상세주소, 우편번호, 지역_레벨1, 지역_레벨2) 
+    values
+        (null, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        주소
+        (주소id, 상세주소, 우편번호, 지역_레벨1, 지역_레벨2) 
+    values
+        (null, ?, ?, ?, ?)
+2021-08-03 17:09:18.587 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대
+        (세대id, 주소id) 
+    values
+        (null, ?)
+Hibernate: 
+    insert 
+    into
+        세대
+        (세대id, 주소id) 
+    values
+        (null, ?)
+2021-08-03 17:09:18.590 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대
+        (세대id, 주소id) 
+    values
+        (null, ?)
+Hibernate: 
+    insert 
+    into
+        세대
+        (세대id, 주소id) 
+    values
+        (null, ?)
+2021-08-03 17:09:18.591 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대
+        (세대id, 주소id) 
+    values
+        (null, ?)
+Hibernate: 
+    insert 
+    into
+        세대
+        (세대id, 주소id) 
+    values
+        (null, ?)
+2021-08-03 17:09:18.599 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.602 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.603 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.605 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.622 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원
+        (세대구성원id, 무주택시작일, 생년월일, 세대id, 배우자_세대구성원id, 세대주여부, 이름, 전입일자, 혼인신고일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.624 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        회원
+        (회원id, 비밀번호, 세대구성원id, 이메일, 장기복무중인군인여부) 
+    values
+        (null, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        회원
+        (회원id, 비밀번호, 세대구성원id, 이메일, 장기복무중인군인여부) 
+    values
+        (null, ?, ?, ?, ?)
+2021-08-03 17:09:18.626 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        회원
+        (회원id, 비밀번호, 세대구성원id, 이메일, 장기복무중인군인여부) 
+    values
+        (null, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        회원
+        (회원id, 비밀번호, 세대구성원id, 이메일, 장기복무중인군인여부) 
+    values
+        (null, ?, ?, ?, ?)
+2021-08-03 17:09:18.628 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        회원_청약통장
+        (회원_청약통장id, 개설은행, 납입횟수, 예치금액, 유효여부, 청약통장종류, 회원id) 
+    values
+        (null, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        회원_청약통장
+        (회원_청약통장id, 개설은행, 납입횟수, 예치금액, 유효여부, 청약통장종류, 회원id) 
+    values
+        (null, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.632 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+2021-08-03 17:09:18.634 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+2021-08-03 17:09:18.636 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+2021-08-03 17:09:18.638 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_관계
+        (세대구성원_관계id, 관계, 세대구성원id, 회원id) 
+    values
+        (null, ?, ?, ?)
+2021-08-03 17:09:18.640 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_소득
+        (세대구성원_소득id, 세대구성원id, 월평균소득) 
+    values
+        (null, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_소득
+        (세대구성원_소득id, 세대구성원id, 월평균소득) 
+    values
+        (null, ?, ?)
+2021-08-03 17:09:18.643 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_자산
+        (세대구성원_자산id, 과세기준일, 금액, 분양권여부, 비주거용건물유형, 세대구성원id, 자산유형, 전용면적, 주거용건물유형, 주거용여부, 처분일, 취득일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_자산
+        (세대구성원_자산id, 과세기준일, 금액, 분양권여부, 비주거용건물유형, 세대구성원id, 자산유형, 전용면적, 주거용건물유형, 주거용여부, 처분일, 취득일) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.646 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_청약제한사항
+        (세대구성원_청약제한사항id, 가점제당첨제한, 당첨일, 부적격당첨자제한, 세대구성원id, 재당첨제한, 투기과열지구청약과열지역1순위제한, 특별공급제한) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_청약제한사항
+        (세대구성원_청약제한사항id, 가점제당첨제한, 당첨일, 부적격당첨자제한, 세대구성원id, 재당첨제한, 투기과열지구청약과열지역1순위제한, 특별공급제한) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.650 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        세대구성원_청약신청이력
+        (세대구성원_청약신청이력id, 결과, 공급유형, 당첨일, 당첨취소여부, 세대구성원id, 순위, 신청일, 아파트분양정보id, 예비번호, 주택형, 추첨방식, 특별공급유형) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        세대구성원_청약신청이력
+        (세대구성원_청약신청이력id, 결과, 공급유형, 당첨일, 당첨취소여부, 세대구성원id, 순위, 신청일, 아파트분양정보id, 예비번호, 주택형, 추첨방식, 특별공급유형) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.653 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        청약자격점검
+        (청약자격점검id, 결과_점수, 결과_청약자격, 공급유형, 부양가족수, 순위, 아파트분양정보id, 주택처분서약, 주택형, 청약지역거주기간, 특별공급유형, 회원id) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        청약자격점검
+        (청약자격점검id, 결과_점수, 결과_청약자격, 공급유형, 부양가족수, 순위, 아파트분양정보id, 주택처분서약, 주택형, 청약지역거주기간, 특별공급유형, 회원id) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2021-08-03 17:09:18.656 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        청약자격점검_다자녀가구
+        (청약자격점검_다자녀가구id, 다자녀가구유형, 미성년자녀수, 영유아자녀수, 청약자격점검id) 
+    values
+        (null, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        청약자격점검_다자녀가구
+        (청약자격점검_다자녀가구id, 다자녀가구유형, 미성년자녀수, 영유아자녀수, 청약자격점검id) 
+    values
+        (null, ?, ?, ?, ?)
+2021-08-03 17:09:18.660 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        청약자격점검_신혼부부
+        (청약자격점검_신혼부부id, 미성년자녀수, 신혼부부유형, 청약자격점검id, 한부모가족자녀나이) 
+    values
+        (null, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        청약자격점검_신혼부부
+        (청약자격점검_신혼부부id, 미성년자녀수, 신혼부부유형, 청약자격점검id, 한부모가족자녀나이) 
+    values
+        (null, ?, ?, ?, ?)
+2021-08-03 17:09:18.663 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        청약자격점검_생애최초
+        (청약자격점검_생애최초id, 소득세5년이상납부여부, 저축액, 청약자격점검id) 
+    values
+        (null, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        청약자격점검_생애최초
+        (청약자격점검_생애최초id, 소득세5년이상납부여부, 저축액, 청약자격점검id) 
+    values
+        (null, ?, ?, ?)
+2021-08-03 17:09:18.667 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        청약자격점검_노부모부양
+        (청약자격점검_노부모부양id, 노부모부양여부, 청약자격점검id) 
+    values
+        (null, ?, ?)
+Hibernate: 
+    insert 
+    into
+        청약자격점검_노부모부양
+        (청약자격점검_노부모부양id, 노부모부양여부, 청약자격점검id) 
+    values
+        (null, ?, ?)
+2021-08-03 17:09:18.715 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    update
+        세대구성원 
+    set
+        무주택시작일=?,
+        생년월일=?,
+        세대id=?,
+        배우자_세대구성원id=?,
+        세대주여부=?,
+        이름=?,
+        전입일자=?,
+        혼인신고일=? 
+    where
+        세대구성원id=?
+Hibernate: 
+    update
+        세대구성원 
+    set
+        무주택시작일=?,
+        생년월일=?,
+        세대id=?,
+        배우자_세대구성원id=?,
+        세대주여부=?,
+        이름=?,
+        전입일자=?,
+        혼인신고일=? 
+    where
+        세대구성원id=?
+2021-08-03 17:09:18.721 DEBUG 8512 --- [    Test worker] org.hibernate.SQL                        : 
+    update
+        세대구성원 
+    set
+        무주택시작일=?,
+        생년월일=?,
+        세대id=?,
+        배우자_세대구성원id=?,
+        세대주여부=?,
+        이름=?,
+        전입일자=?,
+        혼인신고일=? 
+    where
+        세대구성원id=?
+Hibernate: 
+    update
+        세대구성원 
+    set
+        무주택시작일=?,
+        생년월일=?,
+        세대id=?,
+        배우자_세대구성원id=?,
+        세대주여부=?,
+        이름=?,
+        전입일자=?,
+        혼인신고일=? 
+    where
+        세대구성원id=?
+2021-08-03 17:09:18.731  INFO 8512 --- [    Test worker] o.s.t.c.transaction.TransactionContext   : Committed transaction for test: [DefaultTestContext@4b65dec8 testClass = RepositoryTest, testInstance = com.hanium.chungyakpassback.repository.RepositoryTest@4a47b0ff, testMethod = 엔티티생성@RepositoryTest, testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@7169c334 testClass = RepositoryTest, locations = '{}', classes = '{class com.hanium.chungyakpassback.ChungyakpassBackApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@185f42b4, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@62cd4ec6, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@59845862, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4c8e16c4, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@1b2861e7, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@6e415d79], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -> true, 'org.springframework.test.context.web.ServletTestExecutionListener.populatedRequestContextHolder' -> true, 'org.springframework.test.context.web.ServletTestExecutionListener.resetRequestContextHolder' -> true, 'org.springframework.test.context.event.ApplicationEventsTestExecutionListener.recordApplicationEvents' -> false]]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
