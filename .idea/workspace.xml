@@ -168,7 +168,7 @@
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
-  <component name="RunManager" selected="JUnit.RepositoryTest_standard.엔티티생성">
+  <component name="RunManager" selected="JUnit.RepositoryTest_input.엔티티생성">
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -220,6 +220,22 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="RepositoryTest_input.엔티티생성" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chungyakpass-back.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hanium.chungyakpassback.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.hanium.chungyakpassback.repository" />
+      <option name="MAIN_CLASS_NAME" value="com.hanium.chungyakpassback.repository.RepositoryTest_input" />
+      <option name="METHOD_NAME" value="엔티티생성" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="RepositoryTest_standard.엔티티생성" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chungyakpass-back.test" />
       <extension name="coverage">
@@ -245,11 +261,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RepositoryTest_input.엔티티생성" />
         <item itemvalue="JUnit.RepositoryTest_standard.엔티티생성" />
         <item itemvalue="Gradle.RepositoryTest.엔티티생성" />
         <item itemvalue="Gradle.RepositoryTest_std.엔티티생성" />
         <item itemvalue="Gradle.RepositoryTest.엔티티생성" />
-        <item itemvalue="Gradle.RepositoryTest_std.엔티티생성" />
       </list>
     </recent_temporary>
   </component>
