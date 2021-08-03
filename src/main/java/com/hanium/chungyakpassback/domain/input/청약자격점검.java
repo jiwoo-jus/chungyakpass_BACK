@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.domain.input;
 
-import com.hanium.chungyakpassback.domain.standard.아파트분양정보;
 import com.hanium.chungyakpassback.domain.enumtype.*;
 import lombok.AccessLevel;
 import lombok.Builder;
