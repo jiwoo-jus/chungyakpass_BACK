@@ -132,3 +132,4 @@ gradle-app.setting
 /.gradle/
 /.idea/
 /build/
+/.idea/workspace.xml
