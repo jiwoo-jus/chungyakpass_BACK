@@ -128,4 +128,7 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java
 /src/main/java/com/hanium/chungyakpassback/domain/standard/아파트분양정보.java
 /build/resources/main/application.yml
-.
+
+/.gradle/
+/.idea/
+/build/
