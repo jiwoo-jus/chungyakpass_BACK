@@ -129,5 +129,3 @@ gradle-app.setting
 /src/main/java/com/hanium/chungyakpassback/domain/standard/아파트분양정보.java
 /build/resources/main/application.yml
 .
-/.gradle/
-/.idea/
