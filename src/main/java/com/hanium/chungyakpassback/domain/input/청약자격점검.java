@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table
+@Table(name="입력_청약자격점검")
 public class 청약자격점검 {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

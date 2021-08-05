@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="입력_세대")
 public class 세대 {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

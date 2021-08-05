@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table
+@Table(name="입력_세대구성원_자산")
 public class 세대구성원_자산 {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

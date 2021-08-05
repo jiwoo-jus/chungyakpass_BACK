@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table
+@Table(name="입력_세대구성원_관계")
 public class 세대구성원_관계 {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
