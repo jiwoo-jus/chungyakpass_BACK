@@ -11,10 +11,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="입력_세대구성원_관계")
+@Table(name = "입력_세대구성원_관계")
 public class 세대구성원_관계 {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "세대구성원_관계id")
     private Long id;
 
@@ -23,7 +24,7 @@ public class 세대구성원_관계 {
     private 회원 회원;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "세대구성원id")
+    @JoinColumn(name = "관계자_세대구성원id")
     private 세대구성원 관계자_세대구성원;
 
     @Column
