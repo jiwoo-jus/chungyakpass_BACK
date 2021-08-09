@@ -19,9 +19,13 @@ public class 세대구성원_청약제한사항 {
     @Column(name = "세대구성원_청약제한사항id")
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "세대구성원id")
     private 세대구성원 세대구성원;
+
+    @ManyToOne
+    @JoinColumn(name="세대구성원_청약신청이력id")
+    private 세대구성원_청약신청이력 세대구성원_청약신청이력;
 
     @Column
     private LocalDate 당첨일;
