@@ -13,10 +13,11 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name="입력_세대구성원_청약신청이력")
+@Table(name = "입력_세대구성원_청약신청이력")
 public class 세대구성원_청약신청이력 {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "세대구성원_청약신청이력id")
     private Long id;
 
@@ -28,8 +29,6 @@ public class 세대구성원_청약신청이력 {
     @JoinColumn(name = "아파트분양정보id")
     private com.hanium.chungyakpassback.domain.standard.아파트분양정보 아파트분양정보;
 
-    @Column
-    private LocalDate 신청일;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -66,10 +65,9 @@ public class 세대구성원_청약신청이력 {
 
 
     @Builder
-    public 세대구성원_청약신청이력(세대구성원 세대구성원, 아파트분양정보 아파트분양정보, LocalDate 신청일, 공급유형 공급유형, 특별공급유형 특별공급유형, String 주택형, 순위 순위, 결과 결과, Integer 예비번호, LocalDate 당첨일, 추첨방식 추첨방식, 여부 당첨취소여부) {
+    public 세대구성원_청약신청이력(세대구성원 세대구성원, 아파트분양정보 아파트분양정보, 공급유형 공급유형, 특별공급유형 특별공급유형, String 주택형, 순위 순위, 결과 결과, Integer 예비번호, LocalDate 당첨일, 추첨방식 추첨방식, 여부 당첨취소여부) {
         this.세대구성원 = 세대구성원;
         this.아파트분양정보 = 아파트분양정보;
-        this.신청일 = 신청일;
         this.공급유형 = 공급유형;
         this.특별공급유형 = 특별공급유형;
         this.주택형 = 주택형;
