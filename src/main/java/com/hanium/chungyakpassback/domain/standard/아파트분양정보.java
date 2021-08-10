@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="기준_아파트분양정보")
 public class 아파트분양정보 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

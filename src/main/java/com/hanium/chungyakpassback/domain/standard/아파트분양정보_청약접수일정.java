@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="기준_아파트분양정보_청약접수일정")
 public class 아파트분양정보_청약접수일정 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

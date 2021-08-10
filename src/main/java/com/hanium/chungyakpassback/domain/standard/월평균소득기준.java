@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="기준_월평균소득기준")
 public class 월평균소득기준 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

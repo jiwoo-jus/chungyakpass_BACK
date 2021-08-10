@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="기준_아파트분양정보_공급대상")
 public class 아파트분양정보_공급대상 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

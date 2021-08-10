@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="기준_일순위_납입금")
 public class 일순위_납입금 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

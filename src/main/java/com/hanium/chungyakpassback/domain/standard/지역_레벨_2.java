@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table
+@Table(name="기준_지역_레벨_2")
 public class 지역_레벨_2 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
