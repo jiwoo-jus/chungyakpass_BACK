@@ -1,10 +1,7 @@
 package com.hanium.chungyakpassback.domain.input;
 
 import com.hanium.chungyakpassback.domain.enumtype.특별공급제한;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,10 +9,11 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name="입력_세대구성원_청약제한사항")
+@Table(name = "입력_세대구성원_청약제한사항")
 public class 세대구성원_청약제한사항 {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "세대구성원_청약제한사항id")
     private Long id;
 
@@ -24,7 +22,7 @@ public class 세대구성원_청약제한사항 {
     private 세대구성원 세대구성원;
 
     @ManyToOne
-    @JoinColumn(name="세대구성원_청약신청이력id")
+    @JoinColumn(name = "세대구성원_청약신청이력id")
     private 세대구성원_청약신청이력 세대구성원_청약신청이력;
 
     @Column
@@ -48,8 +46,10 @@ public class 세대구성원_청약제한사항 {
 
 
     @Builder
-    public 세대구성원_청약제한사항(세대구성원 세대구성원, LocalDate 당첨일, LocalDate 재당첨제한, 특별공급제한 특별공급제한, LocalDate 부적격당첨자제한, LocalDate 투기과열지구청약과열지역1순위제한, LocalDate 가점제당첨제한) {
+
+    public 세대구성원_청약제한사항(세대구성원 세대구성원, 세대구성원_청약신청이력 세대구성원_청약신청이력, LocalDate 당첨일, LocalDate 재당첨제한, 특별공급제한 특별공급제한, LocalDate 부적격당첨자제한, LocalDate 투기과열지구청약과열지역1순위제한, LocalDate 가점제당첨제한) {
         this.세대구성원 = 세대구성원;
+        this.세대구성원_청약신청이력 = 세대구성원_청약신청이력;
         this.당첨일 = 당첨일;
         this.재당첨제한 = 재당첨제한;
         this.특별공급제한 = 특별공급제한;
