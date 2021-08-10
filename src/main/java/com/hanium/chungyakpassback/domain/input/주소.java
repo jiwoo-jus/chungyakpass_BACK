@@ -30,10 +30,10 @@ public class 주소 {
     private String 상세주소;
 
     @Column
-    private Integer 우편번호;
+    private String 우편번호;
 
     @Builder
-    public 주소(지역_레벨1 지역_레벨1, 지역_레벨2 지역_레벨2, String 상세주소, Integer 우편번호){
+    public 주소(지역_레벨1 지역_레벨1, 지역_레벨2 지역_레벨2, String 상세주소, String 우편번호){
         this.지역_레벨1 = 지역_레벨1;
         this.지역_레벨2 = 지역_레벨2;
         this.상세주소 = 상세주소;
