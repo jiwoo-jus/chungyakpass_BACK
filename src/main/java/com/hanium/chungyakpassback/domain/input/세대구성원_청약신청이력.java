@@ -25,10 +25,6 @@ public class 세대구성원_청약신청이력 {
     @JoinColumn(name = "세대구성원id")
     private 세대구성원 세대구성원;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "아파트분양정보id")
-    private 아파트분양정보 아파트분양정보;
-
     @Column
     private String 주택명;
 
@@ -67,9 +63,8 @@ public class 세대구성원_청약신청이력 {
 
 
     @Builder
-    public 세대구성원_청약신청이력(세대구성원 세대구성원, 아파트분양정보 아파트분양정보, String 주택명, 공급유형 공급유형, 특별공급유형 특별공급유형, String 주택형, 순위 순위, 결과 결과, Integer 예비번호, LocalDate 당첨일, 추첨방식 추첨방식, 여부 당첨취소여부) {
+    public 세대구성원_청약신청이력(세대구성원 세대구성원, String 주택명, 공급유형 공급유형, 특별공급유형 특별공급유형, String 주택형, 순위 순위, 결과 결과, Integer 예비번호, LocalDate 당첨일, 추첨방식 추첨방식, 여부 당첨취소여부) {
         this.세대구성원 = 세대구성원;
-        this.아파트분양정보 = 아파트분양정보;
         this.주택명 = 주택명;
         this.공급유형 = 공급유형;
         this.특별공급유형 = 특별공급유형;

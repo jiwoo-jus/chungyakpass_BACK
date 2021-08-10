@@ -1,12 +1,15 @@
 package com.hanium.chungyakpassback.domain.input;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hanium.chungyakpassback.domain.enumtype.개설은행;
 import com.hanium.chungyakpassback.domain.enumtype.여부;
 import com.hanium.chungyakpassback.domain.enumtype.청약통장종류;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Entity
 @Getter

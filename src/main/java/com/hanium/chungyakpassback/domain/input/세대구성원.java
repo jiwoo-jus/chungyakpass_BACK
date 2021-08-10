@@ -42,7 +42,7 @@ public class 세대구성원 {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private 여부 장기복무중인군인여부;
+    private 여부 장기복무군인여부;
 
     @Column
     private LocalDate 혼인신고일;
@@ -55,14 +55,14 @@ public class 세대구성원 {
 
 
     @Builder
-    public 세대구성원(세대 세대, 세대구성원 세대구성원배우자, 여부 세대주여부, String 이름, LocalDate 생년월일, 여부 외국인여부, 여부 장기복무중인군인여부, LocalDate 혼인신고일, LocalDate 무주택시작일, LocalDate 전입신고일) {
+    public 세대구성원(세대 세대, 세대구성원 세대구성원배우자, 여부 세대주여부, String 이름, LocalDate 생년월일, 여부 외국인여부, 여부 장기복무군인여부, LocalDate 혼인신고일, LocalDate 무주택시작일, LocalDate 전입신고일) {
         this.세대 = 세대;
         this.세대구성원배우자 = 세대구성원배우자;
         this.세대주여부 = 세대주여부;
         this.이름 = 이름;
         this.생년월일 = 생년월일;
         this.외국인여부 = 외국인여부;
-        this.장기복무중인군인여부 = 장기복무중인군인여부;
+        this.장기복무군인여부 = 장기복무군인여부;
         this.혼인신고일 = 혼인신고일;
         this.무주택시작일 = 무주택시작일;
         this.전입신고일 = 전입신고일;
