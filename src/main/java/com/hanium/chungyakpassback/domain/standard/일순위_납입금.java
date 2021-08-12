@@ -2,10 +2,7 @@ package com.hanium.chungyakpassback.domain.standard;
 
 import com.hanium.chungyakpassback.domain.enumtype.공급유형;
 import com.hanium.chungyakpassback.domain.enumtype.예치금액지역구분;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -33,6 +30,7 @@ public class 일순위_납입금 {
     @Column
     private int 예치금액;
 
+    @Builder
     public 일순위_납입금(Integer 면적_초과, Integer 면적_이하, com.hanium.chungyakpassback.domain.enumtype.예치금액지역구분 예치금액지역구분, int 예치금액) {
         this.면적_초과 = 면적_초과;
         this.면적_이하 = 면적_이하;

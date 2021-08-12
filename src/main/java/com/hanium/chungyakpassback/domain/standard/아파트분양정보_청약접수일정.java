@@ -53,6 +53,7 @@ public class 아파트분양정보_청약접수일정 {
     @Enumerated(EnumType.STRING)
     private 공급장소 접수장소;
 
+    @Builder
     public 아파트분양정보_청약접수일정(com.hanium.chungyakpassback.domain.standard.아파트분양정보 아파트분양정보, com.hanium.chungyakpassback.domain.enumtype.공급유형 공급유형, com.hanium.chungyakpassback.domain.enumtype.순위 순위, LocalDate 청약접수일_해당지역, LocalDate 청약접수완료일_해당지역, LocalDate 청약접수일_기타경기, LocalDate 청약접수완료일_기타경기, LocalDate 청약접수일_기타지역, LocalDate 청약접수완료일_기타지역, 공급장소 접수장소) {
         this.아파트분양정보 = 아파트분양정보;
         this.공급유형 = 공급유형;
