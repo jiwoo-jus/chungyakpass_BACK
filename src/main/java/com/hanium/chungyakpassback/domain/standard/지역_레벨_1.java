@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name="기준_지역_레벨_1")
+@Table(name = "기준_지역_레벨_1")
 public class 지역_레벨_1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,24 +20,24 @@ public class 지역_레벨_1 {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private 지역_레벨1 서울시;
+    private 지역_레벨1 지역_레벨1;
 
     @Column
     private int 인근지역구분;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private 예치금액지역구분 서울부산;
+    private 예치금액지역구분 예치금액지역구분;
 
     @Column
     @Enumerated(EnumType.STRING)
     private 여부 수도권여부;
 
     @Builder
-    public 지역_레벨_1(지역_레벨1 서울시, int 인근지역구분, 예치금액지역구분 서울부산, 여부 수도권여부) {
-        this.서울시 = 서울시;
+    public 지역_레벨_1(지역_레벨1 지역_레벨1, int 인근지역구분, 예치금액지역구분 예치금액지역구분, 여부 수도권여부) {
+        this.지역_레벨1 = 지역_레벨1;
         this.인근지역구분 = 인근지역구분;
-        this.서울부산 = 서울부산;
+        this.예치금액지역구분 = 예치금액지역구분;
         this.수도권여부 = 수도권여부;
     }
 }
