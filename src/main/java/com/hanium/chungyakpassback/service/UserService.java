@@ -36,9 +36,7 @@ public class UserService {
 
         User user = User.builder()
                 .email(userDto.getEmail())
-//                .username(userDto.getUsername())
                 .비밀번호(passwordEncoder.encode(userDto.getPassword()))
-//                .nickname(userDto.getNickname())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
@@ -47,12 +45,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities(String username) {
-        return userRepository.findOneWithAuthoritiesByEmail(username);
+    public Optional<User> getUserWithAuthorities(String email) {
+        return userRepository.findOneWithAuthoritiesByEmail(email);
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        return SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
     }
 }
