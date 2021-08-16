@@ -21,7 +21,7 @@ public class 세대구성원_관계 {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "회원id")
-    private 회원 회원;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "관계자_세대구성원id")
@@ -33,8 +33,8 @@ public class 세대구성원_관계 {
 
 
     @Builder
-    public 세대구성원_관계(회원 회원, 세대구성원 관계자_세대구성원, 관계 관계) {
-        this.회원 = 회원;
+    public 세대구성원_관계(User user, 세대구성원 관계자_세대구성원, 관계 관계) {
+        this.user = user;
         this.관계자_세대구성원 = 관계자_세대구성원;
         this.관계 = 관계;
     }

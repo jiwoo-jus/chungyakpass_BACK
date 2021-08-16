@@ -24,7 +24,7 @@ public class 청약자격점검 {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "회원id")
-    private 회원 회원;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "아파트분양정보id")
@@ -63,8 +63,8 @@ public class 청약자격점검 {
 
 
     @Builder
-    public 청약자격점검(회원 회원, 아파트분양정보 아파트분양정보, 공급유형 공급유형, 특별공급유형 특별공급유형, String 주택형, 순위 순위, 여부 주택처분서약, int 부양가족수, int 청약지역거주기간, boolean 결과_청약자격, int 결과_점수) {
-        this.회원 = 회원;
+    public 청약자격점검(User user, 아파트분양정보 아파트분양정보, 공급유형 공급유형, 특별공급유형 특별공급유형, String 주택형, 순위 순위, 여부 주택처분서약, int 부양가족수, int 청약지역거주기간, boolean 결과_청약자격, int 결과_점수) {
+        this.user = user;
         this.아파트분양정보 = 아파트분양정보;
         this.공급유형 = 공급유형;
         this.특별공급유형 = 특별공급유형;
