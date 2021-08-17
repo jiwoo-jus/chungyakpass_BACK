@@ -32,18 +32,11 @@ public class User {
 
     @JsonIgnore
     @Column
-    private String 비밀번호;
+    private String password;
 
     @JsonIgnore
     @Column(name = "activated")
     private boolean activated;
-
-//    @Builder
-//    public User(세대구성원 세대구성원본인, String 이메일, String 비밀번호) {
-//        this.세대구성원본인 = 세대구성원본인;
-//        this.이메일 = 이메일;
-//        this.비밀번호 = 비밀번호;
-//    }
 
     @ManyToMany
     @JoinTable(

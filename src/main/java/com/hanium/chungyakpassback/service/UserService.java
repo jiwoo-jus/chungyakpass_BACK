@@ -36,7 +36,7 @@ public class UserService {
 
         User user = User.builder()
                 .email(userDto.getEmail())
-                .비밀번호(passwordEncoder.encode(userDto.getPassword()))
+                .password(passwordEncoder.encode(userDto.getPassword()))
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
