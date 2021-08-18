@@ -1,19 +1,15 @@
 package com.hanium.chungyakpassback.repository;
 
-import com.hanium.chungyakpassback.domain.enumtype.*;
-import com.hanium.chungyakpassback.domain.input.*;
+import com.hanium.chungyakpassback.entity.enumtype.*;
+import com.hanium.chungyakpassback.entity.input.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import javax.persistence.EntityManager;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.IsoFields;
 
 @SpringBootTest
 @Transactional

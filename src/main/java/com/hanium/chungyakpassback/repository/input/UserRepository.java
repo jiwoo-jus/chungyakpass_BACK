@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.repository.input;
 
-import com.hanium.chungyakpassback.domain.input.User;
+import com.hanium.chungyakpassback.entity.input.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

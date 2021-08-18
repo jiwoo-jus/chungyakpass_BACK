@@ -1,8 +1,8 @@
 package com.hanium.chungyakpassback.repository;
 
-import com.hanium.chungyakpassback.domain.enumtype.*;
-import com.hanium.chungyakpassback.domain.enumtype.지역_레벨1;
-import com.hanium.chungyakpassback.domain.standard.*;
+import com.hanium.chungyakpassback.entity.enumtype.*;
+import com.hanium.chungyakpassback.entity.enumtype.지역_레벨1;
+import com.hanium.chungyakpassback.entity.standard.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

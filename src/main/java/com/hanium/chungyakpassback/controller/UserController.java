@@ -1,7 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
 
-import com.hanium.chungyakpassback.domain.input.User;
+import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.dto.UserDto;
 import com.hanium.chungyakpassback.service.UserService;
 import org.springframework.http.ResponseEntity;

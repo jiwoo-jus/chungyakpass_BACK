@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.service;
 
-import com.hanium.chungyakpassback.domain.input.User;
+import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

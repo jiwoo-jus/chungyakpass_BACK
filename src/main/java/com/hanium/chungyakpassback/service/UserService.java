@@ -1,8 +1,8 @@
 package com.hanium.chungyakpassback.service;
 
 
-import com.hanium.chungyakpassback.domain.authority.Authority;
-import com.hanium.chungyakpassback.domain.input.User;
+import com.hanium.chungyakpassback.entity.authority.Authority;
+import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.dto.UserDto;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
