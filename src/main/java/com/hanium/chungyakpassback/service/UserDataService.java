@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.service;
 
-import com.hanium.chungyakpassback.dto.HouseholdMemberUserDto;
+import com.hanium.chungyakpassback.dto.HouseMemberUserDto;
 import com.hanium.chungyakpassback.entity.enumtype.Relation;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.repository.input.*;
@@ -23,39 +23,39 @@ public class UserDataService {
         this.householdMemberRelationRepository = householdMemberRelationRepository;
     }
 
-    public Household saveAddress(HouseholdMemberUserDto householdMemberUserDto){
+    public HouseMember houseMemberUser(HouseMemberUserDto houseMemberUserDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         Address address = Address.builder()
-                .address_level1(householdMemberUserDto.getAddress_level1())
-                .address_level2(householdMemberUserDto.getAddress_level2())
-                .address_detail(householdMemberUserDto.getAddress_detail())
-                .zipcode(householdMemberUserDto.getZipcode())
+                .address_level1(houseMemberUserDto.getAddress_level1())
+                .address_level2(houseMemberUserDto.getAddress_level2())
+                .address_detail(houseMemberUserDto.getAddress_detail())
+                .zipcode(houseMemberUserDto.getZipcode())
                 .build();
-        Household household = Household.builder()
+        House house = House.builder()
                 .address(address)
                 .build();
-        HouseholdMember householdMember = HouseholdMember.builder()
-                .household(household)
-                .householderYn(householdMemberUserDto.getHouseholderYn())
-                .name(householdMemberUserDto.getName())
-                .birthDate(householdMemberUserDto.getBirthDate())
-                .foreignerYn(householdMemberUserDto.getForeignerYn())
-                .soldierYn(householdMemberUserDto.getSoldierYn())
-                .marriageDate(householdMemberUserDto.getMarriageDate())
-                .homelessStartDate(householdMemberUserDto.getHomelessStartDate())
-                .transferDate(householdMemberUserDto.getTransferDate())
+        HouseMember houseMember = HouseMember.builder()
+                .house(house)
+                .householderYn(houseMemberUserDto.getHouseholderYn())
+                .name(houseMemberUserDto.getName())
+                .birthDate(houseMemberUserDto.getBirthDate())
+                .foreignerYn(houseMemberUserDto.getForeignerYn())
+                .soldierYn(houseMemberUserDto.getSoldierYn())
+                .marriageDate(houseMemberUserDto.getMarriageDate())
+                .homelessStartDate(houseMemberUserDto.getHomelessStartDate())
+                .transferDate(houseMemberUserDto.getTransferDate())
                 .build();
-        HouseholdMemberRelation householdMemberRelation = HouseholdMemberRelation.builder()
+        HouseMemberRelation houseMemberRelation = HouseMemberRelation.builder()
                 .user(user)
-                .opponent(householdMember)
+                .opponent(houseMember)
                 .relation(Relation.본인)
                 .build();
 
         addressRepository.save(address);
-        householdRepository.save(household);
-        householdMemberRepository.save(householdMember);
-        householdMemberRelationRepository.save(householdMemberRelation);
-        return household;
+        householdRepository.save(house);
+        householdMemberRepository.save(houseMember);
+        householdMemberRelationRepository.save(houseMemberRelation);
+        return houseMember;
     }
 }

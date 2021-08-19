@@ -1,7 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.entity.enumtype.Address_level1;
-import com.hanium.chungyakpassback.entity.enumtype.Address_level2;
+import com.hanium.chungyakpassback.entity.enumtype.AddressLevel1;
+import com.hanium.chungyakpassback.entity.enumtype.AddressLevel2;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,11 +19,11 @@ public class Address {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Address_level1 address_level1;
+    private AddressLevel1 address_level1;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Address_level2 address_level2;
+    private AddressLevel2 address_level2;
 
     @Column
     private String address_detail;
@@ -32,7 +32,7 @@ public class Address {
     private String zipcode;
 
     @Builder
-    public Address(Address_level1 address_level1, Address_level2 address_level2, String address_detail, String zipcode){
+    public Address(AddressLevel1 address_level1, AddressLevel2 address_level2, String address_detail, String zipcode){
         this.address_level1 = address_level1;
         this.address_level2 = address_level2;
         this.address_detail = address_detail;

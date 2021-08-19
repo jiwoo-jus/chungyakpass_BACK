@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="입력_세대")
-public class Household {
+public class House {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "세대id")
@@ -21,7 +21,7 @@ public class Household {
     private Address address;
 
     @Builder
-    public Household(Address address){
+    public House(Address address){
         this.address = address;
     }
 }

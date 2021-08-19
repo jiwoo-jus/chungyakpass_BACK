@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "입력_세대구성원")
-public class HouseholdMember {
+public class HouseMember {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "세대구성원id")
@@ -19,11 +19,11 @@ public class HouseholdMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "세대id")
-    private Household household; //세대
+    private House house; //세대
 
     @OneToOne
     @JoinColumn(name = "배우자_세대구성원id")
-    private HouseholdMember spouse; //배우자세대구성원
+    private HouseMember spouse; //배우자세대구성원
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -54,8 +54,8 @@ public class HouseholdMember {
 
 
     @Builder
-    public HouseholdMember(Household household, HouseholdMember spouse, Yn householderYn, String name, LocalDate birthDate, Yn foreignerYn, Yn soldierYn, LocalDate marriageDate, LocalDate homelessStartDate, LocalDate transferDate) {
-        this.household = household;
+    public HouseMember(House house, HouseMember spouse, Yn householderYn, String name, LocalDate birthDate, Yn foreignerYn, Yn soldierYn, LocalDate marriageDate, LocalDate homelessStartDate, LocalDate transferDate) {
+        this.house = house;
         this.spouse = spouse;
         this.householderYn = householderYn;
         this.name = name;

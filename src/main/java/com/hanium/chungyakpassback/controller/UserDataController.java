@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.controller;
 
-import com.hanium.chungyakpassback.dto.HouseholdMemberUserDto;
+import com.hanium.chungyakpassback.dto.HouseMemberUserDto;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
 import com.hanium.chungyakpassback.response.StatusCode;
@@ -27,10 +27,10 @@ public class UserDataController {
     }
 
 
-    @PostMapping("/address")
+    @PostMapping("/houseMemberUser")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity inputAddress(@RequestBody HouseholdMemberUserDto householdMemberUserDto){
-        userDataService.saveAddress(householdMemberUserDto);
+    public ResponseEntity houseMemberUser(@RequestBody HouseMemberUserDto houseMemberUserDto){
+        userDataService.houseMemberUser(houseMemberUserDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 

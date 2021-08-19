@@ -1,7 +1,7 @@
 package com.hanium.chungyakpassback.dto;
 
-import com.hanium.chungyakpassback.entity.enumtype.Address_level1;
-import com.hanium.chungyakpassback.entity.enumtype.Address_level2;
+import com.hanium.chungyakpassback.entity.enumtype.AddressLevel1;
+import com.hanium.chungyakpassback.entity.enumtype.AddressLevel2;
 import com.hanium.chungyakpassback.entity.enumtype.Yn;
 import lombok.*;
 
@@ -12,11 +12,11 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HouseholdMemberUserDto {
+public class HouseMemberUserDto {
 
-    private Address_level1 address_level1;
+    private AddressLevel1 address_level1;
 
-    private Address_level2 address_level2;
+    private AddressLevel2 address_level2;
 
     private String address_detail;
 

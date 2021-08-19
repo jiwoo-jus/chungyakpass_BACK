@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "입력_세대구성원_관계")
-public class HouseholdMemberRelation {
+public class HouseMemberRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class HouseholdMemberRelation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "관계자_세대구성원id")
-    private HouseholdMember opponent;
+    private HouseMember opponent;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -33,7 +33,7 @@ public class HouseholdMemberRelation {
 
 
     @Builder
-    public HouseholdMemberRelation(User user, HouseholdMember opponent, Relation relation) {
+    public HouseMemberRelation(User user, HouseMember opponent, Relation relation) {
         this.user = user;
         this.opponent = opponent;
         this.relation = relation;
