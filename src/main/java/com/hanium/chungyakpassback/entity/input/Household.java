@@ -6,21 +6,22 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name="입력_세대")
-public class 세대 {
+public class Household {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "세대id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "주소id")
-    private 주소 주소;
+    private Address address;
 
     @Builder
-    public 세대(주소 주소){
-        this.주소 = 주소;
+    public Household(Address address){
+        this.address = address;
     }
 }

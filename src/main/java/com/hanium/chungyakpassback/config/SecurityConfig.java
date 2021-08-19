@@ -81,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/signup").permitAll()
+                .antMatchers("/api/household").permitAll()
 
                 // 앞 항목들 외 나머지 요청들은 모두 인증되어야 한다
                 .anyRequest().authenticated()
