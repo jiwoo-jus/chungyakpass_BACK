@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name="입력_세대")
 public class Household {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "세대id")
     private Long id;
 

@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.entity.enumtype.관계;
+import com.hanium.chungyakpassback.entity.enumtype.Relation;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "입력_세대구성원_관계")
-public class 세대구성원_관계 {
+public class HouseholdMemberRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +25,17 @@ public class 세대구성원_관계 {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "관계자_세대구성원id")
-    private 세대구성원 관계자_세대구성원;
+    private HouseholdMember opponent;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private 관계 관계;
+    private Relation relation;
 
 
     @Builder
-    public 세대구성원_관계(User user, 세대구성원 관계자_세대구성원, 관계 관계) {
+    public HouseholdMemberRelation(User user, HouseholdMember opponent, Relation relation) {
         this.user = user;
-        this.관계자_세대구성원 = 관계자_세대구성원;
-        this.관계 = 관계;
+        this.opponent = opponent;
+        this.relation = relation;
     }
 }

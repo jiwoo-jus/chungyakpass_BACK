@@ -1,5 +1,5 @@
 package com.hanium.chungyakpassback.entity.enumtype;
 
-public enum 여부 {
+public enum Yn {
     y, n
 }
