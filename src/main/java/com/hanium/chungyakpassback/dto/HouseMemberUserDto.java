@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HouseMemberUserDto {
 
-    private AddressLevel1 address_level1;
+    private AddressLevel1 addressLevel1;
 
-    private AddressLevel2 address_level2;
+    private AddressLevel2 addressLevel2;
 
-    private String address_detail;
+    private String addressDetail;
 
     private String zipcode;
 
