@@ -10,19 +10,19 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "입력_세대구성원")
+@Table(name="inp_house_member")
 public class HouseMember {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "세대구성원id")
+    @Column(name = "house_member_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "세대id")
+    @JoinColumn(name = "house_id")
     private House house; //세대
 
     @OneToOne
-    @JoinColumn(name = "배우자_세대구성원id")
+    @JoinColumn(name = "spouse_house_member_id")
     private HouseMember spouse; //배우자세대구성원
 
     @Column

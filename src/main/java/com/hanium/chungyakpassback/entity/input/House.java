@@ -9,15 +9,15 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="입력_세대")
+@Table(name="inp_house")
 public class House {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "세대id")
+    @Column(name = "house_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "주소id")
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @Builder

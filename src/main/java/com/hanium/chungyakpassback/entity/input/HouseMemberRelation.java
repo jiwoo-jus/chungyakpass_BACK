@@ -11,20 +11,20 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "입력_세대구성원_관계")
+@Table(name = "inp_house_member_relation")
 public class HouseMemberRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "세대구성원_관계id")
+    @Column(name = "house_member_relation_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "회원id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "관계자_세대구성원id")
+    @JoinColumn(name = "opponent_house_member_id")
     private HouseMember opponent;
 
     @Column
