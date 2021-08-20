@@ -19,23 +19,23 @@ public class Address {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private AddressLevel1 address_level1;
+    private AddressLevel1 addressLevel1;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private AddressLevel2 address_level2;
+    private AddressLevel2 addressLevel2;
 
     @Column
-    private String address_detail;
+    private String addressDetail;
 
     @Column
     private String zipcode;
 
     @Builder
-    public Address(AddressLevel1 address_level1, AddressLevel2 address_level2, String address_detail, String zipcode){
-        this.address_level1 = address_level1;
-        this.address_level2 = address_level2;
-        this.address_detail = address_detail;
+    public Address(AddressLevel1 addressLevel1, AddressLevel2 addressLevel2, String addressDetail, String zipcode){
+        this.addressLevel1 = addressLevel1;
+        this.addressLevel2 = addressLevel2;
+        this.addressDetail = addressDetail;
         this.zipcode = zipcode;
     }
 }
