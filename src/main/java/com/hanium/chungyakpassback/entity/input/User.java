@@ -22,9 +22,9 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-//    @OneToOne
-//    @JoinColumn(name = "세대구성원id")
-//    private 세대구성원 세대구성원본인;
+    @OneToOne
+    @JoinColumn(name = "house_member_id")
+    private HouseMember houseMember;
 
     @Column
     private String email;

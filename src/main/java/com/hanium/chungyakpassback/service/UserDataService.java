@@ -59,6 +59,8 @@ public class UserDataService {
         householdRepository.save(house);
         householdMemberRepository.save(houseMember);
         householdMemberRelationRepository.save(houseMemberRelation);
+        user.setHouseMember(houseMember);
+        userRepository.save(user);
         return houseMember;
     }
 
