@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.HouseMemberUserDto;
+import com.hanium.chungyakpassback.dto.UserBankbookDto;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
 import com.hanium.chungyakpassback.response.StatusCode;
@@ -34,5 +35,11 @@ public class UserDataController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
+    @PostMapping("/userBankbook")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity userBankbook(@RequestBody UserBankbookDto userBankbookDto){
+        userDataService.userBankbook(userBankbookDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
 
 }

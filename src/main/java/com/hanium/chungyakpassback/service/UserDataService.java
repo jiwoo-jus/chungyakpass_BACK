@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.service;
 
 import com.hanium.chungyakpassback.dto.HouseMemberUserDto;
+import com.hanium.chungyakpassback.dto.UserBankbookDto;
 import com.hanium.chungyakpassback.entity.enumtype.Relation;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.repository.input.*;
@@ -14,22 +15,24 @@ public class UserDataService {
     private final UserRepository userRepository;
     private final HouseholdMemberRepository householdMemberRepository;
     private final HouseholdMemberRelationRepository householdMemberRelationRepository;
+    private final UserBankbookRepository userBankbookRepository;
 
-    public UserDataService(HouseholdRepository householdRepository, AddressRepository addressRepository, UserRepository userRepository, HouseholdMemberRepository householdMemberRepository, HouseholdMemberRelationRepository householdMemberRelationRepository) {
+    public UserDataService(HouseholdRepository householdRepository, AddressRepository addressRepository, UserRepository userRepository, HouseholdMemberRepository householdMemberRepository, HouseholdMemberRelationRepository householdMemberRelationRepository, UserBankbookRepository userBankbookRepository) {
         this.householdRepository = householdRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.householdMemberRepository = householdMemberRepository;
         this.householdMemberRelationRepository = householdMemberRelationRepository;
+        this.userBankbookRepository = userBankbookRepository;
     }
 
     public HouseMember houseMemberUser(HouseMemberUserDto houseMemberUserDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         Address address = Address.builder()
-                .address_level1(houseMemberUserDto.getAddress_level1())
-                .address_level2(houseMemberUserDto.getAddress_level2())
-                .address_detail(houseMemberUserDto.getAddress_detail())
+                .addressLevel1(houseMemberUserDto.getAddressLevel1())
+                .addressLevel2(houseMemberUserDto.getAddressLevel2())
+                .addressDetail(houseMemberUserDto.getAddressDetail())
                 .zipcode(houseMemberUserDto.getZipcode())
                 .build();
         House house = House.builder()
@@ -57,5 +60,22 @@ public class UserDataService {
         householdMemberRepository.save(houseMember);
         householdMemberRelationRepository.save(houseMemberRelation);
         return houseMember;
+    }
+
+    public UserBankbook userBankbook(UserBankbookDto userBankbookDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        UserBankbook userBankbook = UserBankbook.builder()
+                .user(user)
+                .bank(userBankbookDto.getBank())
+                .bankbookType(userBankbookDto.getBankbookType())
+                .joinDate(userBankbookDto.getJoinDate())
+                .deposit(userBankbookDto.getDeposit())
+                .paymentsCount(userBankbookDto.getPaymentsCount())
+                .validYn(userBankbookDto.getValidYn())
+                .build();
+
+        userBankbookRepository.save(userBankbook);
+        return userBankbook;
     }
 }
