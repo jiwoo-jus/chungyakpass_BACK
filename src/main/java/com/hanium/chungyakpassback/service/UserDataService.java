@@ -11,15 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDataService {
     private final HouseholdRepository householdRepository;
-    private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final HouseholdMemberRepository householdMemberRepository;
     private final HouseholdMemberRelationRepository householdMemberRelationRepository;
     private final UserBankbookRepository userBankbookRepository;
 
-    public UserDataService(HouseholdRepository householdRepository, AddressRepository addressRepository, UserRepository userRepository, HouseholdMemberRepository householdMemberRepository, HouseholdMemberRelationRepository householdMemberRelationRepository, UserBankbookRepository userBankbookRepository) {
+    public UserDataService(HouseholdRepository householdRepository, UserRepository userRepository, HouseholdMemberRepository householdMemberRepository, HouseholdMemberRelationRepository householdMemberRelationRepository, UserBankbookRepository userBankbookRepository) {
         this.householdRepository = householdRepository;
-        this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.householdMemberRepository = householdMemberRepository;
         this.householdMemberRelationRepository = householdMemberRelationRepository;
@@ -29,14 +27,11 @@ public class UserDataService {
     public HouseMember houseMemberUser(HouseMemberUserDto houseMemberUserDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        Address address = Address.builder()
+        House house = House.builder()
                 .addressLevel1(houseMemberUserDto.getAddressLevel1())
                 .addressLevel2(houseMemberUserDto.getAddressLevel2())
                 .addressDetail(houseMemberUserDto.getAddressDetail())
                 .zipcode(houseMemberUserDto.getZipcode())
-                .build();
-        House house = House.builder()
-                .address(address)
                 .build();
         HouseMember houseMember = HouseMember.builder()
                 .house(house)
@@ -55,7 +50,6 @@ public class UserDataService {
                 .relation(Relation.본인)
                 .build();
 
-        addressRepository.save(address);
         householdRepository.save(house);
         householdMemberRepository.save(houseMember);
         householdMemberRelationRepository.save(houseMemberRelation);
