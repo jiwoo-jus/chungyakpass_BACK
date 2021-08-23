@@ -26,6 +26,10 @@ public class User {
     @JoinColumn(name = "house_member_id")
     private HouseMember houseMember;
 
+    @OneToOne
+    @JoinColumn(name = "spouse_house_member_id")
+    private HouseMember spouseHouseMember;
+
     @Column
     private String email;
 
