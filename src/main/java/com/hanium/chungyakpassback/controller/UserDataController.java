@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
-import com.hanium.chungyakpassback.dto.HouseMemberUserDto;
+import com.hanium.chungyakpassback.dto.HouseDto;
+import com.hanium.chungyakpassback.dto.HouseMemberDto;
 import com.hanium.chungyakpassback.dto.UserBankbookDto;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class UserDataController {
@@ -27,11 +28,10 @@ public class UserDataController {
         return "hi";
     }
 
-
-    @PostMapping("/houseMemberUser")
+    @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseMemberUser(@RequestBody HouseMemberUserDto houseMemberUserDto){
-        userDataService.houseMemberUser(houseMemberUserDto);
+    public ResponseEntity house(@RequestBody HouseDto houseDto){
+        userDataService.house(houseDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
@@ -39,6 +39,13 @@ public class UserDataController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity userBankbook(@RequestBody UserBankbookDto userBankbookDto){
         userDataService.userBankbook(userBankbookDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PostMapping("/houseMember")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity houseMember(@RequestBody HouseMemberDto houseMemberDto){
+        userDataService.houseMember(houseMemberDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
