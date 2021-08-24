@@ -18,7 +18,7 @@ public class HouseMemberDto {
 
     private Relation relation; //회원과의 관계
 
-    private Yn householderYn; //세대주여부
+//    private Yn householderYn; //세대주여부
 
     private String name; //이름
 
