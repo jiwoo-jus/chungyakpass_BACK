@@ -2,7 +2,7 @@ package com.hanium.chungyakpassback.entity.input;
 
 
 import com.hanium.chungyakpassback.entity.enumtype.Bank;
-import com.hanium.chungyakpassback.entity.enumtype.BankbookType;
+import com.hanium.chungyakpassback.entity.enumtype.Bankbook;
 import com.hanium.chungyakpassback.entity.enumtype.Yn;
 import lombok.*;
 
@@ -31,7 +31,7 @@ public class UserBankbook {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private BankbookType bankbookType; //청약통장종류
+    private Bankbook bankbook; //청약통장종류
 
     @Column
     private LocalDate joinDate; //가입일
@@ -48,10 +48,10 @@ public class UserBankbook {
 
 
     @Builder
-    public UserBankbook(User user, Bank bank, BankbookType bankbookType, LocalDate joinDate, int deposit, int paymentsCount, Yn validYn) {
+    public UserBankbook(User user, Bank bank, Bankbook bankbook, LocalDate joinDate, int deposit, int paymentsCount, Yn validYn) {
         this.user = user;
         this.bank = bank;
-        this.bankbookType = bankbookType;
+        this.bankbook = bankbook;
         this.joinDate = joinDate;
         this.deposit = deposit;
         this.paymentsCount = paymentsCount;
