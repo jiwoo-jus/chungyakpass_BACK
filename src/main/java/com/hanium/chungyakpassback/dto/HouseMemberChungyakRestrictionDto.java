@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HouseMemberChungyakRestrictionDto {
 
-    private Long houseMemberChungyakId;
+    private Long houseMemberChungyakId; //세대구성원청약신청내역id
 
     private LocalDate reWinningRestrictedDate; //재당첨제한일
 

@@ -22,7 +22,7 @@ public class HouseMemberChungyakRestriction {
     @JoinColumn(name = "house_member_id")
     private HouseMember houseMember;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "house_member_chungyak_id")
     private HouseMemberChungyak houseMemberChungyak;
 
