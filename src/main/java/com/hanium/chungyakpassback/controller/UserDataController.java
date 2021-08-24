@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 public class UserDataController {
     private final UserDataService userDataService;
 
@@ -21,11 +21,6 @@ public class UserDataController {
         this.userDataService = userDataService;
     }
 
-    @GetMapping("/test")
-    public String test(){
-        System.out.println("I'm doing test");
-        return "hi";
-    }
 
     @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -34,46 +29,46 @@ public class UserDataController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PostMapping("/userBankbook")
+    @PostMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity userBankbook(@RequestBody UserBankbookDto userBankbookDto){
         userDataService.userBankbook(userBankbookDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PostMapping("/houseMember")
+    @PostMapping("/house/member")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMember(@RequestBody HouseMemberDto houseMemberDto){
         userDataService.houseMember(houseMemberDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PostMapping("/houseMemberIncome")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseMemberIncome(@RequestBody HouseMemberIncomeDto houseMemberIncomeDto){
-        userDataService.houseMemberIncome(houseMemberIncomeDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
-    }
-
-    @PostMapping("/houseMemberProperty")
+    @PostMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
         userDataService.houseMemberProperty(houseMemberPropertyDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PostMapping("/houseMemberChungyak")
+    @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
         userDataService.houseMemberChungyak(houseMemberChungyakDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PostMapping("/houseMemberChungyakRestriction")
+    @PostMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
         userDataService.houseMemberChungyakRestriction(houseMemberChungyakRestrictionDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PutMapping("/house/holder")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity houseHolder(@RequestBody HouseHolderDto houseHolderDto){
+        userDataService.houseHolder(houseHolderDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
     }
 
 }

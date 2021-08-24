@@ -79,9 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인 api, 회원가입 api는 토큰이 없는 상태에서 요청이 들어오기 때문에 이것들은 인증 없이 접근 허용
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/household").permitAll()
+                .antMatchers("/account/authenticate").permitAll()
+                .antMatchers("/account/signup").permitAll()
 
                 // 앞 항목들 외 나머지 요청들은 모두 인증되어야 한다
                 .anyRequest().authenticated()

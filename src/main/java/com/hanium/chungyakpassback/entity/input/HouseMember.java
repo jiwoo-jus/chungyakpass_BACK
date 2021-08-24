@@ -21,9 +21,9 @@ public class HouseMember {
     @JoinColumn(name = "house_id")
     private House house; //세대
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Yn householderYn; //세대주여부
+//    @Column
+//    @Enumerated(EnumType.STRING)
+//    private Yn householderYn; //세대주여부
 
     @Column
     private String name; //이름
@@ -48,11 +48,13 @@ public class HouseMember {
     @Column
     private LocalDate transferDate; //전입신고일
 
+    @Column
+    private Integer income; //월평균소득
+
 
     @Builder
-    public HouseMember(House house, Yn householderYn, String name, LocalDate birthDate, Yn foreignerYn, Yn soldierYn, LocalDate marriageDate, LocalDate homelessStartDate, LocalDate transferDate) {
+    public HouseMember(House house, String name, LocalDate birthDate, Yn foreignerYn, Yn soldierYn, LocalDate marriageDate, LocalDate homelessStartDate, LocalDate transferDate, Integer income) {
         this.house = house;
-        this.householderYn = householderYn;
         this.name = name;
         this.birthDate = birthDate;
         this.foreignerYn = foreignerYn;
@@ -60,5 +62,6 @@ public class HouseMember {
         this.marriageDate = marriageDate;
         this.homelessStartDate = homelessStartDate;
         this.transferDate = transferDate;
+        this.income = income;
     }
 }

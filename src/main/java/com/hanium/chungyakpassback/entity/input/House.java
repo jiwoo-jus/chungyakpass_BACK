@@ -32,6 +32,10 @@ public class House {
     @Column
     private String zipcode;
 
+    @OneToOne
+    @JoinColumn(name = "house_holder_id")
+    private HouseMember houseHolder;
+
 
     @Builder
     public House(AddressLevel1 addressLevel1, AddressLevel2 addressLevel2, String addressDetail, String zipcode){

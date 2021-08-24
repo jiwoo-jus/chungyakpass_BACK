@@ -34,4 +34,6 @@ public class HouseMemberDto {
 
     private LocalDate transferDate; //전입신고일
 
+    private Integer income; //월평균소득
+
 }

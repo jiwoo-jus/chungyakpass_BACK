@@ -15,18 +15,16 @@ public class UserDataService {
     private final HouseMemberRepository houseMemberRepository;
     private final HouseMemberRelationRepository houseMemberRelationRepository;
     private final UserBankbookRepository userBankbookRepository;
-    private final HouseMemberIncomeRepository houseMemberIncomeRepository;
     private final HouseMemberPropertyRepository houseMemberPropertyRepository;
     private final HouseMemberChungyakRepository houseMemberChungyakRepository;
     private final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
 
-    public UserDataService(HouseRepository houseRepository, UserRepository userRepository, HouseMemberRepository houseMemberRepository, HouseMemberRelationRepository houseMemberRelationRepository, UserBankbookRepository userBankbookRepository, HouseMemberIncomeRepository houseMemberIncomeRepository, HouseMemberPropertyRepository houseMemberPropertyRepository, HouseMemberChungyakRepository houseMemberChungyakRepository, HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository) {
+    public UserDataService(HouseRepository houseRepository, UserRepository userRepository, HouseMemberRepository houseMemberRepository, HouseMemberRelationRepository houseMemberRelationRepository, UserBankbookRepository userBankbookRepository, HouseMemberPropertyRepository houseMemberPropertyRepository, HouseMemberChungyakRepository houseMemberChungyakRepository, HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository) {
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
         this.houseMemberRepository = houseMemberRepository;
         this.houseMemberRelationRepository = houseMemberRelationRepository;
         this.userBankbookRepository = userBankbookRepository;
-        this.houseMemberIncomeRepository = houseMemberIncomeRepository;
         this.houseMemberPropertyRepository = houseMemberPropertyRepository;
         this.houseMemberChungyakRepository = houseMemberChungyakRepository;
         this.houseMemberChungyakRestrictionRepository = houseMemberChungyakRestrictionRepository;
@@ -85,6 +83,7 @@ public class UserDataService {
                 .marriageDate(houseMemberDto.getMarriageDate())
                 .homelessStartDate(houseMemberDto.getHomelessStartDate())
                 .transferDate(houseMemberDto.getTransferDate())
+                .income(houseMemberDto.getIncome())
                 .build();
         houseMemberRepository.save(houseMember);
 
@@ -110,19 +109,6 @@ public class UserDataService {
         }
 
         return  houseMemberRelation;
-    }
-
-    public HouseMemberIncome houseMemberIncome(HouseMemberIncomeDto houseMemberIncomeDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        HouseMember houseMember = user.getHouseMember();
-
-        HouseMemberIncome houseMemberIncome = HouseMemberIncome.builder()
-                .houseMember(houseMember)
-                .income(houseMemberIncomeDto.getIncome())
-                .build();
-        houseMemberIncomeRepository.save(houseMemberIncome);
-
-        return houseMemberIncome;
     }
 
     public HouseMemberProperty houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
@@ -172,10 +158,11 @@ public class UserDataService {
     public HouseMemberChungyakRestriction houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionDto.getHouseMemberChungyakId()).get();
 
         HouseMemberChungyakRestriction houseMemberChungyakRestriction = HouseMemberChungyakRestriction.builder()
                 .houseMember(houseMember)
-                .houseMemberChungyak(houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionDto.getHouseMemberChungyakId()).get())
+                .houseMemberChungyak(houseMemberChungyak)
                 .reWinningRestrictedDate(houseMemberChungyakRestrictionDto.getReWinningRestrictedDate())
                 .specialSupplyRestrictedYn(houseMemberChungyakRestrictionDto.getSpecialSupplyRestrictedYn())
                 .unqualifiedSubscriberRestrictedDate(houseMemberChungyakRestrictionDto.getUnqualifiedSubscriberRestrictedDate())
@@ -185,5 +172,16 @@ public class UserDataService {
         houseMemberChungyakRestrictionRepository.save(houseMemberChungyakRestriction);
 
         return houseMemberChungyakRestriction;
+    }
+
+    public HouseHolderDto houseHolder(HouseHolderDto houseHolderDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = houseMemberRepository.findById(houseHolderDto.getHouseHolderId()).get();
+        House house = user.getHouseMember().getHouse();
+
+        house.setHouseHolder(houseMember);
+        houseRepository.save(house);
+
+        return houseHolderDto;
     }
 }
