@@ -1,8 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
-import com.hanium.chungyakpassback.dto.HouseDto;
-import com.hanium.chungyakpassback.dto.HouseMemberDto;
-import com.hanium.chungyakpassback.dto.UserBankbookDto;
+import com.hanium.chungyakpassback.dto.*;
+import com.hanium.chungyakpassback.entity.input.HouseMemberChungyakRestriction;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
 import com.hanium.chungyakpassback.response.StatusCode;
@@ -46,6 +45,34 @@ public class UserDataController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMember(@RequestBody HouseMemberDto houseMemberDto){
         userDataService.houseMember(houseMemberDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PostMapping("/houseMemberIncome")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity houseMemberIncome(@RequestBody HouseMemberIncomeDto houseMemberIncomeDto){
+        userDataService.houseMemberIncome(houseMemberIncomeDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PostMapping("/houseMemberProperty")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
+        userDataService.houseMemberProperty(houseMemberPropertyDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PostMapping("/houseMemberChungyak")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
+        userDataService.houseMemberChungyak(houseMemberChungyakDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PostMapping("/houseMemberChungyakRestriction")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
+        userDataService.houseMemberChungyakRestriction(houseMemberChungyakRestrictionDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
