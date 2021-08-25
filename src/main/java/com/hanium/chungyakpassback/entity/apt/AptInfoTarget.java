@@ -23,7 +23,7 @@ public class AptInfoTarget {
     private String housingType;//주택형
 
     @Column
-    private Double supplyArea;//공급 면적
+    private Double supplyArea;//공급면적
 
     @Column
     private Integer supplyGeneral;//공급일반

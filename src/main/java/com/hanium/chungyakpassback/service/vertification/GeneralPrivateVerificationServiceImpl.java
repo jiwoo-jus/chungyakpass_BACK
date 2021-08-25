@@ -6,6 +6,7 @@ import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.standard.AreaLevel1;
 import com.hanium.chungyakpassback.enumtype.*;
+import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.standard.AreaLevel1Repository;
@@ -30,7 +31,8 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     final AreaLevel1Repository areaLevel1Repository;
     final UserRepository userRepository;
     final AptInfoRepository aptInfoRepository;//아파트 분양정보
-    final HouseMemberChungyak houseMemberChungyakRepository;//세대구성원_청약신청이력repository
+    final HouseMemberChungyakRepository houseMemberChungyakRepository;//세대구성원_청약신청이력repository
+    final AptInfoTargetRepository aptInfoTargetRepository;
 
     // 객체 생성
     //회원_청약통장 청약통장 = 회원_청약통장.builder().청약통장종류(청약통장종류.청약저축).build();
@@ -153,10 +155,13 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     }
 
     public int houseTypeConverter() { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
-        String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
-        int intTypeChage = Integer.parseInt(housingTypeChange);
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType("064.9300A");
 
-        return intTypeChage;
+        String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
+        int intTypeChange = Integer.parseInt(housingTypeChange);
+
+        return intTypeChange;
     }
 
     // 예치금액충족 여부
