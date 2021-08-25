@@ -2,7 +2,7 @@ package com.hanium.chungyakpassback.service.apt;//package com.hanium.chungyakpas
 
 import com.hanium.chungyakpassback.dto.apt.*;
 import com.hanium.chungyakpassback.entity.apt.*;
-import com.hanium.chungyakpassback.repository.standard.*;
+import com.hanium.chungyakpassback.repository.apt.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;

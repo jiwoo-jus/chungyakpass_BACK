@@ -17,9 +17,9 @@ public class HouseMemberChungyakRestriction {
     @Column(name = "house_member_chungyak_restriction_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "house_member_id")
-    private HouseMember houseMember;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "house_member_id")
+//    private HouseMember houseMember;
 
     @OneToOne
     @JoinColumn(name = "house_member_chungyak_id")
@@ -43,8 +43,8 @@ public class HouseMemberChungyakRestriction {
 
 
     @Builder
-    public HouseMemberChungyakRestriction(HouseMember houseMember, HouseMemberChungyak houseMemberChungyak, LocalDate reWinningRestrictedDate, Yn specialSupplyRestrictedYn, LocalDate unqualifiedSubscriberRestrictedDate, LocalDate regulatedAreaFirstPriorityRestrictedDate, LocalDate additionalPointSystemRestrictedDate) {
-        this.houseMember = houseMember;
+    public HouseMemberChungyakRestriction(HouseMemberChungyak houseMemberChungyak, LocalDate reWinningRestrictedDate, Yn specialSupplyRestrictedYn, LocalDate unqualifiedSubscriberRestrictedDate, LocalDate regulatedAreaFirstPriorityRestrictedDate, LocalDate additionalPointSystemRestrictedDate) {
+//        this.houseMember = houseMember;
         this.houseMemberChungyak = houseMemberChungyak;
         this.reWinningRestrictedDate = reWinningRestrictedDate;
         this.specialSupplyRestrictedYn = specialSupplyRestrictedYn;

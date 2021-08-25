@@ -1,4 +1,4 @@
-package com.hanium.chungyakpassback.repository.standard;
+package com.hanium.chungyakpassback.repository.apt;
 
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
