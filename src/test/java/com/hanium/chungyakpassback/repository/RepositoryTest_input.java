@@ -1,6 +1,6 @@
 //package com.hanium.chungyakpassback.repository;
 //
-//import com.hanium.chungyakpassback.entity.enumtype.*;
+//import com.hanium.chungyakpassback.enumtype.*;
 //import com.hanium.chungyakpassback.entity.input.*;
 //import com.hanium.chungyakpassback.entity.input.청약자격점검_다자녀가구;
 //import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.hanium.chungyakpassback.controller;
 
 
-import com.hanium.chungyakpassback.dto.LoginDto;
-import com.hanium.chungyakpassback.dto.TokenDto;
+import com.hanium.chungyakpassback.dto.authority.LoginDto;
+import com.hanium.chungyakpassback.dto.authority.TokenDto;
 import com.hanium.chungyakpassback.jwt.JwtFilter;
 import com.hanium.chungyakpassback.jwt.TokenProvider;
 import org.springframework.http.HttpHeaders;

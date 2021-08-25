@@ -2,10 +2,9 @@ package com.hanium.chungyakpassback.controller;
 
 
 import com.hanium.chungyakpassback.entity.input.User;
-import com.hanium.chungyakpassback.dto.UserDto;
-import com.hanium.chungyakpassback.service.UserService;
+import com.hanium.chungyakpassback.dto.input.UserDto;
+import com.hanium.chungyakpassback.service.authority.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

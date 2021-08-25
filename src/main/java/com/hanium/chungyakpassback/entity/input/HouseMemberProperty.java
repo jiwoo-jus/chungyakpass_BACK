@@ -1,9 +1,9 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.entity.enumtype.NonResidentialBuilding;
-import com.hanium.chungyakpassback.entity.enumtype.Property;
-import com.hanium.chungyakpassback.entity.enumtype.ResidentialBuilding;
-import com.hanium.chungyakpassback.entity.enumtype.Yn;
+import com.hanium.chungyakpassback.enumtype.NonResidentialBuilding;
+import com.hanium.chungyakpassback.enumtype.Property;
+import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import javax.persistence.*;

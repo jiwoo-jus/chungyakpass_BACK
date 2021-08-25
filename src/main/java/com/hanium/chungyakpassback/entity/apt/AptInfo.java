@@ -1,10 +1,10 @@
 package com.hanium.chungyakpassback.entity.apt;
 
-import com.hanium.chungyakpassback.entity.enumtype.AddressLevel1;
-import com.hanium.chungyakpassback.entity.enumtype.AddressLevel2;
-import com.hanium.chungyakpassback.entity.enumtype.HousingType;
-import com.hanium.chungyakpassback.entity.enumtype.Yn;
-import com.hanium.chungyakpassback.service.YearAttributeConverter;
+import com.hanium.chungyakpassback.enumtype.AddressLevel1;
+import com.hanium.chungyakpassback.enumtype.AddressLevel2;
+import com.hanium.chungyakpassback.enumtype.HousingType;
+import com.hanium.chungyakpassback.enumtype.Yn;
+import com.hanium.chungyakpassback.service.apt.YearAttributeConverter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

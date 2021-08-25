@@ -1,11 +1,10 @@
 package com.hanium.chungyakpassback.controller;
 
-import com.hanium.chungyakpassback.dto.*;
-import com.hanium.chungyakpassback.entity.input.HouseMemberChungyakRestriction;
+import com.hanium.chungyakpassback.dto.input.*;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
 import com.hanium.chungyakpassback.response.StatusCode;
-import com.hanium.chungyakpassback.service.UserDataService;
+import com.hanium.chungyakpassback.service.input.UserDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

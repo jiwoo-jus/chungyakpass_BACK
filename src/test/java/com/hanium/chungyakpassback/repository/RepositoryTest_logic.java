@@ -1,6 +1,6 @@
 //package com.hanium.chungyakpassback.repository;
 //
-//import com.hanium.chungyakpassback.entity.enumtype.*;
+//import com.hanium.chungyakpassback.enumtype.*;
 //import com.hanium.chungyakpassback.entity.input.*;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;

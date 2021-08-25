@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.entity.enumtype.Relation;
+import com.hanium.chungyakpassback.enumtype.Relation;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

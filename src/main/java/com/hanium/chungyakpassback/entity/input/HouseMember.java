@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.entity.enumtype.Yn;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import javax.persistence.*;
