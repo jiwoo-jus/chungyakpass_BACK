@@ -1,8 +1,8 @@
 package com.hanium.chungyakpassback.entity.standard;
 
-import com.hanium.chungyakpassback.entity.enumtype.SpecialSupplyType;
-import com.hanium.chungyakpassback.entity.enumtype.SupplyType;
-import com.hanium.chungyakpassback.entity.enumtype.Yn;
+import com.hanium.chungyakpassback.enumtype.SpecialSupply;
+import com.hanium.chungyakpassback.enumtype.Supply;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,11 +20,11 @@ public class PrioritySubscriptionPeriod {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private SupplyType supplyType;
+    private Supply supply;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private SpecialSupplyType specialSupplyType;
+    private SpecialSupply specialSupply;
 
 
     @Column
@@ -47,9 +47,9 @@ public class PrioritySubscriptionPeriod {
     private int subscriptionPeriod;
 
     @Builder
-    public PrioritySubscriptionPeriod(SupplyType supplyType, SpecialSupplyType specialSupplyType, Yn speculationOverheated, Yn subscriptionOverheated, Yn atrophy_area, Yn metropolitanAreaYn, int subscriptionPeriod) {
-        this.supplyType = supplyType;
-        this.specialSupplyType = specialSupplyType;
+    public PrioritySubscriptionPeriod(Supply supply, SpecialSupply specialSupply, Yn speculationOverheated, Yn subscriptionOverheated, Yn atrophy_area, Yn metropolitanAreaYn, int subscriptionPeriod) {
+        this.supply = supply;
+        this.specialSupply = specialSupply;
         this.speculationOverheated = speculationOverheated;
         this.subscriptionOverheated = subscriptionOverheated;
         this.atrophyArea = atrophy_area;

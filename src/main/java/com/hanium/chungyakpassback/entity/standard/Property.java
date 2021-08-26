@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.entity.standard;
 
-import com.hanium.chungyakpassback.entity.enumtype.PropertyType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,14 +17,14 @@ public class Property {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private PropertyType propertyType;
+    private com.hanium.chungyakpassback.enumtype.Property property;
 
     @Column
     private int price;
 
     @Builder
-    public Property(PropertyType propertyType, int price) {
-        this.propertyType = propertyType;
+    public Property(com.hanium.chungyakpassback.enumtype.Property property, int price) {
+        this.property = property;
         this.price = price;
     }
 }

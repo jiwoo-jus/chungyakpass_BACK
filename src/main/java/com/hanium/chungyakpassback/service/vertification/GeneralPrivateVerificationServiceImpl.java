@@ -26,7 +26,6 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     final HouseMemberRepository houseMemberRepository;
     final HouseRepository houseRepository;
     final UserBankbookRepository userBankbookRepository;
-    final DepositArea depositArea; //예치금액지역구분
     final AreaLevel1Repository areaLevel1Repository;
     final UserRepository userRepository;
     final AptInfoRepository aptInfoRepository;//아파트 분양정보

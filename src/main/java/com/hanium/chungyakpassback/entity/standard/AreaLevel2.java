@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.entity.standard;
 
-import com.hanium.chungyakpassback.entity.enumtype.AddressLevel2;
+import com.hanium.chungyakpassback.enumtype.AddressLevel2;
 import lombok.*;
 
 import javax.persistence.*;
