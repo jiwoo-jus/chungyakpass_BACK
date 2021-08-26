@@ -42,9 +42,9 @@ public class AptInfoDto {
         this.detailAddress = itemJson.getString("hssplyadres");
         try {
             String[] areaLevel = detailAddress.split(" ");
-            String areaLevel2 = areaLevel[1].trim();
-            if (Arrays.stream(AddressLevel2.values()).anyMatch(v -> v.name().equals(areaLevel2))) {
-                this.addressLevel2 = AddressLevel2.valueOf(areaLevel2);
+            String addressLevel2 = areaLevel[1].trim();
+            if (Arrays.stream(AddressLevel2.values()).anyMatch(v -> v.name().equals(addressLevel2))) {
+                this.addressLevel2 = AddressLevel2.valueOf(addressLevel2);
             } else {
                 this.addressLevel2 = null;
             }

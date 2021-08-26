@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name="std_monthly_average_income")
-public class MonthlyAverageIncome {
+public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monthly_average_income_id")
@@ -59,7 +59,7 @@ public class MonthlyAverageIncome {
     private Integer averageMonthlyIncome5peopleLessBelow;
 
     @Builder
-    public MonthlyAverageIncome(Yn applicationPublicHousingSpecialLaws, Supply supply, SpecialSupply specialSupply, Yn dualIncome, Integer monthlyAverageIncomeExcess, int monthlyAverageIncomeBelow, Integer averageMonthlyIncome3peopleLessExcess, int averageMonthlyIncome3peopleLessBelow, Integer averageMonthlyIncome4peopleLessExcess, Integer averageMonthlyIncome4peopleLessBelow, Integer averageMonthlyIncome5peopleLessExcess, Integer averageMonthlyIncome5peopleLessBelow) {
+    public Income(Yn applicationPublicHousingSpecialLaws, Supply supply, SpecialSupply specialSupply, Yn dualIncome, Integer monthlyAverageIncomeExcess, int monthlyAverageIncomeBelow, Integer averageMonthlyIncome3peopleLessExcess, int averageMonthlyIncome3peopleLessBelow, Integer averageMonthlyIncome4peopleLessExcess, Integer averageMonthlyIncome4peopleLessBelow, Integer averageMonthlyIncome5peopleLessExcess, Integer averageMonthlyIncome5peopleLessBelow) {
         this.applicationPublicHousingSpecialLaws = applicationPublicHousingSpecialLaws;
         this.supply = supply;
         this.specialSupply = specialSupply;

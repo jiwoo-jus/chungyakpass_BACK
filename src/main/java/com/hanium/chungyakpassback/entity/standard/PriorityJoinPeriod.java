@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "std_priority_numeber_payments")
-public class PriorityNumberPayments {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "priority_numeber_payments_id")
+@Table(name = "std_priority_subscription_period")
+public class PriorityJoinPeriod {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "priority_subscription_period_id")
     private Long id;
 
     @Column
@@ -25,6 +25,7 @@ public class PriorityNumberPayments {
     @Column
     @Enumerated(EnumType.STRING)
     private SpecialSupply specialSupply;
+
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -43,16 +44,16 @@ public class PriorityNumberPayments {
     private Yn metropolitanAreaYn;
 
     @Column
-    private int countPayments;
+    private int subscriptionPeriod;
 
     @Builder
-    public PriorityNumberPayments(Supply supply, SpecialSupply specialSupplyType, Yn overheated_speculation_zone, Yn overheated_subscription_area, Yn atrophy_area, Yn metropolitanAreaYn, int number_payments) {
+    public PriorityJoinPeriod(Supply supply, SpecialSupply specialSupply, Yn speculationOverheated, Yn subscriptionOverheated, Yn atrophy_area, Yn metropolitanAreaYn, int subscriptionPeriod) {
         this.supply = supply;
-        this.specialSupply = specialSupplyType;
-        this.speculationOverheated = overheated_speculation_zone;
-        this.subscriptionOverheated = overheated_subscription_area;
+        this.specialSupply = specialSupply;
+        this.speculationOverheated = speculationOverheated;
+        this.subscriptionOverheated = subscriptionOverheated;
         this.atrophyArea = atrophy_area;
         this.metropolitanAreaYn = metropolitanAreaYn;
-        this.countPayments = number_payments;
+        this.subscriptionPeriod = subscriptionPeriod;
     }
 }

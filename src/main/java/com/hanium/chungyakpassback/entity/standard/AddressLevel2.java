@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.entity.standard;
 
-import com.hanium.chungyakpassback.enumtype.AddressLevel2;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,23 +9,22 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "std_area_level2")
-public class AreaLevel2 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AddressLevel2 {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "area_level2_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "area_level1_id")
-    private AreaLevel1 AreaLevel1;
+    private AddressLevel1 addressLevel1;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private AddressLevel2 areaLevel2;
+    private com.hanium.chungyakpassback.enumtype.AddressLevel2 addressLevel2;
 
     @Builder
-    public AreaLevel2(com.hanium.chungyakpassback.entity.standard.AreaLevel1 areaLevel1, AddressLevel2 areaLevel2) {
-        AreaLevel1 = areaLevel1;
-        this.areaLevel2 = areaLevel2;
+    public AddressLevel2(AddressLevel1 addressLevel1, com.hanium.chungyakpassback.enumtype.AddressLevel2 addressLevel2) {
+        this.addressLevel1 = addressLevel1;
+        this.addressLevel2 = addressLevel2;
     }
 }

@@ -1,7 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.enumtype.AddressLevel1;
-import com.hanium.chungyakpassback.enumtype.AddressLevel2;
+import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
+import com.hanium.chungyakpassback.entity.standard.AddressLevel2;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,13 +18,13 @@ public class House {
     @Column(name = "house_id")
     private Long id;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private AddressLevel1 addressLevel1;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_level1")
+    private com.hanium.chungyakpassback.entity.standard.AddressLevel1 addressLevel1;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private AddressLevel2 addressLevel2;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_level2")
+    private com.hanium.chungyakpassback.entity.standard.AddressLevel2 addressLevel2;
 
     @Column
     private String addressDetail;

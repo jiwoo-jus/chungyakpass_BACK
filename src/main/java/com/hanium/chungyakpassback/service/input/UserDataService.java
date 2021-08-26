@@ -1,10 +1,14 @@
 package com.hanium.chungyakpassback.service.input;
 
 import com.hanium.chungyakpassback.dto.input.*;
+import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
+import com.hanium.chungyakpassback.entity.standard.AddressLevel2;
 import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
+import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +23,10 @@ public class UserDataService {
     private final HouseMemberChungyakRepository houseMemberChungyakRepository;
     private final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
 
-    public UserDataService(HouseRepository houseRepository, UserRepository userRepository, HouseMemberRepository houseMemberRepository, HouseMemberRelationRepository houseMemberRelationRepository, UserBankbookRepository userBankbookRepository, HouseMemberPropertyRepository houseMemberPropertyRepository, HouseMemberChungyakRepository houseMemberChungyakRepository, HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository) {
+    private final AddressLevel1Repository addressLevel1Repository;
+    private final AddressLevel2Repository addressLevel2Repository;
+
+    public UserDataService(HouseRepository houseRepository, UserRepository userRepository, HouseMemberRepository houseMemberRepository, HouseMemberRelationRepository houseMemberRelationRepository, UserBankbookRepository userBankbookRepository, HouseMemberPropertyRepository houseMemberPropertyRepository, HouseMemberChungyakRepository houseMemberChungyakRepository, HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository, AddressLevel1Repository addressLevel1Repository, AddressLevel2Repository addressLevel2Repository) {
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
         this.houseMemberRepository = houseMemberRepository;
@@ -28,6 +35,9 @@ public class UserDataService {
         this.houseMemberPropertyRepository = houseMemberPropertyRepository;
         this.houseMemberChungyakRepository = houseMemberChungyakRepository;
         this.houseMemberChungyakRestrictionRepository = houseMemberChungyakRestrictionRepository;
+
+        this.addressLevel1Repository = addressLevel1Repository;
+        this.addressLevel2Repository = addressLevel2Repository;
     }
 
 
@@ -50,10 +60,12 @@ public class UserDataService {
 
     public House house(HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1());
+        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel2(houseDto.getAddressLevel2());
 
         House house = House.builder()
-                .addressLevel1(houseDto.getAddressLevel1())
-                .addressLevel2(houseDto.getAddressLevel2())
+                .addressLevel1(addressLevel1)
+                .addressLevel2(addressLevel2)
                 .addressDetail(houseDto.getAddressDetail())
                 .zipcode(houseDto.getZipcode())
                 .build();
@@ -175,7 +187,7 @@ public class UserDataService {
     public HouseHolderDto houseHolder(HouseHolderDto houseHolderDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = houseMemberRepository.findById(houseHolderDto.getHouseHolderId()).get();
-        House house = user.getHouseMember().getHouse();
+        House house = (houseHolderDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouseMember().getHouse() : user.getHouseMember().getHouse();
 
         house.setHouseHolder(houseMember);
         houseRepository.save(house);
