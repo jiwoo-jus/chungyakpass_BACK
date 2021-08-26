@@ -1,4 +1,4 @@
-package com.hanium.chungyakpassback.dto.vertification;
+package com.hanium.chungyakpassback.dto.verification;
 
 import lombok.*;
 
@@ -9,15 +9,15 @@ import lombok.*;
 @AllArgsConstructor
 public class GeneralMinyeongResponseDto {
 
-    boolean surroundingAreaTf;
+    boolean meetLivingInSurroundAreaTf;
     boolean accountTf;
     Integer americanAge;
     boolean houseHolderTf;
-    boolean restrictedAreaTf;
-    boolean winningHistoryTf;
+    boolean isRestrictedAreaTf;
+    boolean meetAllHouseMemberNotWinningIn5yearsTf;
     boolean hasHouse;
-    boolean termsOfPolicyTf;
-    boolean depositAmountTf;
+    boolean meetBankbookJoinPeriodTf;
+    boolean meetDepositTf;
     boolean specialTf;
 
 }

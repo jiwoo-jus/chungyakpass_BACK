@@ -1,4 +1,4 @@
-package com.hanium.chungyakpassback.service.vertification;
+package com.hanium.chungyakpassback.service.verification;
 
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVerificationService {
+public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService {
 
     final HouseMemberRepository houseMemberRepository;
     final HouseRepository houseRepository;
@@ -42,7 +42,8 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     }
 
 
-    public int americanAgeCount(LocalDate birthdate) {
+    @Override
+    public int calcAmericanAge(LocalDate birthdate) {
         LocalDate now = LocalDate.now();
         int americanAge = now.minusYears(birthdate.getYear()).getYear();
 
@@ -54,7 +55,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
 
     @Override
-    public boolean accountStatus(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean meetBankbookType(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         UserBankbook userBankbook = userBankbookRepository.findByUser(user);
         int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
@@ -73,7 +74,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
 
     @Override
-    public boolean householder() {
+    public boolean isHouseholder() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         if (user.getHouseMember().getHouse().getHouseHolder().getId().equals(user.getHouseMember().getHouse().getId()))
@@ -82,25 +83,25 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         return false;
     }
 
-    @Override
-    public int americanAgeCount() {
-        return 0;
-    }
 
     @Override
-    public boolean surroundingArea(AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+    public boolean meetLivingInSurroundArea(AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AddressLevel1 userAddressLevel1 = user.getHouseMember().getHouse().getAddressLevel1();
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1());
 
-        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
-            return true;
+        System.out.println("*******************************************");
+        System.out.println(userAddressLevel1.getNearbyArea());
+        System.out.println(aptAddressLevel1.getNearbyArea());
+        System.out.println("*******************************************");
+//        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
+//            return true;
         return false;
     }
 
 
     @Override
-    public boolean restrictedArea(AptInfo aptInfo) {
+    public boolean isRestrictedArea(AptInfo aptInfo) {
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
@@ -108,7 +109,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
 
     @Override
-    public boolean termsOfPolicy(AptInfo aptInfo) {
+    public boolean meetBankbookJoinPeriod(AptInfo aptInfo) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         UserBankbook userBankbook = userBankbookRepository.findById(user.getId()).get(); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
         LocalDate joinDate = userBankbook.getJoinDate();
@@ -136,7 +137,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
 
     // 예치금액충족 여부
-        public boolean depositAmount(AptInfoTarget aptInfoTarget) {
+        public boolean meetDeposit(AptInfoTarget aptInfoTarget) {
             User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
             UserBankbook userBankbook = userBankbookRepository.findByUser(user); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
             int housingTypeChange = houseTypeConverter(aptInfoTarget);
@@ -177,7 +178,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
 
     @Override
-    public boolean specialNote(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
 
         if ((houseTypeConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
             return true;
@@ -188,7 +189,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
 
     @Override
-    public boolean hasHouseYn() {
+    public boolean meetHouseHavingLessThan2Apt() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
@@ -201,7 +202,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
             for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                 if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                     HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember);
-                    if (houseMemberRelation.getRelation().equals(Relation.부모) && americanAgeCount(houseMember.getBirthDate()) >= 60)
+                    if (houseMemberRelation.getRelation().equals(Relation.부모) && calcAmericanAge(houseMember.getBirthDate()) >= 60)
                         continue;
                     else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
                         continue;
@@ -223,7 +224,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     }
 
     @Override
-    public boolean winningHistory() {
+    public boolean meetAllHouseMemberNotWinningIn5years() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);

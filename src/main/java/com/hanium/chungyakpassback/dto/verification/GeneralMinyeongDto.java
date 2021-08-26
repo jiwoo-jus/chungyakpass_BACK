@@ -1,6 +1,5 @@
-package com.hanium.chungyakpassback.dto.vertification;
+package com.hanium.chungyakpassback.dto.verification;
 
-import com.hanium.chungyakpassback.enumtype.HousingType;
 import lombok.*;
 
 @Getter

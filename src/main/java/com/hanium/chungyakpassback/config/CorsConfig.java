@@ -20,6 +20,7 @@ public class CorsConfig {
 
       source.registerCorsConfiguration("/account/**", config);
       source.registerCorsConfiguration("/user/**", config);
+      source.registerCorsConfiguration("/verification/**", config);
       return new CorsFilter(source);
    }
 
