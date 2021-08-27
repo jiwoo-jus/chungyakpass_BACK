@@ -19,7 +19,7 @@ import java.time.YearMonth;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 //@AllArgsConstructor
-@Table(name = "std_aptinfo")
+@Table(name = "apt_info")
 public class AptInfo {
     @Id
     @Column(name = "notification_number_id")

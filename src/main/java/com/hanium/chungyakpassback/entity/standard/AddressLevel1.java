@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "std_area_leve1")
+@Table(name = "std_address_level1")
 public class AddressLevel1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "area_level1_id")
+    @Column(name = "address_level1_id")
     private Long id;
 
     @Column

@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Bankbook {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bankbook_id")
+    @Column(name = "std_bankbook_id")
     private Long id;
 
     @Column

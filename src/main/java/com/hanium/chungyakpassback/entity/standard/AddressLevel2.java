@@ -8,14 +8,14 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "std_area_level2")
+@Table(name = "std_address_level2")
 public class AddressLevel2 {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "area_level2_id")
+    @Column(name = "address_level2_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "area_level1_id")
+    @JoinColumn(name = "address_level1_id")
     private AddressLevel1 addressLevel1;
 
     @Column

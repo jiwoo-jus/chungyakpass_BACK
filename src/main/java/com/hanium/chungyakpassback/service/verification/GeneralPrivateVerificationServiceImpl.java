@@ -90,12 +90,8 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
         AddressLevel1 userAddressLevel1 = user.getHouseMember().getHouse().getAddressLevel1();
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1());
 
-        System.out.println("*******************************************");
-        System.out.println(userAddressLevel1.getNearbyArea());
-        System.out.println(aptAddressLevel1.getNearbyArea());
-        System.out.println("*******************************************");
-//        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
-//            return true;
+        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
+            return true;
         return false;
     }
 
@@ -111,7 +107,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
     @Override
     public boolean meetBankbookJoinPeriod(AptInfo aptInfo) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        UserBankbook userBankbook = userBankbookRepository.findById(user.getId()).get(); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
+        UserBankbook userBankbook = userBankbookRepository.findByUser(user); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
         LocalDate joinDate = userBankbook.getJoinDate();
         LocalDate now = LocalDate.now();
         Period period = joinDate.until(now);

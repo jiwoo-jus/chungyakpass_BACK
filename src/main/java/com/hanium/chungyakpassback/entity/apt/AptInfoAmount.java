@@ -8,11 +8,11 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name="std_aptinfo_amount")
+@Table(name="apt_info_amount")
 public class AptInfoAmount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "aptinfo_amount_id")
+    @Column(name = "info_amount_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

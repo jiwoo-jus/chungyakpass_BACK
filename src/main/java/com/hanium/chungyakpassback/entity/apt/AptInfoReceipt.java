@@ -9,11 +9,11 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "std_aptinfo_receipt")
+@Table(name = "apt_info_receipt")
 public class AptInfoReceipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "aptinfo_receipt_id")
+    @Column(name = "info_receipt_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
