@@ -15,6 +15,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HouseMemberPropertyDto {
 
+    private Long houseMemberId; //세대구성원id
+
     private Property property; //자산유형
 
     private Yn saleRightYn; //분양권여부

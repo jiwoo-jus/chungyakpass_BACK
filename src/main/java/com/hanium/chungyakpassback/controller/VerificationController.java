@@ -40,15 +40,15 @@ public class VerificationController {
         AptInfo aptInfo = aptInfoRepository.findById(generalMinyeongDto.getNotificationNumber()).get();
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(generalMinyeongDto.getHousingType());
 
-        boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(aptInfo);
-        boolean accountTf = generalPrivateVerificationService.meetBankbookType(aptInfo, aptInfoTarget);
+        boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
         Integer americanAge = generalPrivateVerificationService.calcAmericanAge(houseMember.getBirthDate());
-        boolean houseHolderTf = generalPrivateVerificationService.isHouseholder();
+        boolean houseHolderTf = generalPrivateVerificationService.isHouseholder(user);
         boolean isRestrictedAreaTf = generalPrivateVerificationService.isRestrictedArea(aptInfo);
-        boolean meetAllHouseMemberNotWinningIn5yearsTf = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years();
-        boolean meetHouseHavingLessThan2Apt = generalPrivateVerificationService.meetHouseHavingLessThan2Apt();
-        boolean meetBankbookJoinPeriodTf = generalPrivateVerificationService.meetBankbookJoinPeriod(aptInfo);
-        boolean meetDepositTf = generalPrivateVerificationService.meetDeposit(aptInfoTarget);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);
+        boolean meetHouseHavingLessThan2Apt = generalPrivateVerificationService.meetHouseHavingLessThan2Apt(user);
+        boolean meetBankbookJoinPeriodTf = generalPrivateVerificationService.meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetDepositTf = generalPrivateVerificationService.meetDeposit(user, aptInfoTarget);
         boolean specialTf = generalPrivateVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
 
 

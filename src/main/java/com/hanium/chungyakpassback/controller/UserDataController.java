@@ -1,10 +1,13 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
+import com.hanium.chungyakpassback.entity.input.User;
+import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
 import com.hanium.chungyakpassback.response.StatusCode;
 import com.hanium.chungyakpassback.service.input.UserDataService;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserDataController {
+    private final UserRepository userRepository;
     private final UserDataService userDataService;
 
-    public UserDataController(UserDataService userDataService) {
+    public UserDataController(UserRepository userRepository, UserDataService userDataService) {
+        this.userRepository = userRepository;
         this.userDataService = userDataService;
     }
 
@@ -24,21 +29,24 @@ public class UserDataController {
     @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity house(@RequestBody HouseDto houseDto){
-        userDataService.house(houseDto);
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        userDataService.house(user, houseDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
     @PostMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity userBankbook(@RequestBody UserBankbookDto userBankbookDto){
-        userDataService.userBankbook(userBankbookDto);
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        userDataService.userBankbook(user, userBankbookDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
     @PostMapping("/house/member")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMember(@RequestBody HouseMemberDto houseMemberDto){
-        userDataService.houseMember(houseMemberDto);
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        userDataService.houseMember(user, houseMemberDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
@@ -66,7 +74,8 @@ public class UserDataController {
     @PutMapping("/house/holder")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseHolder(@RequestBody HouseHolderDto houseHolderDto){
-        userDataService.houseHolder(houseHolderDto);
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        userDataService.houseHolder(user, houseHolderDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
     }
 

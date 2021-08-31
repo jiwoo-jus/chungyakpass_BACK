@@ -22,6 +22,14 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "house_id")
+    private House house;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "spouse_house_id")
+    private House spouseHouse;
+
     @OneToOne
     @JoinColumn(name = "house_member_id")
     private HouseMember houseMember;

@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HouseMemberChungyakDto {
 
+    private Long houseMemberId; //세대구성원id
+
     private String houseName; //주택명
 
     private Supply supply; //공급유형

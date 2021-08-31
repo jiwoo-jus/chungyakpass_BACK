@@ -43,11 +43,11 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
-    public int calcAmericanAge(LocalDate birthdate) {
+    public int calcAmericanAge(LocalDate birthday) {
         LocalDate now = LocalDate.now();
-        int americanAge = now.minusYears(birthdate.getYear()).getYear();
+        int americanAge = now.minusYears(birthday.getYear()).getYear();
 
-        if (birthdate.plusYears(americanAge).isAfter(now)) // 생일이 지났는지 여부를 판단
+        if (birthday.plusYears(americanAge).isAfter(now)) // 생일이 지났는지 여부를 판단
             americanAge = americanAge - 1;
 
         return americanAge;
@@ -55,8 +55,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
-    public boolean meetBankbookType(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         UserBankbook userBankbook = userBankbookRepository.findByUser(user);
         int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
 
@@ -74,10 +73,8 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
-    public boolean isHouseholder() {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-
-        if (user.getHouseMember().getHouse().getHouseHolder().getId().equals(user.getHouseMember().getHouse().getId()))
+    public boolean isHouseholder(User user) {
+        if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId()))
             return true;
 
         return false;
@@ -85,8 +82,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
-    public boolean meetLivingInSurroundArea(AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
         AddressLevel1 userAddressLevel1 = user.getHouseMember().getHouse().getAddressLevel1();
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1());
 
@@ -105,8 +101,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
-    public boolean meetBankbookJoinPeriod(AptInfo aptInfo) {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) {
         UserBankbook userBankbook = userBankbookRepository.findByUser(user); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
         LocalDate joinDate = userBankbook.getJoinDate();
         LocalDate now = LocalDate.now();
@@ -133,8 +128,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     // 예치금액충족 여부
-        public boolean meetDeposit(AptInfoTarget aptInfoTarget) {
-            User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) {
             UserBankbook userBankbook = userBankbookRepository.findByUser(user); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
             int housingTypeChange = houseTypeConverter(aptInfoTarget);
 
@@ -175,7 +169,6 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
     @Override
     public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
-
         if ((houseTypeConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
             return true;
         else if (aptInfo.getHousingType().equals(HousingType.민영) && aptInfo.getPublicHosingDistrict().equals(Yn.y) && aptInfo.getAddressLevel1().equals(addressLevel1Repository.findAllByMetropolitanArea(Yn.y)))
@@ -185,9 +178,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
-    public boolean meetHouseHavingLessThan2Apt() {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
+    public boolean meetHouseHavingLessThan2Apt(User user) {
         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
         int houseCount = 0;
@@ -202,13 +193,15 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
                         continue;
                     else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
                         continue;
-                    else if (houseMemberProperty.getExclusiveArea() <= 20){
+                    else if (houseMemberProperty.getExclusiveArea() <= 60){
                         flag++;
                         if (flag == 0)
                             houseCount++;
                         else
                             continue;
                     }
+                    else if (houseMemberProperty.getSaleRightYn().equals(Yn.y)&&houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11")))
+                        continue;
                     else
                         houseCount++;
                 }
@@ -220,8 +213,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
     }
 
     @Override
-    public boolean meetAllHouseMemberNotWinningIn5years() {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+    public boolean meetAllHouseMemberNotWinningIn5years(User user) {
         HouseMember houseMember = user.getHouseMember();
         List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
         LocalDate now = LocalDate.now();

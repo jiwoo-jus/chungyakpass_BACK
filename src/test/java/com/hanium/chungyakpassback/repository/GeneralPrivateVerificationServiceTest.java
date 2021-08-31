@@ -1,5 +1,5 @@
 //package com.hanium.chungyakpassback.repository;
-//import com.hanium.chungyakpassback.service.vertification.GeneralPrivateVerificationService;
+//import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -11,51 +11,51 @@
 //    GeneralPrivateVerificationService GeneralPrivateVerificationservice;
 //
 //    @Test
-//    public void accountStatus() {
-//        System.out.println("청약통장충족여부: "+GeneralPrivateVerificationservice.accountStatus());
+//    public void meetBankbookType() {
+//        System.out.println("청약통장충족여부: "+GeneralPrivateVerificationservice.meetBankbookType());
 //    }
 //
 //    @Test
-//    public void americanAgeCount() {
-//        System.out.println("americanAgeCount: "+GeneralPrivateVerificationservice.americanAgeCount());
+//    public void calcAmericanAge() {
+//        System.out.println("calcAmericanAge: "+GeneralPrivateVerificationservice.calcAmericanAge());
 //    }
 //
 ////    @Test
-////    public void householderYn() {
-////        System.out.println("세대주여부: "+GeneralPrivateVerificationservice.householderYn());
+////    public void isHouseholderYn() {
+////        System.out.println("세대주여부: "+GeneralPrivateVerificationservice.isHouseholderYn());
 ////    }
 //
 //    @Test
-//    public void restrictedAreaYn() {
-//        System.out.println("규제지역여부: "+GeneralPrivateVerificationservice.restrictedArea());
+//    public void isRestrictedAreaYn() {
+//        System.out.println("규제지역여부: "+GeneralPrivateVerificationservice.isRestrictedArea());
 //    }
 //
 //    @Test
-//    public void hasHouseYn() {
-//        System.out.println("주택소유: "+GeneralPrivateVerificationservice.hasHouseYn());
+//    public void meetHouseHavingLessThan2Apt() {
+//        System.out.println("주택소유: "+GeneralPrivateVerificationservice.meetHouseHavingLessThan2Apt());
 //    }
 //
 //    @Test
-//    public void depositAmount() {
-//        System.out.println("예치금액충족: "+GeneralPrivateVerificationservice.depositAmount());
+//    public void meetDeposit() {
+//        System.out.println("예치금액충족: "+GeneralPrivateVerificationservice.meetDeposit());
 //    }
 //    @Test
-//    public void termsOfPolicy() {
-//        System.out.println("가입기간충족: "+GeneralPrivateVerificationservice.termsOfPolicy());
-//    }
-//
-//    @Test
-//    public void surroundingArea() {
-//        System.out.println("인근지역여부: "+GeneralPrivateVerificationservice.surroundingArea());
-//    }
-//    @Test
-//    public void specialNote() {
-//        System.out.println("특이사항충족: "+GeneralPrivateVerificationservice.specialNote());
+//    public void meetBankbookJoinPeriod() {
+//        System.out.println("가입기간충족: "+GeneralPrivateVerificationservice.meetBankbookJoinPeriod());
 //    }
 //
 //    @Test
-//    public void winningHistory() {
-//        System.out.println("전세대원5년이내당첨이력존재여부: "+GeneralPrivateVerificationservice.winningHistory());
+//    public void meetLivingInSurroundArea() {
+//        System.out.println("인근지역여부: "+GeneralPrivateVerificationservice.meetLivingInSurroundArea());
+//    }
+//    @Test
+//    public void isPriorityApt() {
+//        System.out.println("특이사항충족: "+GeneralPrivateVerificationservice.isPriorityApt());
+//    }
+//
+//    @Test
+//    public void meetAllHouseMemberNotWinningIn5years() {
+//        System.out.println("전세대원5년이내당첨이력존재여부: "+GeneralPrivateVerificationservice.meetAllHouseMemberNotWinningIn5years());
 //    }
 //    public void 조회() {
 //
