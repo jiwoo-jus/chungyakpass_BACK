@@ -9,7 +9,11 @@ import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class UserDataServiceImpl implements UserDataService{
@@ -55,7 +59,11 @@ public class UserDataServiceImpl implements UserDataService{
         return userBankbook;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public House house(User user, HouseDto houseDto){
+        if ((houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouse() != null) || (houseDto.getSpouseHouseYn().equals(Yn.n) && user.getHouse() != null))
+            throw new RuntimeException("이미 세대가 등록되어 있습니다.");
+
         AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1());
         AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel2(houseDto.getAddressLevel2());
 
@@ -75,6 +83,50 @@ public class UserDataServiceImpl implements UserDataService{
 
         return house;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public HouseDto patchHouse(User user, HouseDto houseDto){
+        Optional<House> optionalHouse = Optional.ofNullable(houseDto.getSpouseHouseYn().equals(Yn.y) ? user.getSpouseHouse() : user.getHouse());
+        if (optionalHouse.isPresent()){
+            House house = optionalHouse.get();
+            if (StringUtils.isNotBlank(houseDto.getAddressLevel1().toString()))
+                house.setAddressLevel1(addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()));
+            if (StringUtils.isNotBlank(houseDto.getAddressLevel2().toString()))
+                house.setAddressLevel2(addressLevel2Repository.findByAddressLevel2(houseDto.getAddressLevel2()));
+            if (StringUtils.isNotBlank(houseDto.getAddressDetail()))
+                house.setAddressDetail(houseDto.getAddressDetail());
+            if (StringUtils.isNotBlank(houseDto.getZipcode()))
+                house.setZipcode(houseDto.getZipcode());
+            houseRepository.save(house);
+        }
+        return houseDto;
+    }
+
+//    @Transactional
+//    public int patch(long id, UserValue value) {
+//        Optional<User> oUser = userRepository.findById(id);
+//        if(oUser.isPresent()) {
+//            User user = oUser.get();
+//            if(StringUtils.isNotBlank(value.getType()))
+//                user.setType(value.getType());
+//            if(StringUtils.isNotBlank(value.getEmail()))
+//                user.setEmail(value.getEmail());
+//            if(StringUtils.isNotBlank(value.getBirthDate()))
+//                user.setBirthDate(value.getBirthDate());
+//            if(StringUtils.isNotBlank(value.getName()))
+//                user.setName(value.getName());
+//            if(StringUtils.isNotBlank(value.getPassword()))
+//                user.setPassword(value.getPassword());
+//            if(StringUtils.isNotBlank(value.getPhoneNumber()))
+//                user.setPhoneNumber(value.getPhoneNumber());
+//            if(StringUtils.isNotBlank(value.getSex()))
+//                user.setSex(value.getSex());
+//            userRepository.save(user);
+//            return 1;
+//        }
+//        return 0;
+//    }
+
 
     public HouseMember houseMember(User user, HouseMemberDto houseMemberDto){
         House house = (houseMemberDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse();
@@ -176,7 +228,7 @@ public class UserDataServiceImpl implements UserDataService{
 
     public HouseHolderDto houseHolder(User user, HouseHolderDto houseHolderDto){
         HouseMember houseMember = houseMemberRepository.findById(houseHolderDto.getHouseMemberId()).get();
-        House house = (houseHolderDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouseMember().getHouse() : user.getHouseMember().getHouse();
+        House house = (houseHolderDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse();
 
         house.setHouseHolder(houseMember);
         houseRepository.save(house);

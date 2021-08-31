@@ -39,6 +39,8 @@ dependencies {
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 	implementation group: 'org.json', name: 'json', version: '20160810'
 	implementation 'org.jsoup:jsoup:1.14.1'
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
 }
 
 test {

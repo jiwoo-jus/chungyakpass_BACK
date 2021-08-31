@@ -9,6 +9,8 @@ public interface UserDataService {
 
     House house(User user, HouseDto houseDto);
 
+    HouseDto patchHouse(User user, HouseDto houseDto);
+
     HouseMember houseMember(User user, HouseMemberDto houseMemberDto);
 
     HouseMemberRelation houseMemberRelation(User user, HouseMember houseMember, Relation relation);

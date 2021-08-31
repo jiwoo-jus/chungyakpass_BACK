@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
+import com.hanium.chungyakpassback.entity.input.House;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.response.DefaultRes;
@@ -32,6 +33,14 @@ public class UserDataController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         userDataService.house(user, houseDto);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    }
+
+    @PatchMapping("/house")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity patchHouse(@RequestBody HouseDto houseDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        userDataService.patchHouse(user, houseDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
     }
 
     @PostMapping("/bankbook")
@@ -71,7 +80,7 @@ public class UserDataController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PutMapping("/house/holder")
+    @PatchMapping("/house/holder")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseHolder(@RequestBody HouseHolderDto houseHolderDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
