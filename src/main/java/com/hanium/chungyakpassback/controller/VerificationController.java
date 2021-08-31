@@ -42,7 +42,7 @@ public class VerificationController {
 
         boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
         boolean accountTf = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
-        Integer americanAge = generalPrivateVerificationService.calcAmericanAge(houseMember.getBirthDate());
+        Integer americanAge = generalPrivateVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean houseHolderTf = generalPrivateVerificationService.isHouseholder(user);
         boolean isRestrictedAreaTf = generalPrivateVerificationService.isRestrictedArea(aptInfo);
         boolean meetAllHouseMemberNotWinningIn5yearsTf = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);

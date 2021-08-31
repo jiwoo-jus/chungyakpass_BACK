@@ -29,7 +29,7 @@ public class HouseMember {
     private String name; //이름
 
     @Column
-    private LocalDate birthDate; //생년월일
+    private LocalDate birthDay; //생년월일
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -53,10 +53,10 @@ public class HouseMember {
 
 
     @Builder
-    public HouseMember(House house, String name, LocalDate birthDate, Yn foreignerYn, Yn soldierYn, LocalDate marriageDate, LocalDate homelessStartDate, LocalDate transferDate, Integer income) {
+    public HouseMember(House house, String name, LocalDate birthDay, Yn foreignerYn, Yn soldierYn, LocalDate marriageDate, LocalDate homelessStartDate, LocalDate transferDate, Integer income) {
         this.house = house;
         this.name = name;
-        this.birthDate = birthDate;
+        this.birthDay = birthDay;
         this.foreignerYn = foreignerYn;
         this.soldierYn = soldierYn;
         this.marriageDate = marriageDate;

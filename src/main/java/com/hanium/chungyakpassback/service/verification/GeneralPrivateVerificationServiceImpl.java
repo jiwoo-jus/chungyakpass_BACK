@@ -189,7 +189,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
             for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                 if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                     HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember);
-                    if (houseMemberRelation.getRelation().equals(Relation.부모) && calcAmericanAge(houseMember.getBirthDate()) >= 60)
+                    if (houseMemberRelation.getRelation().equals(Relation.부모) && calcAmericanAge(houseMember.getBirthDay()) >= 60)
                         continue;
                     else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
                         continue;

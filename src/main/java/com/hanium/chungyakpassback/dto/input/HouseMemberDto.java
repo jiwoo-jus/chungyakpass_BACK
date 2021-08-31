@@ -21,7 +21,7 @@ public class HouseMemberDto {
 
     private String name; //이름
 
-    private LocalDate birthDate; //생년월일
+    private LocalDate birthDay; //생년월일
 
     private Yn foreignerYn; //외국인여부
 

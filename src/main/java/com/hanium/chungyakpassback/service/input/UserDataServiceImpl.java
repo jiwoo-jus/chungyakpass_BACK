@@ -82,7 +82,7 @@ public class UserDataServiceImpl implements UserDataService{
         HouseMember houseMember = HouseMember.builder()
                 .house(house)
                 .name(houseMemberDto.getName())
-                .birthDate(houseMemberDto.getBirthDate())
+                .birthDay(houseMemberDto.getBirthDay())
                 .foreignerYn(houseMemberDto.getForeignerYn())
                 .soldierYn(houseMemberDto.getSoldierYn())
                 .marriageDate(houseMemberDto.getMarriageDate())
