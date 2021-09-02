@@ -54,7 +54,7 @@ public class UserDataServiceImpl implements UserDataService{
 
 
     @Transactional(rollbackFor = Exception.class)
-    public House house(User user, HouseDto houseDto){
+    public HouseResponseDto house(User user, HouseDto houseDto){
         if ((houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouse() != null) || (houseDto.getSpouseHouseYn().equals(Yn.n) && user.getHouse() != null))
             throw new CustomException(ErrorCode.DUPLICATE_HOUSE);
 
@@ -68,17 +68,17 @@ public class UserDataServiceImpl implements UserDataService{
         else user.setHouse(house);
         userRepository.save(user);
 
-        return house;
+        return new HouseResponseDto(house);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public House updateHouse(Long id, User user, HouseDto houseDto){
+    public HouseResponseDto updateHouse(Long id, User user, HouseDto houseDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
         AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).get();
         AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).get();
         house = house.update(addressLevel1, addressLevel2, houseDto);
-        return houseRepository.save(house);
+        return new HouseResponseDto(houseRepository.save(house));
     }
 
 

@@ -31,7 +31,7 @@ public class UserDataController {
 
     @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<House> house(@RequestBody HouseDto houseDto){
+    public ResponseEntity<HouseResponseDto> house(@RequestBody HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         return ResponseEntity.ok(userDataService.house(user, houseDto));
@@ -39,7 +39,7 @@ public class UserDataController {
 
     @PutMapping("/house/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<House> updateHouse(@PathVariable Long id, @RequestBody HouseDto houseDto){
+    public ResponseEntity<HouseResponseDto> updateHouse(@PathVariable Long id, @RequestBody HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         return ResponseEntity.ok(userDataService.updateHouse(id, user, houseDto));

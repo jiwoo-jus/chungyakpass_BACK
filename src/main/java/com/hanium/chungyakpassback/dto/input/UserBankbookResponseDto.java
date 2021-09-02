@@ -1,25 +1,21 @@
 package com.hanium.chungyakpassback.dto.input;
 
-import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.enumtype.Bank;
 import com.hanium.chungyakpassback.enumtype.Bankbook;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.Builder;
+import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
+@Getter
 public class UserBankbookResponseDto {
 
     private Long id;
 
-    private Long userId;
-
-
     private Bank bank; //개설은행
 
-    @NotBlank
     private Bankbook bankbook; //청약통장종류
 
     private LocalDate joinDate; //가입일

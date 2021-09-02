@@ -9,9 +9,9 @@ public interface UserDataService {
 
     UserBankbookResponseDto updateUserBankbook(Long id, UserBankbookDto userBankbookDto);
 
-    House house(User user, HouseDto houseDto);
+    HouseResponseDto house(User user, HouseDto houseDto);
 
-    House updateHouse(Long id, User user, HouseDto houseDto);
+    HouseResponseDto updateHouse(Long id, User user, HouseDto houseDto);
 
 //    HouseDto patchHouse(User user, HouseDto houseDto);
 
