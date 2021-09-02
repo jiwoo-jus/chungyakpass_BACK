@@ -5,6 +5,7 @@ import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.enumtype.*;
+import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
@@ -87,8 +88,8 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
     @Override
     public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
-        AddressLevel1 userAddressLevel1 = user.getHouseMember().getHouse().getAddressLevel1();
-        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get();
+        AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
+        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
 
         if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
             return true;

@@ -1,8 +1,10 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
+import com.hanium.chungyakpassback.entity.input.House;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.User;
+import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.response.DefaultRes;
 import com.hanium.chungyakpassback.response.ResponseMessage;
@@ -29,52 +31,59 @@ public class UserDataController {
 
     @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity house(@RequestBody HouseDto houseDto){
+    public ResponseEntity<House> house(@RequestBody HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        userDataService.house(user, houseDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+
+        return ResponseEntity.ok(userDataService.house(user, houseDto));
     }
 
     @PutMapping("/house/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity updateHouse(@PathVariable Long id, @RequestBody HouseDto houseDto){
+    public ResponseEntity<House> updateHouse(@PathVariable Long id, @RequestBody HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        userDataService.updateHouse(id, user, houseDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
+
+        return ResponseEntity.ok(userDataService.updateHouse(id, user, houseDto));
     }
 
 
     @PostMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity userBankbook(@RequestBody UserBankbookDto userBankbookDto){
+    public ResponseEntity<UserBankbookResponseDto> userBankbook(@RequestBody UserBankbookDto userBankbookDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        userDataService.userBankbook(user, userBankbookDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+
+        return ResponseEntity.ok(userDataService.userBankbook(user, userBankbookDto));
     }
 
     @PutMapping("/bankbook/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity updateUserBankbook(@PathVariable Long id, @RequestBody UserBankbookDto userBankbookDto){
-        userDataService.updateUserBankbook(id, userBankbookDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
+    public ResponseEntity<UserBankbookResponseDto> updateUserBankbook(@PathVariable Long id, @RequestBody UserBankbookDto userBankbookDto){
+
+        return ResponseEntity.ok(userDataService.updateUserBankbook(id, userBankbookDto));
     }
 
 
     @PostMapping("/house/member")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseMember(@RequestBody HouseMemberDto houseMemberDto){
+    public ResponseEntity<HouseMemberResponseDto> houseMember(@RequestBody HouseMemberDto houseMemberDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        userDataService.houseMember(user, houseMemberDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+
+        return ResponseEntity.ok(userDataService.houseMember(user, houseMemberDto));
     }
 
     @PutMapping("/house/member/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity updateHouseMember(@PathVariable Long id, @RequestBody HouseMemberDto houseMemberDto){
-        userDataService.updateHouseMember(id, houseMemberDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+    public ResponseEntity<HouseMemberResponseDto> updateHouseMember(@PathVariable Long id, @RequestBody HouseMemberDto houseMemberDto){
+
+        return ResponseEntity.ok(userDataService.updateHouseMember(id, houseMemberDto));
     }
 
+
+    @PatchMapping("/house/holder/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<HouseHolderDto> houseHolder(@PathVariable Long id, @RequestBody HouseHolderDto houseHolderDto){
+
+        return ResponseEntity.ok(userDataService.houseHolder(id, houseHolderDto));
+    }
 
     @PostMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -97,13 +106,6 @@ public class UserDataController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
     }
 
-    @PatchMapping("/house/holder")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseHolder(@RequestBody HouseHolderDto houseHolderDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        userDataService.houseHolder(user, houseHolderDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
-    }
 
 
 //    @PatchMapping("/house")

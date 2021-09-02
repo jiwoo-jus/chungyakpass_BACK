@@ -6,6 +6,8 @@ import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.User;
+import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -42,7 +46,7 @@ public class VerificationController {
 
         boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
         boolean accountTf = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
-        Integer americanAge = generalPrivateVerificationService.calcAmericanAge(houseMember.getBirthDay());
+        Integer americanAge = generalPrivateVerificationService.calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
         boolean houseHolderTf = generalPrivateVerificationService.isHouseholder(user);
         boolean isRestrictedAreaTf = generalPrivateVerificationService.isRestrictedArea(aptInfo);
         boolean meetAllHouseMemberNotWinningIn5yearsTf = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);

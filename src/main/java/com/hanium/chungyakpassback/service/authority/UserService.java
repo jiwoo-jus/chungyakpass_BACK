@@ -4,6 +4,8 @@ package com.hanium.chungyakpassback.service.authority;
 import com.hanium.chungyakpassback.entity.authority.Authority;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.dto.input.UserDto;
+import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +28,7 @@ public class UserService {
     @Transactional
     public User signup(UserDto userDto) {
         if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER);
         }
 
         Authority authority = Authority.builder()

@@ -3,9 +3,11 @@ package com.hanium.chungyakpassback.service.input;
 import com.hanium.chungyakpassback.dto.input.*;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel2;
+import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
@@ -14,6 +16,8 @@ import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -34,28 +38,28 @@ public class UserDataServiceImpl implements UserDataService{
 
 
     @Transactional(rollbackFor = Exception.class)
-    public UserBankbook userBankbook(User user, UserBankbookDto userBankbookDto){
+    public UserBankbookResponseDto userBankbook(User user, UserBankbookDto userBankbookDto){
         if (userBankbookRepository.findByUser(user).orElse(null) != null)
-            throw new RuntimeException("이미 해당 청약통장이 등록되어있습니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_BANKBOOK);
 
-        return userBankbookRepository.save(userBankbookDto.toEntity(user));
+        return new UserBankbookResponseDto(userBankbookRepository.save(userBankbookDto.toEntity(user)));
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public UserBankbook updateUserBankbook(Long id, UserBankbookDto userBankbookDto) {
-        UserBankbook userBankbook = userBankbookRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 청약통장을 찾을 수 없습니다."));
+    public UserBankbookResponseDto updateUserBankbook(Long id, UserBankbookDto userBankbookDto) {
+        UserBankbook userBankbook = userBankbookRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BANKBOOK));
 
-        return userBankbookRepository.save(userBankbook.updateUserBankbook(userBankbookDto));
+        return new UserBankbookResponseDto(userBankbookRepository.save(userBankbook.updateUserBankbook(userBankbookDto)));
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public House house(User user, HouseDto houseDto){
         if ((houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouse() != null) || (houseDto.getSpouseHouseYn().equals(Yn.n) && user.getHouse() != null))
-            throw new RuntimeException("이미 해당 세대가 등록되어 있습니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_HOUSE);
 
-        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).get();
-        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).get();
+        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
         House house = houseDto.toEntity(addressLevel1, addressLevel2);
         houseRepository.save(house);
 
@@ -69,7 +73,7 @@ public class UserDataServiceImpl implements UserDataService{
 
     @Transactional(rollbackFor = Exception.class)
     public House updateHouse(Long id, User user, HouseDto houseDto){
-        House house = houseRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 세대를 찾을 수 없습니다."));
+        House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
         AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).get();
         AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).get();
@@ -80,12 +84,13 @@ public class UserDataServiceImpl implements UserDataService{
 
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseMember houseMember(User user, HouseMemberDto houseMemberDto){
-        com.hanium.chungyakpassback.entity.standard.Relation relation = relationRepository.findByRelation(houseMemberDto.getRelation()).get();
-        if (relation.getOnlyOneYn().equals(Yn.y) && houseMemberRelationRepository.findByUserAndRelation(user, relation).isPresent())
-            throw new RuntimeException("해당 관계의 세대구성원이 이미 존재합니다.");
+    public HouseMemberResponseDto houseMember(User user, HouseMemberDto houseMemberDto){
+        Optional<House> optionalHouse = Optional.ofNullable((houseMemberDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse());
+        House house = optionalHouse.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-        House house = (houseMemberDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse();
+        com.hanium.chungyakpassback.entity.standard.Relation relation = relationRepository.findByRelation(houseMemberDto.getRelation()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
+        if (relation.getOnlyOneYn().equals(Yn.y) && houseMemberRelationRepository.findByUserAndRelation(user, relation).isPresent())
+            throw new CustomException(ErrorCode.DUPLICATE_RELATION);
 
         HouseMember houseMember = houseMemberDto.toEntity(house);
         houseMemberRepository.save(houseMember);
@@ -102,20 +107,20 @@ public class UserDataServiceImpl implements UserDataService{
             userRepository.save(user);
         }
 
-        return houseMember;
+        return new HouseMemberResponseDto(houseMember, houseMemberRelation);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseMember updateHouseMember(Long id, HouseMemberDto houseMemberDto) {
+    public HouseMemberResponseDto updateHouseMember(Long id, HouseMemberDto houseMemberDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new RuntimeException("세대구성원을 찾을 수 없습니다."));
+        HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
 
         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
         com.hanium.chungyakpassback.entity.standard.Relation presentRelation = houseMemberRelation.getRelation();
         com.hanium.chungyakpassback.entity.standard.Relation changedRelation = relationRepository.findByRelation(houseMemberDto.getRelation()).get();
         if (!presentRelation.equals(changedRelation)) {
             if (changedRelation.getOnlyOneYn().equals(Yn.y) && houseMemberRelationRepository.findByUserAndRelation(user, changedRelation).isPresent())
-                throw new RuntimeException("해당 관계의 세대구성원이 이미 존재합니다.");
+                throw new CustomException(ErrorCode.DUPLICATE_RELATION);
 
             houseMemberRelation.setRelation(changedRelation);
             houseMemberRelationRepository.save(houseMemberRelation);
@@ -137,7 +142,7 @@ public class UserDataServiceImpl implements UserDataService{
         houseMember.updateHouseMember(houseMemberDto);
         houseMemberRepository.save(houseMember);
 
-        return houseMember;
+        return new HouseMemberResponseDto(houseMember, houseMemberRelation);
     }
 
 
@@ -199,9 +204,9 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberChungyakRestriction;
     }
 
-    public HouseHolderDto houseHolder(User user, HouseHolderDto houseHolderDto){
-        HouseMember houseMember = houseMemberRepository.findById(houseHolderDto.getHouseMemberId()).get();
-        House house = (houseHolderDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse();
+    public HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto){
+        House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
+        HouseMember houseMember = houseMemberRepository.findById(houseHolderDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
 
         house.setHouseHolder(houseMember);
         houseRepository.save(house);

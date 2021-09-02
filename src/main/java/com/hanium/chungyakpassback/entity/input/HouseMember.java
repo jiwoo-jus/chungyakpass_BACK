@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
 import com.hanium.chungyakpassback.dto.input.HouseMemberDto;
+import com.hanium.chungyakpassback.dto.input.HouseMemberResponseDto;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
@@ -77,4 +78,6 @@ public class HouseMember {
         this.income = houseMemberDto.getIncome();
         return this;
     }
+
+
 }
