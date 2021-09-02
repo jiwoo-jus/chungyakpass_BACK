@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Table(name = "std_address_level1")
 public class AddressLevel1 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_level1_id")
     private Long id;
 
@@ -30,13 +29,13 @@ public class AddressLevel1 {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Yn metropolitanArea;
+    private Yn metropolitanAreaYn;
 
-    @Builder
-    public AddressLevel1(com.hanium.chungyakpassback.enumtype.AddressLevel1 addressLevel1, int nearbyArea, DepositArea depositArea, Yn metropolitanArea) {
-        this.addressLevel1 = addressLevel1;
-        this.nearbyArea = nearbyArea;
-        this.depositArea = depositArea;
-        this.metropolitanArea = metropolitanArea;
-    }
+//    @Builder
+//    public AddressLevel1(com.hanium.chungyakpassback.enumtype.AddressLevel1 addressLevel1, int nearbyArea, DepositArea depositArea, Yn metropolitanArea) {
+//        this.addressLevel1 = addressLevel1;
+//        this.nearbyArea = nearbyArea;
+//        this.depositArea = depositArea;
+//        this.metropolitanArea = metropolitanArea;
+//    }
 }

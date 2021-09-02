@@ -12,10 +12,12 @@ import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -55,19 +57,21 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
-        UserBankbook userBankbook = userBankbookRepository.findByUser(user);
+        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
+        if (optUserBankbook.isEmpty())
+            throw new RuntimeException("등록된 청약통장이 없습니다.");
+        UserBankbook userBankbook = optUserBankbook.get();
+
         int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
 
-        if (aptInfo.getHousingType().equals(HousingType.국민)) {// 주택유형이 국민일 경우 청약통장종류는 주택청약종합저축 or 청약저축이어야 true
+        if (aptInfo.getHousingType().equals(HousingType.국민))// 주택유형이 국민일 경우 청약통장종류는 주택청약종합저축 or 청약저축이어야 true
             if (userBankbook.getBankbook().equals(Bankbook.주택청약종합저축) || (userBankbook.getBankbook().equals(Bankbook.청약저축)))
                 return true;
-        }
-
-        if (aptInfo.getHousingType().equals(HousingType.민영)) { // 주택유형이 민영일 경우 청약통장종류는 주택청약종합저축 or 청약예금 or 청약부금이어야 true
+        if (aptInfo.getHousingType().equals(HousingType.민영)) // 주택유형이 민영일 경우 청약통장종류는 주택청약종합저축 or 청약예금 or 청약부금이어야 true
             if (userBankbook.getBankbook().equals(Bankbook.주택청약종합저축) || userBankbook.getBankbook().equals(Bankbook.청약예금) || userBankbook.getBankbook().equals(Bankbook.청약부금) && (housingTypeChange <= 85))
                 return true;
-        }
         return false;
     }
 
@@ -84,7 +88,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
     @Override
     public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
         AddressLevel1 userAddressLevel1 = user.getHouseMember().getHouse().getAddressLevel1();
-        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1());
+        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get();
 
         if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
             return true;
@@ -102,7 +106,11 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
     @Override
     public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) {
-        UserBankbook userBankbook = userBankbookRepository.findByUser(user); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
+        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
+        if (optUserBankbook.isEmpty())
+            throw new RuntimeException("등록된 청약통장이 없습니다.");
+        UserBankbook userBankbook = optUserBankbook.get();
+
         LocalDate joinDate = userBankbook.getJoinDate();
         LocalDate now = LocalDate.now();
         Period period = joinDate.until(now);
@@ -115,7 +123,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
             else if (aptInfo.getAtrophyArea().equals(Yn.y))
                 if (joinPeriod >= 1)
                     return true;
-            else if (addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).getMetropolitanArea().equals(Yn.y))
+            else if (addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn().equals(Yn.y))
                     if (joinPeriod >= 12)
                         return true;
             else if (joinPeriod >= 6)
@@ -129,9 +137,12 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
 
     // 예치금액충족 여부
         public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) {
-            UserBankbook userBankbook = userBankbookRepository.findByUser(user); // user_id(fk)를 통해서 해당하는 user의 통장 정보를 가져옴
-            int housingTypeChange = houseTypeConverter(aptInfoTarget);
+            Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
+            if (optUserBankbook.isEmpty())
+                throw new RuntimeException("등록된 청약통장이 없습니다.");
+            UserBankbook userBankbook = optUserBankbook.get();
 
+            int housingTypeChange = houseTypeConverter(aptInfoTarget);
 
             if ((user.getHouseMember().getHouse().getAddressLevel1().equals(com.hanium.chungyakpassback.enumtype.AddressLevel1.서울) || user.getHouseMember().getHouse().getAddressLevel1().equals(com.hanium.chungyakpassback.enumtype.AddressLevel1.부산))) { // 지역_레벨1이 서울 or 부산일 경우
                 if (housingTypeChange <= 85 && userBankbook.getDeposit() >= 3000000)
@@ -171,7 +182,7 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
     public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         if ((houseTypeConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
             return true;
-        else if (aptInfo.getHousingType().equals(HousingType.민영) && aptInfo.getPublicHosingDistrict().equals(Yn.y) && aptInfo.getAddressLevel1().equals(addressLevel1Repository.findAllByMetropolitanArea(Yn.y)))
+        else if (aptInfo.getHousingType().equals(HousingType.민영) && aptInfo.getPublicHosingDistrict().equals(Yn.y) && addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).equals(addressLevel1Repository.findAllByMetropolitanAreaYn(Yn.y)))
             return true;
         return false;
     }
@@ -188,8 +199,8 @@ public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungya
             int flag = 0;
             for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                 if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
-                    HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember);
-                    if (houseMemberRelation.getRelation().equals(Relation.부모) && calcAmericanAge(houseMember.getBirthDay()) >= 60)
+                    HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                    if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모)) && calcAmericanAge(houseMember.getBirthDay()) >= 60)
                         continue;
                     else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
                         continue;

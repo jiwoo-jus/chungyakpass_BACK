@@ -1,10 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
-import com.hanium.chungyakpassback.enumtype.Relation;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.hanium.chungyakpassback.entity.standard.Relation;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,8 +11,7 @@ import javax.persistence.*;
 @Table(name = "inp_house_member_relation")
 public class HouseMemberRelation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_relation_id")
     private Long id;
 
@@ -27,9 +23,15 @@ public class HouseMemberRelation {
     @JoinColumn(name = "opponent_house_member_id")
     private HouseMember opponent;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Relation relation;
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "relation_id")
+    private com.hanium.chungyakpassback.entity.standard.Relation relation;
+
+//    @Column
+//    @Setter
+//    @Enumerated(EnumType.STRING)
+//    private Relation relation;
 
 
     @Builder
@@ -38,4 +40,9 @@ public class HouseMemberRelation {
         this.opponent = opponent;
         this.relation = relation;
     }
+
+//    public HouseMemberRelation updateHouseMemberRelation(User user, HouseMember houseMember, Relation relation){
+//        this.relation = relation;
+//        return this;
+//    }
 }

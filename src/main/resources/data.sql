@@ -8,7 +8,24 @@ INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) values (1, 'ROLE_USER');
 INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) values (1, 'ROLE_ADMIN');
 INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) values (2, 'ROLE_USER');
 
-INSERT INTO std_address_level1 (address_level1_id, address_level1, nearby_area, deposit_area, metropolitan_area)
+INSERT INTO std_relation (relation_id, relation, only_one_yn)
+VALUES (1, '본인', 'y'),
+       (2, '배우자', 'y'),
+       (3, '부', 'y'),
+       (4, '모', 'y'),
+       (5, '배우자의부', 'y'),
+       (6, '배우자의모', 'y'),
+       (7, '조부', 'y'),
+       (8, '조모', 'y'),
+       (9, '배우자의조부', 'y'),
+       (10, '배우자의조모', 'y'),
+       (11, '자녀', 'n'),
+       (12, '자녀의배우자', 'n'),
+       (13, '손자녀', 'n'),
+       (14, '손자녀의배우자', 'n');
+
+
+INSERT INTO std_address_level1 (address_level1_id, address_level1, nearby_area, deposit_area, metropolitan_area_yn)
 VALUES (1, '서울', 1, '서울부산', 'y'),
        (2, '인천', 1, '기타광역시', 'y'),
        (3, '경기', 1, '기타시군', 'y'),

@@ -10,6 +10,6 @@ public interface UserBankbookRepository extends JpaRepository<UserBankbook, Long
 
 //    Optional<UserBankbook> findByUserId(Long userId);
 
-    UserBankbook findByUser(User user);
+    Optional<UserBankbook> findByUser(User user);
 
 }

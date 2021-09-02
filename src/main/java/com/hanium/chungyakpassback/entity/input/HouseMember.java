@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
+import com.hanium.chungyakpassback.dto.input.HouseMemberDto;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
@@ -63,5 +64,17 @@ public class HouseMember {
         this.homelessStartDate = homelessStartDate;
         this.transferDate = transferDate;
         this.income = income;
+    }
+
+    public HouseMember updateHouseMember(HouseMemberDto houseMemberDto){
+        this.name = houseMemberDto.getName();
+        this.birthDay = houseMemberDto.getBirthDay();
+        this.foreignerYn = houseMemberDto.getForeignerYn();
+        this.soldierYn = houseMemberDto.getSoldierYn();
+        this.marriageDate = houseMemberDto.getMarriageDate();
+        this.homelessStartDate = houseMemberDto.getHomelessStartDate();
+        this.transferDate = houseMemberDto.getTransferDate();
+        this.income = houseMemberDto.getIncome();
+        return this;
     }
 }

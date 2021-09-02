@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
 
+import com.hanium.chungyakpassback.dto.input.UserBankbookDto;
 import com.hanium.chungyakpassback.enumtype.Bank;
 import com.hanium.chungyakpassback.enumtype.Bankbook;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -56,5 +57,15 @@ public class UserBankbook {
         this.deposit = deposit;
         this.paymentsCount = paymentsCount;
         this.validYn = validYn;
+    }
+
+    public UserBankbook updateUserBankbook(UserBankbookDto userBankbookDto){
+        this.bank = userBankbookDto.getBank();
+        this.bankbook = userBankbookDto.getBankbook();
+        this.joinDate = userBankbookDto.getJoinDate();
+        this.deposit = userBankbookDto.getDeposit();
+        this.paymentsCount = userBankbookDto.getPaymentsCount();
+        this.validYn = userBankbookDto.getValidYn();
+        return this;
     }
 }

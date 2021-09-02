@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
+import com.hanium.chungyakpassback.dto.input.HouseDto;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel2;
 import lombok.*;
@@ -44,4 +45,13 @@ public class House {
         this.addressDetail = addressDetail;
         this.zipcode = zipcode;
     }
+
+    public House update(AddressLevel1 addressLevel1, AddressLevel2 addressLevel2, HouseDto houseDto){
+        this.addressLevel1 = addressLevel1;
+        this.addressLevel2 = addressLevel2;
+        this.addressDetail = houseDto.getAddressDetail();
+        this.zipcode = houseDto.getZipcode();
+        return this;
+    }
+
 }

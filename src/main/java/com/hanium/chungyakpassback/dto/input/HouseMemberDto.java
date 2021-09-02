@@ -1,5 +1,7 @@
 package com.hanium.chungyakpassback.dto.input;
 
+import com.hanium.chungyakpassback.entity.input.House;
+import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
@@ -35,4 +37,17 @@ public class HouseMemberDto {
 
     private Integer income; //월평균소득
 
+    public HouseMember toEntity(House house) {
+        return HouseMember.builder()
+                .house(house)
+                .name(name)
+                .birthDay(birthDay)
+                .foreignerYn(foreignerYn)
+                .soldierYn(soldierYn)
+                .marriageDate(marriageDate)
+                .homelessStartDate(homelessStartDate)
+                .transferDate(transferDate)
+                .income(income)
+                .build();
+    }
 }
