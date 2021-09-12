@@ -22,4 +22,12 @@ public class Relation {
     @Column
     @Enumerated(EnumType.STRING)
     private Yn onlyOneYn;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Yn parentYn;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Yn childYn;
 }

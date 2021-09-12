@@ -39,10 +39,10 @@ public class UserDataController {
 
     @PutMapping("/house/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseResponseDto> updateHouse(@PathVariable Long id, @RequestBody HouseDto houseDto){
+    public ResponseEntity<HouseResponseDto> updateHouse(@PathVariable Long id, @RequestBody HouseUpdateDto houseUpdateDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        return ResponseEntity.ok(userDataService.updateHouse(id, user, houseDto));
+        return ResponseEntity.ok(userDataService.updateHouse(id, user, houseUpdateDto));
     }
 
 
@@ -87,10 +87,17 @@ public class UserDataController {
 
     @PostMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
+    public ResponseEntity<HouseMemberPropertyResponseDto> houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
         userDataService.houseMemberProperty(houseMemberPropertyDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+        return ResponseEntity.ok(userDataService.houseMemberProperty(houseMemberPropertyDto));
     }
+
+//    @PutMapping("/house/member/property/{id}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//    public ResponseEntity updateHouseMemberProperty(@PathVariable Long id, @RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
+//
+//        return new ResponseEntity(userDataService.updateHouseMemberProperty(houseMemberPropertyDto));
+//    }
 
     @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")

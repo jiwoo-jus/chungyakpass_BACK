@@ -58,7 +58,7 @@ public class UserDataServiceImpl implements UserDataService{
         if ((houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouse() != null) || (houseDto.getSpouseHouseYn().equals(Yn.n) && user.getHouse() != null))
             throw new CustomException(ErrorCode.DUPLICATE_HOUSE);
 
-        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
         House house = houseDto.toEntity(addressLevel1, addressLevel2);
         houseRepository.save(house);
@@ -72,12 +72,12 @@ public class UserDataServiceImpl implements UserDataService{
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseResponseDto updateHouse(Long id, User user, HouseDto houseDto){
+    public HouseResponseDto updateHouse(Long id, User user, HouseUpdateDto houseUpdateDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).get();
-        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).get();
-        house = house.update(addressLevel1, addressLevel2, houseDto);
+        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseUpdateDto.getAddressLevel1()).get();
+        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseUpdateDto.getAddressLevel2()).get();
+        house = house.update(addressLevel1, addressLevel2, houseUpdateDto);
         return new HouseResponseDto(houseRepository.save(house));
     }
 
@@ -146,25 +146,13 @@ public class UserDataServiceImpl implements UserDataService{
     }
 
 
-    public HouseMemberProperty houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
+    public HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
         HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyDto.getHouseMemberId()).get();
 
-        HouseMemberProperty houseMemberProperty = HouseMemberProperty.builder()
-                .houseMember(houseMember)
-                .property(houseMemberPropertyDto.getProperty())
-                .saleRightYn(houseMemberPropertyDto.getSaleRightYn())
-                .residentialBuildingYn(houseMemberPropertyDto.getResidentialBuildingYn())
-                .residentialBuilding(houseMemberPropertyDto.getResidentialBuilding())
-                .nonResidentialBuilding(houseMemberPropertyDto.getNonResidentialBuilding())
-                .acquisitionDate(houseMemberPropertyDto.getAcquisitionDate())
-                .dispositionDate(houseMemberPropertyDto.getDispositionDate())
-                .exclusiveArea(houseMemberPropertyDto.getExclusiveArea())
-                .amount(houseMemberPropertyDto.getAmount())
-                .taxBaseDate(houseMemberPropertyDto.getTaxBaseDate())
-                .build();
+        HouseMemberProperty houseMemberProperty = houseMemberPropertyDto.toEntity(houseMember);
         houseMemberPropertyRepository.save(houseMemberProperty);
 
-        return houseMemberProperty;
+        return new HouseMemberPropertyResponseDto(houseMemberProperty);
     }
 
     public HouseMemberChungyak houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto){

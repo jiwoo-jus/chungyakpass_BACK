@@ -28,7 +28,7 @@ public class UserService {
     @Transactional
     public User signup(UserDto userDto) {
         if (userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) != null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER);
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
 
         Authority authority = Authority.builder()
