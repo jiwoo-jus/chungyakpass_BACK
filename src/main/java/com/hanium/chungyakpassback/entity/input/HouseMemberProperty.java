@@ -47,6 +47,7 @@ public class HouseMemberProperty {
     private NonResidentialBuilding nonResidentialBuilding; //비주거용건물유형
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Yn metropolitanBuildingYn; //건물수도권여부
 
     @Column
@@ -81,7 +82,8 @@ public class HouseMemberProperty {
         this.taxBaseDate = taxBaseDate;
     }
 
-    public HouseMemberProperty updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+    public HouseMemberProperty updateHouseMemberProperty(HouseMember houseMember, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+        this.houseMember = houseMember;
         this.property = houseMemberPropertyUpdateDto.getProperty();
         this.saleRightYn = houseMemberPropertyUpdateDto.getSaleRightYn();
         this.residentialBuildingYn = houseMemberPropertyUpdateDto.getResidentialBuildingYn();

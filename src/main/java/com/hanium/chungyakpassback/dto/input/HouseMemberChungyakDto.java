@@ -1,5 +1,8 @@
 package com.hanium.chungyakpassback.dto.input;
 
+import com.hanium.chungyakpassback.entity.input.House;
+import com.hanium.chungyakpassback.entity.input.HouseMember;
+import com.hanium.chungyakpassback.entity.input.HouseMemberChungyak;
 import com.hanium.chungyakpassback.enumtype.*;
 import lombok.*;
 
@@ -33,4 +36,20 @@ public class HouseMemberChungyakDto {
     private Raffle raffle; //추첨방식
 
     private Yn cancelWinYn; //당첨취소여부
+
+    public HouseMemberChungyak toEntity(HouseMember houseMember) {
+        return HouseMemberChungyak.builder()
+                .houseMember(houseMember)
+                .houseName(houseName)
+                .supply(supply)
+                .specialSupply(specialSupply)
+                .housingType(housingType)
+                .ranking(ranking)
+                .result(result)
+                .preliminaryNumber(preliminaryNumber)
+                .winningDate(winningDate)
+                .raffle(raffle)
+                .cancelWinYn(cancelWinYn)
+                .build();
+    }
 }

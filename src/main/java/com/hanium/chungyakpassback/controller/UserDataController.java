@@ -1,17 +1,10 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
-import com.hanium.chungyakpassback.entity.input.House;
-import com.hanium.chungyakpassback.entity.input.HouseMember;
-import com.hanium.chungyakpassback.entity.input.User;
-import com.hanium.chungyakpassback.entity.input.UserBankbook;
+import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
-import com.hanium.chungyakpassback.response.DefaultRes;
-import com.hanium.chungyakpassback.response.ResponseMessage;
-import com.hanium.chungyakpassback.response.StatusCode;
 import com.hanium.chungyakpassback.service.input.UserDataService;
 import com.hanium.chungyakpassback.util.SecurityUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +81,7 @@ public class UserDataController {
     @PostMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<HouseMemberPropertyResponseDto> houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
-        userDataService.houseMemberProperty(houseMemberPropertyDto);
+
         return ResponseEntity.ok(userDataService.houseMemberProperty(houseMemberPropertyDto));
     }
 
@@ -102,16 +95,31 @@ public class UserDataController {
     @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
-        userDataService.houseMemberChungyak(houseMemberChungyakDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+
+        return ResponseEntity.ok(userDataService.houseMemberChungyak(houseMemberChungyakDto));
+    }
+
+    @PutMapping("/house/member/chungyak/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity updateHouseMemberChungyak(@PathVariable Long id, @RequestBody HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
+
+        return ResponseEntity.ok(userDataService.updateHouseMemberChungyak(id, houseMemberChungyakUpdateDto));
     }
 
     @PostMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
-        userDataService.houseMemberChungyakRestriction(houseMemberChungyakRestrictionDto);
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER_DATA), HttpStatus.OK);
+
+        return ResponseEntity.ok(userDataService.houseMemberChungyakRestriction(houseMemberChungyakRestrictionDto));
     }
+
+    @PutMapping("/house/member/chungyak/restriction/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity updateHouseMemberChungyakRestriction(@PathVariable Long id, @RequestBody HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
+
+        return ResponseEntity.ok(userDataService.updateHouseMemberChungyakRestriction(id, houseMemberChungyakRestrictionUpdateDto));
+    }
+
 
 
 

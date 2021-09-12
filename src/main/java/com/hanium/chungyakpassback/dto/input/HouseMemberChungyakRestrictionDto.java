@@ -1,5 +1,7 @@
 package com.hanium.chungyakpassback.dto.input;
 
+import com.hanium.chungyakpassback.entity.input.HouseMemberChungyak;
+import com.hanium.chungyakpassback.entity.input.HouseMemberChungyakRestriction;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
@@ -23,4 +25,15 @@ public class HouseMemberChungyakRestrictionDto {
     private LocalDate regulatedAreaFirstPriorityRestrictedDate; //투기과열지구청약과열지역1순위제한일
 
     private LocalDate additionalPointSystemRestrictedDate; //가점제당첨제한일
+
+    public HouseMemberChungyakRestriction toEntity(HouseMemberChungyak houseMemberChungyak){
+        return HouseMemberChungyakRestriction.builder()
+                .houseMemberChungyak(houseMemberChungyak)
+                .reWinningRestrictedDate(reWinningRestrictedDate)
+                .specialSupplyRestrictedYn(specialSupplyRestrictedYn)
+                .unqualifiedSubscriberRestrictedDate(unqualifiedSubscriberRestrictedDate)
+                .regulatedAreaFirstPriorityRestrictedDate(regulatedAreaFirstPriorityRestrictedDate)
+                .additionalPointSystemRestrictedDate(additionalPointSystemRestrictedDate)
+                .build();
+    }
 }

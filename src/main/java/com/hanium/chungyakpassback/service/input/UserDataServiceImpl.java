@@ -73,8 +73,8 @@ public class UserDataServiceImpl implements UserDataService{
     public HouseResponseDto updateHouse(Long id, User user, HouseUpdateDto houseUpdateDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseUpdateDto.getAddressLevel1()).get();
-        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseUpdateDto.getAddressLevel2()).get();
+        AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseUpdateDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
+        AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseUpdateDto.getAddressLevel2()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
         house = house.update(addressLevel1, addressLevel2, houseUpdateDto);
         return new HouseResponseDto(houseRepository.save(house));
     }
@@ -126,7 +126,7 @@ public class UserDataServiceImpl implements UserDataService{
                 user.setHouseMember(null);
             else if (presentRelation.getRelation().equals(Relation.배우자))
                 user.setSpouseHouseMember(null);
-            else if (changedRelation.getRelation().equals(Relation.본인))
+            if (changedRelation.getRelation().equals(Relation.본인))
                 user.setHouseMember(houseMember);
             else if (changedRelation.getRelation().equals(Relation.배우자))
                 user.setSpouseHouseMember(houseMember);
@@ -150,7 +150,6 @@ public class UserDataServiceImpl implements UserDataService{
         return houseHolderDto;
     }
 
-
     public HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
         HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyDto.getHouseMemberId()).get();
 
@@ -162,48 +161,50 @@ public class UserDataServiceImpl implements UserDataService{
 
     public HouseMemberPropertyResponseDto updateHouseMemberProperty(Long id, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
         HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDto.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
 
-        houseMemberProperty.updateHouseMemberProperty(houseMemberPropertyUpdateDto);
+        houseMemberProperty.updateHouseMemberProperty(houseMember, houseMemberPropertyUpdateDto);
         houseMemberPropertyRepository.save(houseMemberProperty);
 
         return new HouseMemberPropertyResponseDto(houseMemberProperty);
     }
 
-    public HouseMemberChungyak houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto){
-        HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakDto.getHouseMemberId()).get();
+    public HouseMemberChungyakResponseDto houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto){
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakDto.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
 
-        HouseMemberChungyak houseMemberChungyak = HouseMemberChungyak.builder()
-                .houseMember(houseMember)
-                .houseName(houseMemberChungyakDto.getHouseName())
-                .supply(houseMemberChungyakDto.getSupply())
-                .specialSupply(houseMemberChungyakDto.getSpecialSupply())
-                .housingType(houseMemberChungyakDto.getHousingType())
-                .ranking(houseMemberChungyakDto.getRanking())
-                .result(houseMemberChungyakDto.getResult())
-                .preliminaryNumber(houseMemberChungyakDto.getPreliminaryNumber())
-                .winningDate(houseMemberChungyakDto.getWinningDate())
-                .raffle(houseMemberChungyakDto.getRaffle())
-                .cancelWinYn(houseMemberChungyakDto.getCancelWinYn())
-                .build();
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakDto.toEntity(houseMember);
         houseMemberChungyakRepository.save(houseMemberChungyak);
 
-        return houseMemberChungyak;
+        return new HouseMemberChungyakResponseDto(houseMemberChungyak);
     }
 
-    public HouseMemberChungyakRestriction houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
-        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionDto.getHouseMemberChungyakId()).get();
+    public HouseMemberChungyakResponseDto updateHouseMemberChungyak(Long id, HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakUpdateDto.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
 
-        HouseMemberChungyakRestriction houseMemberChungyakRestriction = HouseMemberChungyakRestriction.builder()
-                .houseMemberChungyak(houseMemberChungyak)
-                .reWinningRestrictedDate(houseMemberChungyakRestrictionDto.getReWinningRestrictedDate())
-                .specialSupplyRestrictedYn(houseMemberChungyakRestrictionDto.getSpecialSupplyRestrictedYn())
-                .unqualifiedSubscriberRestrictedDate(houseMemberChungyakRestrictionDto.getUnqualifiedSubscriberRestrictedDate())
-                .regulatedAreaFirstPriorityRestrictedDate(houseMemberChungyakRestrictionDto.getRegulatedAreaFirstPriorityRestrictedDate())
-                .additionalPointSystemRestrictedDate(houseMemberChungyakRestrictionDto.getAdditionalPointSystemRestrictedDate())
-                .build();
+        houseMemberChungyak.updateHouseMemberChungyak(houseMember, houseMemberChungyakUpdateDto);
+        houseMemberChungyakRepository.save(houseMemberChungyak);
+
+        return new HouseMemberChungyakResponseDto(houseMemberChungyak);
+    }
+
+    public HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionDto.getHouseMemberChungyakId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
+
+        HouseMemberChungyakRestriction houseMemberChungyakRestriction = houseMemberChungyakRestrictionDto.toEntity(houseMemberChungyak);
         houseMemberChungyakRestrictionRepository.save(houseMemberChungyakRestriction);
 
-        return houseMemberChungyakRestriction;
+        return new HouseMemberChungyakRestrictionResponseDto(houseMemberChungyakRestriction);
+    }
+
+    public HouseMemberChungyakRestrictionResponseDto updateHouseMemberChungyakRestriction(Long id, HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
+        HouseMemberChungyakRestriction houseMemberChungyakRestriction = houseMemberChungyakRestrictionRepository.findById(id).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK_RESTRICTION)));
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
+
+        houseMemberChungyakRestriction.updateHouseMemberChungyakRestriction(houseMemberChungyak, houseMemberChungyakRestrictionUpdateDto);
+        houseMemberChungyakRestrictionRepository.save(houseMemberChungyakRestriction);
+
+        return new HouseMemberChungyakRestrictionResponseDto(houseMemberChungyakRestriction);
     }
 
 }

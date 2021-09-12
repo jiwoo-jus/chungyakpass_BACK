@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
+import com.hanium.chungyakpassback.dto.input.HouseMemberChungyakRestrictionUpdateDto;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
@@ -51,6 +52,16 @@ public class HouseMemberChungyakRestriction {
         this.unqualifiedSubscriberRestrictedDate = unqualifiedSubscriberRestrictedDate;
         this.regulatedAreaFirstPriorityRestrictedDate = regulatedAreaFirstPriorityRestrictedDate;
         this.additionalPointSystemRestrictedDate = additionalPointSystemRestrictedDate;
+    }
+
+    public HouseMemberChungyakRestriction updateHouseMemberChungyakRestriction(HouseMemberChungyak houseMemberChungyak, HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
+        this.houseMemberChungyak = houseMemberChungyak;
+        this.reWinningRestrictedDate = houseMemberChungyakRestrictionUpdateDto.getReWinningRestrictedDate();
+        this.specialSupplyRestrictedYn = houseMemberChungyakRestrictionUpdateDto.getSpecialSupplyRestrictedYn();
+        this.unqualifiedSubscriberRestrictedDate = houseMemberChungyakRestrictionUpdateDto.getUnqualifiedSubscriberRestrictedDate();
+        this.regulatedAreaFirstPriorityRestrictedDate = houseMemberChungyakRestrictionUpdateDto.getRegulatedAreaFirstPriorityRestrictedDate();
+        this.additionalPointSystemRestrictedDate = houseMemberChungyakRestrictionUpdateDto.getAdditionalPointSystemRestrictedDate();
+        return this;
     }
 }
 

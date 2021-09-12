@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.entity.input;
 
+import com.hanium.chungyakpassback.dto.input.HouseMemberChungyakUpdateDto;
 import com.hanium.chungyakpassback.enumtype.*;
 import lombok.*;
 
@@ -72,5 +73,20 @@ public class HouseMemberChungyak {
         this.winningDate = winningDate;
         this.raffle = raffle;
         this.cancelWinYn = cancelWinYn;
+    }
+
+    public HouseMemberChungyak updateHouseMemberChungyak(HouseMember houseMember, HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
+        this.houseMember = houseMember;
+        this.houseName = houseMemberChungyakUpdateDto.getHouseName();
+        this.supply = houseMemberChungyakUpdateDto.getSupply();
+        this.specialSupply = houseMemberChungyakUpdateDto.getSpecialSupply();
+        this.housingType = houseMemberChungyakUpdateDto.getHousingType();
+        this.ranking = houseMemberChungyakUpdateDto.getRanking();
+        this.result = houseMemberChungyakUpdateDto.getResult();
+        this.preliminaryNumber = houseMemberChungyakUpdateDto.getPreliminaryNumber();
+        this.winningDate = houseMemberChungyakUpdateDto.getWinningDate();
+        this.raffle = houseMemberChungyakUpdateDto.getRaffle();
+        this.cancelWinYn = houseMemberChungyakUpdateDto.getCancelWinYn();
+        return this;
     }
 }
