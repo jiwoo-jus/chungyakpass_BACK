@@ -1,5 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
+import com.hanium.chungyakpassback.dto.input.HouseMemberDto;
+import com.hanium.chungyakpassback.dto.input.HouseMemberPropertyUpdateDto;
 import com.hanium.chungyakpassback.enumtype.NonResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Property;
 import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
@@ -77,6 +79,21 @@ public class HouseMemberProperty {
         this.exclusiveArea = exclusiveArea;
         this.amount = amount;
         this.taxBaseDate = taxBaseDate;
+    }
+
+    public HouseMemberProperty updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+        this.property = houseMemberPropertyUpdateDto.getProperty();
+        this.saleRightYn = houseMemberPropertyUpdateDto.getSaleRightYn();
+        this.residentialBuildingYn = houseMemberPropertyUpdateDto.getResidentialBuildingYn();
+        this.residentialBuilding = houseMemberPropertyUpdateDto.getResidentialBuilding();
+        this.nonResidentialBuilding = houseMemberPropertyUpdateDto.getNonResidentialBuilding();
+        this.metropolitanBuildingYn = houseMemberPropertyUpdateDto.getMetropolitanBuildingYn();
+        this.acquisitionDate = houseMemberPropertyUpdateDto.getAcquisitionDate();
+        this.dispositionDate = houseMemberPropertyUpdateDto.getDispositionDate();
+        this.exclusiveArea = houseMemberPropertyUpdateDto.getExclusiveArea();
+        this.amount = houseMemberPropertyUpdateDto.getAmount();
+        this.taxBaseDate = houseMemberPropertyUpdateDto.getTaxBaseDate();
+        return this;
     }
 }
 

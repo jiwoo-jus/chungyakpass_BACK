@@ -17,11 +17,11 @@ public interface UserDataService {
 
     HouseMemberResponseDto houseMember(User user, HouseMemberDto houseMemberDto);
 
-    HouseMemberResponseDto updateHouseMember(Long id, HouseMemberDto houseMemberDto);
+    HouseMemberResponseDto updateHouseMember(Long id, HouseMemberUpdateDto houseMemberUpdateDto);
 
     HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
 
-//    HouseMemberPropertyDto updateHouseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
+    HouseMemberPropertyResponseDto updateHouseMemberProperty(Long id, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto);
 
     HouseMemberChungyak houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto);
 

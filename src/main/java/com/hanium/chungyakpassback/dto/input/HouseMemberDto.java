@@ -15,7 +15,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HouseMemberDto {
 
-    private Yn spouseHouseYn; //배우자분리세대여부
+//    private Yn spouseHouseYn; //배우자분리세대여부
+
+    private Long houseId; //세대id
 
     private Relation relation; //회원과의 관계
 
