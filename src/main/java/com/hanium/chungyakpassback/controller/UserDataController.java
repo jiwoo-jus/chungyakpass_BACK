@@ -87,35 +87,35 @@ public class UserDataController {
 
     @PutMapping("/house/member/property/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity updateHouseMemberProperty(@PathVariable Long id, @RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+    public ResponseEntity<HouseMemberPropertyResponseDto> updateHouseMemberProperty(@PathVariable Long id, @RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
 
         return ResponseEntity.ok(userDataService.updateHouseMemberProperty(id, houseMemberPropertyUpdateDto));
     }
 
     @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
+    public ResponseEntity<HouseMemberChungyakResponseDto> houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
 
         return ResponseEntity.ok(userDataService.houseMemberChungyak(houseMemberChungyakDto));
     }
 
     @PutMapping("/house/member/chungyak/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity updateHouseMemberChungyak(@PathVariable Long id, @RequestBody HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
+    public ResponseEntity<HouseMemberChungyakResponseDto> updateHouseMemberChungyak(@PathVariable Long id, @RequestBody HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
 
         return ResponseEntity.ok(userDataService.updateHouseMemberChungyak(id, houseMemberChungyakUpdateDto));
     }
 
     @PostMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
+    public ResponseEntity<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
 
         return ResponseEntity.ok(userDataService.houseMemberChungyakRestriction(houseMemberChungyakRestrictionDto));
     }
 
     @PutMapping("/house/member/chungyak/restriction/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity updateHouseMemberChungyakRestriction(@PathVariable Long id, @RequestBody HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
+    public ResponseEntity<HouseMemberChungyakRestrictionResponseDto> updateHouseMemberChungyakRestriction(@PathVariable Long id, @RequestBody HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
 
         return ResponseEntity.ok(userDataService.updateHouseMemberChungyakRestriction(id, houseMemberChungyakRestrictionUpdateDto));
     }

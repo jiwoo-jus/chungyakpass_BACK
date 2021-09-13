@@ -40,7 +40,7 @@ public class HouseMemberChungyakResponseDto {
 
     @Builder
     public HouseMemberChungyakResponseDto(HouseMemberChungyak houseMemberChungyak){
-        this.houseMemberId = houseMemberChungyak.getId();
+        this.id = houseMemberChungyak.getId();
         this.houseMemberId = houseMemberChungyak.getHouseMember().getId();
         this.houseName = houseMemberChungyak.getHouseName();
         this.supply = houseMemberChungyak.getSupply();

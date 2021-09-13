@@ -114,7 +114,7 @@ public class UserDataServiceImpl implements UserDataService{
 
         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
         com.hanium.chungyakpassback.entity.standard.Relation presentRelation = houseMemberRelation.getRelation();
-        com.hanium.chungyakpassback.entity.standard.Relation changedRelation = relationRepository.findByRelation(houseMemberupdateDto.getRelation()).get();
+        com.hanium.chungyakpassback.entity.standard.Relation changedRelation = relationRepository.findByRelation(houseMemberupdateDto.getRelation()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RELATION));
         if (!presentRelation.equals(changedRelation)) {
             if (changedRelation.getOnlyOneYn().equals(Yn.y) && houseMemberRelationRepository.findByUserAndRelation(user, changedRelation).isPresent())
                 throw new CustomException(ErrorCode.DUPLICATE_RELATION);
@@ -199,7 +199,7 @@ public class UserDataServiceImpl implements UserDataService{
 
     public HouseMemberChungyakRestrictionResponseDto updateHouseMemberChungyakRestriction(Long id, HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
         HouseMemberChungyakRestriction houseMemberChungyakRestriction = houseMemberChungyakRestrictionRepository.findById(id).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK_RESTRICTION)));
-        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionUpdateDto.getHouseMemberChungyakId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
 
         houseMemberChungyakRestriction.updateHouseMemberChungyakRestriction(houseMemberChungyak, houseMemberChungyakRestrictionUpdateDto);
         houseMemberChungyakRestrictionRepository.save(houseMemberChungyakRestriction);
