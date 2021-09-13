@@ -14,6 +14,7 @@ import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
 import com.hanium.chungyakpassback.repository.standard.RelationRepository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,11 +51,22 @@ public class UserDataServiceImpl implements UserDataService{
         return new UserBankbookResponseDto(userBankbookRepository.save(userBankbook.updateUserBankbook(userBankbookDto)));
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteUserBankbook(Long id){
+        UserBankbook userBankbook = userBankbookRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BANKBOOK));
+
+        userBankbookRepository.delete(userBankbook);
+        return HttpStatus.OK;
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     public HouseResponseDto house(User user, HouseDto houseDto){
         if ((houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouse() != null) || (houseDto.getSpouseHouseYn().equals(Yn.n) && user.getHouse() != null))
             throw new CustomException(ErrorCode.DUPLICATE_HOUSE);
+
+        if (houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouseMember() != null) //배우자가 존재하는데 배우자분리세대를 생성하려고 한다면
+            throw new CustomException(ErrorCode.BAD_REQUEST_SPOUSE_AND_SPOUSE_HOUSE);
 
         AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseDto.getAddressLevel2()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
@@ -79,6 +91,15 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseResponseDto(houseRepository.save(house));
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteHouse(Long id){
+        House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
+
+//        houseMemberRepository.deleteAllByHouse(house);
+        houseRepository.delete(house);
+        return HttpStatus.OK;
+    }
+
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -86,9 +107,16 @@ public class UserDataServiceImpl implements UserDataService{
 //        Optional<House> optionalHouse = Optional.ofNullable((houseMemberDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse());
         House house = houseRepository.findById(houseMemberDto.getHouseId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-        com.hanium.chungyakpassback.entity.standard.Relation relation = relationRepository.findByRelation(houseMemberDto.getRelation()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
+        com.hanium.chungyakpassback.entity.standard.Relation relation = relationRepository.findByRelation(houseMemberDto.getRelation()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RELATION));
         if (relation.getOnlyOneYn().equals(Yn.y) && houseMemberRelationRepository.findByUserAndRelation(user, relation).isPresent())
             throw new CustomException(ErrorCode.DUPLICATE_RELATION);
+
+        if (relation.getRelation().equals(Relation.본인) && house.equals(user.getSpouseHouse())) //배우자분리세대에 본인을 등록하려고 한다면
+            throw new CustomException(ErrorCode.BAD_REQUEST_USER_AND_USER_HOUSE);
+
+        if (relation.getRelation().equals(Relation.배우자) && house.equals(user.getHouse()) && user.getSpouseHouse() != null) //본인세대에 배우자를 등록하는데 배우자분리세대가 null 이 아니라면
+            throw new CustomException(ErrorCode.BAD_REQUEST_SPOUSE_AND_SPOUSE_HOUSE);
+
 
         HouseMember houseMember = houseMemberDto.toEntity(house);
         houseMemberRepository.save(houseMember);
@@ -126,10 +154,14 @@ public class UserDataServiceImpl implements UserDataService{
                 user.setHouseMember(null);
             else if (presentRelation.getRelation().equals(Relation.배우자))
                 user.setSpouseHouseMember(null);
-            if (changedRelation.getRelation().equals(Relation.본인))
-                user.setHouseMember(houseMember);
-            else if (changedRelation.getRelation().equals(Relation.배우자))
-                user.setSpouseHouseMember(houseMember);
+            if (changedRelation.getRelation().equals(Relation.본인)){ //배우자분리세대에 본인을 등록하려고 한다면
+                if (houseMember.getHouse().equals(user.getSpouseHouse()))
+                    throw new CustomException(ErrorCode.BAD_REQUEST_USER_AND_USER_HOUSE);
+                user.setHouseMember(houseMember);}
+            else if (changedRelation.getRelation().equals(Relation.배우자)){ //본인세대에 배우자를 등록하는데 배우자분리세대가 null 이 아니라면
+                if (houseMember.getHouse().equals(user.getHouse()) && user.getSpouseHouse() != null)
+                    throw new CustomException(ErrorCode.BAD_REQUEST_SPOUSE_AND_SPOUSE_HOUSE);
+                user.setSpouseHouseMember(houseMember);}
             userRepository.save(user);
         }
 
@@ -142,7 +174,9 @@ public class UserDataServiceImpl implements UserDataService{
 
     public HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
-        HouseMember houseMember = houseMemberRepository.findById(houseHolderDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+
+        HouseMember houseMember = houseHolderDto.getHouseMemberId().equals(null) ?
+                null : houseMemberRepository.findById(houseHolderDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
 
         house.setHouseHolder(houseMember);
         houseRepository.save(house);

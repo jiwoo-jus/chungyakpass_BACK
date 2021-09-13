@@ -38,6 +38,13 @@ public class UserDataController {
         return ResponseEntity.ok(userDataService.updateHouse(id, user, houseUpdateDto));
     }
 
+    @DeleteMapping("/house/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouse(@PathVariable Long id){
+
+        return new ResponseEntity(userDataService.deleteHouse(id));
+    }
+
 
     @PostMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -52,6 +59,13 @@ public class UserDataController {
     public ResponseEntity<UserBankbookResponseDto> updateUserBankbook(@PathVariable Long id, @RequestBody UserBankbookDto userBankbookDto){
 
         return ResponseEntity.ok(userDataService.updateUserBankbook(id, userBankbookDto));
+    }
+
+    @DeleteMapping("/bankbook/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteUserBankbook(@PathVariable Long id){
+
+        return new ResponseEntity(userDataService.deleteUserBankbook(id));
     }
 
 
