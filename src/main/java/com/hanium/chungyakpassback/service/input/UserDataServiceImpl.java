@@ -93,10 +93,24 @@ public class UserDataServiceImpl implements UserDataService{
 
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouse(Long id){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-//        houseMemberRepository.deleteAllByHouse(house);
+        if (house.equals(user.getHouse()))
+            user.setHouse(null);
+        else if (house.equals(user.getSpouseHouse()))
+            user.setSpouseHouse(null);
+
+        for (HouseMember houseMember : houseMemberRepository.findAllByHouse(house)){
+            houseMemberRelationRepository.delete(houseMemberRelationRepository.findByOpponent(houseMember).get());
+            if (houseMember.equals(user.getHouseMember()))
+                user.setHouseMember(null);
+            else if(houseMember.equals(user.getSpouseHouseMember()))
+                user.setSpouseHouseMember(null);
+            houseMemberRepository.delete(houseMember);
+        }
         houseRepository.delete(house);
+
         return HttpStatus.OK;
     }
 
