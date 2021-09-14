@@ -84,6 +84,13 @@ public class UserDataController {
         return ResponseEntity.ok(userDataService.updateHouseMember(id, houseMemberUpdateDto));
     }
 
+    @DeleteMapping("/house/member/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouseMember(@PathVariable Long id){
+
+        return new ResponseEntity(userDataService.deleteHouseMember(id));
+    }
+
 
     @PatchMapping("/house/holder/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -106,6 +113,13 @@ public class UserDataController {
         return ResponseEntity.ok(userDataService.updateHouseMemberProperty(id, houseMemberPropertyUpdateDto));
     }
 
+    @DeleteMapping("/house/member/property/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouseMemberProperty(@PathVariable Long id){
+
+        return new ResponseEntity(userDataService.deleteHouseMemberProperty(id));
+    }
+
     @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<HouseMemberChungyakResponseDto> houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
@@ -120,6 +134,13 @@ public class UserDataController {
         return ResponseEntity.ok(userDataService.updateHouseMemberChungyak(id, houseMemberChungyakUpdateDto));
     }
 
+    @DeleteMapping("/house/member/chungyak/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouseMemberChungyak(@PathVariable Long id){
+
+        return new ResponseEntity(userDataService.deleteHouseMemberChungyak(id));
+    }
+
     @PostMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
@@ -132,6 +153,13 @@ public class UserDataController {
     public ResponseEntity<HouseMemberChungyakRestrictionResponseDto> updateHouseMemberChungyakRestriction(@PathVariable Long id, @RequestBody HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
 
         return ResponseEntity.ok(userDataService.updateHouseMemberChungyakRestriction(id, houseMemberChungyakRestrictionUpdateDto));
+    }
+
+    @DeleteMapping("/house/member/chungyak/restriction/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouseMemberChungyakRestriction(@PathVariable Long id){
+
+        return new ResponseEntity(userDataService.deleteHouseMemberChungyakRestriction(id));
     }
 
 
