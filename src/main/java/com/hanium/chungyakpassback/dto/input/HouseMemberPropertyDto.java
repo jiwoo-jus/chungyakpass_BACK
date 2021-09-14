@@ -30,7 +30,7 @@ public class HouseMemberPropertyDto {
 
     private NonResidentialBuilding nonResidentialBuilding; //비주거용건물유형
 
-    private Yn metropolitanBuildingYn; //건물수도권여부
+    private Yn metropolitanYn; //건물수도권여부
 
     private LocalDate acquisitionDate; //취득일
 
@@ -51,7 +51,7 @@ public class HouseMemberPropertyDto {
                 .residentialBuildingYn(residentialBuildingYn)
                 .residentialBuilding(residentialBuilding)
                 .nonResidentialBuilding(nonResidentialBuilding)
-                .metropolitanBuildingYn(metropolitanBuildingYn)
+                .metropolitanYn(metropolitanYn)
                 .acquisitionDate(acquisitionDate)
                 .dispositionDate(dispositionDate)
                 .exclusiveArea(exclusiveArea)
