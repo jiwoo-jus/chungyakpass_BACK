@@ -37,7 +37,9 @@ public class UserDataServiceImpl implements UserDataService{
 
 
     @Transactional(rollbackFor = Exception.class)
-    public UserBankbookResponseDto userBankbook(User user, UserBankbookDto userBankbookDto){
+    public UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
         if (userBankbookRepository.findByUser(user).orElse(null) != null)
             throw new CustomException(ErrorCode.DUPLICATE_BANKBOOK);
 
@@ -61,7 +63,9 @@ public class UserDataServiceImpl implements UserDataService{
 
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseResponseDto house(User user, HouseDto houseDto){
+    public HouseResponseDto house(HouseDto houseDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
         if ((houseDto.getSpouseHouseYn().equals(Yn.y) && user.getSpouseHouse() != null) || (houseDto.getSpouseHouseYn().equals(Yn.n) && user.getHouse() != null))
             throw new CustomException(ErrorCode.DUPLICATE_HOUSE);
 
@@ -82,7 +86,7 @@ public class UserDataServiceImpl implements UserDataService{
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseResponseDto updateHouse(Long id, User user, HouseUpdateDto houseUpdateDto){
+    public HouseResponseDto updateHouse(Long id, HouseUpdateDto houseUpdateDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
         AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseUpdateDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
@@ -101,19 +105,19 @@ public class UserDataServiceImpl implements UserDataService{
             houseMemberPropertyRepository.deleteAllByHouseMember(houseMember);
             for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakRepository.findAllByHouseMember(houseMember)){
                 houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
-                houseMemberChungyakRepository.delete(houseMemberChungyak);
-            }
-
-            if (house.equals(user.getHouse()))
-                user.setHouse(null);
-            else if (house.equals(user.getSpouseHouse()))
-                user.setSpouseHouse(null);
+                houseMemberChungyakRepository.delete(houseMemberChungyak);}
             if (houseMember.equals(user.getHouseMember()))
                 user.setHouseMember(null);
             else if(houseMember.equals(user.getSpouseHouseMember()))
                 user.setSpouseHouseMember(null);
             houseMemberRepository.delete(houseMember);
         }
+        if (house.equals(user.getHouse()))
+            user.setHouse(null);
+        else if (house.equals(user.getSpouseHouse()))
+            user.setSpouseHouse(null);
+        userRepository.save(user);
+
         houseRepository.delete(house);
 
         return HttpStatus.OK;
@@ -122,8 +126,8 @@ public class UserDataServiceImpl implements UserDataService{
 
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseMemberResponseDto houseMember(User user, HouseMemberDto houseMemberDto){
-//        Optional<House> optionalHouse = Optional.ofNullable((houseMemberDto.getSpouseHouseYn().equals(Yn.y)) ? user.getSpouseHouse() : user.getHouse());
+    public HouseMemberResponseDto houseMember(HouseMemberDto houseMemberDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         House house = houseRepository.findById(houseMemberDto.getHouseId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
         com.hanium.chungyakpassback.entity.standard.Relation relation = relationRepository.findByRelation(houseMemberDto.getRelation()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RELATION));
@@ -193,6 +197,7 @@ public class UserDataServiceImpl implements UserDataService{
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouseMember(Long id){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        House house = user.getHouse();
         HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
 
         houseMemberRelationRepository.delete(houseMemberRelationRepository.findByOpponent(houseMember).get());
@@ -201,12 +206,14 @@ public class UserDataServiceImpl implements UserDataService{
             houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
             houseMemberChungyakRepository.delete(houseMemberChungyak);
         }
-
+        if (house.getHouseHolder().equals(houseMember)){
+            house.setHouseHolder(null);
+            houseRepository.save(house);}
         if (houseMember.equals(user.getHouseMember()))
             user.setHouseMember(null);
         else if(houseMember.equals(user.getSpouseHouseMember()))
             user.setSpouseHouseMember(null);
-
+        userRepository.save(user);
         houseMemberRepository.delete(houseMember);
 
         return HttpStatus.OK;
@@ -217,7 +224,7 @@ public class UserDataServiceImpl implements UserDataService{
     public HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-        HouseMember houseMember = houseHolderDto.getHouseMemberId().equals(null) ?
+        HouseMember houseMember = houseHolderDto.getHouseMemberId() == null ?
                 null : houseMemberRepository.findById(houseHolderDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
 
         house.setHouseHolder(houseMember);

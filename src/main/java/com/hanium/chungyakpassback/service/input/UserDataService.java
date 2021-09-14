@@ -6,19 +6,19 @@ import com.hanium.chungyakpassback.enumtype.Relation;
 import org.springframework.http.HttpStatus;
 
 public interface UserDataService {
-    UserBankbookResponseDto userBankbook(User user, UserBankbookDto userBankbookDto);
+    UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto);
 
     UserBankbookResponseDto updateUserBankbook(Long id, UserBankbookDto userBankbookDto);
 
     HttpStatus deleteUserBankbook(Long id);
 
-    HouseResponseDto house(User user, HouseDto houseDto);
+    HouseResponseDto house(HouseDto houseDto);
 
-    HouseResponseDto updateHouse(Long id, User user, HouseUpdateDto houseUpdateDto);
+    HouseResponseDto updateHouse(Long id, HouseUpdateDto houseUpdateDto);
 
     HttpStatus deleteHouse(Long id);
 
-    HouseMemberResponseDto houseMember(User user, HouseMemberDto houseMemberDto);
+    HouseMemberResponseDto houseMember(HouseMemberDto houseMemberDto);
 
     HouseMemberResponseDto updateHouseMember(Long id, HouseMemberUpdateDto houseMemberUpdateDto);
 

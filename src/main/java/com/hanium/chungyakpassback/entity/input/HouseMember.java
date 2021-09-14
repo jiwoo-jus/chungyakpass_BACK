@@ -20,7 +20,7 @@ public class HouseMember {
     @Column(name = "house_member_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_id")
     private House house; //세대
 

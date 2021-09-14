@@ -1,10 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
-import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.service.input.UserDataService;
-import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserDataController {
-    private final UserRepository userRepository;
     private final UserDataService userDataService;
 
-    public UserDataController(UserRepository userRepository, UserDataService userDataService) {
-        this.userRepository = userRepository;
+    public UserDataController(UserDataService userDataService) {
         this.userDataService = userDataService;
     }
 
@@ -25,17 +20,15 @@ public class UserDataController {
     @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<HouseResponseDto> house(@RequestBody HouseDto houseDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        return ResponseEntity.ok(userDataService.house(user, houseDto));
+        return ResponseEntity.ok(userDataService.house(houseDto));
     }
 
     @PutMapping("/house/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<HouseResponseDto> updateHouse(@PathVariable Long id, @RequestBody HouseUpdateDto houseUpdateDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        return ResponseEntity.ok(userDataService.updateHouse(id, user, houseUpdateDto));
+        return ResponseEntity.ok(userDataService.updateHouse(id, houseUpdateDto));
     }
 
     @DeleteMapping("/house/{id}")
@@ -49,9 +42,8 @@ public class UserDataController {
     @PostMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<UserBankbookResponseDto> userBankbook(@RequestBody UserBankbookDto userBankbookDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        return ResponseEntity.ok(userDataService.userBankbook(user, userBankbookDto));
+        return ResponseEntity.ok(userDataService.userBankbook(userBankbookDto));
     }
 
     @PutMapping("/bankbook/{id}")
@@ -72,9 +64,8 @@ public class UserDataController {
     @PostMapping("/house/member")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<HouseMemberResponseDto> houseMember(@RequestBody HouseMemberDto houseMemberDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        return ResponseEntity.ok(userDataService.houseMember(user, houseMemberDto));
+        return ResponseEntity.ok(userDataService.houseMember(houseMemberDto));
     }
 
     @PutMapping("/house/member/{id}")
