@@ -96,13 +96,18 @@ public class UserDataServiceImpl implements UserDataService{
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
-        if (house.equals(user.getHouse()))
-            user.setHouse(null);
-        else if (house.equals(user.getSpouseHouse()))
-            user.setSpouseHouse(null);
-
         for (HouseMember houseMember : houseMemberRepository.findAllByHouse(house)){
             houseMemberRelationRepository.delete(houseMemberRelationRepository.findByOpponent(houseMember).get());
+            houseMemberPropertyRepository.deleteAllByHouseMember(houseMember);
+            for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakRepository.findAllByHouseMember(houseMember)){
+                houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
+                houseMemberChungyakRepository.delete(houseMemberChungyak);
+            }
+
+            if (house.equals(user.getHouse()))
+                user.setHouse(null);
+            else if (house.equals(user.getSpouseHouse()))
+                user.setSpouseHouse(null);
             if (houseMember.equals(user.getHouseMember()))
                 user.setHouseMember(null);
             else if(houseMember.equals(user.getSpouseHouseMember()))
@@ -185,7 +190,30 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberResponseDto(houseMember, houseMemberRelation);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteHouseMember(Long id){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
 
+        houseMemberRelationRepository.delete(houseMemberRelationRepository.findByOpponent(houseMember).get());
+        houseMemberPropertyRepository.deleteAllByHouseMember(houseMember);
+        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakRepository.findAllByHouseMember(houseMember)){
+            houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
+            houseMemberChungyakRepository.delete(houseMemberChungyak);
+        }
+
+        if (houseMember.equals(user.getHouseMember()))
+            user.setHouseMember(null);
+        else if(houseMember.equals(user.getSpouseHouseMember()))
+            user.setSpouseHouseMember(null);
+
+        houseMemberRepository.delete(houseMember);
+
+        return HttpStatus.OK;
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
     public HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
 
@@ -198,8 +226,9 @@ public class UserDataServiceImpl implements UserDataService{
         return houseHolderDto;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
-        HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyDto.getHouseMemberId()).get();
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
 
         HouseMemberProperty houseMemberProperty = houseMemberPropertyDto.toEntity(houseMember);
         houseMemberPropertyRepository.save(houseMemberProperty);
@@ -207,6 +236,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberPropertyResponseDto(houseMemberProperty);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberPropertyResponseDto updateHouseMemberProperty(Long id, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
         HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
         HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDto.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
@@ -217,6 +247,16 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberPropertyResponseDto(houseMemberProperty);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteHouseMemberProperty(Long id){
+        HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+
+        houseMemberPropertyRepository.delete(houseMemberProperty);
+
+        return HttpStatus.OK;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberChungyakResponseDto houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto){
         HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakDto.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
 
@@ -226,6 +266,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberChungyakResponseDto(houseMemberChungyak);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberChungyakResponseDto updateHouseMemberChungyak(Long id, HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
         HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
         HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakUpdateDto.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
@@ -236,6 +277,17 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberChungyakResponseDto(houseMemberChungyak);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteHouseMemberChungyak(Long id){
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
+
+        houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
+        houseMemberChungyakRepository.delete(houseMemberChungyak);
+
+        return HttpStatus.OK;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
         HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionDto.getHouseMemberChungyakId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
 
@@ -245,6 +297,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberChungyakRestrictionResponseDto(houseMemberChungyakRestriction);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberChungyakRestrictionResponseDto updateHouseMemberChungyakRestriction(Long id, HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
         HouseMemberChungyakRestriction houseMemberChungyakRestriction = houseMemberChungyakRestrictionRepository.findById(id).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK_RESTRICTION)));
         HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakRestrictionUpdateDto.getHouseMemberChungyakId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
@@ -253,6 +306,15 @@ public class UserDataServiceImpl implements UserDataService{
         houseMemberChungyakRestrictionRepository.save(houseMemberChungyakRestriction);
 
         return new HouseMemberChungyakRestrictionResponseDto(houseMemberChungyakRestriction);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteHouseMemberChungyakRestriction(Long id){
+        HouseMemberChungyakRestriction houseMemberChungyakRestriction = houseMemberChungyakRestrictionRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK_RESTRICTION));
+
+        houseMemberChungyakRestrictionRepository.delete(houseMemberChungyakRestriction);
+
+        return HttpStatus.OK;
     }
 
 }

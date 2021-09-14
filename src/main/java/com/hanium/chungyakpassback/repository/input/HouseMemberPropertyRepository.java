@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface HouseMemberPropertyRepository extends JpaRepository<HouseMemberProperty, Long> {
 
+    void deleteAllByHouseMember(HouseMember houseMember);
     List<HouseMemberProperty> findAllByHouseMember(HouseMember houseMember);
 }

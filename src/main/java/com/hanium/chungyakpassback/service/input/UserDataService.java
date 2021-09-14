@@ -22,7 +22,7 @@ public interface UserDataService {
 
     HouseMemberResponseDto updateHouseMember(Long id, HouseMemberUpdateDto houseMemberUpdateDto);
 
-//    HouseMemberResponseDto deleteHouseMember(Long id);
+    HttpStatus deleteHouseMember(Long id);
 
     HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto);
 
@@ -30,18 +30,18 @@ public interface UserDataService {
 
     HouseMemberPropertyResponseDto updateHouseMemberProperty(Long id, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto);
 
-//    HouseMemberPropertyResponseDto deleteHouseMemberProperty(Long id);
+    HttpStatus deleteHouseMemberProperty(Long id);
 
     HouseMemberChungyakResponseDto houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto);
 
     HouseMemberChungyakResponseDto updateHouseMemberChungyak(Long id, HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto);
 
-//    HouseMemberChungyakResponseDto deleteHouseMemberChungyak(Long id);
+    HttpStatus deleteHouseMemberChungyak(Long id);
 
     HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto);
 
     HouseMemberChungyakRestrictionResponseDto updateHouseMemberChungyakRestriction(Long id, HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto);
 
-//    HouseMemberChungyakRestrictionResponseDto deleteHouseMemberChungyakRestriction(Long id);
+    HttpStatus deleteHouseMemberChungyakRestriction(Long id);
 
 }
