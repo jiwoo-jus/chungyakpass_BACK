@@ -9,15 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 public class GeneralMinyeongResponseDto {
 
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    Integer americanAge;
-    boolean houseHolderTf;
-    boolean isRestrictedAreaTf;
-    boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    boolean hasHouse;
-    boolean meetBankbookJoinPeriodTf;
-    boolean meetDepositTf;
-    boolean specialTf;
-
+    boolean meetLivingInSurroundArea;
+    boolean meetBankbookType;
+    Integer calcAmericanAge;
+    boolean isHouseholder;
+    boolean isRestrictedArea;
+    boolean meetAllHouseMemberNotWinningIn5years;
+    boolean meetHouseHavingLessThan2Apt;
+    boolean meetBankbookJoinPeriod;
+    boolean meetDeposit;
+    boolean isPriorityApt;
 }

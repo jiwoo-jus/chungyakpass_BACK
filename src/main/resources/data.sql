@@ -50,6 +50,45 @@ VALUES (1, '본인', 'y', 'n', 'n'),
        (14, '손자녀', 'n', 'n', 'y'),
        (15, '손자녀의배우자', 'n', 'n', 'y');
 
+INSERT INTO std_monthly_average_income (monthly_average_income_id, application_public_housing_special_laws,
+                                        special_supply, supply, dual_income, monthly_average_income_excess,
+                                        monthly_average_income_below,
+                                        average_monthly_income3people_less_excess,
+                                        average_monthly_income3people_less_below,
+                                        average_monthly_income4people_less_excess,
+                                        average_monthly_income4people_less_below,
+                                        average_monthly_income5people_less_excess,
+                                        average_monthly_income5people_less_below,
+                                        average_monthly_income6people_less_excess,
+                                        average_monthly_income6people_less_below,
+                                        average_monthly_income7people_less_excess,
+                                        average_monthly_income7people_less_below,
+                                        average_monthly_income8people_less_excess,
+                                        average_monthly_income8people_less_below)
+VALUES (1, 'y', '다자녀가구', null, null, 0, 120, 0, 7236192, 0, 8513046, 0, 8513046, 0, 8872376, 0, 93336280, 0, 9794879);
+VALUES (2, 'y', '노부모부양', null, null, 0, 120, 0, 7236192, 0, 8513046, 0, 8513046, 0, 8872376, 0, 93336280, 0, 9794879);
+VALUES (3, 'n', '신혼부부', '우선공급', 'n', 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0, 7393647, 0, 7778023, 0, 8162399);
+VALUES (4, 'n', '신혼부부', '우선공급', 'y', 100, 120, 6030161, 7236192, 7094206, 8513046, 7094206, 8513046, 7393648, 8872376,
+        7778024, 9333628, 8162400, 9794879);
+VALUES (5, 'n', '신혼부부', '일반공급', 'n', 100, 140, 6030161, 8442224, 7094206, 9931887, 7094206, 9931887, 7393648, 10351106,
+        7778024, 10889232, 8162400, 11427359);
+VALUES (6, 'n', '신혼부부', '일반공급', 'y', 120, 160, 7236193, 9648256, 8513047, 11350728, 8513047, 11350728, 8872377,
+        11829835, 9333629, 12444837, 9794880, 13059838);
+VALUES (7, 'y', '신혼부부', '우선공급', 'n', 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0, 7393647, 0, 7778023, 0, 8162399);
+VALUES (8, 'y', '신혼부부', '우선공급', 'y', 100, 120, 6030161, 7236192, 7094206, 8513046, 7094206, 8513046, 7393648, 8872376,
+        7778024, 9333628, 8162400, 9794879);
+VALUES (9, 'y', '신혼부부', '일반공급', 'n', 100, 130, 6030161, 7839208, 7094206, 9222467, 7094206, 9222467, 7393648,
+        9611741, 7778024, 10111430, 8162400, 10611119);
+VALUES (10, 'y', '신혼부부', '일반공급', 'y', 120, 140, 7236193, 8442224, 8513047, 9931887, 8513047, 9931887, 8872377,
+        10351106, 9333629, 10889232, 9797880, 11427359);
+VALUES (11, 'n', '생애최초', '우선공급', null, 0, 130, 0, 7839208, 0, 9222467, 0, 9222467, 0, 9611741, 0,
+        10111430, 0, 10611119);
+VALUES (12, 'n', '생애최초', '일반공급', null, 130, 160, 7839209, 9648256, 9222468, 11350728, 9222468, 11350728, 9611742,
+        11829835, 10111431, 12444837, 10611120, 13059838);
+VALUES (13, 'y', '생애최초', '우선공급', null, 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0,
+        7393647, 0, 7778023, 0, 8162399);
+VALUES (14, 'y', '생애최초', '일반공급', null, 100, 130, 6030161, 7839208, 7094206, 9222467, 7094206, 9222467, 7393648,
+        9611741, 7778024, 10111430, 8162400, 10611119);
 
 INSERT INTO std_address_level1 (address_level1_id, address_level1, nearby_area, deposit_area, metropolitan_area_yn)
 VALUES (1, '서울', 1, '서울부산', 'y'),
@@ -308,18 +347,57 @@ VALUES (1, 1, '종로구'),
        (235, 17, '제주시'),
        (236, 17, '서귀포시');
 
-INSERT INTO std_monthly_average_income (monthly_average_income_id, application_public_housing_special_laws,
-                                        special_supply, monthly_average_income_excess, monthly_average_income_below,
-                                        average_monthly_income3people_less_excess,
-                                        average_monthly_income3people_less_below,
-                                        average_monthly_income4people_less_excess,
-                                        average_monthly_income4people_less_below,
-                                        average_monthly_income5people_less_excess,
-                                        average_monthly_income5people_less_below,
-                                        average_monthly_income6people_less_excess,
-                                        average_monthly_income6people_less_below,
-                                        average_monthly_income7people_less_excess,
-                                        average_monthly_income7people_less_below,
-                                        average_monthly_income8people_less_excess,
-                                        average_monthly_income8people_less_below)
-VALUES (1, 'y', '다자녀가구', 0, 120, 0, 7236192, 0, 8513046, 0, 8513046, 0, 8872376, 0, 93336280, 0, 9794879);
+
+
+
+
+-- INSERT INTO std_monthly_average_income (monthly_average_income_id, application_public_housing_special_laws,
+--                                         special_supply, monthly_average_income_excess, monthly_average_income_below,
+--                                         average_monthly_income3people_less_excess,
+--                                         average_monthly_income3people_less_below,
+--                                         average_monthly_income4people_less_excess,
+--                                         average_monthly_income4people_less_below,
+--                                         average_monthly_income5people_less_excess,
+--                                         average_monthly_income5people_less_below,
+--                                         average_monthly_income6people_less_excess,
+--                                         average_monthly_income6people_less_below,
+--                                         average_monthly_income7people_less_excess,
+--                                         average_monthly_income7people_less_below,
+--                                         average_monthly_income8people_less_excess,
+--                                         average_monthly_income8people_less_below)
+-- VALUES (1, 'y', '다자녀가구', 0, 120, 0, 7236192, 0, 8513046, 0, 8513046, 0, 8872376, 0, 93336280, 0, 9794879);
+-- VALUES (2, 'y', '노부모부양', 0, 120, 0, 7236192, 0, 8513046, 0, 8513046, 0, 8872376, 0, 93336280, 0, 9794879);
+--
+-- INSERT INTO std_monthly_average_income (monthly_average_income_id, application_public_housing_special_laws,
+--                                         special_supply, supply, dual_income, monthly_average_income_excess,
+--                                         monthly_average_income_below,
+--                                         average_monthly_income3people_less_excess,
+--                                         average_monthly_income3people_less_below,
+--                                         average_monthly_income4people_less_excess,
+--                                         average_monthly_income4people_less_below,
+--                                         average_monthly_income5people_less_excess,
+--                                         average_monthly_income5people_less_below,
+--                                         average_monthly_income6people_less_excess,
+--                                         average_monthly_income6people_less_below,
+--                                         average_monthly_income7people_less_excess,
+--                                         average_monthly_income7people_less_below,
+--                                         average_monthly_income8people_less_excess,
+--                                         average_monthly_income8people_less_below)
+-- VALUES (3, 'n', '신혼부부', '우선공급', 'n', 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0, 7393647, 0, 7778023, 0, 8162399);
+-- VALUES (4, 'n', '신혼부부', '우선공급', 'y', 100, 120, 6030161, 7236192, 7094206, 8513046, 7094206, 8513046, 7393648, 8872376,
+--         7778024, 9333628, 8162400, 9794879);
+-- VALUES (5, 'y', '신혼부부', '특별공급가점', 'n', NULL, 80, NULL, 4824128, NULL, 5675364, NULL, 5675364),
+-- VALUES (6, 'y', '신혼부부', '특별공급가점', 'y', NULL, 100, NULL, 6030160, NULL, 7094205, NULL, 7094205),
+--
+-- VALUES (7, 'n', '신혼부부', '일반공급', 'n', 100, 140, 6030161, 8442224, 7094206, 9931887, 7094206, 9931887, 7393648, 10351106,
+--         7778024, 10889232, 8162400, 11427359);
+-- VALUES (8, 'n', '신혼부부', '일반공급', 'y', 120, 160, 7236193, 9648256, 8513047, 11350728, 8513047, 11350728, 8872377,
+--         11829835, 9333629, 12444837, 9794880, 13059838);
+--
+-- VALUES (9, 'y', '신혼부부', '우선공급', 'n', 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0, 7393647, 0, 7778023, 0, 8162399);
+-- VALUES (10, 'y', '신혼부부', '우선공급', 'y', 100, 120, 6030161, 7236192, 7094206, 8513046, 7094206, 8513046, 7393648, 8872376,
+--         7778024, 9333628, 8162400, 9794879);
+-- VALUES (11, 'y', '신혼부부', '일반공급', 'n', 100, 130, 6030161, 7839208, 7094206, 9222467, 7094206, 9222467, 7393648,
+--         9611741, 7778024, 10111430, 8162400, 10611119);
+-- VALUES (12, 'y', '신혼부부', '일반공급', 'y', 120, 140, 7236193, 8442224, 8513047, 9931887, 8513047, 9931887, 8872377,
+--         10351106, 9333629, 10889232, 9797880, 11427359);

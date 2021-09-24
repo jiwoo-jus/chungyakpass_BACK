@@ -24,28 +24,33 @@ import java.util.Optional;
 @RequestMapping("/verification")
 public class VerificationController {
     private final UserRepository userRepository;
+    private final AptInfoRepository aptInfoRepository;
+    private final AptInfoTargetRepository aptInfoTargetRepository;
     private final GeneralPrivateVerificationService generalPrivateVerificationService;
     private final GeneralKookminVerificationService generalKookminVerificationService;
     private final SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService;
     private final SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService;
     private final SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService;
     private final SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService;
-    private final AptInfoRepository aptInfoRepository;
-    private final AptInfoTargetRepository aptInfoTargetRepository;
+    private final SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService;
+    private final SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService;
 
-    public VerificationController(UserRepository userRepository, GeneralPrivateVerificationService generalPrivateVerificationService, GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository) {
+
+    public VerificationController(UserRepository userRepository,SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService,SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService, GeneralPrivateVerificationService generalPrivateVerificationService, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository,GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService) {
         this.userRepository = userRepository;
         this.generalPrivateVerificationService = generalPrivateVerificationService;
+        this.specialPrivateVerificationFirstLifeService = specialPrivateVerificationFirstLifeService;
+        this.specialPublicVerificationFirstLifeService =  specialPublicVerificationFirstLifeService;
+        this.aptInfoRepository = aptInfoRepository;
+        this.aptInfoTargetRepository = aptInfoTargetRepository;
         this.generalKookminVerificationService = generalKookminVerificationService;
         this.specialPrivateMultiChildVerificationService = specialPrivateMultiChildVerificationService;
         this.specialKookminPublicMultiChildVerificationService = specialKookminPublicMultiChildVerificationService;
         this.specialPrivateOldParentVerificationService = specialPrivateOldParentVerificationService;
         this.specialKookminPublicOldParentVerificationService = specialKookminPublicOldParentVerificationService;
-        this.aptInfoRepository = aptInfoRepository;
-        this.aptInfoTargetRepository = aptInfoTargetRepository;
     }
 
-    @PostMapping("/general/minyeong") //일반민영
+    @PostMapping("/general/minyeoung")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<GeneralMinyeongResponseDto> generalMinyeong(@RequestBody GeneralMinyeongDto generalMinyeongDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
@@ -53,19 +58,19 @@ public class VerificationController {
         AptInfo aptInfo = aptInfoRepository.findById(generalMinyeongDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(generalMinyeongDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
-        boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
-        boolean accountTf = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
-        Integer americanAge = generalPrivateVerificationService.calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
-        boolean houseHolderTf = generalPrivateVerificationService.isHouseholder(user);
-        boolean isRestrictedAreaTf = generalPrivateVerificationService.isRestrictedArea(aptInfo);
-        boolean meetAllHouseMemberNotWinningIn5yearsTf = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);
+        boolean meetLivingInSurroundArea = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
+        boolean meetBankbookType = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
+        Integer calcAmericanAge = generalPrivateVerificationService.calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
+        boolean isHouseholder = generalPrivateVerificationService.isHouseholder(user);
+        boolean isRestrictedArea = generalPrivateVerificationService.isRestrictedArea(aptInfo);
+        boolean meetAllHouseMemberNotWinningIn5years = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);
         boolean meetHouseHavingLessThan2Apt = generalPrivateVerificationService.meetHouseHavingLessThan2Apt(user);
-        boolean meetBankbookJoinPeriodTf = generalPrivateVerificationService.meetBankbookJoinPeriod(user, aptInfo);
-        boolean meetDepositTf = generalPrivateVerificationService.meetDeposit(user, aptInfoTarget);
-        boolean specialTf = generalPrivateVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
+        boolean meetBankbookJoinPeriod = generalPrivateVerificationService.meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetDeposit = generalPrivateVerificationService.meetDeposit(user, aptInfoTarget);
+        boolean isPriorityApt = generalPrivateVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
 
 
-        return new ResponseEntity<>(new GeneralMinyeongResponseDto(meetLivingInSurroundAreaTf, accountTf, americanAge, houseHolderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetHouseHavingLessThan2Apt, meetBankbookJoinPeriodTf, meetDepositTf, specialTf), HttpStatus.OK);
+        return new ResponseEntity<>(new GeneralMinyeongResponseDto(meetLivingInSurroundArea, meetBankbookType, calcAmericanAge, isHouseholder, isRestrictedArea, meetAllHouseMemberNotWinningIn5years, meetHouseHavingLessThan2Apt, meetBankbookJoinPeriod, meetDeposit, isPriorityApt), HttpStatus.OK);
     }
 
     @PostMapping("/general/kookmin") //일반국민
@@ -182,4 +187,35 @@ public class VerificationController {
 
         return new ResponseEntity<>(new SpecialKookminPublicOldParentResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
     }
+
+
+    @PostMapping("/special/private/firstLife")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialPrivateFirstLifeResponseDto> generalMinyeong(@RequestBody SpecialPrivateFirstLifeDto specialPrivateFirstLifeDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfo aptInfo = aptInfoRepository.findById(specialPrivateFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPrivateFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        boolean targetHousingType = specialPrivateVerificationFirstLifeService.targetHousingType(aptInfoTarget);
+        boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
+        boolean monthOfAverageIncome = specialPrivateVerificationFirstLifeService.monthOfAverageIncome(user);
+        boolean HomelessYn = specialPrivateVerificationFirstLifeService.HomelessYn(user);
+        boolean vaildObject = specialPrivateVerificationFirstLifeService.vaildObject(user, aptInfo);
+        return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType,targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/public/firstLife")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialPublicFirstLifeResponseDto> generalMinyeong(@RequestBody SpecialPublicFirstLifeDto specialPublicFirstLifeDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfo aptInfo = aptInfoRepository.findById(specialPublicFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
+        boolean monthOfAverageIncome = specialPublicVerificationFirstLifeService.monthOfAverageIncome(user);
+        boolean HomelessYn = specialPublicVerificationFirstLifeService.HomelessYn(user);
+        boolean vaildObject = specialPublicVerificationFirstLifeService.vaildObject(user, aptInfo);
+        boolean meetDeposit = specialPublicVerificationFirstLifeService.meetDeposit(user);
+
+        return new ResponseEntity<>(new SpecialPublicFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject,meetDeposit), HttpStatus.OK);
+    }
+
 }

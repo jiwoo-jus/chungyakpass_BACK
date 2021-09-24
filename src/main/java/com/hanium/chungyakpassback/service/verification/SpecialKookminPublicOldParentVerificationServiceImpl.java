@@ -81,7 +81,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
     @Override
     public boolean meetMonthlyAverageIncome(User user) { //월평균소득기준충족여부
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
-        Income income = incomeRepository.findBySpecialSupply(SpecialSupply.다자녀가구).get();
+        Income income = incomeRepository.findBySpecialSupply(SpecialSupply.노부모부양).get();
 
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
