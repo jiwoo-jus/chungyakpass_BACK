@@ -308,4 +308,18 @@ VALUES (1, 1, '종로구'),
        (235, 17, '제주시'),
        (236, 17, '서귀포시');
 
-
+INSERT INTO std_monthly_average_income (monthly_average_income_id, application_public_housing_special_laws,
+                                        special_supply, monthly_average_income_excess, monthly_average_income_below,
+                                        average_monthly_income3people_less_excess,
+                                        average_monthly_income3people_less_below,
+                                        average_monthly_income4people_less_excess,
+                                        average_monthly_income4people_less_below,
+                                        average_monthly_income5people_less_excess,
+                                        average_monthly_income5people_less_below,
+                                        average_monthly_income6people_less_excess,
+                                        average_monthly_income6people_less_below,
+                                        average_monthly_income7people_less_excess,
+                                        average_monthly_income7people_less_below,
+                                        average_monthly_income8people_less_excess,
+                                        average_monthly_income8people_less_below)
+VALUES (1, 'y', '다자녀가구', 0, 120, 0, 7236192, 0, 8513046, 0, 8513046, 0, 8872376, 0, 93336280, 0, 9794879);

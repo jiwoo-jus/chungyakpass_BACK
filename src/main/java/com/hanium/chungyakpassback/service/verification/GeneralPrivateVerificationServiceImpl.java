@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class GeneralPrivateVerificationServiceImpl implements com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService {
+public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVerificationService {
 
     final HouseMemberRepository houseMemberRepository;
     final HouseRepository houseRepository;
