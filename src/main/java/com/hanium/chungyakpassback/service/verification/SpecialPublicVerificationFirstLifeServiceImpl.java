@@ -8,6 +8,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.enumtype.SpecialSupply;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
@@ -109,7 +110,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
     public boolean vaildObject(User user, AptInfo aptInfo) {
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         for (int i = 0; i < houseMemberRelationList.size(); i++) {
-            if (user.getSpouseHouseMember() != null || (houseMemberRelationList.get(i).getRelation().getId().equals(11L)&&houseMemberRelationList.get(i).getOpponent().getMarriageDate()==null)) {
+            if (user.getSpouseHouseMember() != null || (houseMemberRelationList.get(i).getRelation().getRelation().equals(Relation.자녀_일반)&&houseMemberRelationList.get(i).getOpponent().getMarriageDate()==null)) {
                 if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y)) {
                     if (!generalPrivateVerificationServiceImpl.meetAllHouseMemberNotWinningIn5years(user)) {
                         return false;

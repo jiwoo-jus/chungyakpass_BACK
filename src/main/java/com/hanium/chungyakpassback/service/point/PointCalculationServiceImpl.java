@@ -73,16 +73,20 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         int point = 0;
         Integer totalHouseCount = generalPrivateVerificationServiceImpl.getHouseMember(user);
         if (totalHouseCount == 0) {
-            if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
-                // 본인정보로 등급을 매겨야 한다.
-                lateDateList = periodHomeless(user.getHouseMember());
-                System.out.println(lateDateList);
-            }
+                if(user.getSpouseHouseMember()!=null&&user.getSpouseHouseMember().getMarriageDate()==null){
+                    throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
+                }
+                else if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
+
+                    lateDateList = periodHomeless(user.getHouseMember());
+                    System.out.println(lateDateList);
+                }
+                else {
+                    periodHomeless(user.getHouseMember());
+                    periodHomeless(user.getSpouseHouseMember());
+                }
+
             // 배우자가 결혼 후에 팔았을 때 또는 집판날과 결혼한날이 같을 때
-            else {
-                periodHomeless(user.getHouseMember());
-                periodHomeless(user.getSpouseHouseMember());
-            }
             //반환값을 가지고 늦은 순서대로 정렬
             lateDateList.sort(Collections.reverseOrder());
             LocalDate mostLateDate = lateDateList.get(0);

@@ -76,6 +76,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         if (generalPrivateVerificationServiceImpl.getHouseMember(user) != 0) {
             throw new CustomException(ErrorCode.BAD_REQUEST_HOMELESS);
         }
+        else if(user.getSpouseHouseMember()!= null&&user.getSpouseHouseMember().getMarriageDate()==null){
+            throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
+        }
         else{
             if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
                 // 본인정보로 등급을 매겨야 한다.
