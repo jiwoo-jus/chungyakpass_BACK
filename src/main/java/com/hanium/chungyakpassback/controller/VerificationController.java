@@ -50,7 +50,7 @@ public class VerificationController {
         this.specialKookminPublicOldParentVerificationService = specialKookminPublicOldParentVerificationService;
     }
 
-    @PostMapping("/general/minyeoung")
+    @PostMapping("/general/minyeong")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<GeneralMinyeongResponseDto> generalMinyeong(@RequestBody GeneralMinyeongDto generalMinyeongDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
