@@ -34,6 +34,7 @@ public enum ErrorCode {
     NOT_FOUND_RELATION(NOT_FOUND, "관계를 찾을 수 없습니다"),
     NOT_FOUND_BIRTHDAY(NOT_FOUND, "회원의 생년월일을 찾을 수 없습니다"),
     NOT_FOUND_APT(NOT_FOUND, "주택 정보를 찾을 수 없습니다"),
+    NOT_FOUND_MARRIAGES(NOT_FOUND, "혼인신고일을 찾을 수 없습니다"),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
