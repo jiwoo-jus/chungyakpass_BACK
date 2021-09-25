@@ -8,6 +8,9 @@ import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.enumtype.Relation;
+import com.hanium.chungyakpassback.enumtype.Supply;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
@@ -50,16 +53,12 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         int Minors = 0;
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
-            if (houseMemberRelation.getRelation().getId().equals(11L)) {
-                if (houseMemberRelation.getOpponent().getBirthDay() == null) {
-                    Minors++;
-                } else {
+            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)&&houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아)) {
                     LocalDate childrenBirthDay = houseMemberRelation.getOpponent().getBirthDay();
                     if (generalPrivateVerificationServiceImpl.calcAmericanAge(childrenBirthDay) < standardAge) {
                         System.out.println("!!!!!!!!!1" + Minors);
                         Minors++;
                     }
-                }
             }
         }
         System.out.println("Minors"+Minors);
@@ -80,10 +79,10 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
 
     @Override
     public Integer ageOfMostYoungChild(User user) {
-        List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUserAndRelationId(user, 11L);
+        List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         System.out.println("!!!!!!1" + houseMemberRelationList);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
-            if (houseMemberRelation.getOpponent().getBirthDay() != null) {
+            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)){
                 minorsBirthDateList.add(houseMemberRelation.getOpponent().getBirthDay());
             }
         }
@@ -135,6 +134,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     @Override
     public Integer monthOfAverageIncome(User user) {
         List<HouseMember> houseMemberList = new ArrayList<>();
+       List<Income> incomeList = incomeRepository.findAllBySupply(Supply.특별공급가점);
         houseMemberList.add(user.getHouseMember());
         int numberOfHouseMember = houseMemberList.size();
         for (HouseMember houseMember : houseMemberList) {
@@ -147,18 +147,21 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
 
         if (user.getSpouseHouseMember() != null) {
             if (user.getSpouseHouseMember().getIncome() != null) {
-                if((user.getHouseMember().getIncome()<= meetYnOfAverageMonthlyIncome(incomeRepository.findById(5L).get(), numberOfHouseMember))||
-                        (user.getSpouseHouseMember().getIncome()<= meetYnOfAverageMonthlyIncome(incomeRepository.findById(5L).get(), numberOfHouseMember))) {
-                    Income monthlyAverageIncome = incomeRepository.findById(6L).get();
-                    meetYnOfAverageMonthlyIncome(monthlyAverageIncome, numberOfHouseMember);
-                    return monthOfAverageIncomeGetPoint;
+                for (Income income : incomeList) {
+                    if (income.getDualIncome().equals(Yn.y)) {
+                        meetYnOfAverageMonthlyIncome(income, numberOfHouseMember);
+                        return monthOfAverageIncomeGetPoint;
+                    }
                 }
             }
         }
         else {
-            Income monthlyAverageIncome = incomeRepository.findById(5L).get();
-            meetYnOfAverageMonthlyIncome(monthlyAverageIncome, numberOfHouseMember);
-            return monthOfAverageIncomeGetPoint;
+            for (Income income : incomeList) {
+                if (income.getDualIncome().equals(Yn.n)) {
+                    meetYnOfAverageMonthlyIncome(income, numberOfHouseMember);
+                    return monthOfAverageIncomeGetPoint;
+                }
+            }
         }
         return monthOfAverageIncomeGetPoint;
     }

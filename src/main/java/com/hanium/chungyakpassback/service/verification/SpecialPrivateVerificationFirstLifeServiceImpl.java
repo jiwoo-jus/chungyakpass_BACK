@@ -6,8 +6,7 @@ import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.standard.Income;
-import com.hanium.chungyakpassback.enumtype.ErrorCode;
-import com.hanium.chungyakpassback.enumtype.Yn;
+import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoAmountRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
@@ -35,7 +34,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     final PointCalculationServiceImpl pointCalculationServiceImpl;
 
     @Override
-    public boolean HomelessYn(User user){
+    public boolean HomelessYn(User user) {
         Integer houseCount = generalPrivateVerificationServiceImpl.getHouseMember(user);
         System.out.println("houseCount!!!" + houseCount);
         if (houseCount < 1)//houseCount가 2개 미만이면 true 아니면 false-0으로 할 수도 있음
@@ -91,6 +90,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     public boolean monthOfAverageIncome(User user) {
         Integer houseMemberIncome = 0;
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
+        List<Income> incomeList = incomeRepository.findAllBySpecialSupply(SpecialSupply.생애최초);
         int numberOfHouseMember = houseMemberList.size();
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
@@ -100,20 +100,20 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
                 }
             }
         }
-        Income monthlyAverageIncomeFirst = incomeRepository.findById(15L).get();
-        Income monthlyAverageIncomeOfGeneral = incomeRepository.findById(16L).get();
-        System.out.println("houseMemberIncome6!!!"+houseMemberIncome);
-        if ((meetYnOfAverageMonthlyIncome(monthlyAverageIncomeOfGeneral, numberOfHouseMember,houseMemberIncome) || meetYnOfAverageMonthlyIncome(monthlyAverageIncomeFirst, numberOfHouseMember,houseMemberIncome))) {
-            return true;
+        for (int i = 0; i < incomeList.size(); i++) {
+            if (meetYnOfAverageMonthlyIncome(incomeList.get(i), numberOfHouseMember, houseMemberIncome)) {
+                return true;
+            }
+            return false;
         }
         return false;
     }
 
-@Override
+    @Override
     public boolean vaildObject(User user, AptInfo aptInfo) {
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         for (int i = 0; i < houseMemberRelationList.size(); i++) {
-            if (user.getSpouseHouseMember() != null || (houseMemberRelationList.get(i).getRelation().getId().equals(11L)&&houseMemberRelationList.get(i).getOpponent().getMarriageDate()==null)) {
+            if (user.getSpouseHouseMember() != null || (houseMemberRelationList.get(i).getRelation().getRelation().equals(Relation.자녀_일반) && houseMemberRelationList.get(i).getOpponent().getMarriageDate() == null)) {
                 if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y)) {
                     if (!generalPrivateVerificationServiceImpl.meetAllHouseMemberNotWinningIn5years(user)) {
                         return false;

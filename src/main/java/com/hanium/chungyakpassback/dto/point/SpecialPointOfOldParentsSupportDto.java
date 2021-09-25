@@ -14,7 +14,6 @@ import java.util.List;
 
 public class SpecialPointOfOldParentsSupportDto {
     Long houseMemberId;
-    SpecialSupply specialSupply;
     Yn parentsDeathYn;
     Yn divorceYn;
     Yn sameResidentRegistrationYn;

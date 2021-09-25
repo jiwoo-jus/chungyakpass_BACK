@@ -4,6 +4,7 @@ import com.hanium.chungyakpassback.dto.point.GeneralMinyeongPointDto;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.entity.standard.Bankbook;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
@@ -106,8 +107,8 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             System.out.println("homelessYn2");
             Optional<HouseMemberRelation> houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember);
             if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
-                for (long o = 3L; o <= 10L; o++) {
-                    if (houseMemberRelation.get().getRelation().getId().equals(o) && generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 60) {
+                if ((houseMemberRelation.get().getRelation().getRelation().equals(Relation.부)||houseMemberRelation.get().getRelation().getRelation().equals(Relation.모)|| houseMemberRelation.get().getRelation().getRelation().equals(Relation.조부)||houseMemberRelation.get().getRelation().getRelation().equals(Relation.조모)|| houseMemberRelation.get().getRelation().getRelation().equals(Relation.배우자의부)||houseMemberRelation.get().getRelation().getRelation().equals(Relation.배우자의모)||houseMemberRelation.get().getRelation().getRelation().equals(Relation.배우자의조부)||houseMemberRelation.get().getRelation().getRelation().equals(Relation.배우자의조모))) {
+                    if(generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 60) {
                             resultOfHomelessYnList.add(Boolean.TRUE);
                     }
                 }
@@ -162,26 +163,19 @@ public class PointCalculationServiceImpl implements PointCalculationService {
 
             if (generalMinyeongPoint.getStayOverYn().equals(Yn.n)&&generalMinyeongPoint.getSameResidentRegistrationYn().equals(Yn.y)&&houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n)){
 
-            for (long i = 3L; i <= 4L; i++) {
-                if (houseMemberRelation.getRelation().getId().equals(i) && houseMemberRelation.getUser().equals(user) ) {
-                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation, parents);
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부)||houseMemberRelation.getRelation().getRelation().equals(Relation.모))  && houseMemberRelation.getUser().equals(user) ) {
+                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation,parents);
                 }
-            }
-            for (long i = 5L; i <= 6L; i++) {
-                if (houseMemberRelation.getRelation().getId().equals(i) && houseMemberRelation.getUser().equals(user)) {
-                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation, parents);
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.조모)) && houseMemberRelation.getUser().equals(user)) {
+                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation,parents);
                 }
-            }
-            for (long i = 7L; i <= 8L; i++) {
-                if (houseMemberRelation.getRelation().getId().equals(i) && houseMemberRelation.getUser().equals(user)) {
-                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation, parents);
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모)) && houseMemberRelation.getUser().equals(user)) {
+                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation,parents);
                 }
-            }
-            for (long i = 9L; i <= 10L; i++) {
-                if (houseMemberRelation.getRelation().getId().equals(i) && houseMemberRelation.getUser().equals(user)) {
-                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation, parents);
+
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모)) && houseMemberRelation.getUser().equals(user)) {
+                    numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation,parents);
                 }
-            }
         }
         System.out.println("!!!!!!!!!numberOfFamilylast");
         return numberOfFamily;
@@ -212,7 +206,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
                 }
             }
             else {
-                if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getId().equals(13L) && generalMinyeongPoint.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getId().equals(11L))) {//부모가 죽은 미혼 손자녀
+                if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && generalMinyeongPoint.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
                         if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
                             if (generalMinyeongPoint.getDivorceYn().equals(Yn.n)) {
                                 if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {

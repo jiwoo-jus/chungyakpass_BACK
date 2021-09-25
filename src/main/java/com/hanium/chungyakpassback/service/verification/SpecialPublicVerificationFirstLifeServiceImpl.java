@@ -8,6 +8,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.enumtype.SpecialSupply;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoAmountRepository;
@@ -85,6 +86,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
     public boolean monthOfAverageIncome(User user) {
         Integer houseMemberIncome = 0;
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
+        List<Income> incomeList = incomeRepository.findAllBySpecialSupply(SpecialSupply.생애최초);
         int numberOfHouseMember = houseMemberList.size();
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
@@ -94,11 +96,11 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
                 }
             }
         }
-        Income monthlyAverageIncomeFirst = incomeRepository.findById(7L).get();
-        Income monthlyAverageIncomeOfGeneral = incomeRepository.findById(8L).get();
-        System.out.println("houseMemberIncome6!!!"+houseMemberIncome);
-        if ((meetYnOfAverageMonthlyIncome(monthlyAverageIncomeOfGeneral, numberOfHouseMember,houseMemberIncome) || meetYnOfAverageMonthlyIncome(monthlyAverageIncomeFirst, numberOfHouseMember,houseMemberIncome))) {
-            return true;
+        for (int i = 0; i < incomeList.size(); i++) {
+            if (meetYnOfAverageMonthlyIncome(incomeList.get(i), numberOfHouseMember, houseMemberIncome)) {
+                return true;
+            }
+            return false;
         }
         return false;
     }
