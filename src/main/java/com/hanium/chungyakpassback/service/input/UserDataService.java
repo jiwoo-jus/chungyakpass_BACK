@@ -5,6 +5,8 @@ import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.enumtype.Relation;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 public interface UserDataService {
     UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto);
 
@@ -26,7 +28,7 @@ public interface UserDataService {
 
     HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto);
 
-    HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
+    List<HouseMemberPropertyResponseDto> houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
 
     HouseMemberPropertyResponseDto updateHouseMemberProperty(Long id, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto);
 

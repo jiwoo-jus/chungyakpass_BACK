@@ -10,6 +10,7 @@ import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +18,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseMemberPropertyDto {
+
+    @Getter
+    private List<HouseMemberPropertyDto> houseMemberPropertyDtos;
 
     private Long houseMemberId; //세대구성원id
 

@@ -18,6 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -234,13 +237,15 @@ public class UserDataServiceImpl implements UserDataService{
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
-        HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
-
-        HouseMemberProperty houseMemberProperty = houseMemberPropertyDto.toEntity(houseMember);
-        houseMemberPropertyRepository.save(houseMemberProperty);
-
-        return new HouseMemberPropertyResponseDto(houseMemberProperty);
+    public List<HouseMemberPropertyResponseDto> houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
+        ArrayList<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtos = new ArrayList<>();
+        for (HouseMemberPropertyDto houseMemberPropertyDtoSingle : houseMemberPropertyDto.getHouseMemberPropertyDtos()) {
+            HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+            HouseMemberProperty houseMemberProperty = houseMemberPropertyDtoSingle.toEntity(houseMember);
+            houseMemberPropertyRepository.save(houseMemberProperty);
+            houseMemberPropertyResponseDtos.add(new HouseMemberPropertyResponseDto(houseMemberProperty));
+        }
+        return houseMemberPropertyResponseDtos;
     }
 
     @Transactional(rollbackFor = Exception.class)

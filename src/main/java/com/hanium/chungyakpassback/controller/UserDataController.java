@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
@@ -92,7 +94,7 @@ public class UserDataController {
 
     @PostMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseMemberPropertyResponseDto> houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
+    public ResponseEntity<List<HouseMemberPropertyResponseDto>> houseMemberProperty(@RequestBody HouseMemberPropertyDto houseMemberPropertyDto){
 
         return ResponseEntity.ok(userDataService.houseMemberProperty(houseMemberPropertyDto));
     }
