@@ -32,6 +32,8 @@ public class HouseMemberPropertyResponseDto {
 
     private Yn metropolitanBuildingYn; //건물수도권여부
 
+    private Yn exceptionHouseYn; //주택예외사항해당여부
+
     private LocalDate acquisitionDate; //취득일
 
     private LocalDate dispositionDate; //처분일
@@ -53,6 +55,7 @@ public class HouseMemberPropertyResponseDto {
         this.residentialBuilding = houseMemberProperty.getResidentialBuilding();
         this.nonResidentialBuilding = houseMemberProperty.getNonResidentialBuilding();
         this.metropolitanBuildingYn = houseMemberProperty.getMetropolitanBuildingYn();
+        this.exceptionHouseYn = houseMemberProperty.getExceptionHouseYn();
         this.acquisitionDate = houseMemberProperty.getAcquisitionDate();
         this.dispositionDate = houseMemberProperty.getDispositionDate();
         this.exclusiveArea = houseMemberProperty.getExclusiveArea();

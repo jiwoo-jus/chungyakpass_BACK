@@ -29,6 +29,8 @@ public class HouseMemberPropertyUpdateDto {
 
     private Yn metropolitanBuildingYn; //건물수도권여부
 
+    private Yn exceptionHouseYn; //주택예외사항해당여부
+
     private LocalDate acquisitionDate; //취득일
 
     private LocalDate dispositionDate; //처분일
