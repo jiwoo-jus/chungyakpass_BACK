@@ -47,7 +47,7 @@ public class HouseMemberProperty {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Yn metropolitanYn; //건물수도권여부
+    private Yn metropolitanBuildingYn; //건물수도권여부
 
     @Column
     private LocalDate acquisitionDate; //취득일
@@ -66,14 +66,14 @@ public class HouseMemberProperty {
 
 
     @Builder
-    public HouseMemberProperty(HouseMember houseMember, Property property, Yn saleRightYn, Yn residentialBuildingYn, ResidentialBuilding residentialBuilding, NonResidentialBuilding nonResidentialBuilding, Yn metropolitanYn, LocalDate acquisitionDate, LocalDate dispositionDate, Integer exclusiveArea, Integer amount, LocalDate taxBaseDate) {
+    public HouseMemberProperty(HouseMember houseMember, Property property, Yn saleRightYn, Yn residentialBuildingYn, ResidentialBuilding residentialBuilding, NonResidentialBuilding nonResidentialBuilding, Yn metropolitanBuildingYn, LocalDate acquisitionDate, LocalDate dispositionDate, Integer exclusiveArea, Integer amount, LocalDate taxBaseDate) {
         this.houseMember = houseMember;
         this.property = property;
         this.saleRightYn = saleRightYn;
         this.residentialBuildingYn = residentialBuildingYn;
         this.residentialBuilding = residentialBuilding;
         this.nonResidentialBuilding = nonResidentialBuilding;
-        this.metropolitanYn = metropolitanYn;
+        this.metropolitanBuildingYn = metropolitanBuildingYn;
         this.acquisitionDate = acquisitionDate;
         this.dispositionDate = dispositionDate;
         this.exclusiveArea = exclusiveArea;
@@ -88,7 +88,7 @@ public class HouseMemberProperty {
         this.residentialBuildingYn = houseMemberPropertyUpdateDto.getResidentialBuildingYn();
         this.residentialBuilding = houseMemberPropertyUpdateDto.getResidentialBuilding();
         this.nonResidentialBuilding = houseMemberPropertyUpdateDto.getNonResidentialBuilding();
-        this.metropolitanYn = houseMemberPropertyUpdateDto.getMetropolitanYn();
+        this.metropolitanBuildingYn = houseMemberPropertyUpdateDto.getMetropolitanBuildingYn();
         this.acquisitionDate = houseMemberPropertyUpdateDto.getAcquisitionDate();
         this.dispositionDate = houseMemberPropertyUpdateDto.getDispositionDate();
         this.exclusiveArea = houseMemberPropertyUpdateDto.getExclusiveArea();

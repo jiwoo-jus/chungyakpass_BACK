@@ -30,7 +30,7 @@ public class HouseMemberPropertyResponseDto {
 
     private NonResidentialBuilding nonResidentialBuilding; //비주거용건물유형
 
-    private Yn metropolitanYn; //건물수도권여부
+    private Yn metropolitanBuildingYn; //건물수도권여부
 
     private LocalDate acquisitionDate; //취득일
 
@@ -52,7 +52,7 @@ public class HouseMemberPropertyResponseDto {
         this.residentialBuildingYn = houseMemberProperty.getResidentialBuildingYn();
         this.residentialBuilding = houseMemberProperty.getResidentialBuilding();
         this.nonResidentialBuilding = houseMemberProperty.getNonResidentialBuilding();
-        this.metropolitanYn = houseMemberProperty.getMetropolitanYn();
+        this.metropolitanBuildingYn = houseMemberProperty.getMetropolitanBuildingYn();
         this.acquisitionDate = houseMemberProperty.getAcquisitionDate();
         this.dispositionDate = houseMemberProperty.getDispositionDate();
         this.exclusiveArea = houseMemberProperty.getExclusiveArea();
