@@ -99,19 +99,26 @@ public class UserDataController {
         return ResponseEntity.ok(userDataService.houseMemberProperty(houseMemberPropertyDto));
     }
 
-    @PutMapping("/house/member/property/{id}")
+    @PutMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseMemberPropertyResponseDto> updateHouseMemberProperty(@PathVariable Long id, @RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+    public ResponseEntity<List<HouseMemberPropertyResponseDto>> updateHouseMemberProperty(@RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
 
-        return ResponseEntity.ok(userDataService.updateHouseMemberProperty(id, houseMemberPropertyUpdateDto));
+        return ResponseEntity.ok(userDataService.updateHouseMemberProperty(houseMemberPropertyUpdateDto));
     }
 
-    @DeleteMapping("/house/member/property/{id}")
+    @DeleteMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity deleteHouseMemberProperty(@PathVariable Long id){
+    public ResponseEntity deleteHouseMemberProperty(@RequestBody HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
 
-        return new ResponseEntity(userDataService.deleteHouseMemberProperty(id));
+        return new ResponseEntity(userDataService.deleteHouseMemberProperty(houseMemberPropertyDeleteDto));
     }
+
+    //    @DeleteMapping("/house/member/property/{id}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//    public ResponseEntity deleteHouseMemberProperty(@PathVariable Long id){
+//
+//        return new ResponseEntity(userDataService.deleteHouseMemberProperty(id));
+//    }
 
     @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")

@@ -19,8 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class HouseMemberPropertyDto {
 
-    @Getter
-    private List<HouseMemberPropertyDto> houseMemberPropertyDtos;
+    private List<HouseMemberPropertyDto> houseMemberPropertyDtoList;
 
     private Long houseMemberId; //세대구성원id
 

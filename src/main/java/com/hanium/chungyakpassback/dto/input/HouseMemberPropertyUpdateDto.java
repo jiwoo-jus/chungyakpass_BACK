@@ -7,6 +7,7 @@ import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +15,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseMemberPropertyUpdateDto {
+
+    private List<HouseMemberPropertyUpdateDto> houseMemberPropertyUpdateDtoList;
+
+    private Long houseMemberPropertyId; //세대구성원자산id
 
     private Long houseMemberId; //세대구성원id
 
