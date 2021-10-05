@@ -268,17 +268,17 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         Integer houseCount = 0;
         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
         List<HouseMember> wifeHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
-        List<HouseMember> copleHouMemberList = new ArrayList<>();
-        copleHouMemberList.addAll(houseMemberList);
-        copleHouMemberList.addAll(wifeHouseMemberList);
+        List<HouseMember> coupleHouMemberList = new ArrayList<>();
+        coupleHouMemberList.addAll(houseMemberList);
+        coupleHouMemberList.addAll(wifeHouseMemberList);
 
         if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
             for (int i = 0; i < houseMemberList.size(); i++) {//본인이 세대주일 때 무주택직계존속 포함
                 houseCount = countHouseHaving(user, houseMemberList, houseCount);
             }
         } else if (user.getHouse() != user.getSpouseHouse()) {//분리 세대인 경우
-            for (int i = 0; i < copleHouMemberList.size(); i++) {
-                houseCount = countHouseHaving(user, copleHouMemberList, houseCount);//본인 세대에 속한 직계존속및 직계비속 List
+            for (int i = 0; i < coupleHouMemberList.size(); i++) {
+                houseCount = countHouseHaving(user, coupleHouMemberList, houseCount);//본인 세대에 속한 직계존속및 직계비속 List
             }
         }
         return houseCount;
