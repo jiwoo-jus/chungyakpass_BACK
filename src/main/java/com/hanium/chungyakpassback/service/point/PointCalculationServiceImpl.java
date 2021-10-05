@@ -235,11 +235,20 @@ public class PointCalculationServiceImpl implements PointCalculationService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer bankbookJoinPeriod(User user) {
-        int point = 0;
+    public boolean bankBookVaildYn(User user){
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
         if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer bankbookJoinPeriod(User user) {
+        int point = 0;
+        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
             int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
             int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
             if (joinPeriodOfMonth < 12) {
@@ -251,14 +260,14 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             } else {
                 for (int z = 2; z <= 15; z++) {
                     if (joinPeriodOfYear < z) {
-                        return point = z + 1;
-                    } else point = 17;
+                        point = z + 1;
+                    }
+                    else
+                        point = 17;
                 }
             }
             return point;
-        } else {
-            throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
-        }
+
     }
 }
 

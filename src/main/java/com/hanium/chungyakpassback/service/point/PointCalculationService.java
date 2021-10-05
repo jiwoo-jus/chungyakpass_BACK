@@ -10,4 +10,6 @@ public interface PointCalculationService {
     Integer bankbookJoinPeriod(User user);
 
     Integer numberOfDependents(User user, GeneralMinyeongPointDto generalMinyeongPointDto);
+
+    boolean bankBookVaildYn(User user);
 }

@@ -45,7 +45,8 @@ public class PointController {
         Integer periodOfHomelessness = pointCalculationService.periodOfHomelessness(user);
         Integer periodOfBankbook = pointCalculationService.bankbookJoinPeriod(user);
         Integer numberOfDependents = pointCalculationService.numberOfDependents(user, generalMinyeongPointDto);
-        return new ResponseEntity<>(new GeneralMinyeongResponsePointDto(periodOfHomelessness, periodOfBankbook, numberOfDependents), HttpStatus.OK);
+        boolean bankBookVaildYn = pointCalculationService.bankBookVaildYn(user);
+        return new ResponseEntity<>(new GeneralMinyeongResponsePointDto(periodOfHomelessness, periodOfBankbook, numberOfDependents,bankBookVaildYn), HttpStatus.OK);
     }
 
 
@@ -100,7 +101,8 @@ public class PointController {
         Integer periodOfHomelessness = pointCalculationOfOldParentSupportService.periodOfHomelessness(user);
         Integer periodOfBankbook = pointCalculationOfOldParentSupportService.bankbookJoinPeriod(user);
         Integer numberOfDependents = pointCalculationOfOldParentSupportService.numberOfDependents(user, specialPointOfOldParentsSupportDto);
-        return new ResponseEntity<>(new SpecialPointOfOldParentsSupportResponseDto(periodOfHomelessness, periodOfBankbook, numberOfDependents), HttpStatus.OK);
+        boolean bankBookVaildYn = pointCalculationOfOldParentSupportService.bankBookVaildYn(user);
+        return new ResponseEntity<>(new SpecialPointOfOldParentsSupportResponseDto(periodOfHomelessness, periodOfBankbook, numberOfDependents,bankBookVaildYn), HttpStatus.OK);
     }
 
 }

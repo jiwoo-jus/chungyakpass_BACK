@@ -39,6 +39,7 @@ public class SpecialPublicSpecialLawVerificationFirstLifeServiceImpl implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean homelessYn(User user) {
+
         return specialPublicVerificationFirstLifeServiceImpl.homelessYn(user);
     }
 
