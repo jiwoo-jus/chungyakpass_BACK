@@ -43,6 +43,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     Integer periodOfHomelessnessGetPoint = 0;
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer numberOfChild(User user) {
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 19);
@@ -55,6 +56,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     }
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer numberOfChildUnder6Year(User user) {
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 6);
@@ -66,6 +68,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return NumberOfChildUnder6YearGetPoint;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer bankbookJoinPeriod(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
@@ -88,6 +91,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return periodOfResidenceGetPoint;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
         AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
@@ -104,6 +108,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return periodOfResidenceGetPoint;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer generationComposition(SpecialPointOfMultiChildDto specialPointOfMultiChildDto) {
         if (specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.한부모가족)||specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.삼세대이상)) {
@@ -136,12 +141,11 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return lateDateList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfHomelessness(User user) {
         int houseCount = 0;
-        if (generalPrivateVerificationServiceImpl.getHouseMember(user) != 0) {
-                throw new CustomException(ErrorCode.BAD_REQUEST_HOMELESS);
-        } else {
+
             if (user.getSpouseHouseMember() != null) {
                 periodHomeless(user.getHouseMember());
                 periodHomeless(user.getSpouseHouseMember());
@@ -164,6 +168,4 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
             return periodOfHomelessnessGetPoint;
         }
     }
-
-}
 

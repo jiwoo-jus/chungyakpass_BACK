@@ -12,7 +12,6 @@ public class SpecialMinyeongPointOfNewMarriedResponseDto {
     Integer periodOfMarriged;
     Integer bankbookPaymentsCount;
     Integer periodOfApplicableAreaResidence;
-    Integer ageOfMostYoungChild;
     Integer monthOfAverageIncome;
 
 }

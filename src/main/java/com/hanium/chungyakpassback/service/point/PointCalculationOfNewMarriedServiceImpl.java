@@ -42,7 +42,6 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     final AddressLevel2Repository addressLevel2Repository;
     final AddressLevel1Repository addressLevel1Repository;
     final UserRepository userRepository;
-    List<LocalDate> minorsBirthDateList = new ArrayList<>();
     Integer NumberOfMinorsGetPoint = 0;
     Integer periodOfMarrigedGetPoint = 0;
     Integer paymentsCountGetPoint = 0;
@@ -68,6 +67,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
 
 
     @Override//미성년자 자녀 수
+    @Transactional(rollbackFor = Exception.class)
     public Integer numberOfMinors(User user) {
         Integer Minors = numberOfChild(user,19);
         for (int u = 1; u <= 3; u++) {
@@ -78,27 +78,9 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         return NumberOfMinorsGetPoint;
     }
 
-    @Override
-    public Integer ageOfMostYoungChild(User user) {
-        List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
-        System.out.println("!!!!!!1" + houseMemberRelationList);
-        for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
-            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)){
-                minorsBirthDateList.add(houseMemberRelation.getOpponent().getBirthDay());
-            }
-        }
-        minorsBirthDateList.sort(Collections.reverseOrder());
-        System.out.println("!!!!!!1" + minorsBirthDateList);
-        int mostYoungChildAge = generalPrivateVerificationServiceImpl.calcAmericanAge(minorsBirthDateList.get(0));
-        for (int u = 0; u <= 2; u++) {
-            if (mostYoungChildAge < 3 + 2 * u) {
-                mostYoungChildAge = 3 - u;
-            }
-        }
-        return mostYoungChildAge;
-    }
 
     @Override//혼인기간
+    @Transactional(rollbackFor = Exception.class)
     public Integer periodOfMarriged(User user) {
         int periodOfUserMarrigedYear = generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getMarriageDate());
         for (int u = 0; u <= 2; u++) {
@@ -131,7 +113,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         return monthOfAverageIncomeGetPoint;
     }
 
-
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer monthOfAverageIncome(User user) {
         List<HouseMember> houseMemberList = new ArrayList<>();
@@ -167,7 +149,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         return monthOfAverageIncomeGetPoint;
     }
 
-
+    @Override
     @Transactional(rollbackFor = Exception.class)//납입횟수
     public Integer bankbookPaymentsCount(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
@@ -185,7 +167,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         }
         return paymentsCountGetPoint;
     }
-
+    @Override
     @Transactional(rollbackFor = Exception.class)//해당지역 거주기간
     public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
             AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
