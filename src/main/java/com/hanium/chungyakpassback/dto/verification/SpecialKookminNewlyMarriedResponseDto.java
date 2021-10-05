@@ -12,7 +12,8 @@ public class SpecialKookminNewlyMarriedResponseDto {
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
     boolean accountTf;
-    boolean meetMonthlyAverageIncomeTf;
+    boolean meetMonthlyAverageIncomePriorityTf;
+    boolean meetMonthlyAverageIncomeGeneralTf;
     boolean meetMarriagePeriodIn7yearsTf;
     boolean hasMinorChildren;
     boolean is2ndChungyak;

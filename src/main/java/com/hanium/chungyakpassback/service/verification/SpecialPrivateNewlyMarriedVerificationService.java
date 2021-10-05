@@ -14,7 +14,9 @@ public interface SpecialPrivateNewlyMarriedVerificationService {
 
     boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget); //청약통장유형조건충족여부
 
-//    boolean meetMonthlyAverageIncome(User user); //월평균소득기준충족여부
+    boolean meetMonthlyAverageIncomePriority(User user); //월평균소득기준충족여부_우선공급
+
+    boolean meetMonthlyAverageIncomeGeneral(User user); //월평균소득기준충족여부_일반공급
 
     boolean meetMarriagePeriodIn7years(User user); //혼인기간7년이내충족여부
 

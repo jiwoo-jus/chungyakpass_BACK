@@ -29,7 +29,7 @@ public class PointController {
     private final PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService;
     private final PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService;
 
-    public PointController(PointCalculationService pointCalculationService, UserRepository userRepository, AptInfoRepository aptInfoRepository, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService)  {
+    public PointController(PointCalculationService pointCalculationService, UserRepository userRepository, AptInfoRepository aptInfoRepository, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService) {
         this.pointCalculationService = pointCalculationService;
         this.userRepository = userRepository;
         this.aptInfoRepository = aptInfoRepository;
@@ -41,7 +41,7 @@ public class PointController {
 
     @PostMapping("/genereal/minyeoung")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<GeneralMinyeongResponsePointDto> generalMinyeongPoint(@RequestBody GeneralMinyeongPointDto generalMinyeongPointDto){
+    public ResponseEntity<GeneralMinyeongResponsePointDto> generalMinyeongPoint(@RequestBody GeneralMinyeongPointDto generalMinyeongPointDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         Integer periodOfHomelessness = pointCalculationService.periodOfHomelessness(user);
         Integer periodOfBankbook = pointCalculationService.bankbookJoinPeriod(user);
@@ -52,7 +52,7 @@ public class PointController {
 
     @PostMapping("/special/multiChild")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialPointOfMultiChildResponseDto> specialMultiChildPoint(@RequestBody SpecialPointOfMultiChildDto specialPointOfMultiChildDto){
+    public ResponseEntity<SpecialPointOfMultiChildResponseDto> specialMultiChildPoint(@RequestBody SpecialPointOfMultiChildDto specialPointOfMultiChildDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialPointOfMultiChildDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         Integer numberOfChild = pointCalculationOfMultiChildService.numberOfChild(user);
@@ -60,30 +60,29 @@ public class PointController {
         Integer bankbookJoinPeriod = pointCalculationOfMultiChildService.bankbookJoinPeriod(user);
         Integer periodOfApplicableAreaResidence = pointCalculationOfMultiChildService.periodOfApplicableAreaResidence(user, aptInfo);
         Integer periodOfHomelessness = pointCalculationOfMultiChildService.periodOfHomelessness(user);
-        Integer generationComposition = pointCalculationOfMultiChildService.generationComposition (specialPointOfMultiChildDto);
-        return new ResponseEntity<>(new SpecialPointOfMultiChildResponseDto(numberOfChild,numberOfChildUnder6Year,bankbookJoinPeriod,periodOfApplicableAreaResidence,periodOfHomelessness,generationComposition), HttpStatus.OK);
+        Integer generationComposition = pointCalculationOfMultiChildService.generationComposition(specialPointOfMultiChildDto);
+        return new ResponseEntity<>(new SpecialPointOfMultiChildResponseDto(numberOfChild, numberOfChildUnder6Year, bankbookJoinPeriod, periodOfApplicableAreaResidence, periodOfHomelessness, generationComposition), HttpStatus.OK);
     }
 
 
-    @PostMapping ("/special/newMarried")
+    @PostMapping("/special/newMarried")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarried(@RequestBody SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto){
+    public ResponseEntity<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarried(@RequestBody SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfNewMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
         Integer numberOfMinors = pointCalculationOfNewMarriedService.numberOfMinors(user);
-        Integer ageOfMostYoungChild = pointCalculationOfNewMarriedService.ageOfMostYoungChild(user);
         Integer periodOfMarriged = pointCalculationOfNewMarriedService.periodOfMarriged(user);
         Integer bankbookPaymentsCount = pointCalculationOfNewMarriedService.bankbookPaymentsCount(user);
-        Integer periodOfApplicableAreaResidence =  pointCalculationOfNewMarriedService.periodOfApplicableAreaResidence ( user, aptInfo);
+        Integer periodOfApplicableAreaResidence = pointCalculationOfNewMarriedService.periodOfApplicableAreaResidence(user, aptInfo);
         Integer monthOfAverageIncome = pointCalculationOfNewMarriedService.monthOfAverageIncome(user);
 
-        return new ResponseEntity<>(new SpecialMinyeongPointOfNewMarriedResponseDto(numberOfMinors,periodOfMarriged,bankbookPaymentsCount,periodOfApplicableAreaResidence,ageOfMostYoungChild,monthOfAverageIncome), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialMinyeongPointOfNewMarriedResponseDto(numberOfMinors, periodOfMarriged, bankbookPaymentsCount, periodOfApplicableAreaResidence, monthOfAverageIncome), HttpStatus.OK);
     }
 
     @PostMapping("/special/oldParentsSupport")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialPointOfOldParentsSupportResponseDto> generalMinyeongPoint(@RequestBody SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto){
+    public ResponseEntity<SpecialPointOfOldParentsSupportResponseDto> generalMinyeongPoint(@RequestBody SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         Integer periodOfHomelessness = pointCalculationOfOldParentSupportService.periodOfHomelessness(user);
         Integer periodOfBankbook = pointCalculationOfOldParentSupportService.bankbookJoinPeriod(user);
