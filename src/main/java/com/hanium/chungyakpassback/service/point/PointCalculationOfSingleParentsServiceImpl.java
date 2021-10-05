@@ -42,7 +42,7 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
-        return pointCalculationOfNewMarriedServiceImpl.periodOfApplicableAreaResidence(user, aptInfo);
+        return pointCalculationOfNewMarriedServiceImpl.periodOfApplicableAreaResidence(user,aptInfo);
     }
 
     @Override
@@ -52,15 +52,16 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         System.out.println("!!!!!!1" + houseMemberRelationList);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
-            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)) {
+            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)){
                 minorsBirthDateList.add(houseMemberRelation.getOpponent().getBirthDay());
             }
         }
         minorsBirthDateList.sort(Collections.reverseOrder());
         System.out.println("!!!!!!1" + minorsBirthDateList);
-        if (minorsBirthDateList.size() == 0) {
+        if(minorsBirthDateList.size()==0){
             throw new CustomException(ErrorCode.NOT_FOUND_Child);
-        } else {
+        }
+        else {
             int mostYoungChildAge = generalPrivateVerificationServiceImpl.calcAmericanAge(minorsBirthDateList.get(0));
             System.out.println("mostYoungChildAge" + mostYoungChildAge);
             for (int u = 0; u <= 2; u++) {
@@ -69,7 +70,7 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
                 }
             }
         }
-        System.out.println("mostYoungChildAgeGetPoint" + mostYoungChildAgeGetPoint);
+        System.out.println("mostYoungChildAgeGetPoint"+mostYoungChildAgeGetPoint);
         return mostYoungChildAgeGetPoint;
 
     }

@@ -8,4 +8,6 @@ public interface PointCalculationOfOldParentSupportService {
     Integer bankbookJoinPeriod(User user);
 
     Integer numberOfDependents(User user, SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto);
+
+    boolean bankBookVaildYn(User user);
 }

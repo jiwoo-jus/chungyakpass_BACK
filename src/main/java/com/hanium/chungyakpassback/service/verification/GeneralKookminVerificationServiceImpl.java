@@ -113,6 +113,22 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                     if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부)||houseMemberRelation.getRelation().getRelation().equals(Relation.모)|| houseMemberRelation.getRelation().getRelation().equals(Relation.조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.조모)|| houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(calcAmericanAge(houseMember.getBirthDay()) >= 60) {
+                                specialCase++;
+                                continue;
+                            }
+                        }
+                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { //주거용건물유형이 오피스텥일 경우
+                            specialCase++;
+                            continue;
+                        }
+                        else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
+                            specialCase++;
+                            continue;
+                        }
+                        else if(houseMemberProperty.getExceptionHouseYn().equals(Yn.y)){
+                            specialCase++;
                         if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                             if (calcAmericanAge(houseMember.getBirthDay()) >= 60) {
                                 specialCase++;
@@ -128,6 +144,21 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
+                        }
+                        else {
+                            if (houseMemberProperty.getExclusiveArea() <= 20) { //60제곱미터 이하의 주택을 소유하고 있는 경우
+                                flag++;
+                                if (specialCase<=0)
+                                    continue;
+                                else
+                                    houseCount = flag;
+                                if (flag <= 1) // 단, 2호 또는 2세대 이상의 주택 또는 분양권은 제외. 즉, 하나까진 count 안 한다는 의미.
+                                    continue;
+                                else
+                                    houseCount = flag;
+                            }
+                        }
+                        houseCount++;
                         } else {
                             if (houseMemberProperty.getExclusiveArea() <= 20) { //20제곱미터 이하의 주택을 소유하고 있는 경우
                                 flag++;
@@ -158,6 +189,18 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                     if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부)||houseMemberRelation.getRelation().getRelation().equals(Relation.모)|| houseMemberRelation.getRelation().getRelation().equals(Relation.조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.조모)|| houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(calcAmericanAge(houseMember.getBirthDay()) >= 60) {
+                                specialCase++;
+                                continue;
+                            }
+                        }
+                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { //주거용건물유형이 오피스텥일 경우
+                            specialCase++;
+                            continue;
+                        }
+                        else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
+                            specialCase++;
                         if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                             if (calcAmericanAge(houseMember.getBirthDay()) >= 60) {
                                 specialCase++;
@@ -173,6 +216,25 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
+                        }
+                        else if(houseMemberProperty.getExceptionHouseYn().equals(Yn.y)){
+                            specialCase++;
+                            continue;
+                        }
+                        else {
+                            if (houseMemberProperty.getExclusiveArea() <= 20) { //60제곱미터 이하의 주택을 소유하고 있는 경우
+                                flag++;
+                                if (specialCase<=0)
+                                    continue;
+                                else
+                                    houseCount = flag;
+                                if (flag <= 1) // 단, 2호 또는 2세대 이상의 주택 또는 분양권은 제외. 즉, 하나까진 count 안 한다는 의미.
+                                    continue;
+                                else
+                                    houseCount = flag;
+                            }
+                        }
+                        houseCount++;
                         } else {
                             if (houseMemberProperty.getExclusiveArea() <= 20) { //20제곱미터 이하의 주택을 소유하고 있는 경우
                                 flag++;
@@ -198,6 +260,14 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                     if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부)||houseMemberRelation.getRelation().getRelation().equals(Relation.모)|| houseMemberRelation.getRelation().getRelation().equals(Relation.조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.조모)|| houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부)||houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(calcAmericanAge(houseMember.getBirthDay()) >= 60) {
+                                specialCase++;
+                                continue;
+                            }
+                        }
+                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { //주거용건물유형이 오피스텥일 경우
+                            specialCase++;
                         if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                             if (calcAmericanAge(houseMember.getBirthDay()) >= 60) {
                                 specialCase++;
@@ -210,9 +280,31 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
                             specialCase++;
                             continue;
+                        }
+                        else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
+                            specialCase++;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
+                        }
+                        else if(houseMemberProperty.getExceptionHouseYn().equals(Yn.y)){
+                            specialCase++;
+                            continue;
+                        }
+                        else {
+                            if (houseMemberProperty.getExclusiveArea() <= 20) { //60제곱미터 이하의 주택을 소유하고 있는 경우
+                                flag++;
+                                if (specialCase<=0)
+                                    continue;
+                                else
+                                    houseCount = flag;
+                                if (flag <= 1) // 단, 2호 또는 2세대 이상의 주택 또는 분양권은 제외. 즉, 하나까진 count 안 한다는 의미.
+                                    continue;
+                                else
+                                    houseCount = flag;
+                            }
+                        }
+                        houseCount++;
                         } else {
                             if (houseMemberProperty.getExclusiveArea() <= 20) { //20제곱미터 이하의 주택을 소유하고 있는 경우
                                 flag++;

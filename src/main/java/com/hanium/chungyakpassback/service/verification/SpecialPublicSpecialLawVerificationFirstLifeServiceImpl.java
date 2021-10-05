@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class SpecialPublicSpecialLawVerificationFirstLifeServiceImpl implements SpecialPublicSpecialLawVerificationFirstLifeService {
-    final GeneralPrivateVerificationServiceImpl generalPrivateVerificationServiceImpl;
+    final GeneralKookminVerificationServiceImpl generalKookminVerificationServiceImpl;
     final UserBankbookRepository userBankbookRepository;
     final AptInfoAmountRepository aptInfoAmountRepository;
     final PrioritySubscriptionPeriodRepository prioritySubscriptionPeriodRepository;
@@ -36,31 +36,38 @@ public class SpecialPublicSpecialLawVerificationFirstLifeServiceImpl implements 
     final SpecialPublicVerificationFirstLifeServiceImpl specialPublicVerificationFirstLifeServiceImpl;
     final PropertyRepository propertyRepository;
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean homelessYn(User user) {
+
         return specialPublicVerificationFirstLifeServiceImpl.homelessYn(user);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean targetHouseAmount(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         return specialPublicVerificationFirstLifeServiceImpl.targetHouseAmount(aptInfo, aptInfoTarget);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean monthOfAverageIncome(User user) {
         return specialPublicVerificationFirstLifeServiceImpl.monthOfAverageIncome(user);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean vaildObject(User user, AptInfo aptInfo) {
         return specialPublicVerificationFirstLifeServiceImpl.vaildObject(user, aptInfo);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetDeposit(User user) {
         return specialPublicVerificationFirstLifeServiceImpl.meetDeposit(user);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetStandardProperty(User user) {
         int buildTotalProperty = 0;

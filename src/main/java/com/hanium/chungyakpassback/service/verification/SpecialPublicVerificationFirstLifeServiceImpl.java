@@ -3,6 +3,7 @@ package com.hanium.chungyakpassback.service.verification;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoAmount;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
+import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
@@ -14,6 +15,7 @@ import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoAmountRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
+import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import com.hanium.chungyakpassback.repository.input.UserBankbookRepository;
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.service.point.PointCalculationServiceImpl;
@@ -28,7 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPublicVerificationFirstLifeService {
-    final GeneralPrivateVerificationServiceImpl generalPrivateVerificationServiceImpl;
+    final GeneralKookminVerificationServiceImpl generalKookminVerificationServiceImpl;
     final UserBankbookRepository userBankbookRepository;
     final AptInfoAmountRepository aptInfoAmountRepository;
     final PrioritySubscriptionPeriodRepository prioritySubscriptionPeriodRepository;
@@ -38,17 +40,15 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
     final PointCalculationServiceImpl pointCalculationServiceImpl;
     final BankbookRepository bankbookRepository;
     final RelationRepository relationRepository;
+    final HouseMemberRepository houseMemberRepository;
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean homelessYn(User user) {
-        Integer houseCount = generalPrivateVerificationServiceImpl.getHouseMember(user);
-        System.out.println("houseCount!!!" + houseCount);
-        if (houseCount < 1)//houseCount가 1개 미만이면 true 아니면 false-0으로 할 수도 있음
-            return true;
-        else
-            throw new CustomException(ErrorCode.BAD_REQUEST_HOMELESS);//무주택세대 구성원이 아니다.
+        return generalKookminVerificationServiceImpl.meetHomelessHouseholdMembers(user);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean targetHouseAmount(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<AptInfoAmount> supplyAmount = aptInfoAmountRepository.findByHousingType(aptInfoTarget.getHousingType());
@@ -82,7 +82,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         return false;
     }
 
-
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean monthOfAverageIncome(User user) {
         Integer houseMemberIncome = 0;
@@ -91,7 +91,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         int numberOfHouseMember = houseMemberList.size();
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
-            if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
+            if (generalKookminVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
                 if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent())) {
                     houseMemberIncome = houseMemberIncome + houseMemberRelation.getOpponent().getIncome();
                 }
@@ -106,6 +106,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         return false;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean vaildObject(User user, AptInfo aptInfo) {
 
@@ -127,7 +128,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         // houseMemberRelation 은 자녀_일반이다.
             if (user.getSpouseHouseMember() != null || (houseMemberRelation.getRelation().equals(relation_child)&&houseMemberRelation.getOpponent().getMarriageDate() == null)) {
                 if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y)) {
-                    if (generalPrivateVerificationServiceImpl.meetAllHouseMemberNotWinningIn5years(user)) {
+                    if (generalKookminVerificationServiceImpl.meetAllHouseMemberNotWinningIn5years(user)) {
                         return true;
                     } else {
                         return false;
@@ -140,6 +141,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
 
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetDeposit(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
@@ -149,7 +151,7 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         if (userBankbook.getDeposit() >= 6000000) {
             return true;
         }
-        throw new CustomException(ErrorCode.BAD_REQUEST_LACK_BANKBOOK);
+        return false;
     }
 
 }

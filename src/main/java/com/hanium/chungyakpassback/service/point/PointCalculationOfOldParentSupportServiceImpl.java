@@ -284,10 +284,20 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer bankbookJoinPeriod(User user) {
+    public boolean bankBookVaildYn(User user){
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
         if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer bankbookJoinPeriod(User user) {
+        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
+        Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
             int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
             int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
             if (joinPeriodOfMonth < 12) {
@@ -304,10 +314,6 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 }
             }
             return point;
-        }
-        else{
-            throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
-        }
     }
 }
 

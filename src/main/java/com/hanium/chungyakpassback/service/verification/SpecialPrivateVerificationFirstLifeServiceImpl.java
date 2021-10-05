@@ -3,15 +3,15 @@ package com.hanium.chungyakpassback.service.verification;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoAmount;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
+import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.standard.Income;
-import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.enumtype.SpecialSupply;
 import com.hanium.chungyakpassback.enumtype.Yn;
-import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoAmountRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
+import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import com.hanium.chungyakpassback.repository.input.UserBankbookRepository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.repository.standard.IncomeRepository;
@@ -36,17 +36,23 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     final IncomeRepository incomeRepository;
     final PointCalculationServiceImpl pointCalculationServiceImpl;
     final SpecialPublicVerificationFirstLifeServiceImpl specialPublicVerificationFirstLifeServiceImpl;
+    final HouseMemberRepository houseMemberRepository;
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean homelessYn(User user) {
-        Integer houseCount = generalPrivateVerificationServiceImpl.getHouseMember(user);
-        System.out.println("houseCount!!!" + houseCount);
-        if (houseCount < 1)//houseCount가 2개 미만이면 true 아니면 false-0으로 할 수도 있음
+        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
+
+        Integer houseCount = 0;
+        Integer houseTotalCount = generalPrivateVerificationServiceImpl.countHouseHaving(user,houseMemberList,houseCount);
+
+        if (houseTotalCount < 1)//houseCount가 2개 미만이면 true 아니면 false-0으로 할 수도 있음
             return true;
         else
-            throw new CustomException(ErrorCode.BAD_REQUEST_HOMELESS);//무주택세대 구성원이 아니다.
+            return false;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean targetHousingType(AptInfoTarget aptInfoTarget) {
         int housingTypeChange = generalPrivateVerificationServiceImpl.houseTypeConverter(aptInfoTarget);
@@ -56,6 +62,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
         return false;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean targetHouseAmount(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<AptInfoAmount> supplyAmount = aptInfoAmountRepository.findByHousingType(aptInfoTarget.getHousingType());
@@ -90,6 +97,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     }
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean monthOfAverageIncome(User user) {
         Integer houseMemberIncome = 0;
@@ -113,6 +121,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
         return false;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean vaildObject(User user, AptInfo aptInfo) {
         return specialPublicVerificationFirstLifeServiceImpl.vaildObject(user,aptInfo);
