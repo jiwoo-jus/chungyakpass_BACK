@@ -122,54 +122,44 @@ public class UserDataController {
 
     @PostMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseMemberChungyakResponseDto> houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
+    public ResponseEntity<List<HouseMemberChungyakResponseDto>> houseMemberChungyak(@RequestBody HouseMemberChungyakDto houseMemberChungyakDto){
 
         return ResponseEntity.ok(userDataService.houseMemberChungyak(houseMemberChungyakDto));
     }
 
-    @PutMapping("/house/member/chungyak/{id}")
+    @PutMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseMemberChungyakResponseDto> updateHouseMemberChungyak(@PathVariable Long id, @RequestBody HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
+    public ResponseEntity<List<HouseMemberChungyakResponseDto>> updateHouseMemberChungyak(@RequestBody HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
 
-        return ResponseEntity.ok(userDataService.updateHouseMemberChungyak(id, houseMemberChungyakUpdateDto));
+        return ResponseEntity.ok(userDataService.updateHouseMemberChungyak(houseMemberChungyakUpdateDto));
     }
 
-    @DeleteMapping("/house/member/chungyak/{id}")
+    @DeleteMapping("/house/member/chungyak")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity deleteHouseMemberChungyak(@PathVariable Long id){
+    public ResponseEntity deleteHouseMemberChungyak(@RequestBody HouseMemberChungyakDeleteDto houseMemberChungyakDeleteDto){
 
-        return new ResponseEntity(userDataService.deleteHouseMemberChungyak(id));
+        return new ResponseEntity(userDataService.deleteHouseMemberChungyak(houseMemberChungyakDeleteDto));
     }
 
     @PostMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
+    public ResponseEntity<List<HouseMemberChungyakRestrictionResponseDto>> houseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
 
         return ResponseEntity.ok(userDataService.houseMemberChungyakRestriction(houseMemberChungyakRestrictionDto));
     }
 
-    @PutMapping("/house/member/chungyak/restriction/{id}")
+    @PutMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<HouseMemberChungyakRestrictionResponseDto> updateHouseMemberChungyakRestriction(@PathVariable Long id, @RequestBody HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
+    public ResponseEntity<List<HouseMemberChungyakRestrictionResponseDto>> updateHouseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
 
-        return ResponseEntity.ok(userDataService.updateHouseMemberChungyakRestriction(id, houseMemberChungyakRestrictionUpdateDto));
+        return ResponseEntity.ok(userDataService.updateHouseMemberChungyakRestriction(houseMemberChungyakRestrictionUpdateDto));
     }
 
-    @DeleteMapping("/house/member/chungyak/restriction/{id}")
+    @DeleteMapping("/house/member/chungyak/restriction")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity deleteHouseMemberChungyakRestriction(@PathVariable Long id){
+    public ResponseEntity deleteHouseMemberChungyakRestriction(@RequestBody HouseMemberChungyakRestrictionDeleteDto houseMemberChungyakRestrictionDeleteDto){
 
-        return new ResponseEntity(userDataService.deleteHouseMemberChungyakRestriction(id));
+        return new ResponseEntity(userDataService.deleteHouseMemberChungyakRestriction(houseMemberChungyakRestrictionDeleteDto));
     }
 
-
-
-
-//    @PatchMapping("/house")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-//    public ResponseEntity patchHouse(@RequestBody HouseDto houseDto){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//        userDataService.patchHouse(user, houseDto);
-//        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER), HttpStatus.OK);
-//    }
 }

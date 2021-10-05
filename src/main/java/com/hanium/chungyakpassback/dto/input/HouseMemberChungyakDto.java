@@ -1,12 +1,12 @@
 package com.hanium.chungyakpassback.dto.input;
 
-import com.hanium.chungyakpassback.entity.input.House;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.HouseMemberChungyak;
 import com.hanium.chungyakpassback.enumtype.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseMemberChungyakDto {
+
+    private List<HouseMemberChungyakDto> houseMemberChungyakDtoList;
 
     private Long houseMemberId; //세대구성원id
 

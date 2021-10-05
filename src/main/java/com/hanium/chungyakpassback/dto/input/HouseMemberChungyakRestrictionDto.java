@@ -6,6 +6,7 @@ import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseMemberChungyakRestrictionDto {
+
+    private List<HouseMemberChungyakRestrictionDto> houseMemberChungyakRestrictionDtoList;
 
     private Long houseMemberChungyakId; //세대구성원청약신청내역id
 
