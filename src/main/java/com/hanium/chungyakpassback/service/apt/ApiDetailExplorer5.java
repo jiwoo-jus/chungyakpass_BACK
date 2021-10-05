@@ -187,8 +187,11 @@ public class ApiDetailExplorer5 {
             String value = GetAptApi(detailSalesInformation, 1, number);
             rjson = new JSONObject(value);//반환값을 필터링
             response = (JSONObject) rjson.get("response");
-            body = (JSONObject) response.get("body");
-
+            System.out.println("response"+rjson);
+            System.out.println("response"+response);
+            if(response.has("body")) {
+                body = (JSONObject) response.get("body");
+            }
             if (body.get("items") instanceof JSONObject) {//주택번호와 url은 있는데 값이 안들어온 경우 값이 object형식으로 들어왔나 확인
                 JSONObject items = (JSONObject) body.get("items");
                 JSONObject itemJson = items.getJSONObject("item");//item크기만큼 dto에 저장
@@ -237,7 +240,9 @@ public class ApiDetailExplorer5 {
 
             rjson = new JSONObject(value);
             response = (JSONObject) rjson.get("response");
-            body = (JSONObject) response.get("body");
+            if(response.has("body")) {
+                body = (JSONObject) response.get("body");
+            }
             cout++;
 
             // item들이 담기는 JSONObject
