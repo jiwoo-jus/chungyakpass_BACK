@@ -32,25 +32,30 @@ public class VerificationController {
     private final SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService;
     private final SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService;
     private final SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService;
+    private final SpecialPrivateNewlyMarriedVerificationService specialPrivateNewlyMarriedVerificationService;
+    private final SpecialKookminNewlyMarriedVerificationService specialKookminNewlyMarriedVerificationService;
+    private final SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService;
     private final SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService;
     private final SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService;
-    private final SpecialPublicSpecialLawVerificationFirstLifeService specialPublicSpecialLawVerificationFirstLifeService;
 
 
-    public VerificationController(UserRepository userRepository,SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService,SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService, GeneralPrivateVerificationService generalPrivateVerificationService, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository,GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPublicSpecialLawVerificationFirstLifeService specialPublicSpecialLawVerificationFirstLifeService) {
+    public VerificationController(UserRepository userRepository, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository, GeneralPrivateVerificationService generalPrivateVerificationService, GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPrivateNewlyMarriedVerificationService specialPrivateNewlyMarriedVerificationService, SpecialKookminNewlyMarriedVerificationService specialKookminNewlyMarriedVerificationService, SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService, SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService, SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService) {
         this.userRepository = userRepository;
-        this.generalPrivateVerificationService = generalPrivateVerificationService;
-        this.specialPrivateVerificationFirstLifeService = specialPrivateVerificationFirstLifeService;
-        this.specialPublicVerificationFirstLifeService =  specialPublicVerificationFirstLifeService;
         this.aptInfoRepository = aptInfoRepository;
         this.aptInfoTargetRepository = aptInfoTargetRepository;
+        this.generalPrivateVerificationService = generalPrivateVerificationService;
         this.generalKookminVerificationService = generalKookminVerificationService;
         this.specialPrivateMultiChildVerificationService = specialPrivateMultiChildVerificationService;
         this.specialKookminPublicMultiChildVerificationService = specialKookminPublicMultiChildVerificationService;
         this.specialPrivateOldParentVerificationService = specialPrivateOldParentVerificationService;
         this.specialKookminPublicOldParentVerificationService = specialKookminPublicOldParentVerificationService;
-        this.specialPublicSpecialLawVerificationFirstLifeService = specialPublicSpecialLawVerificationFirstLifeService;
+        this.specialPrivateNewlyMarriedVerificationService = specialPrivateNewlyMarriedVerificationService;
+        this.specialKookminNewlyMarriedVerificationService = specialKookminNewlyMarriedVerificationService;
+        this.specialKookminPublicNewlyMarriedVerificationService = specialKookminPublicNewlyMarriedVerificationService;
+        this.specialPrivateVerificationFirstLifeService = specialPrivateVerificationFirstLifeService;
+        this.specialPublicVerificationFirstLifeService = specialPublicVerificationFirstLifeService;
     }
+
 
     @PostMapping("/general/minyeong")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -60,19 +65,19 @@ public class VerificationController {
         AptInfo aptInfo = aptInfoRepository.findById(generalMinyeongDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(generalMinyeongDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
-        boolean meetLivingInSurroundArea = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
-        boolean meetBankbookType = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
-        Integer calcAmericanAge = generalPrivateVerificationService.calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
-        boolean isHouseholder = generalPrivateVerificationService.isHouseholder(user);
-        boolean isRestrictedArea = generalPrivateVerificationService.isRestrictedArea(aptInfo);
-        boolean meetAllHouseMemberNotWinningIn5years = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);
-        boolean meetHouseHavingLessThan2Apt = generalPrivateVerificationService.meetHouseHavingLessThan2Apt(user);
-        boolean meetBankbookJoinPeriod = generalPrivateVerificationService.meetBankbookJoinPeriod(user, aptInfo);
-        boolean meetDeposit = generalPrivateVerificationService.meetDeposit(user, aptInfoTarget);
+        boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
+        Integer americanAge = generalPrivateVerificationService.calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
+        boolean householderTf = generalPrivateVerificationService.isHouseholder(user);
+        boolean isRestrictedAreaTf = generalPrivateVerificationService.isRestrictedArea(aptInfo);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = generalPrivateVerificationService.meetAllHouseMemberNotWinningIn5years(user);
+        boolean meetHouseHavingLessThan2AptTf = generalPrivateVerificationService.meetHouseHavingLessThan2Apt(user);
+        boolean meetBankbookJoinPeriodTf = generalPrivateVerificationService.meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetDepositTf = generalPrivateVerificationService.meetDeposit(user, aptInfoTarget);
         boolean isPriorityApt = generalPrivateVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
 
 
-        return new ResponseEntity<>(new GeneralMinyeongResponseDto(meetLivingInSurroundArea, meetBankbookType, calcAmericanAge, isHouseholder, isRestrictedArea, meetAllHouseMemberNotWinningIn5years, meetHouseHavingLessThan2Apt, meetBankbookJoinPeriod, meetDeposit, isPriorityApt), HttpStatus.OK);
+        return new ResponseEntity<>(new GeneralMinyeongResponseDto(meetLivingInSurroundAreaTf, accountTf, americanAge, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetHouseHavingLessThan2AptTf, meetBankbookJoinPeriodTf, meetDepositTf, isPriorityApt), HttpStatus.OK);
     }
 
     @PostMapping("/general/kookmin") //일반국민
@@ -113,11 +118,11 @@ public class VerificationController {
         boolean meetAllHouseMemberNotWinningIn5yearsTf = specialPrivateMultiChildVerificationService.meetAllHouseMemberNotWinningIn5years(user);
         boolean isRestrictedAreaTf = specialPrivateMultiChildVerificationService.isRestrictedArea(aptInfo);
         boolean meetHouseHavingLessThan2Apt = specialPrivateMultiChildVerificationService.meetHouseHavingLessThan2Apt(user);
-        boolean specialTf = specialPrivateMultiChildVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
+        boolean isPriorityApt = specialPrivateMultiChildVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
         boolean meetDepositTf = specialPrivateMultiChildVerificationService.meetDeposit(user, aptInfoTarget);
         boolean meetBankbookJoinPeriodTf = specialPrivateMultiChildVerificationService.meetBankbookJoinPeriod(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialMinyeongMultiChildResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, calcMinorChildren, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetHouseHavingLessThan2Apt, specialTf, meetDepositTf, meetBankbookJoinPeriodTf), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialMinyeongMultiChildResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, calcMinorChildren, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetHouseHavingLessThan2Apt, isPriorityApt, meetDepositTf, meetBankbookJoinPeriodTf), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/multichild") //특별다자녀국민공공주택
@@ -190,6 +195,81 @@ public class VerificationController {
         return new ResponseEntity<>(new SpecialKookminPublicOldParentResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
     }
 
+    @PostMapping("/special/minyeong/newlymarried") //특별신혼부부민영
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialMinyeongNewlyMarriedResponseDto> specialNewlyMarried(@RequestBody SpecialMinyeongNewlyMarriedDto specialMinyeongNewlyMarriedDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongNewlyMarriedDto.getNotificationNumber()).get();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialMinyeongNewlyMarriedDto.getHousingType()).orElseThrow();
+
+        Integer americanAge = specialPrivateNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
+        boolean meetLivingInSurroundAreaTf = specialPrivateNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = specialPrivateNewlyMarriedVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
+//        boolean meetMontlyAverageIncomeTf = specialPrivateNewlyMarriedVerificationService.meetMonthlyAverageIncome(user);
+        boolean meetMarriagePeriodIn7yearsTf = specialPrivateNewlyMarriedVerificationService.meetMarriagePeriodIn7years(user);
+        boolean hasMinorChildren = specialPrivateNewlyMarriedVerificationService.hasMinorChildren(user);
+        boolean is2ndChungyak = specialPrivateNewlyMarriedVerificationService.is2ndChungyak(user);
+        boolean meetHomelessHouseholdMembersTf = specialPrivateNewlyMarriedVerificationService.meetHomelessHouseholdMembers(user);
+        boolean householderTf = specialPrivateNewlyMarriedVerificationService.isHouseholder(user);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = specialPrivateNewlyMarriedVerificationService.meetAllHouseMemberNotWinningIn5years(user);
+        boolean isRestrictedAreaTf = specialPrivateNewlyMarriedVerificationService.isRestrictedArea(aptInfo);
+        boolean meetBankJoinPeriodTf = specialPrivateNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetDepositTf = specialPrivateNewlyMarriedVerificationService.meetDeposit(user, aptInfoTarget);
+
+        return new ResponseEntity<>(new SpecialMinyeongNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, is2ndChungyak, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankJoinPeriodTf, meetDepositTf), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/kookmin/newlymarried") //특별신혼부부국민
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialKookminNewlyMarriedResponseDto> specialNewlyMarried(@RequestBody SpecialKookminNewlyMarriedDto specialKookminNewlyMarriedDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialKookminNewlyMarriedDto.getNotificationNumber()).get();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialKookminNewlyMarriedDto.getHousingType()).orElseThrow();
+
+        Integer americanAge = specialKookminNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
+        boolean meetLivingInSurroundAreaTf = specialKookminNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = specialKookminNewlyMarriedVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
+        boolean meetMontlyAverageIncomeTf = specialKookminNewlyMarriedVerificationService.meetMonthlyAverageIncome(user);
+        boolean meetMarriagePeriodIn7yearsTf = specialKookminNewlyMarriedVerificationService.meetMarriagePeriodIn7years(user);
+        boolean hasMinorChildren = specialKookminNewlyMarriedVerificationService.hasMinorChildren(user);
+        boolean is2ndChungyak = specialKookminNewlyMarriedVerificationService.is2ndChungyak(user);
+        boolean meetHomelessHouseholdMembersTf = specialKookminNewlyMarriedVerificationService.meetHomelessHouseholdMembers(user);
+        boolean householderTf = specialKookminNewlyMarriedVerificationService.isHouseholder(user);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = specialKookminNewlyMarriedVerificationService.meetAllHouseMemberNotWinningIn5years(user);
+        boolean isRestrictedAreaTf = specialKookminNewlyMarriedVerificationService.isRestrictedArea(aptInfo);
+        boolean meetBankJoinPeriodTf = specialKookminNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetNumberOfPaymentsTf = specialKookminNewlyMarriedVerificationService.meetNumberOfPayments(user, aptInfo);
+
+        return new ResponseEntity<>(new SpecialKookminNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMontlyAverageIncomeTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, is2ndChungyak, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/kookmin/public/newlymarried") //특별신혼부부국민공공주택
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialKookminPublicNewlyMarriedResponseDto> specialNewlyMarried(@RequestBody SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicNewlyMarriedDto.getNotificationNumber()).get();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialKookminPublicNewlyMarriedDto.getHousingType()).orElseThrow();
+
+        Integer americanAge = specialKookminPublicNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
+        boolean meetLivingInSurroundAreaTf = specialKookminPublicNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = specialKookminPublicNewlyMarriedVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
+        boolean meetRecipientTf = specialKookminPublicNewlyMarriedVerificationService.meetRecipient(user);
+        boolean hasMinorChildren = specialKookminPublicNewlyMarriedVerificationService.hasMinorChildren(user);
+        //        boolean meetMontlyAverageIncomeTf = specialKookminPublicNewlyMarriedVerificationService.meetMonthlyAverageIncome(user);
+        boolean meetPropertyTf = specialKookminPublicNewlyMarriedVerificationService.meetProperty(user);
+        boolean is2ndChungyak = specialKookminPublicNewlyMarriedVerificationService.is2ndChungyak(user);
+        boolean meetHomelessHouseholdMembersTf = specialKookminPublicNewlyMarriedVerificationService.meetHomelessHouseholdMembers(user);
+        boolean householderTf = specialKookminPublicNewlyMarriedVerificationService.isHouseholder(user);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = specialKookminPublicNewlyMarriedVerificationService.meetAllHouseMemberNotWinningIn5years(user);
+        boolean isRestrictedAreaTf = specialKookminPublicNewlyMarriedVerificationService.isRestrictedArea(aptInfo);
+        boolean meetBankJoinPeriodTf = specialKookminPublicNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetNumberOfPaymentsTf = specialKookminPublicNewlyMarriedVerificationService.meetNumberOfPayments(user, aptInfo);
+
+        return new ResponseEntity<>(new SpecialKookminPublicNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetPropertyTf, is2ndChungyak, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+    }
 
     @PostMapping("/special/private/firstLife")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -198,11 +278,11 @@ public class VerificationController {
         AptInfo aptInfo = aptInfoRepository.findById(specialPrivateFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPrivateFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHousingType = specialPrivateVerificationFirstLifeService.targetHousingType(aptInfoTarget);
-        boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
+        boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean monthOfAverageIncome = specialPrivateVerificationFirstLifeService.monthOfAverageIncome(user);
-        boolean HomelessYn = specialPrivateVerificationFirstLifeService.homelessYn(user);
+        boolean HomelessYn = specialPrivateVerificationFirstLifeService.HomelessYn(user);
         boolean vaildObject = specialPrivateVerificationFirstLifeService.vaildObject(user, aptInfo);
-        return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType,targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType, targetHouseAmount, monthOfAverageIncome, HomelessYn, vaildObject), HttpStatus.OK);
     }
 
     @PostMapping("/special/public/firstLife")
@@ -211,28 +291,13 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialPublicFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
+        boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean monthOfAverageIncome = specialPublicVerificationFirstLifeService.monthOfAverageIncome(user);
-        boolean HomelessYn = specialPublicVerificationFirstLifeService.homelessYn(user);
+        boolean HomelessYn = specialPublicVerificationFirstLifeService.HomelessYn(user);
         boolean vaildObject = specialPublicVerificationFirstLifeService.vaildObject(user, aptInfo);
         boolean meetDeposit = specialPublicVerificationFirstLifeService.meetDeposit(user);
 
-        return new ResponseEntity<>(new SpecialPublicFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject,meetDeposit), HttpStatus.OK);
-    }
-
-    @PostMapping("/special/public/specialLaw/firstLife")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialPublicSpecialLawFirstLifeResponseDto> specialPublicSpecialLawFirstLife(@RequestBody SpecialPublicSpecialLawFirstLifeDto specialPublicSpecialLawFirstLifeDto) {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        AptInfo aptInfo = aptInfoRepository.findById(specialPublicSpecialLawFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicSpecialLawFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        boolean targetHouseAmount = specialPublicSpecialLawVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
-        boolean monthOfAverageIncome = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncome(user);
-        boolean HomelessYn = specialPublicSpecialLawVerificationFirstLifeService.homelessYn(user);
-        boolean vaildObject = specialPublicSpecialLawVerificationFirstLifeService.vaildObject(user, aptInfo);
-        boolean meetDeposit = specialPublicSpecialLawVerificationFirstLifeService.meetDeposit(user);
-        boolean meetStandardProperty = specialPublicSpecialLawVerificationFirstLifeService.meetStandardProperty(user);
-        return new ResponseEntity<>(new SpecialPublicSpecialLawFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject,meetDeposit,meetStandardProperty), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialPublicFirstLifeResponseDto(targetHouseAmount, monthOfAverageIncome, HomelessYn, vaildObject, meetDeposit), HttpStatus.OK);
     }
 
 }

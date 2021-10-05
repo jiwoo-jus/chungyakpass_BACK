@@ -11,10 +11,7 @@ import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
-import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
-import com.hanium.chungyakpassback.repository.standard.BankbookRepository;
-import com.hanium.chungyakpassback.repository.standard.PriorityDepositRepository;
-import com.hanium.chungyakpassback.repository.standard.PrioritySubscriptionPeriodRepository;
+import com.hanium.chungyakpassback.repository.standard.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +40,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     final BankbookRepository bankbookRepository;
     final PriorityDepositRepository priorityDepositRepository;
     final PrioritySubscriptionPeriodRepository prioritySubscriptionPeriodRepository;
+    final PriorityJoinPeriodRepository priorityJoinPeriodRepository;
 
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
@@ -51,9 +49,13 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         return Integer.parseInt(housingTypeChange);
     }
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int calcAmericanAge(LocalDate birthday) {
+        if (birthday == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
+        }
+
         LocalDate now = LocalDate.now();
         int americanAge = now.minusYears(birthday.getYear()).getYear();
 
@@ -62,7 +64,6 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
         return americanAge;
     }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -87,42 +88,44 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         }
     }
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean isHouseholder(User user) {
-        if(user.getHouse().getHouseHolder()==null){
-            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER);
-        }
-        else {
-            if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
-                return true;
-            }
+        if (user.getHouse().getHouseHolder() == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
+        } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
+            return true;
         }
         return false;
     }
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+        if (user.getHouseMember() == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER); // 세대구성원->세대를 통해서 주소를 user의 지역_레벨1을 가져오는 것이기 때문에 user의 세대구성원이 비어있으면 안됨.
+        }
+
         AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
 
-        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea())
+        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
             return true;
+        }
         return false;
     }
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean isRestrictedArea(AptInfo aptInfo) {
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
     }
 
-
     @Override
-    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부확인
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
@@ -133,54 +136,47 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         LocalDate now = LocalDate.now();
         Period period = joinDate.until(now);
         int joinPeriod = period.getYears() * 12 + period.getMonths(); // 가입날짜를 받아와서 현재까지의 개월수를 계산
-        List<PriorityJoinPeriod> priorityDepositList = prioritySubscriptionPeriodRepository.findAllBySupply(Supply.일반공급);
-        if (userBankbook.getValidYn().equals(Yn.y)) {
-            for (int i = 0; i < priorityDepositList.size(); i++) {
-                if (aptInfo.getSubscriptionOverheated().equals(priorityDepositList.get(i).getSubscriptionOverheated())
-                        && aptInfo.getSpeculationOverheated().equals(priorityDepositList.get(i).getSpeculationOverheated())
-                        && aptInfo.getAtrophyArea().equals(priorityDepositList.get(i).getAtrophyArea())
-                        && addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn().equals(priorityDepositList.get(i).getMetropolitanAreaYn())
-                        && joinPeriod >= priorityDepositList.get(i).getSubscriptionPeriod()
-                ) {
-                    return true;
+
+        List<PriorityJoinPeriod> priorityJoinPeriodList = priorityJoinPeriodRepository.findAll();
+
+        for (PriorityJoinPeriod priorityJoinPeriod : priorityJoinPeriodList) {
+            if (userBankbook.getValidYn().equals(Yn.y) && priorityJoinPeriod.getSupply().equals(Supply.일반공급)) { // 청약통장이 유효하면서 공급유형이 일반공급인 경우,
+                if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
+                    if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
+                        return true;
                 }
-                return false;
             }
-            return false;
         }
+
         return false;
     }
 
-
     // 예치금액충족 여부
-    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) {
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부확인
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
         UserBankbook userBankbook = optUserBankbook.get();
-        List<PriorityDeposit> priorityDepositList = priorityDepositRepository.findAll();
+
         int housingTypeChange = houseTypeConverter(aptInfoTarget);
-        for (int i = 0; i < priorityDepositList.size(); i++) {
-            if (priorityDepositList.get(i).getDepositArea().equals(user.getHouseMember().getHouse().getAddressLevel1().getDepositArea())) {
-                if (housingTypeChange > 135) {
-                    if (housingTypeChange > priorityDepositList.get(i).getAreaOver() && userBankbook.getDeposit() >= priorityDepositList.get(i).getDeposit()) {
-                        return true;
-                    }
-                } else {
-                    if (housingTypeChange > priorityDepositList.get(i).getAreaOver() && housingTypeChange <= priorityDepositList.get(i).getAreaLessOrEqual()
-                            && userBankbook.getDeposit() >= priorityDepositList.get(i).getDeposit()) {
-                        return true;
-                    }
+        List<PriorityDeposit> priorityDepositList = priorityDepositRepository.findAll();
+
+
+        for (PriorityDeposit priorityDeposit : priorityDepositList) {
+            if (priorityDeposit.getDepositArea().equals(user.getHouse().getAddressLevel1().getDepositArea())) {
+                if (priorityDeposit.getAreaOver() < housingTypeChange && priorityDeposit.getAreaLessOrEqual() >= housingTypeChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) {
+                    return true;
                 }
-                return false;
             }
-            return false;
         }
+
         return false;
     }
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         if ((houseTypeConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
             return true;
@@ -189,16 +185,85 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         return false;
     }
 
-
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean meetHouseHavingLessThan2Apt(User user) {
-        Integer houseCount = getHouseMember(user);
-        System.out.println("houseCount!!!" + houseCount);
-        if (houseCount < 2)//houseCount가 2개 미만이면 true 아니면 false-0으로 할 수도 있음
+        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
+
+        int houseCount = 0;
+
+        // 하나의 세대일 경우
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMember houseMember : houseMemberList) {
+                List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
+
+                int flag = 0;
+                for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
+                    if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
+                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)) && calcAmericanAge(houseMember.getBirthDay()) >= 60)
+                            continue;
+                        else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
+                            continue;
+                        else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11")))
+                            continue;
+                        else
+                            houseCount++;
+                    }
+                }
+            }
+        }
+        //배우자 분리세대일 경우
+        else {
+            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
+
+            for (HouseMember houseMember : houseMemberList) {
+                List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
+
+                int flag = 0;
+                for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
+                    if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
+                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)) && calcAmericanAge(houseMember.getBirthDay()) >= 60)
+                            continue;
+                        else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
+                            continue;
+                        else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11")))
+                            continue;
+                        else
+                            houseCount++;
+                    }
+                }
+            }
+            for (HouseMember houseMember : spouseHouseMemberList) {
+                List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
+
+                int flag = 0;
+                for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
+                    if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
+                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)) && calcAmericanAge(houseMember.getBirthDay()) >= 60)
+                            continue;
+                        else if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔))
+                            continue;
+                        else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11")))
+                            continue;
+                        else
+                            houseCount++;
+                    }
+                }
+            }
+        }
+        System.out.println("주택수 : " + houseCount);
+
+        if (houseCount < 2) //2주택 미만이면 true
             return true;
-        else return false;
+        else
+            return false; //아니면 false
     }
 
+
+    //보류
     public Integer getHouseMember(User user) {//세대구성원 대상여부 파악하는 메소드
         Integer houseCount = 0;
         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
@@ -219,6 +284,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         return houseCount;
     }
 
+    //보류
     public Integer countHouseHaving(User user, List<HouseMember> houseMemberList, Integer houseCount) {//세대 구성원 List가져옴
         for (HouseMember houseMember : houseMemberList) {
             List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
@@ -242,35 +308,22 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         return houseCount;
     }
 
-
     @Override
-    public boolean meetAllHouseMemberNotWinningIn5years(User user) {
-        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
-        List<HouseMemberRelation> userMemberList = houseMemberRelationRepository.findAllByUser(user);
+    @Transactional(rollbackFor = Exception.class)
+    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
+        HouseMember houseMember = user.getHouseMember();
+        HouseMember spouseHouseMember = user.getSpouseHouseMember();
 
         LocalDate now = LocalDate.now();
         int periodYear = 0;
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
-            for (int i = 0; i < houseMemberList.size(); i++) {//본인이 세대주일 때 무주택직계존속 포함
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMemberList.get(i));
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-                    if (periodYear <= 5)
-                        return false;
-                }
-                return true;
-            }
-        }
-        else if (user.getHouse() != user.getSpouseHouse()) {//분리 세대인 경우
-            for (int i = 0; i < userMemberList.size(); i++) {//본인이 세대주일 때 무주택직계존속 포함
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(userMemberList.get(i).getOpponent());
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-                    if (periodYear <= 5)
-                        return false;
-                }
-                return true;
-            }
+
+        List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAll();
+
+        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
+            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
+
+            if (periodYear <= 5)
+                return false;
         }
         return true;
     }

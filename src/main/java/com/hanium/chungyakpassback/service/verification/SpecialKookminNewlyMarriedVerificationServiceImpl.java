@@ -9,10 +9,7 @@ import com.hanium.chungyakpassback.entity.standard.PriorityPaymentsCount;
 import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.*;
-import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
-import com.hanium.chungyakpassback.repository.standard.IncomeRepository;
-import com.hanium.chungyakpassback.repository.standard.PriorityJoinPeriodRepository;
-import com.hanium.chungyakpassback.repository.standard.PriorityPaymentsCountRepository;
+import com.hanium.chungyakpassback.repository.standard.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +23,16 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class SpecialKookminPublicOldParentVerificationServiceImpl implements SpecialKookminPublicOldParentVerificationService {
+public class SpecialKookminNewlyMarriedVerificationServiceImpl implements SpecialKookminNewlyMarriedVerificationService {
 
     final UserBankbookRepository userBankbookRepository;
+    final BankbookRepository bankbookRepository;
     final HouseMemberRepository houseMemberRepository;
-    final HouseMemberRelationRepository houseMemberRelationRepository;
     final HouseMemberPropertyRepository houseMemberPropertyRepository;
+    final HouseMemberRelationRepository houseMemberRelationRepository;
     final AddressLevel1Repository addressLevel1Repository;
-    final IncomeRepository incomeRepository;
     final HouseMemberChungyakRepository houseMemberChungyakRepository;
+    final IncomeRepository incomeRepository;
     final PriorityJoinPeriodRepository priorityJoinPeriodRepository;
     final PriorityPaymentsCountRepository priorityPaymentsCountRepository;
 
@@ -45,7 +43,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         return Integer.parseInt(housingTypeChange);
     }
 
-    public Long calcDate(LocalDate transferdate) { //주민등록표에 등재된 기간 구하기
+    public Long calcDate(LocalDate transferdate) { //신혼 기간 구하기
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime departure = transferdate.atStartOfDay();
 
@@ -72,7 +70,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { // 청약통장유형조건충족여부
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -100,134 +98,239 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
 
         for (HouseMember houseMember : houseMemberListUser) {
             houseMemberCount++;
-            if (calcAmericanAge(houseMember.getBirthDay()) >= 19) //만19세 이상만 소득 산정
+            if (calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
                 sumIncome += houseMember.getIncome();
         }
 
         System.out.println("세대구성원 수 : " + houseMemberCount);
         System.out.println("소득합산 : " + sumIncome);
 
-        for (HouseMember houseMember : houseMemberListUser) {
-            for (Income income : incomeList) {
-                if (income.getSpecialSupply().equals(SpecialSupply.노부모부양)) {
-                    if (houseMemberCount <= 3) {
-                        if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow()) {
-                            return true;
+        //user나 배우자 둘 중에 한 명이 소득이 없을 경우(외벌이)
+        if (user.getHouseMember().getIncome() == null || user.getSpouseHouseMember().getIncome() == null) {
+            for (HouseMember houseMember : houseMemberListUser) {
+                for (Income income : incomeList) {
+                    if (income.getApplicationPublicHousingSpecialLaws().equals(Yn.n) && income.getDualIncome().equals(Yn.n) && income.getSpecialSupply().equals(SpecialSupply.신혼부부) && income.getSupply().equals(Supply.우선공급)) {
+                        if (houseMemberCount <= 3) {
+                            if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow()) {
+                                return true;
+                            } else return false;
+                        } else if (houseMemberCount <= 4) {
+                            if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
+                                return true;
+                            } else return false;
+                        } else if (houseMemberCount <= 5) {
+                            if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
+                                return true;
+                            } else return false;
                         }
-                    } else if (houseMemberCount <= 4) {
-                        if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 5) {
-                        if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 6) {
-                        if (sumIncome <= income.getAverageMonthlyIncome6peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 7) {
-                        if (sumIncome <= income.getAverageMonthlyIncome7peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 8) {
-                        if (sumIncome <= income.getAverageMonthlyIncome8peopleLessBelow()) {
-                            return true;
+                    } else if (income.getApplicationPublicHousingSpecialLaws().equals(Yn.n) && income.getDualIncome().equals(Yn.n) && income.getSpecialSupply().equals(SpecialSupply.신혼부부) && income.getSupply().equals(Supply.일반공급)) {
+                        if (houseMemberCount <= 3) {
+                            if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow() && sumIncome >= income.getAverageMonthlyIncome3peopleLessExcess()) {
+                                return true;
+                            } else return false;
+                        } else if (houseMemberCount <= 4) {
+                            if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
+                                return true;
+                            } else return false;
+                        } else if (houseMemberCount <= 5) {
+                            if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
+                                return true;
+                            } else return false;
                         }
                     }
                 }
             }
         }
-
         return false;
+    }
+
+//    @Override
+//    public boolean meetMonthlyAverageIncome(User user) { //월평균소득기준충족여부
+//        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
+////        Income income = incomeRepository.findBySpecialSupply(SpecialSupply.신혼부부).get();
+//        Income income1 = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncome(SpecialSupply.신혼부부, Supply.우선공급, Yn.y).get();
+//        Income income2 = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncome(SpecialSupply.신혼부부, Supply.우선공급, Yn.n).get();
+//        Income income3 = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncome(SpecialSupply.신혼부부, Supply.일반공급, Yn.y).get();
+//        Income income4 = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncome(SpecialSupply.신혼부부, Supply.일반공급, Yn.n).get();
+//
+//
+//        int houseMemberCount = 0; //세대구성원수
+//        int sumIncome = 0; // 소득합산
+//
+//        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+//            //user나 배우자 둘 중에 한 명이 소득이 없을 경우(외벌이)
+//            if (user.getHouseMember().getIncome() == null || user.getSpouseHouseMember().getIncome() == null) {
+//                for (HouseMember houseMember : houseMemberListUser) {
+//                    houseMemberCount++;
+//                    if (calcAmericanAge(houseMember.getBirthDay()) >= 19) //만19세 이상만 소득 산정
+//                        sumIncome += houseMember.getIncome();
+//                }
+//
+//                System.out.println("세대구성원 수 : " + houseMemberCount);
+//                System.out.println("소득합산 : " + sumIncome);
+//
+//                if (houseMemberCount <= 3) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome3peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome3peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome3peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 4) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome4peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome4peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome4peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 5) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome5peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome5peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome5peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 6) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome6peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome6peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome6peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 7) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome7peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome7peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome7peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 8) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome8peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome8peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome8peopleLessBelow())
+//                        return true;
+//                }
+//            }
+//            //배우자분리세대일 경우
+//            else {
+//                List<HouseMember> houseMemberListSpouse = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
+//
+//                for (HouseMember houseMember : houseMemberListUser) { //신청자 세대 월평균 소득 조회
+//                    houseMemberCount++;
+//                    if (calcAmericanAge(houseMember.getBirthDay()) >= 19)
+//                        sumIncome += houseMember.getIncome();
+//                }
+//
+//                for (HouseMember houseMember : houseMemberListSpouse) { //배우자 세대 월평균 소득 조회
+//                    houseMemberCount++;
+//                    if (calcAmericanAge(houseMember.getBirthDay()) >= 19)
+//                        sumIncome += houseMember.getIncome();
+//                }
+//
+//                System.out.println("세대구성원 수 : " + houseMemberCount);
+//                System.out.println("소득합산 : " + sumIncome);
+//
+//                if (houseMemberCount <= 3) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome3peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome3peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome3peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 4) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome4peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome4peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome4peopleLessBelow())
+//                        return true;
+//                } else if (houseMemberCount <= 5) {
+//                    if (sumIncome <= income2.getAverageMonthlyIncome5peopleLessBelow())
+//                        return true;
+//                    else if (sumIncome >= income4.getAverageMonthlyIncome5peopleLessExcess() && sumIncome <= income4.getAverageMonthlyIncome5peopleLessBelow())
+//                        return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean meetMarriagePeriodIn7years(User user) {
+        if (user.getHouseMember().getMarriageDate() == null) { //혼인신고일이 null일 경우 경고문을 띄워줌
+            throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
+        } else if (calcDate(user.getHouseMember().getMarriageDate()) < 2555) { //신청자의 혼인기간이 7년 이내일 경우 true
+            return true;
+        }
+        return false; //그렇지 않을 경우 false
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetProperty(User user) { //자산기준충족여부
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
+    public boolean hasMinorChildren(User user) {
+        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
-//        int overPropertyStandard = 0;
-        int sumEstateProperty = 0; //부동산자산합
-        int sumCarProperty = 0; //자동차자산합
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMember houseMember : houseMemberListUser) {
+                HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
 
-        //배우자와 같은 세대이거나, 미혼일 경우
+                // 만19세 미만의 미성년 자녀가 있거나, 태아가 있을 경우 1순위
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && calcAmericanAge(houseMember.getBirthDay()) < 19) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))
+                    return true;
+            }
+        }
+
+        // 배우자 분리세대일 경우
+        else {
+            List<HouseMember> houseMemberListSpouse = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
+
+            for (HouseMember houseMember : houseMemberListUser) {
+                HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+
+                // 만19세 미만의 미성년 자녀가 있거나, 태아가 있을 경우 1순위
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && calcAmericanAge(houseMember.getBirthDay()) < 19) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))
+                    return true;
+            }
+
+            for (HouseMember houseMember : houseMemberListSpouse) {
+                HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+
+                // 만19세 미만의 미성년 자녀가 있거나, 태아가 있을 경우 1순위
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && calcAmericanAge(houseMember.getBirthDay()) < 19) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))
+                    return true;
+            }
+        }
+        return false; //그렇지 않으면, 2순위
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean is2ndChungyak(User user) {
+        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
+
         if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
-                    if (houseMemberProperty.getProperty().equals(Property.건물) || houseMemberProperty.getProperty().equals(Property.토지)) { //해당 세대가 소유하고 있는 부동산(건물+토지)이 215,500천원 초과일 경우 false
-                        sumEstateProperty += houseMemberProperty.getAmount();
-                    } else if (houseMemberProperty.getProperty().equals(Property.자동차)) { //해당 세대가 소유하고 있는 자동차가 34,960천원 초과일 경우 false
-                        sumCarProperty += houseMemberProperty.getAmount();
-                    }
+                    if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
+                        if (houseMemberProperty.getDispositionDate().isAfter(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이후에 처분했을 경우,
+                            return true; // true(2순위 신청만 가능)
                 }
             }
         }
-        // 배우자분리세대일 경우
+        // 배우자 분리세대일 경우
         else {
             List<HouseMember> houseMemberListSpouse = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); //배우자분리세대일 경우, 배우자의 세대구성원 가져오기
 
-            for (HouseMember houseMember : houseMemberListUser) { //신청자 세대 조회
+            for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
-                    if (houseMemberProperty.getProperty().equals(Property.건물) || houseMemberProperty.getProperty().equals(Property.토지)) { //해당 세대가 소유하고 있는 부동산(건물+토지)이 215,500천원 초과일 경우 false
-                        sumEstateProperty += houseMemberProperty.getAmount();
-                    } else if (houseMemberProperty.getProperty().equals(Property.자동차)) { //해당 세대가 소유하고 있는 자동차가 34,960천원 초과일 경우 false
-                        sumCarProperty += houseMemberProperty.getAmount();
-                    }
+                    if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
+                        if (houseMemberProperty.getDispositionDate().isAfter(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이후에 처분했을 경우,
+                            return true; // true(2순위 신청만 가능)
                 }
             }
 
-            for (HouseMember houseMember : houseMemberListSpouse) { // 배우자 세대 조회
+            for (HouseMember houseMember : houseMemberListSpouse) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
-                    if (houseMemberProperty.getProperty().equals(Property.건물) || houseMemberProperty.getProperty().equals(Property.토지)) { //해당 세대가 소유하고 있는 부동산(건물+토지)이 215,500천원 초과일 경우 false
-                        sumEstateProperty += houseMemberProperty.getAmount();
-                    } else if (houseMemberProperty.getProperty().equals(Property.자동차)) { //해당 세대가 소유하고 있는 자동차가 34,960천원 초과일 경우 false
-                        sumCarProperty += houseMemberProperty.getAmount();
-                    }
+                    if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
+                        if (houseMemberProperty.getDispositionDate().isAfter(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이후에 처분했을 경우,
+                            return true; // true(2순위 신청만 가능)
                 }
             }
         }
-
-        System.out.println("부동산자산합 : " + sumEstateProperty);
-        System.out.println("자동차자산합 : " + sumCarProperty);
-
-        if (sumEstateProperty > 215500000 || sumCarProperty > 34960000) //부동산 or 자동차 둘 중에 하나라도 자산기준 초과일 경우 false
-            return false;
-        else  //그 외에는 true
-            return true;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean meetOldParentSupportMore3years(User user) { //3년이상노부모부양충족여부
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
-
-        int oldParentSupportCount = 0;
-
-        for (HouseMember houseMember : houseMemberListUser) {
-            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
-
-            if (user.getHouse() == houseMember.getHouse()) { // 신청자와 같은 세대인지 판단 후,
-                if (calcAmericanAge(houseMember.getBirthDay()) >= 65 && ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)))) { // 만 65세 이상의 직계존속(배우자의 직계존속)인지 판단 후,
-                    if (calcDate(houseMember.getTransferDate()) >= 1095 && calcDate(user.getHouseMember().getTransferDate()) >= 1095) { //신청자와 부양자가 둘 다 3년 이상 등본에 등재한 경우
-                        oldParentSupportCount++;
-                    }
-                }
-            }
-        }
-
-        System.out.println("노부모부양수부 : " + oldParentSupportCount);
-
-        if (oldParentSupportCount >= 1) // 1명 이상의 노부모 부양을 할 경우 true
-            return true;
-        else // 그렇지 않으면 false
-            return false;
+        return false;
     }
 
     @Override
@@ -322,34 +425,6 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
-        if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
-            return true;
-        return false;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
-        HouseMember houseMember = user.getHouseMember();
-        HouseMember spouseHouseMember = user.getSpouseHouseMember();
-
-        LocalDate now = LocalDate.now();
-        int periodYear = 0;
-
-        List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAll();
-
-        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-            if (periodYear <= 5)
-                return false;
-        }
-        return true;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
         if (user.getHouseMember() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER); // 세대구성원->세대를 통해서 주소를 user의 지역_레벨1을 가져오는 것이기 때문에 user의 세대구성원이 비어있으면 안됨.
@@ -361,6 +436,14 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
             return true;
         }
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
+        if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
+            return true;
         return false;
     }
 
@@ -380,8 +463,8 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         List<PriorityJoinPeriod> priorityJoinPeriodList = priorityJoinPeriodRepository.findAll();
 
         for (PriorityJoinPeriod priorityJoinPeriod : priorityJoinPeriodList) {
-            if (userBankbook.getValidYn().equals(Yn.y)) { // 청약통장이 유효한 노부모부양의 경우,
-                if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.노부모부양)) {
+            if (userBankbook.getValidYn().equals(Yn.y)) { // 청약통장이 유효한 신혼부부의 경우,
+                if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.신혼부부)) {
                     if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
                         if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
                             return true;
@@ -404,7 +487,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         List<PriorityPaymentsCount> priorityPaymentsCountList = priorityPaymentsCountRepository.findAll();
 
         for (PriorityPaymentsCount priorityPaymentsCount : priorityPaymentsCountList) {
-            if (userBankbook.getValidYn().equals(Yn.y) && priorityPaymentsCount.getSupply().equals(Supply.특별공급) && priorityPaymentsCount.getSpecialSupply().equals(SpecialSupply.노부모부양)) { // 청약통장이 유효하면서 공급유형이 노부모부양인 경우,
+            if (userBankbook.getValidYn().equals(Yn.y) && priorityPaymentsCount.getSupply().equals(Supply.특별공급) && priorityPaymentsCount.getSpecialSupply().equals(SpecialSupply.신혼부부)) { // 청약통장이 유효하면서 공급유형이 신혼부부인 경우,
                 if (priorityPaymentsCount.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityPaymentsCount.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityPaymentsCount.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityPaymentsCount.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
                     if (userBankbook.getPaymentsCount() >= priorityPaymentsCount.getCountPayments())
                         return true;
@@ -413,5 +496,25 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         }
 
         return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
+        HouseMember houseMember = user.getHouseMember();
+        HouseMember spouseHouseMember = user.getSpouseHouseMember();
+
+        LocalDate now = LocalDate.now();
+        int periodYear = 0;
+
+        List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAll();
+
+        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
+            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
+
+            if (periodYear <= 5)
+                return false;
+        }
+        return true;
     }
 }

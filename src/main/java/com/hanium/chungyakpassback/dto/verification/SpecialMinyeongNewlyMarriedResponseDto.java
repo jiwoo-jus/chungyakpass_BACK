@@ -7,17 +7,20 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GeneralMinyeongResponseDto {
+public class SpecialMinyeongNewlyMarriedResponseDto {
 
+    Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
     boolean accountTf;
-    Integer americanAge;
+//    boolean meetMonthlyAverageIncomeTf;
+    boolean meetMarriagePeriodIn7yearsTf;
+    boolean hasMinorChildren;
+    boolean is2ndChungyak;
+    boolean meetHomelessHouseholdMembersTf;
     boolean householderTf;
-    boolean isRestrictedAreaTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    boolean meetHouseHavingLessThan2AptTf;
+    boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetDepositTf;
-    boolean isPriorityApt;
 
 }
