@@ -66,18 +66,11 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         return lateDateList;
     }
 
-
-
-
-
-
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfHomelessness(User user) {
         int houseCount = 0 ;
-        if (generalPrivateVerificationServiceImpl.getHouseMember(user) != 0) {
-            throw new CustomException(ErrorCode.BAD_REQUEST_HOMELESS);
-        }
-        else if(user.getSpouseHouseMember()!= null&&user.getSpouseHouseMember().getMarriageDate()==null){
+       if(user.getSpouseHouseMember()!= null&&user.getSpouseHouseMember().getMarriageDate()==null){
             throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
         }
         else{
@@ -231,6 +224,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         return numberOfFamily;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer numberOfDependents(User user, SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto) { //부양가족 산출하기
 
@@ -288,6 +282,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         return period.getYears() * 12 + period.getMonths();
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer bankbookJoinPeriod(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);

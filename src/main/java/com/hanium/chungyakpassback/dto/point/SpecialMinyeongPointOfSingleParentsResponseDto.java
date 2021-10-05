@@ -7,11 +7,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpecialMinyeongPointOfNewMarriedResponseDto {
+public class SpecialMinyeongPointOfSingleParentsResponseDto {
     Integer numberOfMinors;
-    Integer periodOfMarriged;
+    Integer ageOfMostYoungChild;
     Integer bankbookPaymentsCount;
     Integer periodOfApplicableAreaResidence;
     Integer monthOfAverageIncome;
-
 }

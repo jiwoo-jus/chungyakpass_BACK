@@ -7,10 +7,7 @@ import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
-import com.hanium.chungyakpassback.service.point.PointCalculationOfMultiChildService;
-import com.hanium.chungyakpassback.service.point.PointCalculationOfNewMarriedService;
-import com.hanium.chungyakpassback.service.point.PointCalculationOfOldParentSupportService;
-import com.hanium.chungyakpassback.service.point.PointCalculationService;
+import com.hanium.chungyakpassback.service.point.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +25,16 @@ public class PointController {
     private final PointCalculationOfMultiChildService pointCalculationOfMultiChildService;
     private final PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService;
     private final PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService;
+    private final PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService;
 
-    public PointController(PointCalculationService pointCalculationService, UserRepository userRepository, AptInfoRepository aptInfoRepository, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService)  {
+    public PointController(PointCalculationService pointCalculationService, UserRepository userRepository, AptInfoRepository aptInfoRepository, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService, PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService)  {
         this.pointCalculationService = pointCalculationService;
         this.userRepository = userRepository;
         this.aptInfoRepository = aptInfoRepository;
         this.pointCalculationOfMultiChildService = pointCalculationOfMultiChildService;
         this.pointCalculationOfNewMarriedService = pointCalculationOfNewMarriedService;
         this.pointCalculationOfOldParentSupportService = pointCalculationOfOldParentSupportService;
+        this.pointCalculationOfSingleParentsService = pointCalculationOfSingleParentsService;
     }
 
 
@@ -70,15 +69,28 @@ public class PointController {
     public ResponseEntity<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarried(@RequestBody SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfNewMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-
         Integer numberOfMinors = pointCalculationOfNewMarriedService.numberOfMinors(user);
-        Integer ageOfMostYoungChild = pointCalculationOfNewMarriedService.ageOfMostYoungChild(user);
         Integer periodOfMarriged = pointCalculationOfNewMarriedService.periodOfMarriged(user);
         Integer bankbookPaymentsCount = pointCalculationOfNewMarriedService.bankbookPaymentsCount(user);
         Integer periodOfApplicableAreaResidence =  pointCalculationOfNewMarriedService.periodOfApplicableAreaResidence ( user, aptInfo);
         Integer monthOfAverageIncome = pointCalculationOfNewMarriedService.monthOfAverageIncome(user);
 
-        return new ResponseEntity<>(new SpecialMinyeongPointOfNewMarriedResponseDto(numberOfMinors,periodOfMarriged,bankbookPaymentsCount,periodOfApplicableAreaResidence,ageOfMostYoungChild,monthOfAverageIncome), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialMinyeongPointOfNewMarriedResponseDto(numberOfMinors,periodOfMarriged,bankbookPaymentsCount,periodOfApplicableAreaResidence,monthOfAverageIncome), HttpStatus.OK);
+    }
+
+    @PostMapping ("/special/singleParents")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialMinyeongPointOfSingleParentsResponseDto> specialMinyeongPointOfNewMarried(@RequestBody SpecialMinyeongPointOfSingleParentsDto specialMinyeongPointOfSingleParentsDto){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfSingleParentsDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+
+        Integer numberOfMinors = pointCalculationOfSingleParentsService.numberOfMinors(user);
+        Integer ageOfMostYoungChild = pointCalculationOfSingleParentsService.ageOfMostYoungChild(user);
+        Integer bankbookPaymentsCount = pointCalculationOfSingleParentsService.bankbookPaymentsCount(user);
+        Integer periodOfApplicableAreaResidence =  pointCalculationOfSingleParentsService.periodOfApplicableAreaResidence ( user, aptInfo);
+        Integer monthOfAverageIncome = pointCalculationOfSingleParentsService.monthOfAverageIncome(user);
+
+        return new ResponseEntity<>(new SpecialMinyeongPointOfSingleParentsResponseDto(numberOfMinors,ageOfMostYoungChild,bankbookPaymentsCount,periodOfApplicableAreaResidence,monthOfAverageIncome), HttpStatus.OK);
     }
 
     @PostMapping("/special/oldParentsSupport")
