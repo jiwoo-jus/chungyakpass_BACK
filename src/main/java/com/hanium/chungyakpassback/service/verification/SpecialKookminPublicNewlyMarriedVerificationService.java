@@ -18,7 +18,9 @@ public interface SpecialKookminPublicNewlyMarriedVerificationService {
 
     boolean hasMinorChildren(User user); //미성년자녀존재여부
 
-//    boolean meetMonthlyAverageIncome(User user); //월평균소득기준충족여부
+    boolean meetMonthlyAverageIncomePriority(User user); //월평균소득기준충족여부_우선공급
+
+    boolean meetMonthlyAverageIncomeGeneral(User user); //월평균소득기준충족여부_일반공급
 
     boolean meetProperty(User user); //자산기준충족여부
 
