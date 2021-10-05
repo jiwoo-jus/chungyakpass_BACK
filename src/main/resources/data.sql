@@ -1619,3 +1619,8 @@ VALUES (1, '주택청약종합저축', 'y', 'y', NULL),
        (2, '청약저축', 'y', 'n', NULL),
        (3, '청약예금', 'n', 'y', NULL),
        (4, '청약부금', 'n', 'y', 85);
+
+INSERT INTO STD_PROPERTY (STD_PROPERTY_ID, PROPERTY, PRICE)
+VALUES (1, '건물', 215500000),
+       (2, '토지', 215500000),
+       (3, '자동차', 34960000);

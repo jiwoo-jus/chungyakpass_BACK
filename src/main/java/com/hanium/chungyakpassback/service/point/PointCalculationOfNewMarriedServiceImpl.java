@@ -17,6 +17,7 @@ import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
 import com.hanium.chungyakpassback.repository.standard.IncomeRepository;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService;
+import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

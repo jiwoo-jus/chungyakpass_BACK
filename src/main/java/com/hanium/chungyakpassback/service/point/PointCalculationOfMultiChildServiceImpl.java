@@ -13,6 +13,7 @@ import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepositor
 import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import com.hanium.chungyakpassback.repository.input.UserBankbookRepository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
+import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

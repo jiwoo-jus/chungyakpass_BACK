@@ -34,9 +34,10 @@ public class VerificationController {
     private final SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService;
     private final SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService;
     private final SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService;
+    private final SpecialPublicSpecialLawVerificationFirstLifeService specialPublicSpecialLawVerificationFirstLifeService;
 
 
-    public VerificationController(UserRepository userRepository,SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService,SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService, GeneralPrivateVerificationService generalPrivateVerificationService, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository,GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService) {
+    public VerificationController(UserRepository userRepository,SpecialPublicVerificationFirstLifeService specialPublicVerificationFirstLifeService,SpecialPrivateVerificationFirstLifeService specialPrivateVerificationFirstLifeService, GeneralPrivateVerificationService generalPrivateVerificationService, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository,GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPublicSpecialLawVerificationFirstLifeService specialPublicSpecialLawVerificationFirstLifeService) {
         this.userRepository = userRepository;
         this.generalPrivateVerificationService = generalPrivateVerificationService;
         this.specialPrivateVerificationFirstLifeService = specialPrivateVerificationFirstLifeService;
@@ -48,6 +49,7 @@ public class VerificationController {
         this.specialKookminPublicMultiChildVerificationService = specialKookminPublicMultiChildVerificationService;
         this.specialPrivateOldParentVerificationService = specialPrivateOldParentVerificationService;
         this.specialKookminPublicOldParentVerificationService = specialKookminPublicOldParentVerificationService;
+        this.specialPublicSpecialLawVerificationFirstLifeService = specialPublicSpecialLawVerificationFirstLifeService;
     }
 
     @PostMapping("/general/minyeong")
@@ -198,7 +200,7 @@ public class VerificationController {
         boolean targetHousingType = specialPrivateVerificationFirstLifeService.targetHousingType(aptInfoTarget);
         boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
         boolean monthOfAverageIncome = specialPrivateVerificationFirstLifeService.monthOfAverageIncome(user);
-        boolean HomelessYn = specialPrivateVerificationFirstLifeService.HomelessYn(user);
+        boolean HomelessYn = specialPrivateVerificationFirstLifeService.homelessYn(user);
         boolean vaildObject = specialPrivateVerificationFirstLifeService.vaildObject(user, aptInfo);
         return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType,targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject), HttpStatus.OK);
     }
@@ -211,11 +213,26 @@ public class VerificationController {
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
         boolean monthOfAverageIncome = specialPublicVerificationFirstLifeService.monthOfAverageIncome(user);
-        boolean HomelessYn = specialPublicVerificationFirstLifeService.HomelessYn(user);
+        boolean HomelessYn = specialPublicVerificationFirstLifeService.homelessYn(user);
         boolean vaildObject = specialPublicVerificationFirstLifeService.vaildObject(user, aptInfo);
         boolean meetDeposit = specialPublicVerificationFirstLifeService.meetDeposit(user);
 
         return new ResponseEntity<>(new SpecialPublicFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject,meetDeposit), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/public/specialLaw/firstLife")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialPublicSpecialLawFirstLifeResponseDto> specialPublicSpecialLawFirstLife(@RequestBody SpecialPublicSpecialLawFirstLifeDto specialPublicSpecialLawFirstLifeDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfo aptInfo = aptInfoRepository.findById(specialPublicSpecialLawFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicSpecialLawFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        boolean targetHouseAmount = specialPublicSpecialLawVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
+        boolean monthOfAverageIncome = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncome(user);
+        boolean HomelessYn = specialPublicSpecialLawVerificationFirstLifeService.homelessYn(user);
+        boolean vaildObject = specialPublicSpecialLawVerificationFirstLifeService.vaildObject(user, aptInfo);
+        boolean meetDeposit = specialPublicSpecialLawVerificationFirstLifeService.meetDeposit(user);
+        boolean meetStandardProperty = specialPublicSpecialLawVerificationFirstLifeService.meetStandardProperty(user);
+        return new ResponseEntity<>(new SpecialPublicSpecialLawFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncome,HomelessYn,vaildObject,meetDeposit,meetStandardProperty), HttpStatus.OK);
     }
 
 }
