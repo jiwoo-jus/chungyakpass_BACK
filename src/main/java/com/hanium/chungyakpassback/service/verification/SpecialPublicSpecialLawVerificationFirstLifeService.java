@@ -4,11 +4,12 @@ import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
 
-public interface SpecialPrivateVerificationFirstLifeService {
-    boolean targetHousingType(AptInfoTarget aptInfoTarget);
+public interface SpecialPublicSpecialLawVerificationFirstLifeService {
     boolean targetHouseAmount( AptInfo aptInfo, AptInfoTarget aptInfoTarget);
     boolean monthOfAverageIncome(User user);
     boolean homelessYn(User user);
     boolean vaildObject(User user, AptInfo aptInfo);
+    boolean meetDeposit(User user);
+    boolean meetStandardProperty(User user);
 
 }

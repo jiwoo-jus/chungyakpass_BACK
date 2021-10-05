@@ -7,7 +7,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 public interface SpecialPublicVerificationFirstLifeService {
     boolean targetHouseAmount( AptInfo aptInfo, AptInfoTarget aptInfoTarget);
     boolean monthOfAverageIncome(User user);
-    boolean HomelessYn(User user);
+    boolean homelessYn(User user);
     boolean vaildObject(User user, AptInfo aptInfo);
     boolean meetDeposit(User user);
 

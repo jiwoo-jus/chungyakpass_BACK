@@ -74,7 +74,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
             int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
             if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
-                if (stdBankbook.get().getId().equals(4L)) {
+                if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
                     if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
                         return true;
                     }
@@ -90,8 +90,13 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
     @Override
     public boolean isHouseholder(User user) {
-        if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
-            return true;
+        if(user.getHouse().getHouseHolder()==null){
+            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER);
+        }
+        else {
+            if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
+                return true;
+            }
         }
         return false;
     }

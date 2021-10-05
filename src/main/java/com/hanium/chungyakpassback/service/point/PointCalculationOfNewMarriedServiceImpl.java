@@ -17,9 +17,9 @@ import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
 import com.hanium.chungyakpassback.repository.standard.IncomeRepository;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService;
-import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -131,7 +131,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     }
 
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer monthOfAverageIncome(User user) {
         List<HouseMember> houseMemberList = new ArrayList<>();
        List<Income> incomeList = incomeRepository.findAllBySupply(Supply.특별공급가점);
@@ -167,7 +167,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     }
 
 
-    @Override//납입횟수
+    @Transactional(rollbackFor = Exception.class)//납입횟수
     public Integer bankbookPaymentsCount(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         int bankbookPaymentsCount = optUserBankbook.get().getPaymentsCount();
@@ -185,7 +185,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         return paymentsCountGetPoint;
     }
 
-    @Override//해당지역 거주기간
+    @Transactional(rollbackFor = Exception.class)//해당지역 거주기간
     public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
             AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
             AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));

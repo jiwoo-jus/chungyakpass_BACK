@@ -13,9 +13,9 @@ import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepositor
 import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import com.hanium.chungyakpassback.repository.input.UserBankbookRepository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
-import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     Integer periodOfHomelessnessGetPoint = 0;
 
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer numberOfChild(User user) {
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 19);
         for (int u = 0; u <= 2; u++) {
@@ -54,7 +54,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     }
 
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer numberOfChildUnder6Year(User user) {
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 6);
         for (int u = 1; u <= 3; u++) {
@@ -65,7 +65,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return NumberOfChildUnder6YearGetPoint;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer bankbookJoinPeriod(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
@@ -87,7 +87,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return periodOfResidenceGetPoint;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
         AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
@@ -103,7 +103,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return periodOfResidenceGetPoint;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer generationComposition(SpecialPointOfMultiChildDto specialPointOfMultiChildDto) {
         if (specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.한부모가족)||specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.삼세대이상)) {
                 return generationCompositionGetPoint = 5;
@@ -135,7 +135,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return lateDateList;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer periodOfHomelessness(User user) {
         int houseCount = 0;
         if (generalPrivateVerificationServiceImpl.getHouseMember(user) != 0) {

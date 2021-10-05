@@ -6,7 +6,9 @@ import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.standard.Income;
-import com.hanium.chungyakpassback.enumtype.*;
+import com.hanium.chungyakpassback.enumtype.ErrorCode;
+import com.hanium.chungyakpassback.enumtype.SpecialSupply;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoAmountRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
@@ -17,6 +19,7 @@ import com.hanium.chungyakpassback.repository.standard.PrioritySubscriptionPerio
 import com.hanium.chungyakpassback.service.point.PointCalculationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +35,10 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final IncomeRepository incomeRepository;
     final PointCalculationServiceImpl pointCalculationServiceImpl;
+    final SpecialPublicVerificationFirstLifeServiceImpl specialPublicVerificationFirstLifeServiceImpl;
 
-    @Override
-    public boolean HomelessYn(User user) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean homelessYn(User user) {
         Integer houseCount = generalPrivateVerificationServiceImpl.getHouseMember(user);
         System.out.println("houseCount!!!" + houseCount);
         if (houseCount < 1)//houseCount가 2개 미만이면 true 아니면 false-0으로 할 수도 있음
@@ -43,7 +47,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
             throw new CustomException(ErrorCode.BAD_REQUEST_HOMELESS);//무주택세대 구성원이 아니다.
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean targetHousingType(AptInfoTarget aptInfoTarget) {
         int housingTypeChange = generalPrivateVerificationServiceImpl.houseTypeConverter(aptInfoTarget);
         if (housingTypeChange <= 85) {
@@ -52,7 +56,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
         return false;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean targetHouseAmount(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<AptInfoAmount> supplyAmount = aptInfoAmountRepository.findByHousingType(aptInfoTarget.getHousingType());
         String targetSupplyAmount = supplyAmount.get().getSupplyAmount().replace(",", "");
@@ -86,7 +90,7 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     }
 
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean monthOfAverageIncome(User user) {
         Integer houseMemberIncome = 0;
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
@@ -109,22 +113,9 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
         return false;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean vaildObject(User user, AptInfo aptInfo) {
-        List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
-        for (int i = 0; i < houseMemberRelationList.size(); i++) {
-            if (user.getSpouseHouseMember() != null || (houseMemberRelationList.get(i).getRelation().getRelation().equals(Relation.자녀_일반) && houseMemberRelationList.get(i).getOpponent().getMarriageDate() == null)) {
-                if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y)) {
-                    if (!generalPrivateVerificationServiceImpl.meetAllHouseMemberNotWinningIn5years(user)) {
-                        return false;
-                    }
-                    return true;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
+        return specialPublicVerificationFirstLifeServiceImpl.vaildObject(user,aptInfo);
     }
 
 }

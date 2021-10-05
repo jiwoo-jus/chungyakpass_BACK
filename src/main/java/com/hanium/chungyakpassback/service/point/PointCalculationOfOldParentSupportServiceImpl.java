@@ -10,9 +10,9 @@ import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.standard.BankbookRepository;
-import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -70,7 +70,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
 
 
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer periodOfHomelessness(User user) {
         int houseCount = 0 ;
         if (generalPrivateVerificationServiceImpl.getHouseMember(user) != 0) {
@@ -230,7 +230,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         return numberOfFamily;
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer numberOfDependents(User user, SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto) { //부양가족 산출하기
 
         for(int i = 0; i<specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().size(); i++) {
@@ -287,7 +287,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         return period.getYears() * 12 + period.getMonths();
     }
 
-    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer bankbookJoinPeriod(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
