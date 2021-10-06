@@ -82,9 +82,8 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
                     return false;
                 }
                 return true;
-            } else {
-                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
             }
+            return false;
         }
     }
 
