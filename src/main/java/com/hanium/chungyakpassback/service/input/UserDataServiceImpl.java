@@ -39,6 +39,7 @@ public class UserDataServiceImpl implements UserDataService{
     private final RelationRepository relationRepository;
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
@@ -49,6 +50,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new UserBankbookResponseDto(userBankbookRepository.save(userBankbookDto.toEntity(user)));
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public UserBankbookResponseDto updateUserBankbook(Long id, UserBankbookDto userBankbookDto) {
         UserBankbook userBankbook = userBankbookRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BANKBOOK));
@@ -56,6 +58,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new UserBankbookResponseDto(userBankbookRepository.save(userBankbook.updateUserBankbook(userBankbookDto)));
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteUserBankbook(Long id){
         UserBankbook userBankbook = userBankbookRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BANKBOOK));
@@ -64,7 +67,7 @@ public class UserDataServiceImpl implements UserDataService{
         return HttpStatus.OK;
     }
 
-
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HouseResponseDto house(HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
@@ -88,6 +91,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseResponseDto(house);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HouseResponseDto updateHouse(Long id, HouseUpdateDto houseUpdateDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
@@ -98,6 +102,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseResponseDto(houseRepository.save(house));
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouse(Long id){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
@@ -127,7 +132,7 @@ public class UserDataServiceImpl implements UserDataService{
     }
 
 
-
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HouseMemberResponseDto houseMember(HouseMemberDto houseMemberDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
@@ -161,6 +166,7 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberResponseDto(houseMember, houseMemberRelation);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HouseMemberResponseDto updateHouseMember(Long id, HouseMemberUpdateDto houseMemberupdateDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
@@ -197,11 +203,12 @@ public class UserDataServiceImpl implements UserDataService{
         return new HouseMemberResponseDto(houseMember, houseMemberRelation);
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouseMember(Long id){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         House house = user.getHouse();
-        HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
+        HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
 
         houseMemberRelationRepository.delete(houseMemberRelationRepository.findByOpponent(houseMember).get());
         houseMemberPropertyRepository.deleteAllByHouseMember(houseMember);
@@ -223,6 +230,7 @@ public class UserDataServiceImpl implements UserDataService{
     }
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto){
         House house = houseRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
@@ -236,6 +244,7 @@ public class UserDataServiceImpl implements UserDataService{
         return houseHolderDto;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HouseMemberPropertyResponseDto> houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto){
         ArrayList<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtoList = new ArrayList<>();
@@ -248,12 +257,13 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberPropertyResponseDtoList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HouseMemberPropertyResponseDto> updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
         ArrayList<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtoList = new ArrayList<>();
         for (HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDtoSingle : houseMemberPropertyUpdateDto.getHouseMemberPropertyUpdateDtoList()){
             HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
-            HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
+            HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
             houseMemberProperty.updateHouseMemberProperty(houseMember, houseMemberPropertyUpdateDtoSingle);
             houseMemberPropertyRepository.save(houseMemberProperty);
             houseMemberPropertyResponseDtoList.add(new HouseMemberPropertyResponseDto(houseMemberProperty));
@@ -261,6 +271,7 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberPropertyResponseDtoList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouseMemberProperty(HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
         for (HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDtoSingle : houseMemberPropertyDeleteDto.getHouseMemberPropertyDeleteDtoList()){
@@ -279,11 +290,12 @@ public class UserDataServiceImpl implements UserDataService{
 //        return HttpStatus.OK;
 //    }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HouseMemberChungyakResponseDto> houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto){
         ArrayList<HouseMemberChungyakResponseDto> houseMemberChungyakResponseDtoList = new ArrayList<>();
         for(HouseMemberChungyakDto houseMemberChungyakDtoSingle : houseMemberChungyakDto.getHouseMemberChungyakDtoList()){
-            HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
+            HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
             HouseMemberChungyak houseMemberChungyak = houseMemberChungyakDtoSingle.toEntity(houseMember);
             houseMemberChungyakRepository.save(houseMemberChungyak);
             houseMemberChungyakResponseDtoList.add(new HouseMemberChungyakResponseDto(houseMemberChungyak));
@@ -291,11 +303,12 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberChungyakResponseDtoList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HouseMemberChungyakResponseDto> updateHouseMemberChungyak(HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto){
         ArrayList<HouseMemberChungyakResponseDto> houseMemberChungyakResponseDtoList = new ArrayList<>();
         for(HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDtoSingle : houseMemberChungyakUpdateDto.getHouseMemberChungyakUpdateDtoList()){
-            HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_HOUSE_MEMBER)));
+            HouseMember houseMember = houseMemberRepository.findById(houseMemberChungyakUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
             HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(houseMemberChungyakUpdateDtoSingle.getHouseMemberChungyakId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
             houseMemberChungyak.updateHouseMemberChungyak(houseMember, houseMemberChungyakUpdateDtoSingle);
             houseMemberChungyakRepository.save(houseMemberChungyak);
@@ -304,6 +317,7 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberChungyakResponseDtoList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouseMemberChungyak(HouseMemberChungyakDeleteDto houseMemberChungyakDeleteDto){
         for (HouseMemberChungyakDeleteDto houseMemberChungyakDeleteDtoSingle : houseMemberChungyakDeleteDto.getHouseMemberChungyakDeleteDtoList()){
@@ -314,6 +328,7 @@ public class UserDataServiceImpl implements UserDataService{
         return HttpStatus.OK;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto){
         ArrayList<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestrictionResponseDtoList = new ArrayList<>();
@@ -326,6 +341,7 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberChungyakRestrictionResponseDtoList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public List<HouseMemberChungyakRestrictionResponseDto> updateHouseMemberChungyakRestriction(HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto){
         ArrayList<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestrictionResponseDtoList = new ArrayList<>();
@@ -339,6 +355,7 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberChungyakRestrictionResponseDtoList;
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouseMemberChungyakRestriction(HouseMemberChungyakRestrictionDeleteDto houseMemberChungyakRestrictionDeleteDto){
         for(HouseMemberChungyakRestrictionDeleteDto houseMemberChungyakRestrictionDeleteDtoSingle : houseMemberChungyakRestrictionDeleteDto.getHouseMemberChungyakRestrictionDeleteDtoList()){
