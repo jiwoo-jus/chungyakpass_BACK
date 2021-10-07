@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.dto.verification;
 
+import com.hanium.chungyakpassback.entity.input.User;
 import lombok.*;
 
 @Getter
@@ -9,7 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 public class SpecialPublicSpecialLawFirstLifeResponseDto {
     boolean targetHouseAmount;
-    boolean monthOfAverageIncome;
+    boolean monthOfAverageIncomePriority;
+    boolean monthOfAverageIncomeGeneral;
     boolean HomelessYn;
     boolean vaildObject;
     boolean meetDeposit;

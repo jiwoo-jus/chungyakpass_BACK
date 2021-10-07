@@ -283,10 +283,11 @@ public class VerificationController {
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPrivateFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHousingType = specialPrivateVerificationFirstLifeService.targetHousingType(aptInfoTarget);
         boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
-        boolean monthOfAverageIncome = specialPrivateVerificationFirstLifeService.monthOfAverageIncome(user);
         boolean homelessYn = specialPrivateVerificationFirstLifeService.homelessYn(user);
         boolean vaildObject = specialPrivateVerificationFirstLifeService.vaildObject(user, aptInfo);
-        return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType, targetHouseAmount, monthOfAverageIncome, homelessYn, vaildObject), HttpStatus.OK);
+        boolean monthOfAverageIncomePriority = specialPrivateVerificationFirstLifeService.monthOfAverageIncomePriority(user);
+        boolean monthOfAverageIncomeGeneral = specialPrivateVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
+        return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType, targetHouseAmount, homelessYn, vaildObject,monthOfAverageIncomePriority,monthOfAverageIncomeGeneral), HttpStatus.OK);
     }
 
     @PostMapping("/special/public/firstLife")
@@ -296,12 +297,13 @@ public class VerificationController {
         AptInfo aptInfo = aptInfoRepository.findById(specialPublicFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
-        boolean monthOfAverageIncome = specialPublicVerificationFirstLifeService.monthOfAverageIncome(user);
         boolean homelessYn = specialPublicVerificationFirstLifeService.homelessYn(user);
         boolean vaildObject = specialPublicVerificationFirstLifeService.vaildObject(user, aptInfo);
         boolean meetDeposit = specialPublicVerificationFirstLifeService.meetDeposit(user);
+        boolean monthOfAverageIncomePriority = specialPublicVerificationFirstLifeService.monthOfAverageIncomePriority(user);
+        boolean monthOfAverageIncomeGeneral = specialPublicVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
 
-        return new ResponseEntity<>(new SpecialPublicFirstLifeResponseDto(targetHouseAmount, monthOfAverageIncome, homelessYn, vaildObject, meetDeposit), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialPublicFirstLifeResponseDto(targetHouseAmount, homelessYn, vaildObject, meetDeposit,monthOfAverageIncomePriority,monthOfAverageIncomeGeneral), HttpStatus.OK);
     }
 
     @PostMapping("/special/public/specialLaw/firstLife")
@@ -311,12 +313,13 @@ public class VerificationController {
         AptInfo aptInfo = aptInfoRepository.findById(specialPublicSpecialLawFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicSpecialLawFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHouseAmount = specialPublicSpecialLawVerificationFirstLifeService.targetHouseAmount(aptInfo,aptInfoTarget);
-        boolean monthOfAverageIncome = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncome(user);
+        boolean monthOfAverageIncomePriority = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncomePriority(user);
+        boolean monthOfAverageIncomeGeneral = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
         boolean homelessYn = specialPublicSpecialLawVerificationFirstLifeService.homelessYn(user);
         boolean vaildObject = specialPublicSpecialLawVerificationFirstLifeService.vaildObject(user, aptInfo);
         boolean meetDeposit = specialPublicSpecialLawVerificationFirstLifeService.meetDeposit(user);
         boolean meetStandardProperty = specialPublicSpecialLawVerificationFirstLifeService.meetStandardProperty(user);
-        return new ResponseEntity<>(new SpecialPublicSpecialLawFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncome,homelessYn,vaildObject,meetDeposit,meetStandardProperty), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialPublicSpecialLawFirstLifeResponseDto(targetHouseAmount,monthOfAverageIncomePriority,monthOfAverageIncomeGeneral,homelessYn,vaildObject,meetDeposit,meetStandardProperty), HttpStatus.OK);
     }
 
 }
