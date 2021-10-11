@@ -323,7 +323,7 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
     @Transactional(rollbackFor = Exception.class)
     public boolean isHouseholder(User user) {
         if (user.getHouse().getHouseHolder() == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_HOUSEHOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
+            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
         } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
             return true;
         }
