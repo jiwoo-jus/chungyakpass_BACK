@@ -75,28 +75,6 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
         return false;
     }
 
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { // 청약통장유형조건충족여부
-//        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-//        if (optUserBankbook.isEmpty())
-//            throw new RuntimeException("등록된 청약통장이 없습니다.");
-//        UserBankbook userBankbook = optUserBankbook.get();
-//
-//        int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
-//
-//        if (aptInfo.getHousingType().equals(HousingType.국민)) {// 주택유형이 국민일 경우 청약통장종류는 주택청약종합저축 or 청약저축이어야 true
-//            if (userBankbook.getBankbook().equals(Bankbook.주택청약종합저축) || (userBankbook.getBankbook().equals(Bankbook.청약저축)))
-//                return true;
-//        }
-//
-//        if (aptInfo.getHousingType().equals(HousingType.민영)) { // 주택유형이 민영일 경우 청약통장종류는 주택청약종합저축 or 청약예금 or 청약부금이어야 true
-//            if (userBankbook.getBankbook().equals(Bankbook.주택청약종합저축) || userBankbook.getBankbook().equals(Bankbook.청약예금) || userBankbook.getBankbook().equals(Bankbook.청약부금) && (housingTypeChange <= 85))
-//                return true;
-//        }
-//        return false;
-//    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
