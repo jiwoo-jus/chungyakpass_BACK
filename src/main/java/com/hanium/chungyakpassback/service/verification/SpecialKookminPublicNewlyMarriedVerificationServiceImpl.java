@@ -167,6 +167,11 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
         System.out.println("세대구성원 수 : " + houseMemberCount);
         System.out.println("소득합산 : " + sumIncome);
 
+        // 배우자가 세대구성원에 등록되어 있지 않을 경우 경고문을 띄워줌.
+        if (user.getSpouseHouseMember() == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_SPOUSE);
+        }
+
         //user나 배우자 둘 중에 한 명이 소득이 없을 경우(외벌이)
         if (user.getHouseMember().getIncome() == null || user.getSpouseHouseMember().getIncome() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_INCOME); //신청자나 배우자 둘 중에 한명이라도 income에 null 값이 들어올 경우 경고문을 띄워줌.
