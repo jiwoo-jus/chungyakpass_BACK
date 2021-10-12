@@ -78,12 +78,15 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
                 if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
                     if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
                         return true;
+                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) {
+                        throw new CustomException(ErrorCode.BAD_REQUEST_OVER_AREA_BANKBOOK); //청약부금일 경우, 면적이 85제곱미터를 초과할 경우 경고문을 띄워줌.
                     }
                     return false;
                 }
                 return true;
+            } else {
+                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
             }
-            return false;
         }
     }
 

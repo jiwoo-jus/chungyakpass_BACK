@@ -17,7 +17,10 @@ public enum ErrorCode {
     BAD_REQUEST_RESOURCE(BAD_REQUEST, "잘못된 요청입니다"),
     BAD_REQUEST_USER_AND_USER_HOUSE(BAD_REQUEST, "회원은 회원 본인의 세대에 속해야 합니다"),
     BAD_REQUEST_SPOUSE_AND_SPOUSE_HOUSE(BAD_REQUEST, "배우자 분리세대 생성 시 배우자는 배우자 분리세대에 속해야 합니다"),
-
+    BAD_REQUEST_BANKBOOK(BAD_REQUEST, "청약가능한 청약통장 유형이 아닙니다."),
+    BAD_REQUEST_HOMELESS(BAD_REQUEST, "무주택 세대구성원이 아닙니다."),
+    BAD_REQUEST_LACK_BANKBOOK(BAD_REQUEST, "청약통장 납입액이 부족합니다."),
+    BAD_REQUEST_OVER_AREA_BANKBOOK(BAD_REQUEST, "지원 가능한 면적을 초과하였습니다."),
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
     RESOURCE_NOT_FOUND(NOT_FOUND, "해당 자원을 찾을 수 없습니다"),
@@ -37,6 +40,7 @@ public enum ErrorCode {
     NOT_FOUND_HOUSEHOLDER(NOT_FOUND, "세대주를 찾을 수 없습니다."),
     NOT_FOUND_Child(NOT_FOUND, "자녀를 찾을 수 없습니다."),
     NOT_FOUND_INCOME(NOT_FOUND, "월평균소득을 찾을 수 없습니다"),
+    NOT_FOUND_SPOUSE(NOT_FOUND, "배우자를 찾을 수 없습니다"),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),

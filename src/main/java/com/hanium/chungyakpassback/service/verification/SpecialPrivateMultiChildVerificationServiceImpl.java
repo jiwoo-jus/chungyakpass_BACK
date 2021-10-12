@@ -10,6 +10,7 @@ import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.*;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
+import com.hanium.chungyakpassback.repository.standard.BankbookRepository;
 import com.hanium.chungyakpassback.repository.standard.PriorityDepositRepository;
 import com.hanium.chungyakpassback.repository.standard.PriorityJoinPeriodRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
     final HouseMemberChungyakRepository houseMemberChungyakRepository;
     final PriorityDepositRepository priorityDepositRepository;
     final PriorityJoinPeriodRepository priorityJoinPeriodRepository;
+    final BankbookRepository bankbookRepository;
 
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
@@ -59,21 +61,27 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { // 청약통장유형조건충족여부
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty())
-            throw new RuntimeException("등록된 청약통장이 없습니다.");
-        UserBankbook userBankbook = optUserBankbook.get();
-
-        int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
-
-        if (aptInfo.getHousingType().equals(HousingType.국민))// 주택유형이 국민일 경우 청약통장종류는 주택청약종합저축 or 청약저축이어야 true
-            if (userBankbook.getBankbook().equals(Bankbook.주택청약종합저축) || (userBankbook.getBankbook().equals(Bankbook.청약저축)))
+        if (optUserBankbook.isEmpty()) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
+        } else {
+            Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
+            int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
+            if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
+                if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
+                    if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
+                        return true;
+                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) {
+                        throw new CustomException(ErrorCode.BAD_REQUEST_OVER_AREA_BANKBOOK); //청약부금일 경우, 면적이 85제곱미터를 초과할 경우 경고문을 띄워줌.
+                    }
+                    return false;
+                }
                 return true;
-        if (aptInfo.getHousingType().equals(HousingType.민영)) // 주택유형이 민영일 경우 청약통장종류는 주택청약종합저축 or 청약예금 or 청약부금이어야 true
-            if (userBankbook.getBankbook().equals(Bankbook.주택청약종합저축) || userBankbook.getBankbook().equals(Bankbook.청약예금) || userBankbook.getBankbook().equals(Bankbook.청약부금) && (housingTypeChange <= 85))
-                return true;
-        return false;
+            } else {
+                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
+            }
+        }
     }
 
     @Override
