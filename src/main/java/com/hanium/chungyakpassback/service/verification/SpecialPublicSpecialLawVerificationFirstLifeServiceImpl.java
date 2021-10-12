@@ -51,8 +51,14 @@ public class SpecialPublicSpecialLawVerificationFirstLifeServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean monthOfAverageIncome(User user) {
-        return specialPublicVerificationFirstLifeServiceImpl.monthOfAverageIncome(user);
+    public boolean monthOfAverageIncomePriority(User user) {
+        return specialPublicVerificationFirstLifeServiceImpl.monthOfAverageIncomePriority(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean monthOfAverageIncomeGeneral(User user) {
+        return specialPublicVerificationFirstLifeServiceImpl.monthOfAverageIncomeGeneral(user);
     }
 
     @Override

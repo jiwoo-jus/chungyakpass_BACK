@@ -8,10 +8,7 @@ import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.entity.standard.Income;
-import com.hanium.chungyakpassback.enumtype.ErrorCode;
-import com.hanium.chungyakpassback.enumtype.Relation;
-import com.hanium.chungyakpassback.enumtype.SpecialSupply;
-import com.hanium.chungyakpassback.enumtype.Yn;
+import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoAmountRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
@@ -65,6 +62,9 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         Integer averageMonthlyIncome3peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome3peopleLessBelow();
         Integer averageMonthlyIncome4peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome4peopleLessBelow();
         Integer averageMonthlyIncome5peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome5peopleLessBelow();
+        Integer averageMonthlyIncome6peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome6peopleLessBelow();
+        Integer averageMonthlyIncome7peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome7peopleLessBelow();
+        Integer averageMonthlyIncome8peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome8peopleLessBelow();
 
         if (numberOfHouseMember <= 3) {
             if (averageMonthlyIncome3peopleLessBelow >= houseMemberIncome) {
@@ -79,15 +79,30 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
                 return true;
             }
         }
+        else if (numberOfHouseMember <= 6) {
+            if (averageMonthlyIncome6peopleLessBelow >= houseMemberIncome) {
+                return true;
+            }
+        }
+        else if (numberOfHouseMember <= 7) {
+            if (averageMonthlyIncome7peopleLessBelow >= houseMemberIncome) {
+                return true;
+            }
+        }
+        else if (numberOfHouseMember <= 8) {
+            if (averageMonthlyIncome8peopleLessBelow >= houseMemberIncome) {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean monthOfAverageIncome(User user) {
+    public boolean monthOfAverageIncomePriority(User user) {
         Integer houseMemberIncome = 0;
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
-        List<Income> incomeList = incomeRepository.findAllBySpecialSupply(SpecialSupply.생애최초);
+        Optional<Income> income = incomeRepository.findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply.생애최초,Supply.우선공급,HousingType.국민);
         int numberOfHouseMember = houseMemberList.size();
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
@@ -97,14 +112,34 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
                 }
             }
         }
-        for (int i = 0; i < incomeList.size(); i++) {
-            if (meetYnOfAverageMonthlyIncome(incomeList.get(i), numberOfHouseMember, houseMemberIncome)) {
+                if (meetYnOfAverageMonthlyIncome(income.get(), numberOfHouseMember, houseMemberIncome)) {
+                    return true;
+                }
+                return false;
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean monthOfAverageIncomeGeneral(User user) {
+        Integer houseMemberIncome = 0;
+        List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
+        Optional<Income> income = incomeRepository.findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply.생애최초,Supply.일반공급,HousingType.국민);
+        int numberOfHouseMember = houseMemberList.size();
+
+        for (HouseMemberRelation houseMemberRelation : houseMemberList) {
+            if (generalKookminVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
+                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent())) {
+                    houseMemberIncome = houseMemberIncome + houseMemberRelation.getOpponent().getIncome();
+                }
+            }
+        }
+            if (meetYnOfAverageMonthlyIncome(income.get(), numberOfHouseMember, houseMemberIncome)) {
                 return true;
             }
             return false;
-        }
-        return false;
     }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)

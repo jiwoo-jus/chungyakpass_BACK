@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.entity.standard;
 
+import com.hanium.chungyakpassback.enumtype.HousingType;
 import com.hanium.chungyakpassback.enumtype.SpecialSupply;
 import com.hanium.chungyakpassback.enumtype.Supply;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -21,6 +22,10 @@ public class Income {
     @Column
     @Enumerated(EnumType.STRING)
     private Yn applicationPublicHousingSpecialLaws;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private HousingType housingType;
 
     @Column
     @Enumerated(EnumType.STRING)
