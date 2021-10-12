@@ -1,26 +1,26 @@
--- SELECT * FROM INP_USER ;
--- SELECT * FROM INP_USER_BANKBOOK ;
--- SELECT * FROM INP_HOUSE ;
--- SELECT * FROM INP_HOUSE_MEMBER ;
--- SELECT * FROM INP_HOUSE_MEMBER_RELATION ;
--- SELECT * FROM INP_HOUSE_MEMBER_PROPERTY ;
--- SELECT * FROM INP_HOUSE_MEMBER_CHUNGYAK ;
--- SELECT * FROM INP_HOUSE_MEMBER_CHUNGYAK_RESTRICTION ;
--- SELECT * FROM APT_INFO ;
--- SELECT * FROM APT_INFO_AMOUNT ;
--- SELECT * FROM APT_INFO_RECEIPT ;
--- SELECT * FROM APT_INFO_TARGET ;
--- SELECT * FROM APT_INFO_TARGET_SPECIAL ;
--- SELECT * FROM STD_BANKBOOK ;
--- SELECT * FROM STD_MONTHLY_AVERAGE_INCOME ;
--- SELECT * FROM STD_PRIORITY_DEPOSIT ;
--- SELECT * FROM STD_PRIORITY_NUMEBER_PAYMENTS ;
--- SELECT * FROM STD_PRIORITY_SUBSCRIPTION_PERIOD ;
--- SELECT * FROM STD_PROPERTY ;
--- SELECT * FROM USER_AUTHORITY ;
--- SELECT * FROM STD_ADDRESS_LEVEL1 ;
--- SELECT * FROM STD_ADDRESS_LEVEL2 ;
-
+-- -- SELECT * FROM INP_USER ;
+-- -- SELECT * FROM INP_USER_BANKBOOK ;
+-- -- SELECT * FROM INP_HOUSE ;
+-- -- SELECT * FROM INP_HOUSE_MEMBER ;
+-- -- SELECT * FROM INP_HOUSE_MEMBER_RELATION ;
+-- -- SELECT * FROM INP_HOUSE_MEMBER_PROPERTY ;
+-- -- SELECT * FROM INP_HOUSE_MEMBER_CHUNGYAK ;
+-- -- SELECT * FROM INP_HOUSE_MEMBER_CHUNGYAK_RESTRICTION ;
+-- -- SELECT * FROM APT_INFO ;
+-- -- SELECT * FROM APT_INFO_AMOUNT ;
+-- -- SELECT * FROM APT_INFO_RECEIPT ;
+-- -- SELECT * FROM APT_INFO_TARGET ;
+-- -- SELECT * FROM APT_INFO_TARGET_SPECIAL ;
+-- -- SELECT * FROM STD_BANKBOOK ;
+-- -- SELECT * FROM STD_MONTHLY_AVERAGE_INCOME ;
+-- -- SELECT * FROM STD_PRIORITY_DEPOSIT ;
+-- -- SELECT * FROM STD_PRIORITY_NUMEBER_PAYMENTS ;
+-- -- SELECT * FROM STD_PRIORITY_SUBSCRIPTION_PERIOD ;
+-- -- SELECT * FROM STD_PROPERTY ;
+-- -- SELECT * FROM USER_AUTHORITY ;
+-- -- SELECT * FROM STD_ADDRESS_LEVEL1 ;
+-- -- SELECT * FROM STD_ADDRESS_LEVEL2 ;
+--
 INSERT INTO apt_info (notification_number_id, address_level1, address_level2, announcement_date, atrophy_area,
                       construction_company, contract_end_date, contract_start_date, detail_address, house_name,
                       housing_type, large_developmentzone, maintenance_work, private_in_metropolitan,
@@ -1643,21 +1643,37 @@ VALUES (1, 'y', '다자녀가구', null, null, 0, 120, 0, 7236192, 0, 8513046, 0
        (9, 'y', '신혼부부', '일반공급', 'n', 100, 130, 6030161, 7839208, 7094206, 9222467, 7094206, 9222467, 7393648,
         9611741, 7778024, 10111430, 8162400, 10611119),
        (10, 'y', '신혼부부', '일반공급', 'y', 120, 140, 7236193, 8442224, 8513047, 9931887, 8513047, 9931887, 8872377,
-        10351106, 9333629, 10889232, 9797880, 11427359),
-       (11, 'n', '생애최초', '우선공급', null, 0, 130, 0, 7839208, 0, 9222467, 0, 9222467, 0, 9611741, 0,
+        10351106, 9333629, 10889232, 9797880, 11427359);
+
+INSERT INTO std_monthly_average_income (monthly_average_income_id,housing_type,application_public_housing_special_laws,
+                                        special_supply, supply, dual_income, monthly_average_income_excess,
+                                        monthly_average_income_below,
+                                        average_monthly_income3people_less_excess,
+                                        average_monthly_income3people_less_below,
+                                        average_monthly_income4people_less_excess,
+                                        average_monthly_income4people_less_below,
+                                        average_monthly_income5people_less_excess,
+                                        average_monthly_income5people_less_below,
+                                        average_monthly_income6people_less_excess,
+                                        average_monthly_income6people_less_below,
+                                        average_monthly_income7people_less_excess,
+                                        average_monthly_income7people_less_below,
+                                        average_monthly_income8people_less_excess,
+                                        average_monthly_income8people_less_below)
+VALUES (11,'민영', NULL, '생애최초', '우선공급', null, 0, 130, 0, 7839208, 0, 9222467, 0, 9222467, 0, 9611741, 0,
         10111430, 0, 10611119),
-       (12, 'n', '생애최초', '일반공급', null, 130, 160, 7839209, 9648256, 9222468, 11350728, 9222468, 11350728, 9611742,
+       (12,'민영', NULL, '생애최초', '일반공급', null, 130, 160, 7839209, 9648256, 9222468, 11350728, 9222468, 11350728, 9611742,
         11829835, 10111431, 12444837, 10611120, 13059838),
-       (13, 'y', '생애최초', '우선공급', null, 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0,
+       (13,'국민', NULL, '생애최초', '우선공급', null, 0, 100, 0, 6030160, 0, 7094205, 0, 7094205, 0,
         7393647, 0, 7778023, 0, 8162399),
-       (14, 'y', '생애최초', '일반공급', null, 100, 130, 6030161, 7839208, 7094206, 9222467, 7094206, 9222467, 7393648,
+       (14,'국민', NULL, '생애최초', '일반공급', null, 100, 130, 6030161, 7839208, 7094206, 9222467, 7094206, 9222467, 7393648,
         9611741, 7778024, 10111430, 8162400, 10611119),
-       (15, 'y', '신혼부부', '특별공급가점', 'n', 0, 80, 0, 4824128, 0, 5675364, 0, 5675364, 0, 6016838, 0, 6358313, 0, 6699787),
-       (16, 'y', '신혼부부', '특별공급가점', 'y', 80, 100, 4824128, 6030160, 5675364, 7094205, 5675364, 7094205, 6016838, 7393647,
-        6358313, 7778023, 6699787, 8162399);
+       (15,'민영', NULL, '신혼부부', '특별공급가점', 'n', 0, 80, 0, 4824128, 0, 5675364, 0, 5675364, 0, 6016838, 0, 6358313, 0, 6699787),
+       (16,'민영', NULL, '신혼부부', '특별공급가점', 'y', 80, 100, 4824128, 6030160, 5675364, 7094205, 5675364, 7094205, 6016838, 7393647, 6358313, 7778023, 6699787, 8162399);
 
 
-INSERT INTO std_priority_numeber_payments (PRIORITY_NUMEBER_PAYMENTS_ID, SUPPLY, SPECIAL_SUPPLY, SPECULATION_OVERHEATED,
+
+INSERT INTO STD_PRIORITY_NUMEBER_PAYMENTS (PRIORITY_NUMEBER_PAYMENTS_ID, SUPPLY, SPECIAL_SUPPLY, SPECULATION_OVERHEATED,
                                            SUBSCRIPTION_OVERHEATED, ATROPHY_AREA, METROPOLITAN_AREA_YN, COUNT_PAYMENTS)
 VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (2, '일반공급', NULL, 'y', 'y', 'n', 'n', 24),
@@ -1710,7 +1726,7 @@ VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (49, '특별공급', '다자녀가구', 'n', 'n', 'n', 'y', 6),
        (50, '특별공급', '다자녀가구', 'n', 'n', 'n', 'n', 6);
 
-INSERT INTO std_priority_subscription_period(PRIORITY_SUBSCRIPTION_PERIOD_ID, SUPPLY, SPECIAL_SUPPLY,
+INSERT INTO STD_PRIORITY_SUBSCRIPTION_PERIOD(PRIORITY_SUBSCRIPTION_PERIOD_ID, SUPPLY, SPECIAL_SUPPLY,
                                              SPECULATION_OVERHEATED, SUBSCRIPTION_OVERHEATED, ATROPHY_AREA,
                                              METROPOLITAN_AREA_YN, SUBSCRIPTION_PERIOD)
 VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
@@ -1764,7 +1780,7 @@ VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (49, '특별공급', '다자녀가구', 'n', 'n', 'n', 'y', 6),
        (50, '특별공급', '다자녀가구', 'n', 'n', 'n', 'n', 6);
 
-INSERT INTO std_priority_deposit(PRIORITY_DEPOSIT_ID, AREA_OVER, AREA_LESS_OR_EQUAL, DEPOSIT_AREA,
+INSERT INTO STD_PRIORITY_DEPOSIT(PRIORITY_DEPOSIT_ID, AREA_OVER, AREA_LESS_OR_EQUAL, DEPOSIT_AREA,
                                  DEPOSIT)
 VALUES (1, 0, 85, '서울부산', 3000000),
        (2, 0, 85, '기타광역시', 2500000),
@@ -1779,9 +1795,14 @@ VALUES (1, 0, 85, '서울부산', 3000000),
        (11, 135, NULL, '기타광역시', 10000000),
        (12, 135, NULL, '기타시군', 5000000);
 
-insert into std_bankbook (STD_BANKBOOK_ID, BANKBOOK, NATIONAL_HOUSING_SUPPLY_POSSIBLE,
+insert into STD_BANKBOOK (STD_BANKBOOK_ID, BANKBOOK, NATIONAL_HOUSING_SUPPLY_POSSIBLE,
                           PRIVATE_HOUSING_SUPPLY_IS_POSSIBLE, RESTRICTION_SALE_AREA)
 VALUES (1, '주택청약종합저축', 'y', 'y', NULL),
        (2, '청약저축', 'y', 'n', NULL),
        (3, '청약예금', 'n', 'y', NULL),
        (4, '청약부금', 'n', 'y', 85);
+
+INSERT INTO STD_PROPERTY (STD_PROPERTY_ID, PROPERTY, PRICE)
+VALUES (1, '건물', 215500000),
+       (2, '토지', 215500000),
+       (3, '자동차', 34960000);
