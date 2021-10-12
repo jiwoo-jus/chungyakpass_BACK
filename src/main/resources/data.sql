@@ -1673,7 +1673,7 @@ VALUES (11,'민영', NULL, '생애최초', '우선공급', null, 0, 130, 0, 7839
 
 
 
-INSERT INTO STD_PRIORITY_NUMEBER_PAYMENTS (PRIORITY_NUMEBER_PAYMENTS_ID, SUPPLY, SPECIAL_SUPPLY, SPECULATION_OVERHEATED,
+INSERT INTO std_priority_numeber_payments (PRIORITY_NUMEBER_PAYMENTS_ID, SUPPLY, SPECIAL_SUPPLY, SPECULATION_OVERHEATED,
                                            SUBSCRIPTION_OVERHEATED, ATROPHY_AREA, METROPOLITAN_AREA_YN, COUNT_PAYMENTS)
 VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (2, '일반공급', NULL, 'y', 'y', 'n', 'n', 24),
@@ -1726,7 +1726,7 @@ VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (49, '특별공급', '다자녀가구', 'n', 'n', 'n', 'y', 6),
        (50, '특별공급', '다자녀가구', 'n', 'n', 'n', 'n', 6);
 
-INSERT INTO STD_PRIORITY_SUBSCRIPTION_PERIOD(PRIORITY_SUBSCRIPTION_PERIOD_ID, SUPPLY, SPECIAL_SUPPLY,
+INSERT INTO std_priority_subscription_period (PRIORITY_SUBSCRIPTION_PERIOD_ID, SUPPLY, SPECIAL_SUPPLY,
                                              SPECULATION_OVERHEATED, SUBSCRIPTION_OVERHEATED, ATROPHY_AREA,
                                              METROPOLITAN_AREA_YN, SUBSCRIPTION_PERIOD)
 VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
@@ -1780,7 +1780,7 @@ VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (49, '특별공급', '다자녀가구', 'n', 'n', 'n', 'y', 6),
        (50, '특별공급', '다자녀가구', 'n', 'n', 'n', 'n', 6);
 
-INSERT INTO STD_PRIORITY_DEPOSIT(PRIORITY_DEPOSIT_ID, AREA_OVER, AREA_LESS_OR_EQUAL, DEPOSIT_AREA,
+INSERT INTO std_priority_deposit(PRIORITY_DEPOSIT_ID, AREA_OVER, AREA_LESS_OR_EQUAL, DEPOSIT_AREA,
                                  DEPOSIT)
 VALUES (1, 0, 85, '서울부산', 3000000),
        (2, 0, 85, '기타광역시', 2500000),
@@ -1795,14 +1795,14 @@ VALUES (1, 0, 85, '서울부산', 3000000),
        (11, 135, NULL, '기타광역시', 10000000),
        (12, 135, NULL, '기타시군', 5000000);
 
-insert into STD_BANKBOOK (STD_BANKBOOK_ID, BANKBOOK, NATIONAL_HOUSING_SUPPLY_POSSIBLE,
+insert into std_bankbook(STD_BANKBOOK_ID, BANKBOOK, NATIONAL_HOUSING_SUPPLY_POSSIBLE,
                           PRIVATE_HOUSING_SUPPLY_IS_POSSIBLE, RESTRICTION_SALE_AREA)
 VALUES (1, '주택청약종합저축', 'y', 'y', NULL),
        (2, '청약저축', 'y', 'n', NULL),
        (3, '청약예금', 'n', 'y', NULL),
        (4, '청약부금', 'n', 'y', 85);
 
-INSERT INTO STD_PROPERTY (STD_PROPERTY_ID, PROPERTY, PRICE)
+INSERT INTO std_property (STD_PROPERTY_ID, PROPERTY, PRICE)
 VALUES (1, '건물', 215500000),
        (2, '토지', 215500000),
        (3, '자동차', 34960000);
