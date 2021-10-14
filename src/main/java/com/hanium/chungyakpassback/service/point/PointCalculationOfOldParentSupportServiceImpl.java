@@ -33,28 +33,27 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     final HouseMemberPropertyRepository houseMemberPropertyRepository;
     final HouseMemberRelationRepository houseMemberRelationRepository;
 
+    //세대구성원별 무주택기간을 구하는 메소드
     public List periodHomeless(HouseMember houseMember, List lateDateList) {
-        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) < 30 && houseMember.getMarriageDate() == null) || houseMember.getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
-            return lateDateList;
-        } else {
-            if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {//만나이가 30세 이상이거나 결혼했으먼
-                LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);
-                LocalDate lateDate;
-                if (houseMember.getMarriageDate() == null || ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) && houseMember.getMarriageDate() != null)) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
-                    if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
-                        lateDate = birthDayAfter30Year;
-                    } else {
-                        lateDate = houseMember.getHomelessStartDate();
-                    }
-                } else {//만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
-                    if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
-                        lateDate = houseMember.getMarriageDate();
-                    } else {
-                        lateDate = houseMember.getHomelessStartDate();
-                    }
+        //30세이상이거나 결혼한경우
+        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {//만나이가 30세 이상이거나 결혼했으먼
+            LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);//세대구성원의 30세 생일
+            LocalDate lateDate;//무주택기간
+
+            if (houseMember.getMarriageDate() == null || ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) && houseMember.getMarriageDate() != null)) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
+                if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
+                    lateDate = birthDayAfter30Year;
+                } else {
+                    lateDate = houseMember.getHomelessStartDate();
                 }
-                lateDateList.add(lateDate);
+            } else {//만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
+                if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
+                    lateDate = houseMember.getMarriageDate();
+                } else {
+                    lateDate = houseMember.getHomelessStartDate();
+                }
             }
+            lateDateList.add(lateDate);
         }
         return lateDateList;
     }
@@ -67,65 +66,85 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         if (user.getSpouseHouseMember() != null && user.getSpouseHouseMember().getMarriageDate() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
         } else {
-            if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
-                // 본인정보로 등급을 매겨야 한다.
-                if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouseMember() == null) {
-                    periodHomeless(user.getHouseMember(),lateDateList);
-                    List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
-                    for (HouseMember houseMember : houseMemberList) {
-                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀의배우자) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀의배우자))) {
-                            periodHomeless(houseMember,lateDateList);
+            if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
+                return periodOfHomelessnessGetPoint =0;
+            }
+            else {
+                if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
+                    // 본인정보로 등급을 매겨야 한다.
+                    if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouseMember() == null) {
+                        periodHomeless(user.getHouseMember(), lateDateList);
+                        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
+                        for (HouseMember houseMember : houseMemberList) {
+                            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
+                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                                if (houseMember.getHomelessStartDate() != null) {
+                                    lateDateList.add(houseMember.getHomelessStartDate());
+                                }
+                            }
+                        }
+                    } else {
+                        periodHomeless(user.getHouseMember(), lateDateList);
+                        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
+                        for (HouseMember houseMember : houseMemberList) {
+                            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
+                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                                if (houseMember.getHomelessStartDate() != null) {
+                                    lateDateList.add(houseMember.getHomelessStartDate());
+                                }
+                            }
+                        }
+                        List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
+                        for (HouseMember spouseHouseMember : spouseHouseMemberList) {
+                            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();
+                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                                if (spouseHouseMember.getHomelessStartDate() != null) {
+                                    lateDateList.add(spouseHouseMember.getHomelessStartDate());
+                                }
+                            }
                         }
                     }
-                } else {
-                    periodHomeless(user.getHouseMember(),lateDateList);
-                    List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
-                    for (HouseMember houseMember : houseMemberList) {
-                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀의배우자) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀의배우자))) {
-                            periodHomeless(houseMember,lateDateList);
+                }
+                // 배우자가 결혼 후에 팔았을 때 또는 집판날과 결혼한날이 같을 때
+                else {
+                    if (user.getHouse() == user.getSpouseHouse()) {
+                        periodHomeless(user.getHouseMember(), lateDateList);
+                        periodHomeless(user.getSpouseHouseMember(), lateDateList);
+                        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
+                        for (HouseMember houseMember : houseMemberList) {
+                            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
+                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                                if (houseMember.getHomelessStartDate() != null) {
+                                    lateDateList.add(houseMember.getHomelessStartDate());
+                                }
+                            }
                         }
-                    }
-                    List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
-                    for (HouseMember spouseHouseMember : spouseHouseMemberList) {
-                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀의배우자) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀의배우자))) {
-                            periodHomeless(spouseHouseMember,lateDateList);
+                    } else {
+                        periodHomeless(user.getHouseMember(), lateDateList);
+                        List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
+                        for (HouseMember houseMember : houseMemberList) {
+                            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
+                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                                if (houseMember.getHomelessStartDate() != null) {
+                                    lateDateList.add(houseMember.getHomelessStartDate());
+                                }
+                            }
+                        }
+                        periodHomeless(user.getSpouseHouseMember(), lateDateList);
+                        List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
+                        for (HouseMember spouseHouseMember : spouseHouseMemberList) {
+                            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();
+                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                                if (spouseHouseMember.getHomelessStartDate() != null) {
+                                    lateDateList.add(spouseHouseMember.getHomelessStartDate());
+                                }
+                            }
                         }
                     }
                 }
             }
-            // 배우자가 결혼 후에 팔았을 때 또는 집판날과 결혼한날이 같을 때
-            else {
-                if (user.getHouse() == user.getSpouseHouse()) {
-                    periodHomeless(user.getHouseMember(),lateDateList);
-                    periodHomeless(user.getSpouseHouseMember(),lateDateList);
-                    List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
-                    for (HouseMember houseMember : houseMemberList) {
-                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀의배우자) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀의배우자))) {
-                            periodHomeless(houseMember,lateDateList);
-                        }
-                    }
-                } else {
-                    periodHomeless(user.getHouseMember(),lateDateList);
-                    List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
-                    for (HouseMember houseMember : houseMemberList) {
-                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀의배우자) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀의배우자))) {
-                            periodHomeless(houseMember,lateDateList);
-                        }
-                    }
-                    periodHomeless(user.getSpouseHouseMember(),lateDateList);
-                    List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
-                    for (HouseMember spouseHouseMember : spouseHouseMemberList) {
-                        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀의배우자) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) || houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀의배우자))) {
-                            periodHomeless(spouseHouseMember,lateDateList);
-                        }
-                    }
-                }
+            for(int i=0;i<lateDateList.size();i++){
+                System.out.println("lateDateList##"+lateDateList.get(i));
             }
             //반환값을 가지고 늦은 순서대로 정렬
             lateDateList.sort(Collections.reverseOrder());
@@ -134,8 +153,8 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
             for (int z = 1; z <= 15; z++) {
                 if (periodOfHomelessness < z) {
-                    periodOfHomelessnessGetPoint = z * 2;
-                } else periodOfHomelessnessGetPoint = 32;
+                    return periodOfHomelessnessGetPoint = z * 2;
+                } else return periodOfHomelessnessGetPoint = 32;
             }
         }
         return periodOfHomelessnessGetPoint;

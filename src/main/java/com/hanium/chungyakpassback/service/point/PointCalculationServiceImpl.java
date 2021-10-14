@@ -38,26 +38,22 @@ public class PointCalculationServiceImpl implements PointCalculationService {
     LocalDate lateDate;
 
     public List periodHomeless(HouseMember houseMember) {
-        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) < 30 && houseMember.getMarriageDate() == null) || houseMember.getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
-            return lateDateList;
-        } else {
-            if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {//만나이가 30세 이상이거나 결혼했으먼
-                LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);
-                if (houseMember.getMarriageDate() == null || ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) && houseMember.getMarriageDate() != null)) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
-                    if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
-                        lateDate = birthDayAfter30Year;
-                    } else {
-                        lateDate = houseMember.getHomelessStartDate();
-                    }
-                } else {//만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
-                    if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
-                        lateDate = houseMember.getMarriageDate();
-                    } else {
-                        lateDate = houseMember.getHomelessStartDate();
-                    }
+        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {//만나이가 30세 이상이거나 결혼했으먼
+            LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);
+            if (houseMember.getMarriageDate() == null || ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) && houseMember.getMarriageDate() != null)) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
+                if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
+                    lateDate = birthDayAfter30Year;
+                } else {
+                    lateDate = houseMember.getHomelessStartDate();
                 }
-                lateDateList.add(lateDate);
+            } else {//만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
+                if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
+                    lateDate = houseMember.getMarriageDate();
+                } else {
+                    lateDate = houseMember.getHomelessStartDate();
+                }
             }
+            lateDateList.add(lateDate);
         }
         return lateDateList;
     }
@@ -71,27 +67,31 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         int houseCount = 0;
         Integer totalHouseCount = generalPrivateVerificationServiceImpl.countHouseHaving(user,houseMemberList,houseCount);
         if (totalHouseCount == 0) {
-            if (user.getSpouseHouseMember() != null && user.getSpouseHouseMember().getMarriageDate() == null) {
-                throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
-            } else if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
-
-                lateDateList = periodHomeless(user.getHouseMember());
-                System.out.println(lateDateList);
+            if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
+                return point =0;
             } else {
-                periodHomeless(user.getHouseMember());
-                periodHomeless(user.getSpouseHouseMember());
+                if (user.getSpouseHouseMember() != null && user.getSpouseHouseMember().getMarriageDate() == null) {
+                    throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
+                } else if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
+                    lateDateList = periodHomeless(user.getHouseMember());
+                    System.out.println(lateDateList);
+                } else {
+                    periodHomeless(user.getHouseMember());
+                    periodHomeless(user.getSpouseHouseMember());
+                }
+                for (LocalDate localDate : lateDateList) {
+                    System.out.println("lateDateList!!" + localDate);
+                }
             }
-
-            // 배우자가 결혼 후에 팔았을 때 또는 집판날과 결혼한날이 같을 때
-            //반환값을 가지고 늦은 순서대로 정렬
             lateDateList.sort(Collections.reverseOrder());
             LocalDate mostLateDate = lateDateList.get(0);
-            //무주택기간을 기간으로 계산함
             int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
+            //무주택기간을 기간으로 계산함
             for (int z = 1; z <= 15; z++) {
                 if (periodOfHomelessness < z) {
                     return point = z * 2;
-                } else point = 32;
+                }
+                else point = 32;
             }
         }
         return point;
@@ -249,24 +249,24 @@ public class PointCalculationServiceImpl implements PointCalculationService {
     public Integer bankbookJoinPeriod(User user) {
         int point = 0;
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-            int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
-            int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
-            if (joinPeriodOfMonth < 12) {
-                for (int z = 1; z <= 2; z++) {
-                    if (joinPeriodOfMonth < z * 6) {
-                        point = z;
-                    }
-                }
-            } else {
-                for (int z = 2; z <= 15; z++) {
-                    if (joinPeriodOfYear < z) {
-                        point = z + 1;
-                    }
-                    else
-                        point = 17;
+        int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
+        int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
+        if (joinPeriodOfMonth < 12) {
+            for (int z = 1; z <= 2; z++) {
+                if (joinPeriodOfMonth < z * 6) {
+                    point = z;
                 }
             }
-            return point;
+        } else {
+            for (int z = 2; z <= 15; z++) {
+                if (joinPeriodOfYear < z) {
+                    point = z + 1;
+                }
+                else
+                    point = 17;
+            }
+        }
+        return point;
 
     }
 }
