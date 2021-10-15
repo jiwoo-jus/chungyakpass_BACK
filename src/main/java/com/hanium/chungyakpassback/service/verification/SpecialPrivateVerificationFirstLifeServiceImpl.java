@@ -123,10 +123,11 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
         Optional<Income> income = incomeRepository.findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply.생애최초,Supply.우선공급,HousingType.민영);
         int numberOfHouseMember = houseMemberList.size();
+        int houseCount=0;
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
             if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
-                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent())) {
+                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent(),houseCount)) {
                     houseMemberIncome = houseMemberIncome + houseMemberRelation.getOpponent().getIncome();
                 }
             }
@@ -141,13 +142,14 @@ public class SpecialPrivateVerificationFirstLifeServiceImpl implements SpecialPr
     @Transactional(rollbackFor = Exception.class)
     public boolean monthOfAverageIncomeGeneral(User user) {
         Integer houseMemberIncome = 0;
+        int houseCount = 0;
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
         Optional<Income> income = incomeRepository.findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply.생애최초, Supply.일반공급,HousingType.민영);
         int numberOfHouseMember = houseMemberList.size();
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
             if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
-                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent())) {
+                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent(),houseCount)) {
                     houseMemberIncome = houseMemberIncome + houseMemberRelation.getOpponent().getIncome();
                 }
             }

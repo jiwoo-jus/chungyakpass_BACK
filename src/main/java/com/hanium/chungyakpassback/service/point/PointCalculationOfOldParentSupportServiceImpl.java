@@ -35,8 +35,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
 
     //세대구성원별 무주택기간을 구하는 메소드
     public List periodHomeless(HouseMember houseMember, List lateDateList) {
+
         //30세이상이거나 결혼한경우
-        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {//만나이가 30세 이상이거나 결혼했으먼
+        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {
             LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);//세대구성원의 30세 생일
             LocalDate lateDate;//무주택기간
 
@@ -71,7 +72,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         } else {
             //신청자가 30세미만에 미혼이거나 외국인이면 0점
             if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {
-                return periodOfHomelessnessGetPoint =0;
+                 periodOfHomelessnessGetPoint =0;
             }
             else {
                 //배우자가 없거나 배우자가 결혼전에 무주택자가 된경우
@@ -90,7 +91,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                                 }
                             }
                         }
-                    } else {
+                    }
+                    //배우자와 분리세대면 신청자와 신청자의 직계존속 배우자의 직계존속의 무주택기간을 구한다.
+                    else {
                         periodHomeless(user.getHouseMember(), lateDateList);
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
@@ -114,6 +117,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 }
                 // 배우자가 결혼 후에 팔았을 때 또는 집판날과 결혼한날이 같을 때
                 else {
+                    //배우자와 신청자와 동일 세대인 경우 신청자와 신청자의 직계존속, 배우자의 무주택기간을 구한다.
                     if (user.getHouse() == user.getSpouseHouse()) {
                         periodHomeless(user.getHouseMember(), lateDateList);
                         periodHomeless(user.getSpouseHouseMember(), lateDateList);
@@ -126,7 +130,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                                 }
                             }
                         }
-                    } else {
+                    }
+                    //배우자와 신청자와 분리 세대인 경우 신청자와 신청자의 직계존속, 배우자와 배우자 직계존속의 무주택기간을 구한다.
+                    else {
                         periodHomeless(user.getHouseMember(), lateDateList);
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
@@ -150,9 +156,6 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                     }
                 }
             }
-            for(int i=0;i<lateDateList.size();i++){
-                System.out.println("lateDateList##"+lateDateList.get(i));
-            }
             //반환값을 가지고 늦은 순서대로 정렬
             lateDateList.sort(Collections.reverseOrder());
             LocalDate mostLateDate = lateDateList.get(0);
@@ -160,13 +163,15 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
             for (int z = 1; z <= 15; z++) {
                 if (periodOfHomelessness < z) {
-                    return periodOfHomelessnessGetPoint = z * 2;
-                } else return periodOfHomelessnessGetPoint = 32;
+                     periodOfHomelessnessGetPoint = z * 2;
+                } else
+                     periodOfHomelessnessGetPoint = 32;
             }
         }
         return periodOfHomelessnessGetPoint;
     }
 
+    //무주택여부
     public boolean homelessYn(HouseMember houseMember,int houseCount) {
 
         List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
@@ -181,15 +186,17 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
                     specialCase++;
                     continue;
+                    //예외주택에 해당하는 경우
                 } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                     specialCase++;
                     continue;
                 } else {
+                    //면적60이하 수도권 8000만원이하 비수도권 1억3천 이하의 소형주택 일시 예외적용
                     if (houseMemberProperty.getExclusiveArea() <= 60 && ((houseMemberProperty.getMetropolitanBuildingYn().equals(Yn.y) && houseMemberProperty.getAmount() <= 80000000) || (houseMemberProperty.getMetropolitanBuildingYn().equals(Yn.y) && houseMemberProperty.getAmount() <= 130000000))) { //60제곱미터 이하의 주택을 소유하고 있는 경우
                         flag++;
                         if (specialCase <= 0)
                             continue;
-                        else
+                        else//예외주택이 하나라도 있으면 count
                             houseCount = flag;
                         if (flag <= 1) // 단, 2호 또는 2세대 이상의 주택 또는 분양권은 제외. 즉, 하나까진 count 안 한다는 의미.
                             continue;
@@ -207,21 +214,23 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     }
 
     public Integer countOfDependents(HouseMemberRelation memberRelation, int parents, List bothParentsIsHomelessYnList) {
-        System.out.println(memberRelation.getRelation());
         //무주택여부를 확인하기 위해 meetHouseHaving메소드 실행 시 true반환하면 parents++하고 houseMemberList3에 true값 저장
         int houseCount=0;
 
+        //무주택자일경우 부양가족으로 추가한다.
         if (homelessYn(memberRelation.getOpponent(),houseCount)) {
             parents++;
             bothParentsIsHomelessYnList.add(Boolean.TRUE);
         } else {//아니면 flase저장
             bothParentsIsHomelessYnList.add(Boolean.FALSE);
         }
-        //houseMemberList3가 하나라도 flase반환하면 0
+
         int numberOfFamily;
+        //부모 두분중 한분이라도 유주택자일 경우 두분다 부양가족에서 제외한다.
         if (bothParentsIsHomelessYnList.contains(Boolean.FALSE)) {
             numberOfFamily = 0;
-        } else {//아니면 parents반환
+        } else {
+            //아니면 부양가족으로 포함시킨다.
             numberOfFamily = parents;
         }
         return numberOfFamily;
@@ -261,7 +270,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 numberOfFamily++;
             }
             if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
-                if (user.getHouse().getHouseHolder() == null) {
+                if (user.getHouse().getHouseHolder() == null) {//신청자 세대에 세대주가 존재하지 않을 경우 에러출력
                     throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER);
                 }
                 else {
@@ -270,7 +279,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         numberOfFamily = numberOfFamily(user, houseMemberRelation, specialPointOfOldParentsSupport,numberOfFamily,parents);
                     }
                 }
-            } else if (user.getHouse() != user.getSpouseHouse()) {
+            }//배우자 분리세대일 경우
+            else if (user.getHouse() != user.getSpouseHouse()) {
+                //배우자 세대에 세대주가 존재하지 않을 경우 에러출력
                 if (user.getSpouseHouse().getHouseHolder() == null) {
                     throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER);
                 }
@@ -279,15 +290,19 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         numberOfFamily = numberOfFamily(user, houseMemberRelation, specialPointOfOldParentsSupport,numberOfFamily,parents);
                     }
                 }
-            } else {
+            }
+            else {//부모가 죽은 미혼손자녀, 미혼 자녀
                 if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && specialPointOfOldParentsSupport.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
                     if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
+                       //이혼한 적이 없으면
                         if (specialPointOfOldParentsSupport.getDivorceYn().equals(Yn.n)) {
+                            //만30세 미만인 경우
                             if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
                                 if (!(specialPointOfOldParentsSupport.getNowStayOverYn().equals(Yn.y) && specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.y))) {//현재 체류여부
                                     numberOfFamily++;
                                 }
-                            } else {
+                            }
+                            else {
                                 if (specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.n)) {// 체류여부
                                     if (specialPointOfOldParentsSupport.getSameResidentRegistrationYn().equals(Yn.y)) {
                                         numberOfFamily++;
@@ -302,10 +317,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             }
         }
 
-        System.out.println(numberOfFamily);
         for (int z = 1; z <= 6; z++) {
             if (numberOfFamily < z) {
-                return numberOfDependentsGetPoint = z * 5;
+                 numberOfDependentsGetPoint = z * 5;
             } else numberOfDependentsGetPoint = 35;
         }
         return numberOfDependentsGetPoint;
@@ -321,6 +335,8 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     @Transactional(rollbackFor = Exception.class)
     public boolean bankBookVaildYn(User user) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
+        if (optUserBankbook.isEmpty())
+            throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
         if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
             return true;
@@ -333,18 +349,20 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     public Integer bankbookJoinPeriod(User user) {
         int bankbookJoinPeriodGetPoint = 0;
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
+        if (optUserBankbook.isEmpty())
+            throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
         int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
         if (joinPeriodOfMonth < 12) {
             for (int z = 1; z <= 2; z++) {
                 if (joinPeriodOfMonth < z * 6) {
-                    return bankbookJoinPeriodGetPoint = z;
+                     bankbookJoinPeriodGetPoint = z;
                 }
             }
         } else {
             for (int z = 2; z <= 15; z++) {
                 if (joinPeriodOfYear < z) {
-                    return bankbookJoinPeriodGetPoint = z + 1;
+                     bankbookJoinPeriodGetPoint = z + 1;
                 } else bankbookJoinPeriodGetPoint = 17;
             }
         }

@@ -50,7 +50,6 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
     public boolean targetHouseAmount(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<AptInfoAmount> supplyAmount = aptInfoAmountRepository.findByHousingType(aptInfoTarget.getHousingType());
         String targetSupplyAmount = supplyAmount.get().getSupplyAmount().replace(",", "");
-        System.out.println(targetSupplyAmount);
         Integer targetHousingTypeAmount = Integer.parseInt(targetSupplyAmount);
         if (targetHousingTypeAmount > 90000 && aptInfo.getSpeculationOverheated().equals(Yn.y)) {
             return false;
@@ -104,10 +103,11 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
         Optional<Income> income = incomeRepository.findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply.생애최초,Supply.우선공급,HousingType.국민);
         int numberOfHouseMember = houseMemberList.size();
+        int houseCount=0;
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
             if (generalKookminVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
-                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent())) {
+                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent(),houseCount)) {
                     houseMemberIncome = houseMemberIncome + houseMemberRelation.getOpponent().getIncome();
                 }
             }
@@ -126,10 +126,11 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
         List<HouseMemberRelation> houseMemberList = houseMemberRelationRepository.findAllByUser(user);
         Optional<Income> income = incomeRepository.findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply.생애최초,Supply.일반공급,HousingType.국민);
         int numberOfHouseMember = houseMemberList.size();
+        int houseCount=0;
 
         for (HouseMemberRelation houseMemberRelation : houseMemberList) {
             if (generalKookminVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) > 19) {
-                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent())) {
+                if (pointCalculationServiceImpl.homelessYn(houseMemberRelation.getOpponent(),houseCount)) {
                     houseMemberIncome = houseMemberIncome + houseMemberRelation.getOpponent().getIncome();
                 }
             }

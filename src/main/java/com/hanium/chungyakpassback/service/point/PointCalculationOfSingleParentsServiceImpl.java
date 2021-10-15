@@ -24,8 +24,6 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
     final PointCalculationOfNewMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final GeneralPrivateVerificationServiceImpl generalPrivateVerificationServiceImpl;
     final HouseMemberRelationRepository houseMemberRelationRepository;
-    List<LocalDate> minorsBirthDateList = new ArrayList<>();
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -49,28 +47,25 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
     @Transactional(rollbackFor = Exception.class)
     public Integer ageOfMostYoungChild(User user) {
         Integer mostYoungChildAgeGetPoint = 0;
+        List<LocalDate> minorsBirthDateList = new ArrayList<>();
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
-        System.out.println("!!!!!!1" + houseMemberRelationList);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
             if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)){
                 minorsBirthDateList.add(houseMemberRelation.getOpponent().getBirthDay());
             }
         }
         minorsBirthDateList.sort(Collections.reverseOrder());
-        System.out.println("!!!!!!1" + minorsBirthDateList);
         if(minorsBirthDateList.size()==0){
             throw new CustomException(ErrorCode.NOT_FOUND_Child);
         }
         else {
             int mostYoungChildAge = generalPrivateVerificationServiceImpl.calcAmericanAge(minorsBirthDateList.get(0));
-            System.out.println("mostYoungChildAge" + mostYoungChildAge);
             for (int u = 0; u <= 2; u++) {
                 if (mostYoungChildAge < 3 + 2 * u) {
                     mostYoungChildAgeGetPoint = 3 - u;
                 }
             }
         }
-        System.out.println("mostYoungChildAgeGetPoint"+mostYoungChildAgeGetPoint);
         return mostYoungChildAgeGetPoint;
 
     }
