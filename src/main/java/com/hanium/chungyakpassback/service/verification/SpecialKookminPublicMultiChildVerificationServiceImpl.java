@@ -406,35 +406,22 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
-        HouseMember houseMember = user.getHouseMember();
-        HouseMember spouseHouseMember = user.getSpouseHouseMember();
-//        List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
-        List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
-        List<HouseMemberChungyak> spouseHouseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(spouseHouseMember);
+    public boolean meetAllHouseMemberNotWinningIn5years(User user) {  // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
+        HouseMember houseMember = user.getHouseMember(); // 사용자의 세대구성원 정보를 가져옴
+        HouseMember spouseHouseMember = user.getSpouseHouseMember(); // 사용자의 배우자 세대구성원 정보를 가져옴
 
-        LocalDate now = LocalDate.now();
-        int periodYear = 0;
+        LocalDate now = LocalDate.now(); // 기간을 구하기 위해 현재 날짜를 now라는 변수에 저장
 
-        //하나의 세대일 경우
-        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-            if (periodYear <= 5)
+        int periodYear = 0; // 기간을 구하기 위해 periodYear 변수에 값을 0으로 초기 세팅
+
+        List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAll(); // 전세대원의 청약이력을 List로 가져옴
+
+        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) { // 반복문을 통해서 List를 돌며,
+            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear(); // 현재 날짜로부터 당첨 이력 날짜까지의 기간을 계산함
+
+            if (periodYear <= 5) // 만약 periodYear이 5년 이하일 경우, 탈락
                 return false;
         }
-
-        //배우자 분리세대일 경우
-        for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-            if (periodYear <= 5)
-                return false;
-        }
-        for (HouseMemberChungyak houseMemberChungyak : spouseHouseMemberChungyakList) {
-            periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-            if (periodYear <= 5)
-                return false;
-        }
-
         return true;
     }
 
