@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.service.point;
 
+import com.hanium.chungyakpassback.dto.point.GeneralMinyeongPointDto;
 import com.hanium.chungyakpassback.dto.point.SpecialPointOfOldParentsSupportDto;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.entity.standard.Bankbook;
@@ -72,7 +73,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         } else {
             //신청자가 30세미만에 미혼이거나 외국인이면 0점
             if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {
-                 periodOfHomelessnessGetPoint =0;
+                periodOfHomelessnessGetPoint =0;
             }
             else {
                 //배우자가 없거나 배우자가 결혼전에 무주택자가 된경우
@@ -163,9 +164,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
             for (int z = 1; z <= 15; z++) {
                 if (periodOfHomelessness < z) {
-                     periodOfHomelessnessGetPoint = z * 2;
+                    periodOfHomelessnessGetPoint = z * 2;
                 } else
-                     periodOfHomelessnessGetPoint = 32;
+                    periodOfHomelessnessGetPoint = 32;
             }
         }
         return periodOfHomelessnessGetPoint;
@@ -264,6 +265,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         int parents = 0;
         int numberOfFamily = 0;
         for (int i = 0; i < specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().size(); i++) {
+            System.out.println("specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i)"+specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i));
             SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupport = specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i);
             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponentId(specialPointOfOldParentsSupport.getHouseMemberId()).get();
             if (user.getSpouseHouseMember() != null) {//배우자는 무조건 포함
@@ -294,7 +296,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             else {//부모가 죽은 미혼손자녀, 미혼 자녀
                 if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && specialPointOfOldParentsSupport.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
                     if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
-                       //이혼한 적이 없으면
+                        //이혼한 적이 없으면
                         if (specialPointOfOldParentsSupport.getDivorceYn().equals(Yn.n)) {
                             //만30세 미만인 경우
                             if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
@@ -317,9 +319,11 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             }
         }
 
+
+
         for (int z = 1; z <= 6; z++) {
             if (numberOfFamily < z) {
-                 numberOfDependentsGetPoint = z * 5;
+                return numberOfDependentsGetPoint = z * 5;
             } else numberOfDependentsGetPoint = 35;
         }
         return numberOfDependentsGetPoint;
@@ -356,13 +360,13 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         if (joinPeriodOfMonth < 12) {
             for (int z = 1; z <= 2; z++) {
                 if (joinPeriodOfMonth < z * 6) {
-                     bankbookJoinPeriodGetPoint = z;
+                    bankbookJoinPeriodGetPoint = z;
                 }
             }
         } else {
             for (int z = 2; z <= 15; z++) {
                 if (joinPeriodOfYear < z) {
-                     bankbookJoinPeriodGetPoint = z + 1;
+                    bankbookJoinPeriodGetPoint = z + 1;
                 } else bankbookJoinPeriodGetPoint = 17;
             }
         }

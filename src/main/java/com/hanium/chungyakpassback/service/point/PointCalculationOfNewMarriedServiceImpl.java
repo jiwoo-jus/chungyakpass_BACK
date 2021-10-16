@@ -65,10 +65,24 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         Integer Minors = numberOfChild(user, 19);
         for (int u = 1; u <= 3; u++) {
             if (Minors >= u) {
-                NumberOfMinorsGetPoint = u;
+                return NumberOfMinorsGetPoint = u;
             }
         }
         return NumberOfMinorsGetPoint;
+    }
+
+    public int yearOfMerriged(LocalDate marrigedate) {
+        if (marrigedate == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES); //생일이 입력되지 않은 경우 경고문을 띄워줌.
+        }
+
+        LocalDate now = LocalDate.now();
+        int americanAge = now.minusYears(marrigedate.getYear()).getYear();
+
+        if (marrigedate.plusYears(americanAge).isAfter(now)) // 생일이 지났는지 여부를 판단
+            americanAge = americanAge - 1;
+
+        return americanAge;
     }
 
 
@@ -76,10 +90,10 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfMarriged(User user) {
         Integer periodOfMarrigedGetPoint = 0;
-        int periodOfUserMarrigedYear = generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getMarriageDate());
+        int periodOfUserMarrigedYear = yearOfMerriged(user.getHouseMember().getMarriageDate());
         for (int u = 0; u <= 2; u++) {
             if (periodOfUserMarrigedYear <= 3 + u * 2) {
-                 periodOfMarrigedGetPoint = 3 - u;
+                return periodOfMarrigedGetPoint = 3 - u;
             }
         }
         return periodOfMarrigedGetPoint;
@@ -93,15 +107,15 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
 
         if (numberOfHouseMember <= 3) {
             if (averageMonthlyIncome3peopleLessBelow >= houseMemberIncome) {
-                 monthOfAverageIncomeGetPoint = 1;
+                return monthOfAverageIncomeGetPoint = 1;
             }
         } else if (numberOfHouseMember <= 4) {
             if (averageMonthlyIncome4peopleLessBelow >= houseMemberIncome) {
-                 monthOfAverageIncomeGetPoint = 1;
+                return monthOfAverageIncomeGetPoint = 1;
             }
         } else if (numberOfHouseMember <= 5) {
             if (averageMonthlyIncome5peopleLessBelow >= houseMemberIncome) {
-                 monthOfAverageIncomeGetPoint = 1;
+                return monthOfAverageIncomeGetPoint = 1;
             }
         }
         return monthOfAverageIncomeGetPoint;
@@ -159,11 +173,11 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         }
         for (int i = 1; i <= 2; i++) {
             if (bankbookPaymentsCount < i * 12) {
-                 paymentsCountGetPoint = i;
+                return paymentsCountGetPoint = i;
             }
         }
         if (bankbookPaymentsCount >= 24) {
-             paymentsCountGetPoint = 3;
+            return paymentsCountGetPoint = 3;
         }
         return paymentsCountGetPoint;
     }
@@ -177,11 +191,11 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) {
             int periodOfResidence = generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getTransferDate());
             if (periodOfResidence < 1) {
-                periodOfResidenceGetPoint = 1;
+                return periodOfResidenceGetPoint = 1;
             } else if (periodOfResidence < 3) {
-                periodOfResidenceGetPoint = 2;
+                return periodOfResidenceGetPoint = 2;
             } else if (periodOfResidence > 3) {
-                periodOfResidenceGetPoint = 3;
+                return periodOfResidenceGetPoint = 3;
             }
         } else {
             return periodOfResidenceGetPoint;
