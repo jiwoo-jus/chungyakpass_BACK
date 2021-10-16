@@ -384,7 +384,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetHomelessHouseholdMembers(User user) { //전세대원무주택세대구성원충족여부
+    public boolean meetHomelessHouseholdMembers(User user) { //전세대원무주택세대구성원충족여부 메소드
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
         int houseCount = 0;
@@ -395,31 +395,35 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 int flag = 0;
-                int specialCase = 0;
-                for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
+                int specialCase = 0; // 예외주택에 해당하는 경우를 count 하기 위해 specialCase라는 변수에 0으로 초기 세팅
+
+                for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) { // 반복문을 통해서 세대구성원의 자산 정보 List를 돌면서,
                     if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
-                            if (calcAmericanAge(houseMember.getBirthDay()) >= 60) {
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) { // 신청자와의 관계가 부, 모, 조부, 조모, 배우자의부, 배우자의모, 배우자의조부, 배우자의조모일 경우
+                            if (calcAmericanAge(houseMember.getBirthDay()) >= 60) { // 만나이가 60세 이상일 경우 specialCase 증가시킴
                                 specialCase++;
                                 continue;
                             }
                         }
-                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { //주거용건물유형이 오피스텥일 경우
+                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { // 주거용건물유형이 오피스텥일 경우 specialCase 증가
                             specialCase++;
                             continue;
-                        } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
+                        } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { // 2018.12.11 이전에 취득한 분양권일 경우 specialCase 증가
                             specialCase++;
                             continue;
-                        } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                            specialCase++;
+                            continue;
+                        } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) { // 주택예외사항해당여부에 해당하는 경우 specialCase 증가
                             specialCase++;
                             continue;
                         } else {
-                            if (houseMemberProperty.getExclusiveArea() <= 20) { //20제곱미터 이하의 주택을 소유하고 있는 경우
+                            if (houseMemberProperty.getExclusiveArea() <= 20) { // 20제곱미터 이하의 주택을 소유하고 있는 경우
                                 flag++;
-                                if (specialCase <= 0)
+                                if (specialCase <= 0) // 만약, specialCase가 없을 경우 continue
                                     continue;
-                                else
+                                else // 그렇지 않으면, flag 값을 houseCount에 넣음
                                     houseCount = flag;
                                 if (flag <= 1) // 단, 2호 또는 2세대 이상의 주택 또는 분양권은 제외. 즉, 하나까진 count 안 한다는 의미.
                                     continue;
@@ -427,24 +431,25 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                                     houseCount = flag;
                             }
                         }
-                        houseCount++;
+                        houseCount++; // 그 외 주택은 houseCount 값 증가시킴
                     }
                 }
             }
         }
         //배우자 분리세대일 경우
         else {
-            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
+            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
 
-            for (HouseMember houseMember : houseMemberListUser) {
+            for (HouseMember houseMember : houseMemberListUser) { // 반복문을 통해서 신청자의 세대구성원 List를 돔
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 int flag = 0;
                 int specialCase = 0;
+
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                     if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
-                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                        if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) { // 신청자와의 관계가 부, 모, 조부, 조모, 배우자의부, 배우자의모, 배우자의조부, 배우자의조모일 경우
                             if (calcAmericanAge(houseMember.getBirthDay()) >= 60) {
                                 specialCase++;
                                 continue;
@@ -457,6 +462,9 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
+                            specialCase++;
+                            continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
                             specialCase++;
                             continue;
                         } else {
@@ -485,26 +493,29 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                     if (houseMemberProperty.getResidentialBuildingYn().equals(Yn.y)) {//소유주택이 주거용이면
                         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
                         if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
-                            if (calcAmericanAge(houseMember.getBirthDay()) >= 60) {
+                            if (calcAmericanAge(houseMember.getBirthDay()) >= 60) { // 만나이가 60세 이상일 경우 specialCase 증가시킴
                                 specialCase++;
                                 continue;
                             }
                         }
-                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { //주거용건물유형이 오피스텥일 경우
+                        if (houseMemberProperty.getResidentialBuilding().equals(ResidentialBuilding.오피스텔)) { // 주거용건물유형이 오피스텥일 경우 specialCase 증가
                             specialCase++;
                             continue;
-                        } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
+                        } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { // 2018.12.11 이전에 취득한 분양권일 경우 specialCase 증가
                             specialCase++;
                             continue;
-                        } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                            specialCase++;
+                            continue;
+                        } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) { // 주택예외사항해당여부에 해당하는 경우 specialCase 증가
                             specialCase++;
                             continue;
                         } else {
                             if (houseMemberProperty.getExclusiveArea() <= 20) { //20제곱미터 이하의 주택을 소유하고 있는 경우
                                 flag++;
-                                if (specialCase <= 0)
+                                if (specialCase <= 0) // 만약, specialCase가 없을 경우 continue
                                     continue;
-                                else
+                                else // 그렇지 않으면, flag 값을 houseCount에 넣음
                                     houseCount = flag;
                                 if (flag <= 1) // 단, 2호 또는 2세대 이상의 주택 또는 분양권은 제외. 즉, 하나까진 count 안 한다는 의미.
                                     continue;
@@ -512,13 +523,11 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                                     houseCount = flag;
                             }
                         }
-                        houseCount++;
+                        houseCount++; // 그 외 주택은 houseCount 값 증가시킴
                     }
                 }
             }
         }
-
-        System.out.println("주택수 :" + houseCount);
 
         if (houseCount == 0) // 주택수가 0일 경우 무주택세대구성원으로 판별
             return true;

@@ -152,6 +152,9 @@ public class SpecialPrivateOldParentVerificationServiceImpl implements SpecialPr
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
                             specialCase++;
                             continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                            specialCase++;
+                            continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
@@ -197,6 +200,9 @@ public class SpecialPrivateOldParentVerificationServiceImpl implements SpecialPr
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
                             specialCase++;
                             continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                            specialCase++;
+                            continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
@@ -235,6 +241,9 @@ public class SpecialPrivateOldParentVerificationServiceImpl implements SpecialPr
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
+                            specialCase++;
+                            continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {

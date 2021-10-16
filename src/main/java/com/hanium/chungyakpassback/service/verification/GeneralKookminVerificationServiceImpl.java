@@ -122,6 +122,9 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { // 2018.12.11 이전에 취득한 분양권일 경우 specialCase 증가
                             specialCase++;
                             continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                            specialCase++;
+                            continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) { // 주택예외사항해당여부에 해당하는 경우 specialCase 증가
                             specialCase++;
                             continue;
@@ -171,6 +174,9 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                            specialCase++;
+                            continue;
                         } else {
                             if (houseMemberProperty.getExclusiveArea() <= 20) { //20제곱미터 이하의 주택을 소유하고 있는 경우
                                 flag++;
@@ -206,6 +212,9 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { // 2018.12.11 이전에 취득한 분양권일 경우 specialCase 증가
+                            specialCase++;
+                            continue;
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) { // 주택예외사항해당여부에 해당하는 경우 specialCase 증가
