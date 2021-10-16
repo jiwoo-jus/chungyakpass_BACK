@@ -98,7 +98,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
                 if (periodOfHomelessness < z) {
                     return point = z * 2;
                 }
-                else point = 32;
+                else return point = 32;
             }
         }
         return point;
@@ -278,16 +278,16 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         if (joinPeriodOfMonth < 12) {
             for (int z = 1; z <= 2; z++) {
                 if (joinPeriodOfMonth < z * 6) {
-                    point = z;
+                    return point = z;
                 }
             }
         } else {
             for (int z = 2; z <= 15; z++) {
                 if (joinPeriodOfYear < z) {
-                    point = z + 1;
+                    return point = z + 1;
                 }
                 else
-                    point = 17;
+                    return point = 17;
             }
         }
         return point;

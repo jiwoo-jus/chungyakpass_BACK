@@ -7,7 +7,6 @@ import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
-import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,7 +61,7 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
             int mostYoungChildAge = generalPrivateVerificationServiceImpl.calcAmericanAge(minorsBirthDateList.get(0));
             for (int u = 0; u <= 2; u++) {
                 if (mostYoungChildAge < 3 + 2 * u) {
-                    mostYoungChildAgeGetPoint = 3 - u;
+                    return mostYoungChildAgeGetPoint = 3 - u;
                 }
             }
         }
