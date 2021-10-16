@@ -182,6 +182,15 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         return paymentsCountGetPoint;
     }
 
+    public int periodOfYear(LocalDate joinDate) {
+        LocalDate now = LocalDate.now();
+        int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
+
+        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+            periodOfYear = periodOfYear - 1;
+        return periodOfYear;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)//해당지역 거주기간
     public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
@@ -189,7 +198,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) {
-            int periodOfResidence = generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getTransferDate());
+            int periodOfResidence = periodOfYear(user.getHouseMember().getTransferDate());
             if (periodOfResidence < 1) {
                 return periodOfResidenceGetPoint = 1;
             } else if (periodOfResidence < 3) {

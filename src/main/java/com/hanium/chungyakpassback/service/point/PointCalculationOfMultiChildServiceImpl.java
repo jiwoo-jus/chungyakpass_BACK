@@ -61,6 +61,15 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return NumberOfChildUnder6YearGetPoint;
     }
 
+    public int periodOfYear(LocalDate joinDate) {
+        LocalDate now = LocalDate.now();
+        int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
+
+        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+            periodOfYear = periodOfYear - 1;
+        return periodOfYear;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer bankbookJoinPeriod(User user) {
@@ -68,7 +77,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
-        int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
+        int joinPeriodOfYear = periodOfYear(optUserBankbook.get().getJoinDate());
         if (joinPeriodOfYear >= 10) {
             return bankbookJoinPeriodGetPoint = 5;
         }
@@ -76,7 +85,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     }
 
     public Integer periodOfApplicableAreaResidenceGetPoint(User user,Integer periodOfResidenceGetPoint) {
-        int periodOfResidence = generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getTransferDate());
+        int periodOfResidence = periodOfYear(user.getHouseMember().getTransferDate());
         if (1 <= periodOfResidence && periodOfResidence < 5) {
             return periodOfResidenceGetPoint = 5;
         } else if (5 <= periodOfResidence && periodOfResidence < 10) {
@@ -157,7 +166,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         lateDateList.sort(Collections.reverseOrder());
         LocalDate mostLateDate = lateDateList.get(0);
         //무주택기간을 기간으로 계산함
-        int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
+        int periodOfHomelessness = periodOfYear(mostLateDate);
 
         if (1 <= periodOfHomelessness && periodOfHomelessness < 5) {
             return periodOfHomelessnessGetPoint = 5;

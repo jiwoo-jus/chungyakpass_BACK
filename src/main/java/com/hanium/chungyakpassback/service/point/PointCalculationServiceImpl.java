@@ -92,7 +92,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             }
             lateDateList.sort(Collections.reverseOrder());
             LocalDate mostLateDate = lateDateList.get(0);
-            int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
+            int periodOfHomelessness = periodOfYear(mostLateDate);
             //무주택기간을 기간으로 계산함
             for (int z = 1; z <= 15; z++) {
                 if (periodOfHomelessness < z) {
@@ -102,6 +102,15 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             }
         }
         return point;
+    }
+
+    public int periodOfYear(LocalDate joinDate) {
+        LocalDate now = LocalDate.now();
+        int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
+
+        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+            periodOfYear = periodOfYear - 1;
+        return periodOfYear;
     }
 
     public boolean homelessYn(HouseMember houseMember,int houseCount) {
@@ -274,7 +283,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         if (optUserBankbook.isEmpty())
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
-        int joinPeriodOfYear = generalPrivateVerificationServiceImpl.calcAmericanAge(optUserBankbook.get().getJoinDate());
+        int joinPeriodOfYear = periodOfYear(optUserBankbook.get().getJoinDate());
         if (joinPeriodOfMonth < 12) {
             for (int z = 1; z <= 2; z++) {
                 if (joinPeriodOfMonth < z * 6) {
