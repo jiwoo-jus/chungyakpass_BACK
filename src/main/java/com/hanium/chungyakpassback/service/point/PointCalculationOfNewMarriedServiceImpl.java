@@ -47,13 +47,16 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         int Minors = 0;
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
-            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아)) {
+            System.out.println("houseMemberRelation!!"+houseMemberRelation.getRelation().getRelation());
+            if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아)) {
                 LocalDate childrenBirthDay = houseMemberRelation.getOpponent().getBirthDay();
                 if (generalPrivateVerificationServiceImpl.calcAmericanAge(childrenBirthDay) < standardAge) {
                     Minors++;
+                    System.out.println("자녀더하기");
                 }
             }
         }
+        System.out.println("Minors"+Minors);
         return Minors;
     }
 
@@ -62,10 +65,11 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     @Transactional(rollbackFor = Exception.class)
     public Integer numberOfMinors(User user) {
         Integer NumberOfMinorsGetPoint = 0;
+
         Integer Minors = numberOfChild(user, 19);
         for (int u = 1; u <= 3; u++) {
             if (Minors >= u) {
-                return NumberOfMinorsGetPoint = u;
+                 NumberOfMinorsGetPoint = u;
             }
         }
         return NumberOfMinorsGetPoint;
@@ -93,7 +97,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         int periodOfUserMarrigedYear = yearOfMerriged(user.getHouseMember().getMarriageDate());
         for (int u = 0; u <= 2; u++) {
             if (periodOfUserMarrigedYear <= 3 + u * 2) {
-                return periodOfMarrigedGetPoint = 3 - u;
+                 periodOfMarrigedGetPoint = 3 - u;
             }
         }
         return periodOfMarrigedGetPoint;
@@ -143,16 +147,14 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
             if (user.getSpouseHouseMember().getIncome() != null) {
                 for (Income income : incomeList) {
                     if (income.getDualIncome().equals(Yn.y)) {
-                        meetYnOfAverageMonthlyIncome(income, numberOfHouseMember,houseMemberIncome,monthOfAverageIncomeGetPoint);
-                        return monthOfAverageIncomeGetPoint;
+                        return monthOfAverageIncomeGetPoint = meetYnOfAverageMonthlyIncome(income, numberOfHouseMember,houseMemberIncome,monthOfAverageIncomeGetPoint);
                     }
                 }
             }
         } else {
             for (Income income : incomeList) {
                 if (income.getDualIncome().equals(Yn.n)) {
-                    meetYnOfAverageMonthlyIncome(income, numberOfHouseMember,houseMemberIncome,monthOfAverageIncomeGetPoint);
-                    return monthOfAverageIncomeGetPoint;
+                    return monthOfAverageIncomeGetPoint=meetYnOfAverageMonthlyIncome(income, numberOfHouseMember,houseMemberIncome,monthOfAverageIncomeGetPoint);
                 }
             }
         }
@@ -207,7 +209,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
                 return periodOfResidenceGetPoint = 3;
             }
         } else {
-            return periodOfResidenceGetPoint;
+             periodOfResidenceGetPoint=0;
         }
         return periodOfResidenceGetPoint;
     }

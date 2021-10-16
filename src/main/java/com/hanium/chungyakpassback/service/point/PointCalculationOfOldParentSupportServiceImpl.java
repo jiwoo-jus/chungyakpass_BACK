@@ -73,7 +73,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         } else {
             //신청자가 30세미만에 미혼이거나 외국인이면 0점
             if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {
-                periodOfHomelessnessGetPoint =0;
+                return periodOfHomelessnessGetPoint =0;
             }
             else {
                 //배우자가 없거나 배우자가 결혼전에 무주택자가 된경우
@@ -157,17 +157,17 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                     }
                 }
             }
-            //반환값을 가지고 늦은 순서대로 정렬
-            lateDateList.sort(Collections.reverseOrder());
-            LocalDate mostLateDate = lateDateList.get(0);
-            //무주택기간을 기간으로 계산함
-            int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
-            for (int z = 1; z <= 15; z++) {
-                if (periodOfHomelessness < z) {
-                    periodOfHomelessnessGetPoint = z * 2;
-                } else
-                    periodOfHomelessnessGetPoint = 32;
-            }
+           //반환값을 가지고 늦은 순서대로 정렬
+                lateDateList.sort(Collections.reverseOrder());
+                LocalDate mostLateDate = lateDateList.get(0);
+                //무주택기간을 기간으로 계산함
+                int periodOfHomelessness = generalPrivateVerificationServiceImpl.calcAmericanAge(mostLateDate);
+                for (int z = 1; z <= 15; z++) {
+                    if (periodOfHomelessness < z) {
+                        return periodOfHomelessnessGetPoint = z * 2;
+                    } else
+                         periodOfHomelessnessGetPoint = 32;
+                }
         }
         return periodOfHomelessnessGetPoint;
     }

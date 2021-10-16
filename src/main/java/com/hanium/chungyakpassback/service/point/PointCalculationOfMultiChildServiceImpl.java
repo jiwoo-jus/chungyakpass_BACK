@@ -8,6 +8,7 @@ import com.hanium.chungyakpassback.entity.input.UserBankbook;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.enumtype.MultiChildHouseholdType;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
@@ -41,7 +42,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 19);
         for (int u = 0; u <= 2; u++) {
             if (Minors >= u + 3) {
-                return NumberOfChildGetPoint = u * 5 + 30;
+                  NumberOfChildGetPoint = u * 5 + 30;
             }
         }
         return NumberOfChildGetPoint;
@@ -55,7 +56,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 6);
         for (int u = 1; u <= 3; u++) {
             if (Minors >= u) {
-                return NumberOfChildUnder6YearGetPoint = u * 5;
+                  NumberOfChildUnder6YearGetPoint = u * 5;
             }
         }
         return NumberOfChildUnder6YearGetPoint;
@@ -79,7 +80,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         int joinPeriodOfYear = periodOfYear(optUserBankbook.get().getJoinDate());
         if (joinPeriodOfYear >= 10) {
-            return bankbookJoinPeriodGetPoint = 5;
+             bankbookJoinPeriodGetPoint = 5;
         }
         return bankbookJoinPeriodGetPoint;
     }
@@ -119,7 +120,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     public Integer generationComposition(SpecialPointOfMultiChildDto specialPointOfMultiChildDto) {
         Integer generationCompositionGetPoint = 0;
         if (specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.한부모가족)||specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.삼세대이상)) {
-            return generationCompositionGetPoint = 5;
+             generationCompositionGetPoint = 5;
         }
         return generationCompositionGetPoint;
     }
@@ -156,24 +157,37 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         Integer periodOfHomelessnessGetPoint = 0;
         List<LocalDate> lateDateList = new ArrayList<>();//배우자와 본인중 무주택시점이 늦은날을 저장하는 리스트
 
-        if (user.getSpouseHouseMember() != null) {
-            periodHomeless(user.getHouseMember(), lateDate,lateDateList);
-            periodHomeless(user.getSpouseHouseMember(),lateDate,lateDateList);
-            //반환값을 가지고 늦은 순서대로 정렬
-        } else {
-            periodHomeless(user.getHouseMember(),lateDate,lateDateList);
+        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
+            return periodOfHomelessnessGetPoint =0;
         }
+        //배우자가 있는데 혼인신고일이 null일경우 에러 호출
+        else {
+            if (user.getSpouseHouseMember() != null && user.getSpouseHouseMember().getMarriageDate() == null) {
+                throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
+            }
+            //배우자가 null 이거나 신청자의 배우자의 무주택 시작일이 혼인신고일 전이면 신청자의 무주택기간만 산정
+            else if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
+                periodHomeless(user.getHouseMember(),lateDate,lateDateList);
+            }
+            //아니면 신청자와 배우자의 무주택기간 산정
+            else
+            {
+                periodHomeless(user.getHouseMember(),lateDate,lateDateList);
+                periodHomeless(user.getSpouseHouseMember(),lateDate,lateDateList);
+            }
+        }
+
         lateDateList.sort(Collections.reverseOrder());
         LocalDate mostLateDate = lateDateList.get(0);
         //무주택기간을 기간으로 계산함
         int periodOfHomelessness = periodOfYear(mostLateDate);
 
         if (1 <= periodOfHomelessness && periodOfHomelessness < 5) {
-            return periodOfHomelessnessGetPoint = 5;
-        } else if (5 <= periodOfHomelessness && periodOfHomelessness < 10) {
             return periodOfHomelessnessGetPoint = 10;
-        } else if (periodOfHomelessness >= 10) {
+        } else if (5 <= periodOfHomelessness && periodOfHomelessness < 10) {
             return periodOfHomelessnessGetPoint = 15;
+        } else if (periodOfHomelessness >= 10) {
+            return periodOfHomelessnessGetPoint = 20;
         }
         return periodOfHomelessnessGetPoint;
     }

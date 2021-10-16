@@ -61,7 +61,7 @@ public class PointCalculationOfSingleParentsServiceImpl implements PointCalculat
             int mostYoungChildAge = generalPrivateVerificationServiceImpl.calcAmericanAge(minorsBirthDateList.get(0));
             for (int u = 0; u <= 2; u++) {
                 if (mostYoungChildAge < 3 + 2 * u) {
-                    return mostYoungChildAgeGetPoint = 3 - u;
+                     return mostYoungChildAgeGetPoint = 3 - u;
                 }
             }
         }

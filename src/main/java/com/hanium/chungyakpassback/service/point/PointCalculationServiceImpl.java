@@ -92,13 +92,14 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             }
             lateDateList.sort(Collections.reverseOrder());
             LocalDate mostLateDate = lateDateList.get(0);
+            System.out.println("lateDateList.get(0)"+lateDateList.get(0));
             int periodOfHomelessness = periodOfYear(mostLateDate);
             //무주택기간을 기간으로 계산함
             for (int z = 1; z <= 15; z++) {
                 if (periodOfHomelessness < z) {
                     return point = z * 2;
                 }
-                else return point = 32;
+                else point = 32;
             }
         }
         return point;
@@ -172,7 +173,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         //houseMemberList3가 하나라도 flase반환하면 0
         int numberOfFamily;
         if (bothParentsIsHomelessYnList.contains(Boolean.FALSE)) {
-            numberOfFamily = 0;
+            return numberOfFamily = 0;
         } else {//아니면 parents반환
             numberOfFamily = parents;
         }
@@ -210,42 +211,86 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         List<Boolean> bothParentsIsHomelessYnList = new ArrayList<>();//부모님 두분다 무주택자인지 확인하는 리스트
         for (int i = 0; i < generalMinyeongPointDto.getGeneralMinyeongPointDtoList().size(); i++) {
             GeneralMinyeongPointDto generalMinyeongPoint = generalMinyeongPointDto.getGeneralMinyeongPointDtoList().get(i);
+            System.out.println("generalMinyeongPoint"+generalMinyeongPoint.getHouseMemberId());
             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponentId(generalMinyeongPoint.getHouseMemberId()).get();
+            System.out.println("houseMemberRelation"+houseMemberRelation.getRelation().getRelation());
 
             if (user.getSpouseHouseMember() != null) {//배우자는 무조건 포함
+                System.out.println("00000000000000000000");
                 numberOfFamily++;
             }
-            if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
+            else if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
+                System.out.println("1111111111111111111111111111111");
                 if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) //본인이 세대주일 때 무주택직계존속 포함
                 {
+                    System.out.println("22222222222222222222222222222222");
                     numberOfFamily = numberOfFamily(user, houseMemberRelation, generalMinyeongPoint, numberOfFamily, parents,bothParentsIsHomelessYnList);
-                }
-            } else if (user.getHouse() != user.getSpouseHouse()) {
-                if (user.getSpouseHouse().getHouseHolder().getId().equals(user.getSpouseHouseMember().getId())) { //배우자가 세대주일 때 무주택직계존속 포함
-                    numberOfFamily = numberOfFamily(user, houseMemberRelation, generalMinyeongPoint, numberOfFamily, parents,bothParentsIsHomelessYnList);
-                }
-            } else {
-                if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && generalMinyeongPoint.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
-                    if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
-                        if (generalMinyeongPoint.getDivorceYn().equals(Yn.n)) {
-                            if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
-                                if (!(generalMinyeongPoint.getNowStayOverYn().equals(Yn.y) && generalMinyeongPoint.getStayOverYn().equals(Yn.y))) {//현재 체류여부
-                                    numberOfFamily++;
-                                }
-                            } else {
-                                if (generalMinyeongPoint.getStayOverYn().equals(Yn.n)) {// 체류여부
-                                    if (generalMinyeongPoint.getSameResidentRegistrationYn().equals(Yn.y)) {
+
+                    if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && generalMinyeongPoint.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
+                        System.out.println("000000");
+                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
+                            System.out.println("11111111");
+                            if (generalMinyeongPoint.getDivorceYn().equals(Yn.n)) {
+                                System.out.println("2222222");
+                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
+                                    System.out.println("3333333");
+                                    if (!(generalMinyeongPoint.getNowStayOverYn().equals(Yn.y) && generalMinyeongPoint.getStayOverYn().equals(Yn.y))) {//현재 체류여부
+                                        System.out.println("444444");
                                         numberOfFamily++;
                                     }
+                                } else {
+                                    if (generalMinyeongPoint.getStayOverYn().equals(Yn.n)) {// 체류여부
+                                        System.out.println("5555555");
+                                        if (generalMinyeongPoint.getSameResidentRegistrationYn().equals(Yn.y)) {
+                                            System.out.println("66666");
+                                            numberOfFamily++;
+                                        }
+                                    }
+
                                 }
-
                             }
-                        }
 
+                        }
                     }
                 }
             }
+            else if (user.getHouse() != user.getSpouseHouse()) {
+                System.out.println("3333333333333333333333333333333333");
+                if (user.getSpouseHouse().getHouseHolder().getId().equals(user.getSpouseHouseMember().getId())) { //배우자가 세대주일 때 무주택직계존속 포함
+                    System.out.println("444444444444444444444444444444444");
+                    numberOfFamily = numberOfFamily(user, houseMemberRelation, generalMinyeongPoint, numberOfFamily, parents,bothParentsIsHomelessYnList);
+
+                    if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && generalMinyeongPoint.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
+                        System.out.println("000000");
+                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
+                            System.out.println("11111111");
+                            if (generalMinyeongPoint.getDivorceYn().equals(Yn.n)) {
+                                System.out.println("2222222");
+                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
+                                    System.out.println("3333333");
+                                    if (!(generalMinyeongPoint.getNowStayOverYn().equals(Yn.y) && generalMinyeongPoint.getStayOverYn().equals(Yn.y))) {//현재 체류여부
+                                        System.out.println("444444");
+                                        numberOfFamily++;
+                                    }
+                                } else {
+                                    if (generalMinyeongPoint.getStayOverYn().equals(Yn.n)) {// 체류여부
+                                        System.out.println("5555555");
+                                        if (generalMinyeongPoint.getSameResidentRegistrationYn().equals(Yn.y)) {
+                                            System.out.println("66666");
+                                            numberOfFamily++;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
+        System.out.println("numberOfFamily"+numberOfFamily);
 
         for (int z = 1; z <= 6; z++) {
             if (numberOfFamily < z) {
@@ -278,7 +323,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer bankbookJoinPeriod(User user) {//통장 가입기간 구하는 메소드
-        int point = 0;
+        int bankbookJoinPeriodGetPoint = 0;
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
@@ -287,20 +332,17 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         if (joinPeriodOfMonth < 12) {
             for (int z = 1; z <= 2; z++) {
                 if (joinPeriodOfMonth < z * 6) {
-                    return point = z;
+                    bankbookJoinPeriodGetPoint = z;
                 }
             }
         } else {
             for (int z = 2; z <= 15; z++) {
                 if (joinPeriodOfYear < z) {
-                    return point = z + 1;
-                }
-                else
-                    return point = 17;
+                    return bankbookJoinPeriodGetPoint = z + 1;
+                } else bankbookJoinPeriodGetPoint = 17;
             }
         }
-        return point;
-
+        return bankbookJoinPeriodGetPoint;
     }
 }
 
