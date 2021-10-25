@@ -246,6 +246,9 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         }
         //배우자 분리세대일 경우
         else {
+            if(houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse())==null){
+                throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER);
+            }
             List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
 
             for (HouseMember houseMember : houseMemberList) {

@@ -67,6 +67,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfHomelessness(User user) {
         int periodOfHomelessnessGetPoint = 0;
+        int houseCount=0;
         List<LocalDate> lateDateList = new ArrayList<>(); //무주택시작일을 담아놓은 리스트
         if (user.getSpouseHouseMember() != null && user.getSpouseHouseMember().getMarriageDate() == null) {//배우자가 있는데 혼인신고일이 없으면 에러발생
             throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
@@ -85,8 +86,11 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
+                            if(homelessYn(houseMemberRelation.getOpponent(),houseCount)==false){
+                                return periodOfHomelessnessGetPoint = 0;
+                            }
                             //신청자의 직계존속이 집을 소유한 적이 있으면 무주택산정 리스트에 추가한다.
-                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            else if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                                 if (houseMember.getHomelessStartDate() != null) {
                                     lateDateList.add(houseMember.getHomelessStartDate());
                                 }
@@ -99,7 +103,10 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(homelessYn(houseMemberRelation.getOpponent(),houseCount)==false){
+                                return periodOfHomelessnessGetPoint = 0;
+                            }
+                            else if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                                 if (houseMember.getHomelessStartDate() != null) {
                                     lateDateList.add(houseMember.getHomelessStartDate());
                                 }
@@ -108,7 +115,10 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
                         for (HouseMember spouseHouseMember : spouseHouseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();
-                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(homelessYn(houseMemberRelation.getOpponent(),houseCount)==false){
+                                return periodOfHomelessnessGetPoint = 0;
+                            }
+                            else if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                                 if (spouseHouseMember.getHomelessStartDate() != null) {
                                     lateDateList.add(spouseHouseMember.getHomelessStartDate());
                                 }
@@ -125,7 +135,10 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(homelessYn(houseMemberRelation.getOpponent(),houseCount)==false){
+                                return periodOfHomelessnessGetPoint = 0;
+                            }
+                            else if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                                 if (houseMember.getHomelessStartDate() != null) {
                                     lateDateList.add(houseMember.getHomelessStartDate());
                                 }
@@ -138,7 +151,10 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
-                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(homelessYn(houseMemberRelation.getOpponent(),houseCount)==false){
+                                return periodOfHomelessnessGetPoint = 0;
+                            }
+                            else if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                                 if (houseMember.getHomelessStartDate() != null) {
                                     lateDateList.add(houseMember.getHomelessStartDate());
                                 }
@@ -148,7 +164,10 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                         List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
                         for (HouseMember spouseHouseMember : spouseHouseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();
-                            if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
+                            if(homelessYn(houseMemberRelation.getOpponent(),houseCount)==false){
+                                return periodOfHomelessnessGetPoint = 0;
+                            }
+                            else if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의조모))) {
                                 if (spouseHouseMember.getHomelessStartDate() != null) {
                                     lateDateList.add(spouseHouseMember.getHomelessStartDate());
                                 }
@@ -237,9 +256,8 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         return numberOfFamily;
     }
 
-    public Integer numberOfFamily(User user, HouseMemberRelation houseMemberRelation, SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupport, int numberOfFamily, int parents) {
-        List<Boolean> bothParentsIsHomelessYnList = new ArrayList<>();//부모님 두분다 무주택자인지 확인하는 리스트
-        if (specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.n) && specialPointOfOldParentsSupport.getSameResidentRegistrationYn().equals(Yn.y) && houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n)) {
+    public Integer numberOfFamily(User user, HouseMemberRelation houseMemberRelation, SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupport, int numberOfFamily, int parents,List bothParentsIsHomelessYnList) {
+           if (specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.n) && specialPointOfOldParentsSupport.getSameResidentRegistrationYn().equals(Yn.y) && houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n)) {
             if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모)) && houseMemberRelation.getUser().equals(user)) {
                 numberOfFamily = numberOfFamily + countOfDependents(houseMemberRelation, parents,bothParentsIsHomelessYnList);
             }
@@ -264,62 +282,71 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
         int numberOfDependentsGetPoint = 0;
         int parents = 0;
         int numberOfFamily = 0;
-        for (int i = 0; i < specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().size(); i++) {
-            System.out.println("specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i)"+specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i));
-            SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupport = specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i);
-            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponentId(specialPointOfOldParentsSupport.getHouseMemberId()).get();
-            if (user.getSpouseHouseMember() != null) {//배우자는 무조건 포함
-                numberOfFamily++;
-            }
-            if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
-                if (user.getHouse().getHouseHolder() == null) {//신청자 세대에 세대주가 존재하지 않을 경우 에러출력
-                    throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER);
-                }
-                else {
-                    if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) //본인이 세대주일 때 무주택직계존속 포함
-                    {
-                        numberOfFamily = numberOfFamily(user, houseMemberRelation, specialPointOfOldParentsSupport,numberOfFamily,parents);
-                    }
-                }
-            }//배우자 분리세대일 경우
-            else if (user.getHouse() != user.getSpouseHouse()) {
-                //배우자 세대에 세대주가 존재하지 않을 경우 에러출력
-                if (user.getSpouseHouse().getHouseHolder() == null) {
-                    throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER);
-                }
-                else {
-                    if (user.getSpouseHouse().getHouseHolder().getId().equals(user.getSpouseHouseMember().getId())) { //배우자가 세대주일 때 무주택직계존속 포함
-                        numberOfFamily = numberOfFamily(user, houseMemberRelation, specialPointOfOldParentsSupport,numberOfFamily,parents);
-                    }
-                }
-            }
-            else {//부모가 죽은 미혼손자녀, 미혼 자녀
-                if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && specialPointOfOldParentsSupport.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
-                    if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
-                        //이혼한 적이 없으면
-                        if (specialPointOfOldParentsSupport.getDivorceYn().equals(Yn.n)) {
-                            //만30세 미만인 경우
-                            if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
-                                if (!(specialPointOfOldParentsSupport.getNowStayOverYn().equals(Yn.y) && specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.y))) {//현재 체류여부
-                                    numberOfFamily++;
-                                }
-                            }
-                            else {
-                                if (specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.n)) {// 체류여부
-                                    if (specialPointOfOldParentsSupport.getSameResidentRegistrationYn().equals(Yn.y)) {
-                                        numberOfFamily++;
-                                    }
-                                }
+        List<Boolean> bothParentsIsHomelessYnList = new ArrayList<>();//부모님 두분다 무주택자인지 확인하는 리스트
 
-                            }
-                        }
 
-                    }
-                }
-            }
+        if (user.getSpouseHouseMember() != null) {//배우자는 무조건 포함
+            numberOfFamily++;
         }
 
+        for (int i = 0; i < specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().size(); i++) {
+            SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupport = specialPointOfOldParentsSupportDto.getSpecialPointOfOldParentsSupportDtoList().get(i);
+            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponentId(specialPointOfOldParentsSupport.getHouseMemberId()).get();
 
+            if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
+                if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) //본인이 세대주일 때 무주택직계존속 포함
+                {
+                    numberOfFamily = numberOfFamily(user, houseMemberRelation, specialPointOfOldParentsSupport, numberOfFamily, parents,bothParentsIsHomelessYnList);
+
+                    if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && specialPointOfOldParentsSupport.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
+                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
+                            if (specialPointOfOldParentsSupport.getDivorceYn().equals(Yn.n)) {
+                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
+                                    if (!(specialPointOfOldParentsSupport.getNowStayOverYn().equals(Yn.y) && specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.y))) {//현재 체류여부
+                                        numberOfFamily++;
+                                    }
+                                } else {
+                                    if (specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.n)) {// 체류여부
+                                        if (specialPointOfOldParentsSupport.getSameResidentRegistrationYn().equals(Yn.y)) {
+                                            numberOfFamily++;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            else if (user.getHouse() != user.getSpouseHouse()) {
+                if (user.getSpouseHouse().getHouseHolder().getId().equals(user.getSpouseHouseMember().getId())) { //배우자가 세대주일 때 무주택직계존속 포함
+                    numberOfFamily = numberOfFamily(user, houseMemberRelation, specialPointOfOldParentsSupport, numberOfFamily, parents,bothParentsIsHomelessYnList);
+
+                    if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && specialPointOfOldParentsSupport.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
+                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
+                            if (specialPointOfOldParentsSupport.getDivorceYn().equals(Yn.n)) {
+                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
+                                    if (!(specialPointOfOldParentsSupport.getNowStayOverYn().equals(Yn.y) && specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.y))) {//현재 체류여부
+                                        numberOfFamily++;
+                                    }
+                                } else {
+                                    if (specialPointOfOldParentsSupport.getStayOverYn().equals(Yn.n)) {// 체류여부
+                                        if (specialPointOfOldParentsSupport.getSameResidentRegistrationYn().equals(Yn.y)) {
+                                            numberOfFamily++;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        }
+        System.out.println("numberOfFamily"+numberOfFamily);
 
         for (int z = 1; z <= 6; z++) {
             if (numberOfFamily < z) {
