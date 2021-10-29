@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.repository.input;
 
-import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.HouseMemberChungyak;
 import org.springframework.data.jpa.repository.JpaRepository;

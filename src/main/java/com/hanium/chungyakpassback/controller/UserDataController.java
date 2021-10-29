@@ -1,7 +1,6 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
-import com.hanium.chungyakpassback.entity.input.HouseMemberChungyak;
 import com.hanium.chungyakpassback.service.input.UserDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -120,6 +119,12 @@ public class UserDataController {
 //
 //        return new ResponseEntity(userDataService.deleteHouseMemberProperty(id));
 //    }
+
+    @GetMapping("/house/member/chungyak/list/{houseMemberId}")
+    public ResponseEntity<List<HouseMemberChungyakReadDto>> readHouseMemberChungyakList(@PathVariable Long houseMemberId){
+
+        return ResponseEntity.ok(userDataService.readHouseMemberChungyakList(houseMemberId));
+    }
 
     @GetMapping("/house/member/chungyak/{id}")
     public ResponseEntity<HouseMemberChungyakReadDto> readHouseMemberChungyak(@PathVariable Long id){

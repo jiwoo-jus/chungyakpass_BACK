@@ -34,6 +34,8 @@ public interface UserDataService {
 
     HttpStatus deleteHouseMemberProperty(HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto);
 
+    List<HouseMemberChungyakReadDto> readHouseMemberChungyakList(Long houseMemberId);
+
     HouseMemberChungyakReadDto readHouseMemberChungyak(Long id);
 
     List<HouseMemberChungyakResponseDto> houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto);

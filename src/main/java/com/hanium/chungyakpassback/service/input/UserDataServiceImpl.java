@@ -293,6 +293,24 @@ public class UserDataServiceImpl implements UserDataService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public List<HouseMemberChungyakReadDto> readHouseMemberChungyakList(Long houseMemberId){
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
+        ArrayList<HouseMemberChungyakReadDto> houseMemberChungyakReadDtoList = new ArrayList<>();
+        for(HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList){
+            Optional<HouseMemberChungyakRestriction> houseMemberChungyakRestriction = Optional.ofNullable(houseMemberChungyakRestrictionRepository.findByHouseMemberChungyak(houseMemberChungyak));
+            if (houseMemberChungyakRestriction.isPresent()) {
+                HouseMemberChungyakRestrictionReadDto houseMemberChungyakRestrictionReadDto = new HouseMemberChungyakRestrictionReadDto(houseMemberChungyakRestriction.get());
+                houseMemberChungyakReadDtoList.add(new HouseMemberChungyakReadDto(houseMemberChungyak, houseMemberChungyakRestrictionReadDto));
+                continue;
+            };
+            houseMemberChungyakReadDtoList.add(new HouseMemberChungyakReadDto(houseMemberChungyak));
+        }
+        return houseMemberChungyakReadDtoList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public HouseMemberChungyakReadDto readHouseMemberChungyak(Long id){
         HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
         Optional<HouseMemberChungyakRestriction> houseMemberChungyakRestriction = Optional.ofNullable(houseMemberChungyakRestrictionRepository.findByHouseMemberChungyak(houseMemberChungyak));
