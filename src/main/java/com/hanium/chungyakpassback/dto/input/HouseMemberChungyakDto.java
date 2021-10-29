@@ -19,6 +19,8 @@ public class HouseMemberChungyakDto {
 
     private Long houseMemberId; //세대구성원id
 
+    private HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestrictionResponseDto ;
+
     private String houseName; //주택명
 
     private Supply supply; //공급유형

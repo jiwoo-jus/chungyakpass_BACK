@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -289,6 +290,20 @@ public class UserDataServiceImpl implements UserDataService{
 //
 //        return HttpStatus.OK;
 //    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public HouseMemberChungyakReadDto readHouseMemberChungyak(Long id){
+        HouseMemberChungyak houseMemberChungyak = houseMemberChungyakRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_CHUNGYAK));
+        Optional<HouseMemberChungyakRestriction> houseMemberChungyakRestriction = Optional.ofNullable(houseMemberChungyakRestrictionRepository.findByHouseMemberChungyak(houseMemberChungyak));
+        if (houseMemberChungyakRestriction.isPresent()){
+            HouseMemberChungyakRestrictionReadDto houseMemberChungyakRestrictionReadDto = new HouseMemberChungyakRestrictionReadDto(houseMemberChungyakRestriction.get());
+            HouseMemberChungyakReadDto houseMemberChungyakReadDto = new HouseMemberChungyakReadDto(houseMemberChungyak, houseMemberChungyakRestrictionReadDto);
+            return houseMemberChungyakReadDto;
+        }
+        HouseMemberChungyakReadDto houseMemberChungyakReadDto = new HouseMemberChungyakReadDto(houseMemberChungyak);
+        return houseMemberChungyakReadDto;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

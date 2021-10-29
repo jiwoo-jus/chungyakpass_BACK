@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HouseMemberChungyakRestrictionRepository extends JpaRepository<HouseMemberChungyakRestriction, Long> {
     void deleteByHouseMemberChungyak(HouseMemberChungyak houseMemberChungyak);
+    HouseMemberChungyakRestriction findByHouseMemberChungyak(HouseMemberChungyak houseMemberChungyak);
 }
