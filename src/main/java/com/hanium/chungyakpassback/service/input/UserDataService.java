@@ -30,9 +30,9 @@ public interface UserDataService {
 
     List<HouseMemberPropertyResponseDto> houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
 
-    List<HouseMemberPropertyResponseDto> updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto);
+    HouseMemberPropertyResponseDto updateHouseMemberProperty(Long houseMemberPropertyId, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto);
 
-    HttpStatus deleteHouseMemberProperty(HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto);
+    HttpStatus deleteHouseMemberProperty(Long houseMemberPropertyId);
 
     List<HouseMemberChungyakReadDto> readHouseMemberChungyakList(Long houseMemberId);
 

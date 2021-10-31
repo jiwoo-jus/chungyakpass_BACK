@@ -86,8 +86,7 @@ public class HouseMemberProperty {
         this.taxBaseDate = taxBaseDate;
     }
 
-    public HouseMemberProperty updateHouseMemberProperty(HouseMember houseMember, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
-        this.houseMember = houseMember;
+    public HouseMemberProperty updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
         this.property = houseMemberPropertyUpdateDto.getProperty();
         this.saleRightYn = houseMemberPropertyUpdateDto.getSaleRightYn();
         this.residentialBuildingYn = houseMemberPropertyUpdateDto.getResidentialBuildingYn();
@@ -102,5 +101,21 @@ public class HouseMemberProperty {
         this.taxBaseDate = houseMemberPropertyUpdateDto.getTaxBaseDate();
         return this;
     }
+//    public HouseMemberProperty updateHouseMemberProperty(HouseMember houseMember, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+//        this.houseMember = houseMember;
+//        this.property = houseMemberPropertyUpdateDto.getProperty();
+//        this.saleRightYn = houseMemberPropertyUpdateDto.getSaleRightYn();
+//        this.residentialBuildingYn = houseMemberPropertyUpdateDto.getResidentialBuildingYn();
+//        this.residentialBuilding = houseMemberPropertyUpdateDto.getResidentialBuilding();
+//        this.nonResidentialBuilding = houseMemberPropertyUpdateDto.getNonResidentialBuilding();
+//        this.metropolitanBuildingYn = houseMemberPropertyUpdateDto.getMetropolitanBuildingYn();
+//        this.exceptionHouseYn = houseMemberPropertyUpdateDto.getExceptionHouseYn();
+//        this.acquisitionDate = houseMemberPropertyUpdateDto.getAcquisitionDate();
+//        this.dispositionDate = houseMemberPropertyUpdateDto.getDispositionDate();
+//        this.exclusiveArea = houseMemberPropertyUpdateDto.getExclusiveArea();
+//        this.amount = houseMemberPropertyUpdateDto.getAmount();
+//        this.taxBaseDate = houseMemberPropertyUpdateDto.getTaxBaseDate();
+//        return this;
+//    }
 }
 

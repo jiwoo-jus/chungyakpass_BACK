@@ -99,26 +99,33 @@ public class UserDataController {
         return ResponseEntity.ok(userDataService.houseMemberProperty(houseMemberPropertyDto));
     }
 
-    @PutMapping("/house/member/property")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<List<HouseMemberPropertyResponseDto>> updateHouseMemberProperty(@RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
-
-        return ResponseEntity.ok(userDataService.updateHouseMemberProperty(houseMemberPropertyUpdateDto));
-    }
-
-    @DeleteMapping("/house/member/property")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity deleteHouseMemberProperty(@RequestBody HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
-
-        return new ResponseEntity(userDataService.deleteHouseMemberProperty(houseMemberPropertyDeleteDto));
-    }
-
-    //    @DeleteMapping("/house/member/property/{id}")
+//    @PutMapping("/house/member/property")
 //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-//    public ResponseEntity deleteHouseMemberProperty(@PathVariable Long id){
+//    public ResponseEntity<List<HouseMemberPropertyResponseDto>> updateHouseMemberProperty(@RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
 //
-//        return new ResponseEntity(userDataService.deleteHouseMemberProperty(id));
+//        return ResponseEntity.ok(userDataService.updateHouseMemberProperty(houseMemberPropertyUpdateDto));
 //    }
+//
+//    @DeleteMapping("/house/member/property")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//    public ResponseEntity deleteHouseMemberProperty(@RequestBody HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
+//
+//        return new ResponseEntity(userDataService.deleteHouseMemberProperty(houseMemberPropertyDeleteDto));
+//    }
+
+    @PutMapping("/house/member/property/{houseMemberPropertyId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<HouseMemberPropertyResponseDto> updateHouseMemberProperty(@PathVariable Long houseMemberPropertyId, @RequestBody HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+
+        return ResponseEntity.ok(userDataService.updateHouseMemberProperty(houseMemberPropertyId, houseMemberPropertyUpdateDto));
+    }
+
+    @DeleteMapping("/house/member/property/{houseMemberPropertyId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouseMemberProperty(@PathVariable Long houseMemberPropertyId){
+
+        return new ResponseEntity(userDataService.deleteHouseMemberProperty(houseMemberPropertyId));
+    }
 
     @GetMapping("/house/member/chungyak/list/{houseMemberId}")
     public ResponseEntity<List<HouseMemberChungyakReadDto>> readHouseMemberChungyakList(@PathVariable Long houseMemberId){

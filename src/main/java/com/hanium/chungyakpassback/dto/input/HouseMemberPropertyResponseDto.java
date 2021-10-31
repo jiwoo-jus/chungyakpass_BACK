@@ -18,7 +18,7 @@ public class HouseMemberPropertyResponseDto {
 
     private Long id; //세대구성원자산id
 
-    private Long houseMemberId; //세대구성원id
+//    private Long houseMemberId; //세대구성원id
 
     private Property property; //자산유형
 
@@ -48,7 +48,7 @@ public class HouseMemberPropertyResponseDto {
     @Builder
     public HouseMemberPropertyResponseDto(HouseMemberProperty houseMemberProperty) {
         this.id = houseMemberProperty.getId();
-        this.houseMemberId = houseMemberProperty.getHouseMember().getId();
+//        this.houseMemberId = houseMemberProperty.getHouseMember().getId();
         this.property = houseMemberProperty.getProperty();
         this.saleRightYn = houseMemberProperty.getSaleRightYn();
         this.residentialBuildingYn = houseMemberProperty.getResidentialBuildingYn();

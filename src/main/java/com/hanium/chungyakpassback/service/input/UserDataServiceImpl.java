@@ -258,38 +258,51 @@ public class UserDataServiceImpl implements UserDataService{
         return houseMemberPropertyResponseDtoList;
     }
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<HouseMemberPropertyResponseDto> updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
-        ArrayList<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtoList = new ArrayList<>();
-        for (HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDtoSingle : houseMemberPropertyUpdateDto.getHouseMemberPropertyUpdateDtoList()){
-            HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
-            HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
-            houseMemberProperty.updateHouseMemberProperty(houseMember, houseMemberPropertyUpdateDtoSingle);
-            houseMemberPropertyRepository.save(houseMemberProperty);
-            houseMemberPropertyResponseDtoList.add(new HouseMemberPropertyResponseDto(houseMemberProperty));
-        }
-        return houseMemberPropertyResponseDtoList;
+    public HouseMemberPropertyResponseDto updateHouseMemberProperty(Long houseMemberPropertyId, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto) {
+        HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+        houseMemberProperty.updateHouseMemberProperty(houseMemberPropertyUpdateDto);
+        houseMemberPropertyRepository.save(houseMemberProperty);
+        return new HouseMemberPropertyResponseDto(houseMemberProperty);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HttpStatus deleteHouseMemberProperty(HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
-        for (HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDtoSingle : houseMemberPropertyDeleteDto.getHouseMemberPropertyDeleteDtoList()){
-            HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyDeleteDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
-            houseMemberPropertyRepository.delete(houseMemberProperty);
-        }
+    public HttpStatus deleteHouseMemberProperty(Long houseMemberPropertyId){
+        HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+
+        houseMemberPropertyRepository.delete(houseMemberProperty);
+
         return HttpStatus.OK;
     }
 
+//    @Override
 //    @Transactional(rollbackFor = Exception.class)
-//    public HttpStatus deleteHouseMemberProperty(Long id){
-//        HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+//    public List<HouseMemberPropertyResponseDto> updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
+//        ArrayList<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtoList = new ArrayList<>();
+//        for (HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDtoSingle : houseMemberPropertyUpdateDto.getHouseMemberPropertyUpdateDtoList()){
+//            HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+//            HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+//            houseMemberProperty.updateHouseMemberProperty(houseMember, houseMemberPropertyUpdateDtoSingle);
+//            houseMemberPropertyRepository.save(houseMemberProperty);
+//            houseMemberPropertyResponseDtoList.add(new HouseMemberPropertyResponseDto(houseMemberProperty));
+//        }
+//        return houseMemberPropertyResponseDtoList;
+//    }
 //
-//        houseMemberPropertyRepository.delete(houseMemberProperty);
-//
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public HttpStatus deleteHouseMemberProperty(HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
+//        for (HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDtoSingle : houseMemberPropertyDeleteDto.getHouseMemberPropertyDeleteDtoList()){
+//            HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyDeleteDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
+//            houseMemberPropertyRepository.delete(houseMemberProperty);
+//        }
 //        return HttpStatus.OK;
 //    }
+
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
