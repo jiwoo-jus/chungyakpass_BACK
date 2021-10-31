@@ -279,30 +279,6 @@ public class UserDataServiceImpl implements UserDataService{
         return HttpStatus.OK;
     }
 
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public List<HouseMemberPropertyResponseDto> updateHouseMemberProperty(HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto){
-//        ArrayList<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtoList = new ArrayList<>();
-//        for (HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDtoSingle : houseMemberPropertyUpdateDto.getHouseMemberPropertyUpdateDtoList()){
-//            HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
-//            HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDtoSingle.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
-//            houseMemberProperty.updateHouseMemberProperty(houseMember, houseMemberPropertyUpdateDtoSingle);
-//            houseMemberPropertyRepository.save(houseMemberProperty);
-//            houseMemberPropertyResponseDtoList.add(new HouseMemberPropertyResponseDto(houseMemberProperty));
-//        }
-//        return houseMemberPropertyResponseDtoList;
-//    }
-//
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public HttpStatus deleteHouseMemberProperty(HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDto){
-//        for (HouseMemberPropertyDeleteDto houseMemberPropertyDeleteDtoSingle : houseMemberPropertyDeleteDto.getHouseMemberPropertyDeleteDtoList()){
-//            HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyDeleteDtoSingle.getHouseMemberPropertyId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
-//            houseMemberPropertyRepository.delete(houseMemberProperty);
-//        }
-//        return HttpStatus.OK;
-//    }
-
 
 
     @Override

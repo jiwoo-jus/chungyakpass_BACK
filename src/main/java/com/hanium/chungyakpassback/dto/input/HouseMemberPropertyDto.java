@@ -6,7 +6,6 @@ import com.hanium.chungyakpassback.enumtype.NonResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Property;
 import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Yn;
-import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import lombok.*;
 
 import java.time.LocalDate;
