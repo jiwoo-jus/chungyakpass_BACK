@@ -263,7 +263,8 @@ public class UserDataServiceImpl implements UserDataService{
     @Transactional(rollbackFor = Exception.class)
     public HouseMemberPropertyResponseDto updateHouseMemberProperty(Long houseMemberPropertyId, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto) {
         HouseMemberProperty houseMemberProperty = houseMemberPropertyRepository.findById(houseMemberPropertyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_PROPERTY));
-        houseMemberProperty.updateHouseMemberProperty(houseMemberPropertyUpdateDto);
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberPropertyUpdateDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        houseMemberProperty.updateHouseMemberProperty(houseMemberPropertyUpdateDto, houseMember);
         houseMemberPropertyRepository.save(houseMemberProperty);
         return new HouseMemberPropertyResponseDto(houseMemberProperty);
     }

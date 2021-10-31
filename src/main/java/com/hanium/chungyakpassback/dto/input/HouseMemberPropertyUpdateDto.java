@@ -20,7 +20,7 @@ public class HouseMemberPropertyUpdateDto {
 
 //    private Long houseMemberPropertyId; //세대구성원자산id
 
-//    private Long houseMemberId; //세대구성원id
+    private Long houseMemberId; //세대구성원id
 
     private Property property; //자산유형
 
