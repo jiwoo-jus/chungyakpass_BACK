@@ -17,7 +17,7 @@ public class AptInfoTargetSpecial {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo AptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
 
     @Column
     private String housingType;
@@ -44,7 +44,7 @@ public class AptInfoTargetSpecial {
 
     @Builder
     public AptInfoTargetSpecial(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, int supplyMultiChildHousehold, int supplyNewlyMarriedCouple, int supplyFirstLife, int supplyOldParentSupport, int supplyInstitutionalRecommendation, Integer supplyTransferAgency, Integer supplyOther) {
-        AptInfo = aptInfo;
+        this.aptInfo = aptInfo;
         this.housingType = housingType;
         this.supplyMultiChildHousehold = supplyMultiChildHousehold;
         this.supplyNewlyMarriedCouple = supplyNewlyMarriedCouple;
