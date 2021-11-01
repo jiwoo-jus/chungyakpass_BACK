@@ -3,8 +3,10 @@ package com.hanium.chungyakpassback.dto.input;
 import com.hanium.chungyakpassback.entity.input.House;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class HouseResponseDto {
     private Long id;
 
