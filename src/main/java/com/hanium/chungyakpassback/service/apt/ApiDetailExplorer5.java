@@ -49,7 +49,7 @@ public class ApiDetailExplorer5 {
             urlBuilder.append("&").append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(String.valueOf(pageNo), StandardCharsets.UTF_8));
 
             if (manageNo == 0) {
-                urlBuilder.append("&").append(URLEncoder.encode("startmonth", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode("202108", StandardCharsets.UTF_8)); /*월 단위 모집공고일 (검색시작월)*/
+                urlBuilder.append("&").append(URLEncoder.encode("startmonth", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode("202110", StandardCharsets.UTF_8)); /*월 단위 모집공고일 (검색시작월)*/
                 urlBuilder.append("&").append(URLEncoder.encode("endmonth", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(date, StandardCharsets.UTF_8)); /*월 단위 모집공고일 (검색종료월, 최대 12개월)*/
             } else {
                 urlBuilder.append("&").append(URLEncoder.encode("houseManageNo", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(String.valueOf(manageNo), StandardCharsets.UTF_8)); /*주택관리번호*/
@@ -329,12 +329,15 @@ public class ApiDetailExplorer5 {
                 aptInfoRepository.saveAll(aptInfoList);
                 for (AptInfoAmountDto AptInfoAmountdto : aptInfoAmountDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoAmountdto.getNotificationNumber()).get();
+                    aptInfoAmountRepository.findByHousingTypeAndAptInfo(AptInfoAmountdto.getHousingType(),aptInfo).orElseGet(() -> {
                     AptInfoAmount aptInfoAmount = AptInfoAmount.builder()
                             .aptInfo(aptInfo)
                             .supplyAmount(AptInfoAmountdto.getSupplyAmount())
                             .housingType(AptInfoAmountdto.getHousingType())
                             .build();
                     aptInfoAmountRepository.save(aptInfoAmount);
+                        return null;
+                    });
                 }
                 for (AptInfoReceiptDto AptInfoReceiptdto : aptInfoReceiptDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoReceiptdto.getNotificationNumber()).get();
@@ -360,6 +363,7 @@ public class ApiDetailExplorer5 {
                 }
                 for (AptInfoTargetSpecialDto AptInfoTargetSpecialdto : aptInfoTargetSpecialDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetSpecialdto.getNotificationNumber()).get();
+                    aptInfoTargetSpecialRepository.findByHousingTypeAndAptInfo(AptInfoTargetSpecialdto.getHousingType(),aptInfo).orElseGet(() -> {
                     AptInfoTargetSpecial aptInfoTargetSpecial = AptInfoTargetSpecial.builder()
                     .aptInfo(aptInfo)
                     .housingType(AptInfoTargetSpecialdto.getHousingType())
@@ -372,24 +376,32 @@ public class ApiDetailExplorer5 {
                     .supplyOther(AptInfoTargetSpecialdto.getSupplyOther())
                     .build();
                     aptInfoTargetSpecialRepository.save(aptInfoTargetSpecial);
-        }
+                        return null;
+                    });
+                }
 
-        // 아파트분양정보 테이블에 공고번호가 이미 있다면 공급대상 테이블에 해당공고번호와 관련된 공급대상은 추가하지 않는다.
-        for (AptInfoTargetDto AptInfoTargetdto : aptInfoTargetDtoList) {
-            AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetdto.getNotificationNumber()).get();
-            AptInfoTarget aptInfoTarget = AptInfoTarget.builder()
-                    .aptInfo(aptInfo)
-                    .housingType(AptInfoTargetdto.getHousingType())
-                    .supplyArea(AptInfoTargetdto.getSupplyArea())
-                    .supplyGeneral(AptInfoTargetdto.getSupplyGeneral())
-                    .supplySpecial(AptInfoTargetdto.getSupplySpecial())
-                    .supplyTotal(AptInfoTargetdto.getSupplyTotal())
-                    .build();
-            aptInfoTargetRepository.save(aptInfoTarget);
-        }
+                // 아파트분양정보 테이블에 공고번호가 이미 있다면 공급대상 테이블에 해당공고번호와 관련된 공급대상은 추가하지 않는다.
+                for (AptInfoTargetDto AptInfoTargetdto : aptInfoTargetDtoList) {
+                    AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetdto.getNotificationNumber()).get();
+                    aptInfoTargetRepository.findByHousingTypeAndAptInfo(AptInfoTargetdto.getHousingType(),aptInfo).orElseGet(() -> {
+                        AptInfoTarget aptInfoTarget = AptInfoTarget.builder()
+                                .aptInfo(aptInfo)
+                                .housingType(AptInfoTargetdto.getHousingType())
+                                .supplyArea(AptInfoTargetdto.getSupplyArea())
+                                .supplyGeneral(AptInfoTargetdto.getSupplyGeneral())
+                                .supplySpecial(AptInfoTargetdto.getSupplySpecial())
+                                .supplyTotal(AptInfoTargetdto.getSupplyTotal())
+                                .build();
+                        aptInfoTargetRepository.save(aptInfoTarget);
+                        return null;
+                    });
+                }
+
+
                 return null;
             });
         }
+
 
 
 
