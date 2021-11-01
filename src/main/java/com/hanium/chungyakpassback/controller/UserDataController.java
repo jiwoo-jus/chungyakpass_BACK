@@ -84,6 +84,12 @@ public class UserDataController {
         return new ResponseEntity(userDataService.deleteHouseMember(id));
     }
 
+    @PatchMapping("/house/member/homeless-start-date/{houseMemberId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<HouseMemberHomelessStartDateDto> houseHolder(@PathVariable Long houseMemberId, @RequestBody HouseMemberHomelessStartDateDto houseMemberHomelessStartDateDto){
+        return ResponseEntity.ok(userDataService.houseMemberHomelessStartDate(houseMemberId, houseMemberHomelessStartDateDto));
+    }
+
 
     @PatchMapping("/house/holder/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")

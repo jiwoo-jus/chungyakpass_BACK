@@ -230,6 +230,15 @@ public class UserDataServiceImpl implements UserDataService{
         return HttpStatus.OK;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public HouseMemberHomelessStartDateDto houseMemberHomelessStartDate(Long houseMemberId, HouseMemberHomelessStartDateDto houseMemberHomelessStartDateDto){
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        houseMember.setHomelessStartDate(houseMemberHomelessStartDateDto.getHomelessStartDate());
+        houseMemberRepository.save(houseMember);
+        return houseMemberHomelessStartDateDto;
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)

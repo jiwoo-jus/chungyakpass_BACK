@@ -26,6 +26,8 @@ public interface UserDataService {
 
     HttpStatus deleteHouseMember(Long id);
 
+    HouseMemberHomelessStartDateDto houseMemberHomelessStartDate(Long houseMemberId, HouseMemberHomelessStartDateDto houseMemberHomelessStartDateDto);
+
     HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto);
 
     List<HouseMemberPropertyResponseDto> houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
