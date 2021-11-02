@@ -211,7 +211,7 @@ public class VerificationController {
         boolean meetMonthlyAverageIncomeGeneralTf = specialPrivateNewlyMarriedVerificationService.meetMonthlyAverageIncomeGeneral(user);
         boolean meetMarriagePeriodIn7yearsTf = specialPrivateNewlyMarriedVerificationService.meetMarriagePeriodIn7years(user);
         boolean hasMinorChildren = specialPrivateNewlyMarriedVerificationService.hasMinorChildren(user);
-        boolean is2ndChungyak = specialPrivateNewlyMarriedVerificationService.is2ndChungyak(user);
+        boolean secondChungyak = specialPrivateNewlyMarriedVerificationService.secondChungyak(user);
         boolean meetHomelessHouseholdMembersTf = specialPrivateNewlyMarriedVerificationService.meetHomelessHouseholdMembers(user);
         boolean meetAllHouseMemberRewinningRestrictionTf = specialPrivateNewlyMarriedVerificationService.meetAllHouseMemberRewinningRestriction(user);
         boolean householderTf = specialPrivateNewlyMarriedVerificationService.isHouseholder(user);
@@ -219,7 +219,7 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialPrivateNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetDepositTf = specialPrivateNewlyMarriedVerificationService.meetDeposit(user, aptInfoTarget);
 
-        return new ResponseEntity<>(new SpecialMinyeongNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, is2ndChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialMinyeongNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/newlymarried") //특별신혼부부국민
@@ -237,7 +237,7 @@ public class VerificationController {
         boolean meetMonthlyAverageIncomeGeneralTf = specialKookminNewlyMarriedVerificationService.meetMonthlyAverageIncomeGeneral(user);
         boolean meetMarriagePeriodIn7yearsTf = specialKookminNewlyMarriedVerificationService.meetMarriagePeriodIn7years(user);
         boolean hasMinorChildren = specialKookminNewlyMarriedVerificationService.hasMinorChildren(user);
-        boolean is2ndChungyak = specialKookminNewlyMarriedVerificationService.is2ndChungyak(user);
+        boolean secondChungyak = specialKookminNewlyMarriedVerificationService.secondChungyak(user);
         boolean meetHomelessHouseholdMembersTf = specialKookminNewlyMarriedVerificationService.meetHomelessHouseholdMembers(user);
         boolean meetAllHouseMemberRewinningRestrictionTf = specialKookminNewlyMarriedVerificationService.meetAllHouseMemberRewinningRestriction(user);
         boolean householderTf = specialKookminNewlyMarriedVerificationService.isHouseholder(user);
@@ -245,7 +245,7 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminNewlyMarriedVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, is2ndChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialKookminNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/newlymarried") //특별신혼부부국민공공주택
@@ -264,7 +264,7 @@ public class VerificationController {
         boolean meetMonthlyAverageIncomePriorityTf = specialKookminPublicNewlyMarriedVerificationService.meetMonthlyAverageIncomePriority(user);
         boolean meetMonthlyAverageIncomeGeneralTf = specialKookminPublicNewlyMarriedVerificationService.meetMonthlyAverageIncomeGeneral(user);
         boolean meetPropertyTf = specialKookminPublicNewlyMarriedVerificationService.meetProperty(user);
-        boolean is2ndChungyak = specialKookminPublicNewlyMarriedVerificationService.is2ndChungyak(user);
+        boolean secondChungyak = specialKookminPublicNewlyMarriedVerificationService.secondChungyak(user);
         boolean meetHomelessHouseholdMembersTf = specialKookminPublicNewlyMarriedVerificationService.meetHomelessHouseholdMembers(user);
         boolean meetAllHouseMemberRewinningRestrictionTf = specialKookminPublicNewlyMarriedVerificationService.meetAllHouseMemberRewinningRestriction(user);
         boolean householderTf = specialKookminPublicNewlyMarriedVerificationService.isHouseholder(user);
@@ -272,7 +272,7 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminPublicNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminPublicNewlyMarriedVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminPublicNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, is2ndChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+        return new ResponseEntity<>(new SpecialKookminPublicNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
     }
 
     @PostMapping("/special/private/firstLife")

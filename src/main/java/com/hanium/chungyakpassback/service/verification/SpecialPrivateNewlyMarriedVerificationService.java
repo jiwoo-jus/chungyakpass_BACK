@@ -22,7 +22,7 @@ public interface SpecialPrivateNewlyMarriedVerificationService {
 
     boolean hasMinorChildren(User user); //미성년자녀존재여부
 
-    boolean is2ndChungyak(User user); //2순위청약신청대상여부
+    boolean secondChungyak(User user); //2순위청약신청대상여부
 
     boolean meetHomelessHouseholdMembers(User user); //전세대원무주택세대구성원충족여부
 

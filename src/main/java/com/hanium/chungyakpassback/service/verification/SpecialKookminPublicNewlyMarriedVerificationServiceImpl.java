@@ -344,7 +344,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean is2ndChungyak(User user) {
+    public boolean secondChungyak(User user) {
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
         if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {

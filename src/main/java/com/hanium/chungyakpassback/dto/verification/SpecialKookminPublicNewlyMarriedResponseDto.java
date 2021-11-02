@@ -17,7 +17,7 @@ public class SpecialKookminPublicNewlyMarriedResponseDto {
     boolean meetMonthlyAverageIncomePriorityTf;
     boolean meetMonthlyAverageIncomeGeneralTf;
     boolean meetPropertyTf;
-    boolean is2ndChungyak;
+    boolean secondChungyak;
     boolean meetHomelessHouseholdMembersTf;
     boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean householderTf;
