@@ -18,7 +18,7 @@ public class HouseMemberResponseDto {
 
     private Long houseId;
 
-    private Long houseMemberRelationId;
+    private Relation relation;
 
     private String name; //이름
 
@@ -37,10 +37,10 @@ public class HouseMemberResponseDto {
     private Integer income; //월평균소득
 
     @Builder
-    public HouseMemberResponseDto(HouseMember houseMember, HouseMemberRelation relation) {
+    public HouseMemberResponseDto(HouseMember houseMember, Relation relation) {
         this.id = houseMember.getId();
         this.houseId = houseMember.getHouse().getId();
-        this.houseMemberRelationId = relation.getId();
+        this.relation = relation;
         this.name = houseMember.getName();
         this.birthDay = houseMember.getBirthDay();
         this.foreignerYn = houseMember.getForeignerYn();

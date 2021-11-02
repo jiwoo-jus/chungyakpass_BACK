@@ -70,6 +70,20 @@ public class UserDataServiceImpl implements UserDataService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public HouseReadDto readHouse(){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        HouseReadDto houseReadDto = new HouseReadDto();
+        if(user.getHouse() != null)
+            houseReadDto.setHouseResponseDto(new HouseResponseDto(user.getHouse()));
+        if(user.getSpouseHouse() != null)
+            houseReadDto.setSpouseHouseResponseDto(new HouseResponseDto(user.getSpouseHouse()));
+
+        return houseReadDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public HouseResponseDto house(HouseDto houseDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -164,7 +178,7 @@ public class UserDataServiceImpl implements UserDataService{
             user.setSpouseHouseMember(houseMember);
         userRepository.save(user);
 
-        return new HouseMemberResponseDto(houseMember, houseMemberRelation);
+        return new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation());
     }
 
     @Override
@@ -201,7 +215,7 @@ public class UserDataServiceImpl implements UserDataService{
         houseMember.updateHouseMember(houseMemberupdateDto);
         houseMemberRepository.save(houseMember);
 
-        return new HouseMemberResponseDto(houseMember, houseMemberRelation);
+        return new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation());
     }
 
     @Override

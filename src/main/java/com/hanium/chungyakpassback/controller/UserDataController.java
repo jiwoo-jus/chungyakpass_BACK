@@ -1,6 +1,8 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
+import com.hanium.chungyakpassback.entity.input.User;
+import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.service.input.UserDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +20,12 @@ public class UserDataController {
         this.userDataService = userDataService;
     }
 
+    @GetMapping("/house")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<HouseReadDto> readHouse(){
+
+        return ResponseEntity.ok(userDataService.readHouse());
+    }
 
     @PostMapping("/house")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")

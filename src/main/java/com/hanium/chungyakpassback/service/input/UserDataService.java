@@ -14,6 +14,8 @@ public interface UserDataService {
 
     HttpStatus deleteUserBankbook(Long id);
 
+    HouseReadDto readHouse();
+
     HouseResponseDto house(HouseDto houseDto);
 
     HouseResponseDto updateHouse(Long id, HouseUpdateDto houseUpdateDto);
