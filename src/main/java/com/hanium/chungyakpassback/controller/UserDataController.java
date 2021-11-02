@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
+import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.service.input.UserDataService;
@@ -68,6 +69,13 @@ public class UserDataController {
     public ResponseEntity deleteUserBankbook(@PathVariable Long id){
 
         return new ResponseEntity(userDataService.deleteUserBankbook(id));
+    }
+
+    @GetMapping("/house/member/{houseId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<List<HouseMemberResponseDto>> readHouseMembers(@PathVariable Long houseId){
+
+        return ResponseEntity.ok(userDataService.readHouseMembers(houseId));
     }
 
 

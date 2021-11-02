@@ -146,6 +146,19 @@ public class UserDataServiceImpl implements UserDataService{
         return HttpStatus.OK;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<HouseMemberResponseDto> readHouseMembers(Long houseId){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        House house = houseRepository.findById(houseId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE));
+        List<HouseMemberResponseDto> houseMemberResponseDtos = new ArrayList<>();
+        for(HouseMember houseMember : houseMemberRepository.findAllByHouse(house)){
+            HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+            HouseMemberResponseDto houseMemberResponseDto = new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation());
+            houseMemberResponseDtos.add(houseMemberResponseDto);
+        }
+        return houseMemberResponseDtos;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
