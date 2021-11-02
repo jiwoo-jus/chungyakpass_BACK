@@ -3,24 +3,24 @@ package com.hanium.chungyakpassback.entity.apt;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "apt_info_target_special")
+@IdClass(AptInfoTargetSpecialKey.class)
 public class AptInfoTargetSpecial {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "info_target_special_id")
-    private Long id;
 
+    @Id
+    private String housingType;
+
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo AptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
 
-    @Column
-    private String housingType;
     @Column
     private int supplyMultiChildHousehold;//공급세대수_다자녀가구;
 
@@ -42,9 +42,12 @@ public class AptInfoTargetSpecial {
     @Column
     private Integer supplyOther;//공급세대수_기타
 
+
+
+
     @Builder
     public AptInfoTargetSpecial(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, int supplyMultiChildHousehold, int supplyNewlyMarriedCouple, int supplyFirstLife, int supplyOldParentSupport, int supplyInstitutionalRecommendation, Integer supplyTransferAgency, Integer supplyOther) {
-        AptInfo = aptInfo;
+        this.aptInfo = aptInfo;
         this.housingType = housingType;
         this.supplyMultiChildHousehold = supplyMultiChildHousehold;
         this.supplyNewlyMarriedCouple = supplyNewlyMarriedCouple;

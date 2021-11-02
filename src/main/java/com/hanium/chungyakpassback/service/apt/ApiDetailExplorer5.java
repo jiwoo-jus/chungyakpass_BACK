@@ -80,7 +80,6 @@ public class ApiDetailExplorer5 {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("!!!!!!!!");
         }
         return jsonPrettyPrintString;
     }
@@ -102,12 +101,10 @@ public class ApiDetailExplorer5 {
 
         int pageNo = 1;
         // 페이지 수를 구해야한다.
-        //String result = apiExplorer.AptApiData(pageNo);
         String result = GetAptApi(salesInformation, pageNo, 0);
         JSONObject rjson = new JSONObject(result);
         JSONObject response = (JSONObject) rjson.get("response");//받아온 json에서 원하는 정보를 필터링한다.
         JSONObject body = (JSONObject) response.get("body");
-        //System.out.println(body);
         int totalCount = body.getInt("totalCount");
         pageNo = totalCount / 10;
         int pagesNo = totalCount % 10;
@@ -125,7 +122,6 @@ public class ApiDetailExplorer5 {
             response = (JSONObject) rjson.get("response");//받아온 json에서 원하는 정보를 필터링한다.
             body = (JSONObject) response.get("body");
             JSONObject items = body.getJSONObject("items");
-            //System.out.println(items);
 
             if (items.get("item") instanceof JSONArray) {//item이 array형식으로 들어올때
                 JSONArray item = (JSONArray) items.get("item");
@@ -139,7 +135,6 @@ public class ApiDetailExplorer5 {
 
                     numbers.add(aptInfo2dto.getNotificationNumber());
 
-                    //System.out.println(numbers);
                 }
             } else {//item이 object형식으로 들어올때
                 JSONObject itemJson = items.getJSONObject("item");
@@ -149,7 +144,6 @@ public class ApiDetailExplorer5 {
 
                 numbers.add(aptInfo2dto.getNotificationNumber());
 
-                //System.out.println(numbers);
             }
 
 
@@ -187,8 +181,6 @@ public class ApiDetailExplorer5 {
             String value = GetAptApi(detailSalesInformation, 1, number);
             rjson = new JSONObject(value);//반환값을 필터링
             response = (JSONObject) rjson.get("response");
-            System.out.println("response"+rjson);
-            System.out.println("response"+response);
             if(response.has("body")) {
                 body = (JSONObject) response.get("body");
             }
@@ -197,11 +189,6 @@ public class ApiDetailExplorer5 {
                 JSONObject itemJson = items.getJSONObject("item");//item크기만큼 dto에 저장
                 String detailAddress = itemJson.getString("hssplyadres");
                 String[] areaLevel = detailAddress.split(" ");
-                for (String s : areaLevel) {
-                    System.out.println(s.trim());
-                }
-                //System.out.println(items);
-                System.out.println(itemJson);
 
                 AptInfoReceiptDto AptInfoReceiptdto = new AptInfoReceiptDto(itemJson);//item크기만큼 청약접수일정1Dto에 저장
                 aptInfoReceiptDtoList.add(AptInfoReceiptdto);
@@ -249,7 +236,6 @@ public class ApiDetailExplorer5 {
             List<JSONObject> objects = new ArrayList<>();
             if (body.get("items") instanceof JSONObject) {//주택번호와 url은 있는데 값이 안들어온 경우 값이 object형식으로 들어왔나 확인
                 JSONObject items = body.getJSONObject("items");
-                System.out.println(items);
 
                 if (items.get("item") instanceof JSONArray) {//item이 array형식인지 확인
                     JSONArray item = (JSONArray) items.get("item");
@@ -281,7 +267,6 @@ public class ApiDetailExplorer5 {
 
                     if (body.get("items") instanceof JSONObject) {//주택번호와 url은 있는데 값이 안들어온 경우 값이 object형식으로 들어왔나 확인
                         JSONObject items2 = body.getJSONObject("items");
-                        System.out.println(items2);
 
                         if (items2.get("item") instanceof JSONArray) {//item이 array형식인지 확인
                             JSONArray item = (JSONArray) items2.get("item");
@@ -329,12 +314,15 @@ public class ApiDetailExplorer5 {
                 aptInfoRepository.saveAll(aptInfoList);
                 for (AptInfoAmountDto AptInfoAmountdto : aptInfoAmountDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoAmountdto.getNotificationNumber()).get();
+                    aptInfoAmountRepository.findByHousingTypeAndAptInfo(AptInfoAmountdto.getHousingType(),aptInfo).orElseGet(() -> {
                     AptInfoAmount aptInfoAmount = AptInfoAmount.builder()
                             .aptInfo(aptInfo)
                             .supplyAmount(AptInfoAmountdto.getSupplyAmount())
                             .housingType(AptInfoAmountdto.getHousingType())
                             .build();
                     aptInfoAmountRepository.save(aptInfoAmount);
+                        return null;
+                    });
                 }
                 for (AptInfoReceiptDto AptInfoReceiptdto : aptInfoReceiptDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoReceiptdto.getNotificationNumber()).get();
@@ -360,6 +348,7 @@ public class ApiDetailExplorer5 {
                 }
                 for (AptInfoTargetSpecialDto AptInfoTargetSpecialdto : aptInfoTargetSpecialDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetSpecialdto.getNotificationNumber()).get();
+                    aptInfoTargetSpecialRepository.findByHousingTypeAndAptInfo(AptInfoTargetSpecialdto.getHousingType(),aptInfo).orElseGet(() -> {
                     AptInfoTargetSpecial aptInfoTargetSpecial = AptInfoTargetSpecial.builder()
                     .aptInfo(aptInfo)
                     .housingType(AptInfoTargetSpecialdto.getHousingType())
@@ -372,24 +361,32 @@ public class ApiDetailExplorer5 {
                     .supplyOther(AptInfoTargetSpecialdto.getSupplyOther())
                     .build();
                     aptInfoTargetSpecialRepository.save(aptInfoTargetSpecial);
-        }
+                        return null;
+                    });
+                }
 
-        // 아파트분양정보 테이블에 공고번호가 이미 있다면 공급대상 테이블에 해당공고번호와 관련된 공급대상은 추가하지 않는다.
-        for (AptInfoTargetDto AptInfoTargetdto : aptInfoTargetDtoList) {
-            AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetdto.getNotificationNumber()).get();
-            AptInfoTarget aptInfoTarget = AptInfoTarget.builder()
-                    .aptInfo(aptInfo)
-                    .housingType(AptInfoTargetdto.getHousingType())
-                    .supplyArea(AptInfoTargetdto.getSupplyArea())
-                    .supplyGeneral(AptInfoTargetdto.getSupplyGeneral())
-                    .supplySpecial(AptInfoTargetdto.getSupplySpecial())
-                    .supplyTotal(AptInfoTargetdto.getSupplyTotal())
-                    .build();
-            aptInfoTargetRepository.save(aptInfoTarget);
-        }
+                // 아파트분양정보 테이블에 공고번호가 이미 있다면 공급대상 테이블에 해당공고번호와 관련된 공급대상은 추가하지 않는다.
+                for (AptInfoTargetDto AptInfoTargetdto : aptInfoTargetDtoList) {
+                    AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetdto.getNotificationNumber()).get();
+                    aptInfoTargetRepository.findByHousingTypeAndAptInfo(AptInfoTargetdto.getHousingType(),aptInfo).orElseGet(() -> {
+                        AptInfoTarget aptInfoTarget = AptInfoTarget.builder()
+                                .aptInfo(aptInfo)
+                                .housingType(AptInfoTargetdto.getHousingType())
+                                .supplyArea(AptInfoTargetdto.getSupplyArea())
+                                .supplyGeneral(AptInfoTargetdto.getSupplyGeneral())
+                                .supplySpecial(AptInfoTargetdto.getSupplySpecial())
+                                .supplyTotal(AptInfoTargetdto.getSupplyTotal())
+                                .build();
+                        aptInfoTargetRepository.save(aptInfoTarget);
+                        return null;
+                    });
+                }
+
+
                 return null;
             });
         }
+
 
 
 
