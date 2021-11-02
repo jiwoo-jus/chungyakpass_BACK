@@ -26,9 +26,9 @@ public interface SpecialPrivateNewlyMarriedVerificationService {
 
     boolean meetHomelessHouseholdMembers(User user); //전세대원무주택세대구성원충족여부
 
-    boolean isHouseholder(User user); //세대주여부
+    boolean meetAllHouseMemberRewinningRestriction(User user); //전세대원재당첨제한여부
 
-    boolean meetAllHouseMemberNotWinningIn5years(User user); //전세대원5년이내미당첨조건충족여부
+    boolean isHouseholder(User user); //세대주여부
 
     boolean isRestrictedArea(AptInfo aptInfo); //규제지역여부
 

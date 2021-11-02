@@ -35,13 +35,17 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
     final IncomeRepository incomeRepository;
     final PriorityJoinPeriodRepository priorityJoinPeriodRepository;
     final PriorityPaymentsCountRepository priorityPaymentsCountRepository;
+    final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
 
 
-    public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
+    public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드
+        // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
 
         return Integer.parseInt(housingTypeChange);
     }
+
+
 
     public Long calcDate(LocalDate transferdate) { //신혼 기간 구하기
         LocalDateTime today = LocalDate.now().atStartOfDay();
@@ -54,7 +58,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int calcAmericanAge(LocalDate birthday) {
+    public int calcAmericanAge(LocalDate birthday) { //만나이계산 메소드
         if (birthday == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
         }
@@ -70,17 +74,17 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { // 청약통장유형조건충족여부 메소드
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty()) {
+        if (optUserBankbook.isEmpty()) { // 만약 사용자의 청약통장이 입력되지 않았다면 경고문을 띄워줌
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
             int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
-            if (stdBankbook.get().getNationalHousingSupplyPossible().equals(Yn.y)) {
+            if (stdBankbook.get().getNationalHousingSupplyPossible().equals(Yn.y)) { // 사용자의 청약통장이 국민주택을 공급받을 수 있는 통장이라면 true
                 return true;
             } else {
-                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
+                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK); // 사용자의 청약통장이 국민주택을 공급받을 수 있는 통장이 아닌 경우(청약예금, 청약부금) 경고문을 띄워줌.
             }
         }
     }
@@ -277,7 +281,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
                     if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
-                        if (houseMemberProperty.getDispositionDate().isAfter(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이후에 처분했을 경우,
+                        if (houseMemberProperty.getDispositionDate().isBefore(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이후에 처분했을 경우,
                             return true; // true(2순위 신청만 가능)
                 }
             }
@@ -339,7 +343,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { // 2018.12.11 이전에 취득한 분양권일 경우 specialCase 증가
                             specialCase++;
                             continue;
-                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) { // 주택 처분일이 있을 경우
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) { // 주택예외사항해당여부에 해당하는 경우 specialCase 증가
@@ -391,7 +395,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
                             specialCase++;
                             continue;
-                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) { // 주택 처분일이 있을 경우
                             specialCase++;
                             continue;
                         } else {
@@ -431,7 +435,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
                         } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { // 2018.12.11 이전에 취득한 분양권일 경우 specialCase 증가
                             specialCase++;
                             continue;
-                        } else if (!(houseMemberProperty.getDispositionDate() == null)) {
+                        } else if (!(houseMemberProperty.getDispositionDate() == null)) { // 주택 처분일이 있을 경우
                             specialCase++;
                             continue;
                         } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) { // 주택예외사항해당여부에 해당하는 경우 specialCase 증가
@@ -464,10 +468,10 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isHouseholder(User user) {
+    public boolean isHouseholder(User user) { // 세대주여부 메소드
         if (user.getHouse().getHouseHolder() == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_HOUSEHOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
-        } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
+            throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
+        } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) { // 사용자의 세대의 세대주 id가 사용자의 세대구성원id와 같으면 true
             return true;
         }
         return false;
@@ -475,7 +479,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) { //인근지역거주조건충족여부 메소드
         if (user.getHouseMember() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER); // 세대구성원->세대를 통해서 주소를 user의 지역_레벨1을 가져오는 것이기 때문에 user의 세대구성원이 비어있으면 안됨.
         }
@@ -483,7 +487,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
         com.hanium.chungyakpassback.entity.standard.AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         com.hanium.chungyakpassback.entity.standard.AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
 
-        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
+        if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) { // 아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면 true
             return true;
         }
         return false;
@@ -491,8 +495,8 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
-        if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
+    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부 메소드
+        if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y)) // 사용자가 선택한 아파트분양정보가 투기과열지구 또는 청약과열지역에 해당하는 경우 true
             return true;
         return false;
     }
@@ -544,55 +548,55 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
                 }
             }
         }
-
         return false;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
-        LocalDate now = LocalDate.now();
-        int periodYear = 0;
+    public boolean meetAllHouseMemberRewinningRestriction(User user) { //전세대원재당첨제한여부
+        LocalDate now = LocalDate.now(); //현재 날짜 가져오기
 
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
+        List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
 
         //배우자와 같은 세대이거나, 미혼일 경우
         if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
-            for (HouseMember houseMember : houseMemberListUser) {
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
+            for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
+                List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-                    if (periodYear <= 5)
-                        return false;
+                for (HouseMemberChungyakRestriction houseMemberChungyakRestriction : houseMemberChungyakRestrictionList) {
+                    if (!(houseMemberChungyakRestriction.getReWinningRestrictedDate() == null)) { // 재당첨제한 날짜가 있는 세대구성원만 조회
+                        if (houseMemberChungyakRestriction.getReWinningRestrictedDate().isAfter(now)) { // 현재 날짜와 비교하여 재당첨제한 기간이 끝났는지 판단
+                            return false;
+                        }
+                    }
                 }
-                return true;
             }
         }
         //배우자 분리세대일 경우
         else {
-            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
+            List<HouseMemberChungyak> spouseHouseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getSpouseHouseMember());
 
-            for (HouseMember houseMember : houseMemberListUser) {
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
+            for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
+                List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-                    if (periodYear <= 5)
-                        return false;
+                for (HouseMemberChungyakRestriction houseMemberChungyakRestriction : houseMemberChungyakRestrictionList) {
+                    if (!(houseMemberChungyakRestriction.getReWinningRestrictedDate() == null)) { // 재당첨제한 날짜가 있는 세대구성원만 조회
+                        if (houseMemberChungyakRestriction.getReWinningRestrictedDate().isAfter(now)) { // 현재 날짜와 비교하여 재당첨제한 기간이 끝났는지 판단
+                            return false;
+                        }
+                    }
                 }
             }
 
-            for (HouseMember houseMember : spouseHouseMemberList) {
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
+            for (HouseMemberChungyak houseMemberChungyak : spouseHouseMemberListUser) {
+                List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-                    if (periodYear <= 5)
-                        return false;
+                for (HouseMemberChungyakRestriction houseMemberChungyakRestriction : houseMemberChungyakRestrictionList) {
+                    if (!(houseMemberChungyakRestriction.getReWinningRestrictedDate() == null)) { // 재당첨제한 날짜가 있는 세대구성원만 조회
+                        if (houseMemberChungyakRestriction.getReWinningRestrictedDate().isAfter(now)) { // 현재 날짜와 비교하여 재당첨제한 기간이 끝났는지 판단
+                            return false;
+                        }
+                    }
                 }
             }
         }
