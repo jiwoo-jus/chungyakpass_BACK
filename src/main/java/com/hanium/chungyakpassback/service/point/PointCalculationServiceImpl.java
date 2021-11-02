@@ -71,7 +71,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         Integer totalHouseCount = generalPrivateVerificationServiceImpl.countHouseHaving(user, houseMemberList, houseCount);
 
         //무주택일경우
-         if (totalHouseCount != 0||(generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
+        if (totalHouseCount != 0 || (generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
             return point = 0;
         }
         //배우자가 있는데 혼인신고일이 null일경우 에러 호출
@@ -91,7 +91,6 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         }
         lateDateList.sort(Collections.reverseOrder());
         LocalDate mostLateDate = lateDateList.get(0);
-        System.out.println("lateDateList.get(0)" + lateDateList.get(0));
         int periodOfHomelessness = periodOfYear(mostLateDate);
         //무주택기간을 기간으로 계산함
         for (int z = 1; z <= 15; z++) {
@@ -202,7 +201,6 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         List<Boolean> bothParentsIsHomelessYnList = new ArrayList<>();//부모님 두분다 무주택자인지 확인하는 리스트
 
         if (user.getSpouseHouseMember() != null) {//배우자는 무조건 포함
-            System.out.println("00000000000000000000");
             numberOfFamily++;
         }
 
@@ -263,7 +261,6 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             }
 
         }
-        System.out.println("numberOfFamily" + numberOfFamily);
 
         for (int z = 1; z <= 6; z++) {
             if (numberOfFamily < z) {

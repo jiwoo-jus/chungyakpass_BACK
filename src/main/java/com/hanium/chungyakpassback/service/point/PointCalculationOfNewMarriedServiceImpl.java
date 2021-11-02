@@ -47,16 +47,13 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         int Minors = 0;
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
-            System.out.println("houseMemberRelation!!"+houseMemberRelation.getRelation().getRelation());
             if (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아)) {
                 LocalDate childrenBirthDay = houseMemberRelation.getOpponent().getBirthDay();
                 if (generalPrivateVerificationServiceImpl.calcAmericanAge(childrenBirthDay) < standardAge) {
                     Minors++;
-                    System.out.println("자녀더하기");
                 }
             }
         }
-        System.out.println("Minors"+Minors);
         return Minors;
     }
 
@@ -69,7 +66,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         Integer Minors = numberOfChild(user, 19);
         for (int u = 1; u <= 3; u++) {
             if (Minors >= u) {
-                 NumberOfMinorsGetPoint = u;
+                NumberOfMinorsGetPoint = u;
             }
         }
         return NumberOfMinorsGetPoint;
@@ -97,14 +94,14 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
         int periodOfUserMarrigedYear = yearOfMerriged(user.getHouseMember().getMarriageDate());
         for (int u = 0; u <= 2; u++) {
             if (periodOfUserMarrigedYear <= 3 + u * 2) {
-                 periodOfMarrigedGetPoint = 3 - u;
+                periodOfMarrigedGetPoint = 3 - u;
             }
         }
         return periodOfMarrigedGetPoint;
     }
 
 
-    public Integer meetYnOfAverageMonthlyIncome(Income monthlyAverageIncome, Integer numberOfHouseMember, Integer houseMemberIncome,  Integer monthOfAverageIncomeGetPoint) {
+    public Integer meetYnOfAverageMonthlyIncome(Income monthlyAverageIncome, Integer numberOfHouseMember, Integer houseMemberIncome, Integer monthOfAverageIncomeGetPoint) {
         Integer averageMonthlyIncome3peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome3peopleLessBelow();
         Integer averageMonthlyIncome4peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome4peopleLessBelow();
         Integer averageMonthlyIncome5peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome5peopleLessBelow();
@@ -147,14 +144,14 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
             if (user.getSpouseHouseMember().getIncome() != null) {
                 for (Income income : incomeList) {
                     if (income.getDualIncome().equals(Yn.y)) {
-                        return monthOfAverageIncomeGetPoint = meetYnOfAverageMonthlyIncome(income, numberOfHouseMember,houseMemberIncome,monthOfAverageIncomeGetPoint);
+                        return monthOfAverageIncomeGetPoint = meetYnOfAverageMonthlyIncome(income, numberOfHouseMember, houseMemberIncome, monthOfAverageIncomeGetPoint);
                     }
                 }
             }
         } else {
             for (Income income : incomeList) {
                 if (income.getDualIncome().equals(Yn.n)) {
-                    return monthOfAverageIncomeGetPoint=meetYnOfAverageMonthlyIncome(income, numberOfHouseMember,houseMemberIncome,monthOfAverageIncomeGetPoint);
+                    return monthOfAverageIncomeGetPoint = meetYnOfAverageMonthlyIncome(income, numberOfHouseMember, houseMemberIncome, monthOfAverageIncomeGetPoint);
                 }
             }
         }
@@ -209,7 +206,7 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
                 return periodOfResidenceGetPoint = 3;
             }
         } else {
-             periodOfResidenceGetPoint=0;
+            periodOfResidenceGetPoint = 0;
         }
         return periodOfResidenceGetPoint;
     }

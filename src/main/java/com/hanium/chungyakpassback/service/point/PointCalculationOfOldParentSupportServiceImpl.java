@@ -346,7 +346,6 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
             }
 
         }
-        System.out.println("numberOfFamily"+numberOfFamily);
 
         for (int z = 1; z <= 6; z++) {
             if (numberOfFamily < z) {
