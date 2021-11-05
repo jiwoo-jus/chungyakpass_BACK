@@ -14,7 +14,7 @@ public interface UserDataService {
 
     HttpStatus deleteUserBankbook(Long id);
 
-    HouseReadDto readHouse();
+    HouseReadDto readHouses();
 
     HouseResponseDto house(HouseDto houseDto);
 
@@ -34,26 +34,24 @@ public interface UserDataService {
 
     HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto);
 
-    List<HouseMemberPropertyResponseDto> houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
+    HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
 
     HouseMemberPropertyResponseDto updateHouseMemberProperty(Long houseMemberPropertyId, HouseMemberPropertyUpdateDto houseMemberPropertyUpdateDto);
 
     HttpStatus deleteHouseMemberProperty(Long houseMemberPropertyId);
 
-    List<HouseMemberChungyakReadDto> readHouseMemberChungyakList(Long houseMemberId);
+    List<HouseMemberChungyakReadDto> readHouseMemberChungyaks(Long houseMemberId);
 
-    HouseMemberChungyakReadDto readHouseMemberChungyak(Long id);
+    HouseMemberChungyakResponseDto houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto);
 
-    List<HouseMemberChungyakResponseDto> houseMemberChungyak(HouseMemberChungyakDto houseMemberChungyakDto);
+    HouseMemberChungyakResponseDto updateHouseMemberChungyak(Long houseMemberChungyakId, HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto);
 
-    List<HouseMemberChungyakResponseDto> updateHouseMemberChungyak(HouseMemberChungyakUpdateDto houseMemberChungyakUpdateDto);
+    HttpStatus deleteHouseMemberChungyak(Long houseMemberChungyakId);
 
-    HttpStatus deleteHouseMemberChungyak(HouseMemberChungyakDeleteDto houseMemberChungyakDeleteDto);
+    HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto);
 
-    List<HouseMemberChungyakRestrictionResponseDto> houseMemberChungyakRestriction(HouseMemberChungyakRestrictionDto houseMemberChungyakRestrictionDto);
+    HouseMemberChungyakRestrictionResponseDto updateHouseMemberChungyakRestriction(Long houseMemberChungyakRestrictionId, HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto);
 
-    List<HouseMemberChungyakRestrictionResponseDto> updateHouseMemberChungyakRestriction(HouseMemberChungyakRestrictionUpdateDto houseMemberChungyakRestrictionUpdateDto);
-
-    HttpStatus deleteHouseMemberChungyakRestriction(HouseMemberChungyakRestrictionDeleteDto houseMemberChungyakRestrictionDeleteDto);
+    HttpStatus deleteHouseMemberChungyakRestriction(Long houseMemberChungyakRestrictionId);
 
 }

@@ -15,11 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public class HouseMemberChungyakDto {
 
-    private List<HouseMemberChungyakDto> houseMemberChungyakDtoList;
+//    private List<HouseMemberChungyakDto> houseMemberChungyakDtoList;
 
     private Long houseMemberId; //세대구성원id
 
-    private HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestrictionResponseDto ;
+//    private HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestrictionResponseDto ;
 
     private String houseName; //주택명
 

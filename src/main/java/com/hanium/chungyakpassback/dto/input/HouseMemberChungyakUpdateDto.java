@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class HouseMemberChungyakUpdateDto {
 
-    private List<HouseMemberChungyakUpdateDto> houseMemberChungyakUpdateDtoList;
+//    private List<HouseMemberChungyakUpdateDto> houseMemberChungyakUpdateDtoList;
 
-    private Long houseMemberChungyakId; //세대구성원청약신청이력id
+//    private Long houseMemberChungyakId; //세대구성원청약신청이력id
 
     private Long houseMemberId; //세대구성원id
 
