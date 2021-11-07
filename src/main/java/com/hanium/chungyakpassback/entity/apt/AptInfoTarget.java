@@ -17,7 +17,7 @@ public class AptInfoTarget {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo AptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
 
     @Column
     private String housingType;//주택형
@@ -37,7 +37,7 @@ public class AptInfoTarget {
 
     @Builder
     public AptInfoTarget(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, Double supplyArea, Integer supplyGeneral, Integer supplySpecial, Integer supplyTotal) {
-        AptInfo = aptInfo;
+        this.aptInfo = aptInfo;
         this.housingType = housingType;
         this.supplyArea = supplyArea;
         this.supplyGeneral = supplyGeneral;
