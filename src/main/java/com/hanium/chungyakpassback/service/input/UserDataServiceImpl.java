@@ -42,6 +42,19 @@ public class UserDataServiceImpl implements UserDataService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public List<UserBankbookResponseDto> readUserBankbooks(){
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        List<UserBankbookResponseDto> userBankbookResponseDtos = new ArrayList<>();
+
+        for(UserBankbook userBankbook : userBankbookRepository.findAllByUser(user)){
+            UserBankbookResponseDto userBankbookResponseDto = new UserBankbookResponseDto(userBankbook);
+            userBankbookResponseDtos.add(userBankbookResponseDto);
+        }
+        return userBankbookResponseDtos;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -279,6 +292,18 @@ public class UserDataServiceImpl implements UserDataService{
         houseRepository.save(house);
 
         return houseHolderDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<HouseMemberPropertyResponseDto> readHouseMemberProperties(Long houseMemberId){
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        List<HouseMemberPropertyResponseDto> houseMemberPropertyResponseDtos = new ArrayList<>();
+        for (HouseMemberProperty houseMemberProperty : houseMemberPropertyRepository.findAllByHouseMember(houseMember)){
+            HouseMemberPropertyResponseDto houseMemberPropertyResponseDto = new HouseMemberPropertyResponseDto(houseMemberProperty);
+            houseMemberPropertyResponseDtos.add(houseMemberPropertyResponseDto);
+        }
+        return houseMemberPropertyResponseDtos;
     }
 
     @Override

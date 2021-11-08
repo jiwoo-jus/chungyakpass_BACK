@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 public interface UserDataService {
+
+    List<UserBankbookResponseDto> readUserBankbooks();
+
     UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto);
 
     UserBankbookResponseDto updateUserBankbook(Long id, UserBankbookDto userBankbookDto);
@@ -33,6 +36,8 @@ public interface UserDataService {
     HouseMemberHomelessStartDateDto houseMemberHomelessStartDate(Long houseMemberId, HouseMemberHomelessStartDateDto houseMemberHomelessStartDateDto);
 
     HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto);
+
+    List<HouseMemberPropertyResponseDto> readHouseMemberProperties(Long houseMemberId);
 
     HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);
 

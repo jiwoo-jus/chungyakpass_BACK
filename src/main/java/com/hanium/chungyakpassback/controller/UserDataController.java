@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
+import com.hanium.chungyakpassback.entity.input.HouseMemberProperty;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.service.input.UserDataService;
@@ -49,6 +50,12 @@ public class UserDataController {
         return new ResponseEntity(userDataService.deleteHouse(id));
     }
 
+    @GetMapping("/bankbook")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<List<UserBankbookResponseDto>> readUserBankbooks(){
+
+        return ResponseEntity.ok(userDataService.readUserBankbooks());
+    }
 
     @PostMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -113,6 +120,14 @@ public class UserDataController {
 
         return ResponseEntity.ok(userDataService.houseHolder(id, houseHolderDto));
     }
+
+    @GetMapping("/house/member/property/{houseMemberId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<List<HouseMemberPropertyResponseDto>> readHouseMemberProperties(@PathVariable Long houseMemberId){
+
+        return ResponseEntity.ok(userDataService.readHouseMemberProperties(houseMemberId));
+    }
+
 
     @PostMapping("/house/member/property")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
