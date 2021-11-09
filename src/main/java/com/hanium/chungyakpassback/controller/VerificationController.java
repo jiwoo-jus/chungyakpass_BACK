@@ -259,7 +259,7 @@ public class VerificationController {
         Integer americanAge = specialKookminPublicNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialKookminPublicNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
         boolean accountTf = specialKookminPublicNewlyMarriedVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
-        boolean meetRecipientTf = specialKookminPublicNewlyMarriedVerificationService.meetRecipient(user);
+        boolean meetRecipientTf = specialKookminPublicNewlyMarriedVerificationService.meetRecipient(user, specialKookminPublicNewlyMarriedDto);
         boolean hasMinorChildren = specialKookminPublicNewlyMarriedVerificationService.hasMinorChildren(user);
         boolean meetMonthlyAverageIncomePriorityTf = specialKookminPublicNewlyMarriedVerificationService.meetMonthlyAverageIncomePriority(user);
         boolean meetMonthlyAverageIncomeGeneralTf = specialKookminPublicNewlyMarriedVerificationService.meetMonthlyAverageIncomeGeneral(user);
