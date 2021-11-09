@@ -28,8 +28,6 @@ public class UserBankbookDto {
 
     private Integer paymentsCount; //납입횟수
 
-    private Yn validYn; //유효여부
-
     public UserBankbook toEntity(User user){
         return UserBankbook.builder()
                 .user(user)
@@ -38,7 +36,20 @@ public class UserBankbookDto {
                 .joinDate(joinDate)
                 .deposit(deposit)
                 .paymentsCount(paymentsCount)
-                .validYn(validYn)
                 .build();
     }
+
+//    private Yn validYn; //유효여부
+//
+//    public UserBankbook toEntity(User user){
+//        return UserBankbook.builder()
+//                .user(user)
+//                .bank(bank)
+//                .bankbook(bankbook)
+//                .joinDate(joinDate)
+//                .deposit(deposit)
+//                .paymentsCount(paymentsCount)
+//                .validYn(validYn)
+//                .build();
+//    }
 }

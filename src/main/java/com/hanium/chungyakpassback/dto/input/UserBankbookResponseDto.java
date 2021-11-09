@@ -24,7 +24,6 @@ public class UserBankbookResponseDto {
 
     private Integer paymentsCount; //납입횟수
 
-    private Yn validYn; //유효여부
 
     @Builder
     public UserBankbookResponseDto(UserBankbook userBankbook){
@@ -34,6 +33,18 @@ public class UserBankbookResponseDto {
         this.joinDate = userBankbook.getJoinDate();
         this.deposit = userBankbook.getDeposit();
         this.paymentsCount = userBankbook.getPaymentsCount();
-        this.validYn = userBankbook.getValidYn();
     }
+
+//    private Yn validYn; //유효여부
+//
+//    @Builder
+//    public UserBankbookResponseDto(UserBankbook userBankbook){
+//        this.id = userBankbook.getId();
+//        this.bank = userBankbook.getBank();
+//        this.bankbook = userBankbook.getBankbook();
+//        this.joinDate = userBankbook.getJoinDate();
+//        this.deposit = userBankbook.getDeposit();
+//        this.paymentsCount = userBankbook.getPaymentsCount();
+//        this.validYn = userBankbook.getValidYn();
+//    }
 }
