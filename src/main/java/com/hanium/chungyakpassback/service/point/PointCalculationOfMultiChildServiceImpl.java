@@ -85,32 +85,62 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         return bankbookJoinPeriodGetPoint;
     }
 
-    public Integer periodOfApplicableAreaResidenceGetPoint(User user,Integer periodOfResidenceGetPoint) {
-        int periodOfResidence = periodOfYear(user.getHouseMember().getTransferDate());
+    public List periodOfApplicableAreaResidenceGetPoint(User user,Integer periodOfResidenceGetPoint, LocalDate lateDate,List lateDateList) {
+
+        LocalDate birthDayAfter19Year = user.getHouseMember().getBirthDay().plusYears(19);
+        if (birthDayAfter19Year.isAfter(user.getHouseMember().getMarriageDate())){
+            if (user.getHouseMember().getMarriageDate().isAfter(user.getHouseMember().getTransferDate())) {
+                lateDate = user.getHouseMember().getMarriageDate();
+            } else {
+                lateDate = user.getHouseMember().getTransferDate();
+            }
+        }
+        else if(user.getHouseMember().getMarriageDate()==null|| birthDayAfter19Year.isBefore(user.getHouseMember().getMarriageDate())) {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
+            if (birthDayAfter19Year.isAfter(user.getHouseMember().getTransferDate())) {
+                lateDate = birthDayAfter19Year;
+            }
+            else {
+                lateDate = user.getHouseMember().getTransferDate();
+            }
+        }
+        lateDateList.add(lateDate);
+
+        for(int i=0;i<lateDateList.size();i++) {
+            System.out.println("lateDateList"+lateDateList.get(i));
+        }
+
+        return lateDateList;
+    }
+
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
+        Integer periodOfResidenceGetPoint = 0;
+        LocalDate lateDate = null;
+        List<LocalDate> lateDateList = new ArrayList<>();//배우자와 본인중 무주택시점이 늦은날을 저장하는 리스트
+        AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
+        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
+        if (userAddressLevel1.getNearbyArea() == 1) {
+            if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
+                lateDateList = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint,lateDate,lateDateList);
+            }
+        } else {
+            if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) {
+                lateDateList = periodOfApplicableAreaResidenceGetPoint(user,periodOfResidenceGetPoint,lateDate,lateDateList);
+            }
+        }
+        lateDateList.sort(Collections.reverseOrder());
+        LocalDate mostLateDate = lateDateList.get(0);
+        int periodOfResidence = periodOfYear(mostLateDate);
+
         if (1 <= periodOfResidence && periodOfResidence < 5) {
             return periodOfResidenceGetPoint = 5;
         } else if (5 <= periodOfResidence && periodOfResidence < 10) {
             return periodOfResidenceGetPoint = 10;
         } else if (periodOfResidence >= 10) {
             return periodOfResidenceGetPoint = 15;
-        }
-        return periodOfResidenceGetPoint;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
-        Integer periodOfResidenceGetPoint = 0;
-        AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
-        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
-        if (userAddressLevel1.getNearbyArea() == 1) {
-            if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
-                return periodOfResidenceGetPoint = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint);
-            }
-        } else {
-            if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) {
-                return periodOfResidenceGetPoint = periodOfApplicableAreaResidenceGetPoint(user,periodOfResidenceGetPoint);
-            }
         }
         return periodOfResidenceGetPoint;
     }
