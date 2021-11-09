@@ -46,7 +46,6 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
     }
 
 
-
     public Long calcDate(LocalDate transferdate) { //신혼 기간 구하기
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime departure = transferdate.atStartOfDay();
@@ -525,16 +524,13 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
         List<PriorityJoinPeriod> priorityJoinPeriodList = priorityJoinPeriodRepository.findAll();
 
         for (PriorityJoinPeriod priorityJoinPeriod : priorityJoinPeriodList) {
-            if (userBankbook.getValidYn().equals(Yn.y)) { // 청약통장이 유효한 신혼부부의 경우,
-                if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.신혼부부)) {
-                    if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
-                        if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
-                            return true;
-                    }
+            if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.신혼부부)) {
+                if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
+                    if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
+                        return true;
                 }
             }
         }
-
         return false;
     }
 
