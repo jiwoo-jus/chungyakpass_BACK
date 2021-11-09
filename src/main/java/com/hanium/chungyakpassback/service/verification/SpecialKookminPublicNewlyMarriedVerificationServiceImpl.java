@@ -1,5 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicNewlyMarriedDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
@@ -43,7 +44,6 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
         return Integer.parseInt(housingTypeChange);
     }
-
 
 
     public Long calcDate(LocalDate transferdate) { //신혼 기간 구하기
@@ -90,7 +90,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetRecipient(User user) { //신혼부공공주택적용국민주택대상자충족여부
+    public boolean meetRecipient(User user, SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto) { //신혼부공공주택적용국민주택대상자충족여부
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
         // 혼인기간이 7년 이내일 경우
@@ -107,6 +107,11 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                     return true; // 한부모가족 조건 충족
             }
         }
+        // 예비신혼부부일 경우
+        else if (specialKookminPublicNewlyMarriedDto.getProNewlyMarriedYn().equals(Yn.y)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -598,7 +603,6 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
                 }
             }
         }
-
         return false;
     }
 
