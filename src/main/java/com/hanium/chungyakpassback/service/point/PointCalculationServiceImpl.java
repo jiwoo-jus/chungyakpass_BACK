@@ -40,13 +40,14 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);
 
             //만30세 이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
-            if (houseMember.getMarriageDate() == null || ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) && houseMember.getMarriageDate() != null)) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
+            if (houseMember.getMarriageDate() == null || birthDayAfter30Year.isBefore(houseMember.getMarriageDate())) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
                 if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = birthDayAfter30Year;
                 } else {
                     lateDate = houseMember.getHomelessStartDate();
                 }
-            } else {
+            }
+            else if(birthDayAfter30Year.isAfter(houseMember.getMarriageDate())) {
                 //만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
                 if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = houseMember.getMarriageDate();
@@ -55,6 +56,9 @@ public class PointCalculationServiceImpl implements PointCalculationService {
                 }
             }
             lateDateList.add(lateDate);
+        }
+        for(int i=0;i<lateDateList.size();i++) {
+            System.out.println("lateDateList"+lateDateList.get(i));
         }
         return lateDateList;
     }
@@ -91,6 +95,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         }
         lateDateList.sort(Collections.reverseOrder());
         LocalDate mostLateDate = lateDateList.get(0);
+        System.out.println("mostLateDate"+mostLateDate);
         int periodOfHomelessness = periodOfYear(mostLateDate);
         //무주택기간을 기간으로 계산함
         for (int z = 1; z <= 15; z++) {
