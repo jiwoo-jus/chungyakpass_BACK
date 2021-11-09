@@ -128,24 +128,26 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
 
     public List periodHomeless(HouseMember houseMember,LocalDate lateDate,List lateDateList) {
         LocalDate birthDayAfter19Year = houseMember.getBirthDay().plusYears(19);
-        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) < 19)) {
-            if (houseMember.getMarriageDate() != null) {//만 19세 미만 결혼시 혼인년도 와 무주택 기간중 늦은 날
-                if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
+        if (birthDayAfter19Year.isAfter(houseMember.getMarriageDate())){
+            if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = houseMember.getMarriageDate();
                 } else {
                     lateDate = houseMember.getHomelessStartDate();
                 }
             }
-        } else {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
+        else if(houseMember.getMarriageDate()==null|| birthDayAfter19Year.isBefore(houseMember.getMarriageDate())) {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
             if (birthDayAfter19Year.isAfter(houseMember.getHomelessStartDate())) {
                 lateDate = birthDayAfter19Year;
-            } else {
+            }
+            else {
                 lateDate = houseMember.getHomelessStartDate();
             }
         }
         lateDateList.add(lateDate);
 
-
+        for(int i=0;i<lateDateList.size();i++) {
+            System.out.println("lateDateList"+lateDateList.get(i));
+        }
         return lateDateList;
     }
 
