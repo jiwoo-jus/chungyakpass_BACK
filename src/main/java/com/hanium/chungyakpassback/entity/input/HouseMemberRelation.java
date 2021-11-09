@@ -29,11 +29,6 @@ public class HouseMemberRelation {
     @JoinColumn(name = "relation_id")
     private com.hanium.chungyakpassback.entity.standard.Relation relation;
 
-//    @Column
-//    @Setter
-//    @Enumerated(EnumType.STRING)
-//    private Relation relation;
-
 
     @Builder
     public HouseMemberRelation(User user, HouseMember opponent, Relation relation) {
