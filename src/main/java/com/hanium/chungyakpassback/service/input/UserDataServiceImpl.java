@@ -42,15 +42,12 @@ public class UserDataServiceImpl implements UserDataService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<UserBankbookResponseDto> readUserBankbooks(){
+    public UserBankbookResponseDto readUserBankbook(){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        List<UserBankbookResponseDto> userBankbookResponseDtos = new ArrayList<>();
+        UserBankbook userBankbook = userBankbookRepository.findByUser(user).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BANKBOOK));
+        UserBankbookResponseDto userBankbookResponseDto = new UserBankbookResponseDto(userBankbook);
 
-        for(UserBankbook userBankbook : userBankbookRepository.findAllByUser(user)){
-            UserBankbookResponseDto userBankbookResponseDto = new UserBankbookResponseDto(userBankbook);
-            userBankbookResponseDtos.add(userBankbookResponseDto);
-        }
-        return userBankbookResponseDtos;
+        return userBankbookResponseDto;
     }
 
     @Override

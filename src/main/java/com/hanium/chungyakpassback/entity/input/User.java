@@ -22,6 +22,9 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @OneToOne(mappedBy = "user")
+    private UserBankbook userBankbook;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_id")
     private House house;

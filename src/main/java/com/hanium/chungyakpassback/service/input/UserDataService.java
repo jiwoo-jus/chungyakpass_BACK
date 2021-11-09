@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserDataService {
 
-    List<UserBankbookResponseDto> readUserBankbooks();
+    UserBankbookResponseDto readUserBankbook();
 
     UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto);
 

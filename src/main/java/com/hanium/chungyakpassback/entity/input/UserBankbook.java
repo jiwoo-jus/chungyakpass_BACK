@@ -22,7 +22,7 @@ public class UserBankbook {
     @Column(name = "user_bankbook_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 

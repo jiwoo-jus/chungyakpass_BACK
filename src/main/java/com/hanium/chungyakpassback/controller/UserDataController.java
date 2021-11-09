@@ -52,9 +52,9 @@ public class UserDataController {
 
     @GetMapping("/bankbook")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<List<UserBankbookResponseDto>> readUserBankbooks(){
+    public ResponseEntity<UserBankbookResponseDto> readUserBankbooks(){
 
-        return ResponseEntity.ok(userDataService.readUserBankbooks());
+        return ResponseEntity.ok(userDataService.readUserBankbook());
     }
 
     @PostMapping("/bankbook")
