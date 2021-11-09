@@ -161,7 +161,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
         for (HouseMember houseMember : houseMemberListUser) {
             houseMemberCount++;
-            if (calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+            if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
                 sumIncome += houseMember.getIncome();
         }
 
@@ -227,7 +227,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
         for (HouseMember houseMember : houseMemberListUser) {
             houseMemberCount++;
-            if (calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+            if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
                 sumIncome += houseMember.getIncome();
         }
 

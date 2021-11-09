@@ -55,9 +55,9 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int calcAmericanAge(LocalDate birthday) {
-        if (birthday == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
-        }
+//        if (birthday == null) {
+//            throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
+//        }
 
         LocalDate now = LocalDate.now();
         int americanAge = now.minusYears(birthday.getYear()).getYear();
@@ -96,7 +96,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
 
         for (HouseMember houseMember : houseMemberListUser) {
             houseMemberCount++;
-            if (calcAmericanAge(houseMember.getBirthDay()) >= 19) //만19세 이상만 소득 산정
+            if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19) //만19세 이상만 소득 산정
                 sumIncome += houseMember.getIncome();
         }
 
@@ -210,7 +210,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
 
             if (user.getHouse() == houseMember.getHouse()) { // 신청자와 같은 세대인지 판단 후,
-                if (calcAmericanAge(houseMember.getBirthDay()) >= 65 && ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)))) { // 만 65세 이상의 직계존속(배우자의 직계존속)인지 판단 후,
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 65 && ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모) || houseMemberRelation.getRelation().getRelation().equals(Relation.조부) || houseMemberRelation.getRelation().getRelation().equals(Relation.조모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의모) || houseMemberRelation.getRelation().getRelation().equals(Relation.배우자의부)))) { // 만 65세 이상의 직계존속(배우자의 직계존속)인지 판단 후,
                     if (calcDate(houseMember.getTransferDate()) >= 1095 && calcDate(user.getHouseMember().getTransferDate()) >= 1095) { //신청자와 부양자가 둘 다 3년 이상 등본에 등재한 경우
                         oldParentSupportCount++;
                     }
