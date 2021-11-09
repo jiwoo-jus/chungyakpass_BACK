@@ -331,7 +331,7 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
         List<PriorityJoinPeriod> priorityJoinPeriodList = priorityJoinPeriodRepository.findAll();
 
         for (PriorityJoinPeriod priorityJoinPeriod : priorityJoinPeriodList) {
-            if (userBankbook.getValidYn().equals(Yn.y) && priorityJoinPeriod.getSupply().equals(Supply.일반공급)) { // 청약통장이 유효하면서 공급유형이 일반공급인 경우,
+            if (priorityJoinPeriod.getSupply().equals(Supply.일반공급)) { // 청약통장이 유효하면서 공급유형이 일반공급인 경우,
                 if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
                     if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
                         return true;
@@ -353,7 +353,7 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
         List<PriorityPaymentsCount> priorityPaymentsCountList = priorityPaymentsCountRepository.findAll();
 
         for (PriorityPaymentsCount priorityPaymentsCount : priorityPaymentsCountList) {
-            if (userBankbook.getValidYn().equals(Yn.y) && priorityPaymentsCount.getSupply().equals(Supply.일반공급)) { // 청약통장이 유효하면서 공급유형이 일반공급인 경우,
+            if (priorityPaymentsCount.getSupply().equals(Supply.일반공급)) { // 청약통장이 유효하면서 공급유형이 일반공급인 경우,
                 if (priorityPaymentsCount.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityPaymentsCount.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityPaymentsCount.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityPaymentsCount.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
                     if (userBankbook.getPaymentsCount() >= priorityPaymentsCount.getCountPayments())
                         return true;
