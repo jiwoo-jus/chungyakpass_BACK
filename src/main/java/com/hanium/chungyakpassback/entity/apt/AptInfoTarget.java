@@ -3,23 +3,24 @@ package com.hanium.chungyakpassback.entity.apt;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "apt_info_target")
-@IdClass(AptInfoTargetKey.class)
 public class AptInfoTarget {
-
     @Id
-    private String housingType;//주택형
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "info_target_id")
+    private Long id;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
     private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
+
+    @Column
+    private String housingType;//주택형
 
     @Column
     private Double supplyArea;//공급면적
@@ -34,10 +35,8 @@ public class AptInfoTarget {
     private Integer supplyTotal;//공급합
 
 
-
-
     @Builder
-    public AptInfoTarget(AptInfo aptInfo, String housingType, Double supplyArea, Integer supplyGeneral, Integer supplySpecial, Integer supplyTotal) {
+    public AptInfoTarget(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, Double supplyArea, Integer supplyGeneral, Integer supplySpecial, Integer supplyTotal) {
         this.aptInfo = aptInfo;
         this.housingType = housingType;
         this.supplyArea = supplyArea;
