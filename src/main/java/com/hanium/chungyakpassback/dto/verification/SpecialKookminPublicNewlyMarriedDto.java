@@ -18,7 +18,4 @@ public class SpecialKookminPublicNewlyMarriedDto {
     @NotNull
     public String housingType;
 
-    @NotNull
-    Yn proNewlyMarriedYn; // 예비신혼부부 해당 여부
-
 }
