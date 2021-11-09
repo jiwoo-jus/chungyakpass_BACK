@@ -35,15 +35,15 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     final HouseMemberRelationRepository houseMemberRelationRepository;
 
     //세대구성원별 무주택기간을 구하는 메소드
-    public List periodHomeless(HouseMember houseMember, List lateDateList) {
+    public List periodHomeless(HouseMember houseMember, List lateDateList, LocalDate lateDate) {
 
         //30세이상이거나 결혼한경우
         if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {
             LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);//세대구성원의 30세 생일
-            LocalDate lateDate;//무주택기간
+
 
             //(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
-            if (houseMember.getMarriageDate() == null || ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) && houseMember.getMarriageDate() != null)) {
+            if (houseMember.getMarriageDate() == null || birthDayAfter30Year.isBefore(houseMember.getMarriageDate())) {
                 if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = birthDayAfter30Year;
                 } else {
@@ -51,7 +51,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 }
             }
             //만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
-            else {
+            else if(birthDayAfter30Year.isAfter(houseMember.getMarriageDate())){
                 if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = houseMember.getMarriageDate();
                 } else {
@@ -59,6 +59,9 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 }
             }
             lateDateList.add(lateDate);
+        }
+        for(int i=0;i<lateDateList.size();i++) {
+            System.out.println("lateDateList"+lateDateList.get(i));
         }
         return lateDateList;
     }
@@ -68,6 +71,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
     public Integer periodOfHomelessness(User user) {
         int periodOfHomelessnessGetPoint = 0;
         int houseCount=0;
+        LocalDate lateDate = null;//무주택기간
         List<LocalDate> lateDateList = new ArrayList<>(); //무주택시작일을 담아놓은 리스트
         if (user.getSpouseHouseMember() != null && user.getSpouseHouseMember().getMarriageDate() == null) {//배우자가 있는데 혼인신고일이 없으면 에러발생
             throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
@@ -82,7 +86,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
 
                     //배우자가 없거나 배우자와 같이 거주중이면 신청자와 신청자의 직계존속의 무주택기간을 산출
                     if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouseMember() == null) {
-                        periodHomeless(user.getHouseMember(), lateDateList);
+                        periodHomeless(user.getHouseMember(), lateDateList,lateDate);
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
@@ -99,7 +103,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                     }
                     //배우자와 분리세대면 신청자와 신청자의 직계존속 배우자의 직계존속의 무주택기간을 구한다.
                     else {
-                        periodHomeless(user.getHouseMember(), lateDateList);
+                        periodHomeless(user.getHouseMember(), lateDateList,lateDate);
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
@@ -130,8 +134,8 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                 else {
                     //배우자와 신청자와 동일 세대인 경우 신청자와 신청자의 직계존속, 배우자의 무주택기간을 구한다.
                     if (user.getHouse() == user.getSpouseHouse()) {
-                        periodHomeless(user.getHouseMember(), lateDateList);
-                        periodHomeless(user.getSpouseHouseMember(), lateDateList);
+                        periodHomeless(user.getHouseMember(), lateDateList,lateDate);
+                        periodHomeless(user.getSpouseHouseMember(), lateDateList,lateDate);
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
@@ -147,7 +151,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                     }
                     //배우자와 신청자와 분리 세대인 경우 신청자와 신청자의 직계존속, 배우자와 배우자 직계존속의 무주택기간을 구한다.
                     else {
-                        periodHomeless(user.getHouseMember(), lateDateList);
+                        periodHomeless(user.getHouseMember(), lateDateList,lateDate);
                         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouse());
                         for (HouseMember houseMember : houseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
@@ -160,7 +164,7 @@ public class PointCalculationOfOldParentSupportServiceImpl implements PointCalcu
                                 }
                             }
                         }
-                        periodHomeless(user.getSpouseHouseMember(), lateDateList);
+                        periodHomeless(user.getSpouseHouseMember(), lateDateList,lateDate);
                         List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouse());
                         for (HouseMember spouseHouseMember : spouseHouseMemberList) {
                             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(spouseHouseMember).get();

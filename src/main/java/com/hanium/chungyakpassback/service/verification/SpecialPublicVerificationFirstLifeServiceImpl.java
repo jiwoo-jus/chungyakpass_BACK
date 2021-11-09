@@ -3,7 +3,6 @@ package com.hanium.chungyakpassback.service.verification;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoAmount;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
-import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
@@ -144,22 +143,22 @@ public class SpecialPublicVerificationFirstLifeServiceImpl implements SpecialPub
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean vaildObject(User user, AptInfo aptInfo) {
+    public boolean validObject(User user, AptInfo aptInfo) {
 
         List<HouseMemberRelation> houseMemberRelationList1 = houseMemberRelationRepository.findAllByUser(user);
-        List<Boolean> vaildHouseMemberList = new ArrayList<>();
+        List<Boolean> validHouseMemberList = new ArrayList<>();
 
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList1) {
-        vaildHouseMemberList.add(memberVaildObject(user,aptInfo,houseMemberRelation));
+        validHouseMemberList.add(memberValidObject(user,aptInfo,houseMemberRelation));
         }
-        if(vaildHouseMemberList.contains(Boolean.TRUE)){
+        if(validHouseMemberList.contains(Boolean.TRUE)){
             return true;
         }
         return false;
 
     }
 
-    public Boolean memberVaildObject(User user, AptInfo aptInfo, HouseMemberRelation houseMemberRelation) {
+    public Boolean memberValidObject(User user, AptInfo aptInfo, HouseMemberRelation houseMemberRelation) {
         com.hanium.chungyakpassback.entity.standard.Relation relation_child = relationRepository.findByRelation(Relation.자녀_일반).get();
         // houseMemberRelation 은 자녀_일반이다.
             if (user.getSpouseHouseMember() != null || (houseMemberRelation.getRelation().equals(relation_child)&&houseMemberRelation.getOpponent().getMarriageDate() == null)) {

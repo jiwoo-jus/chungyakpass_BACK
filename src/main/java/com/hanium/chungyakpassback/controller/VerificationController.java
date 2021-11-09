@@ -285,7 +285,7 @@ public class VerificationController {
         boolean targetHousingType = specialPrivateVerificationFirstLifeService.targetHousingType(aptInfoTarget);
         boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean homelessYn = specialPrivateVerificationFirstLifeService.homelessYn(user);
-        boolean vaildObject = specialPrivateVerificationFirstLifeService.vaildObject(user, aptInfo);
+        boolean vaildObject = specialPrivateVerificationFirstLifeService.validObject(user, aptInfo);
         boolean monthOfAverageIncomePriority = specialPrivateVerificationFirstLifeService.monthOfAverageIncomePriority(user);
         boolean monthOfAverageIncomeGeneral = specialPrivateVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
         return new ResponseEntity<>(new SpecialPrivateFirstLifeResponseDto(targetHousingType, targetHouseAmount, homelessYn, vaildObject, monthOfAverageIncomePriority, monthOfAverageIncomeGeneral), HttpStatus.OK);
@@ -300,7 +300,7 @@ public class VerificationController {
 
         boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean homelessYn = specialPublicVerificationFirstLifeService.homelessYn(user);
-        boolean vaildObject = specialPublicVerificationFirstLifeService.vaildObject(user, aptInfo);
+        boolean vaildObject = specialPublicVerificationFirstLifeService.validObject(user, aptInfo);
         boolean meetDeposit = specialPublicVerificationFirstLifeService.meetDeposit(user);
         boolean monthOfAverageIncomePriority = specialPublicVerificationFirstLifeService.monthOfAverageIncomePriority(user);
         boolean monthOfAverageIncomeGeneral = specialPublicVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
@@ -319,7 +319,7 @@ public class VerificationController {
         boolean monthOfAverageIncomePriority = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncomePriority(user);
         boolean monthOfAverageIncomeGeneral = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
         boolean homelessYn = specialPublicSpecialLawVerificationFirstLifeService.homelessYn(user);
-        boolean vaildObject = specialPublicSpecialLawVerificationFirstLifeService.vaildObject(user, aptInfo);
+        boolean vaildObject = specialPublicSpecialLawVerificationFirstLifeService.validObject(user, aptInfo);
         boolean meetDeposit = specialPublicSpecialLawVerificationFirstLifeService.meetDeposit(user);
         boolean meetStandardProperty = specialPublicSpecialLawVerificationFirstLifeService.meetStandardProperty(user);
         return new ResponseEntity<>(new SpecialPublicSpecialLawFirstLifeResponseDto(targetHouseAmount, monthOfAverageIncomePriority, monthOfAverageIncomeGeneral, homelessYn, vaildObject, meetDeposit, meetStandardProperty), HttpStatus.OK);
