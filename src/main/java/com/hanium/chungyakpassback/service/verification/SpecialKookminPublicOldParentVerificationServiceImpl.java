@@ -460,16 +460,13 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         List<PriorityJoinPeriod> priorityJoinPeriodList = priorityJoinPeriodRepository.findAll();
 
         for (PriorityJoinPeriod priorityJoinPeriod : priorityJoinPeriodList) {
-            if (userBankbook.getValidYn().equals(Yn.y)) { // 청약통장이 유효한 노부모부양의 경우,
-                if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.노부모부양)) {
-                    if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
-                        if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
-                            return true;
-                    }
+            if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.노부모부양)) {
+                if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
+                    if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
+                        return true;
                 }
             }
         }
-
         return false;
     }
 
@@ -484,7 +481,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         List<PriorityPaymentsCount> priorityPaymentsCountList = priorityPaymentsCountRepository.findAll();
 
         for (PriorityPaymentsCount priorityPaymentsCount : priorityPaymentsCountList) {
-            if (userBankbook.getValidYn().equals(Yn.y) && priorityPaymentsCount.getSupply().equals(Supply.특별공급) && priorityPaymentsCount.getSpecialSupply().equals(SpecialSupply.노부모부양)) { // 청약통장이 유효하면서 공급유형이 노부모부양인 경우,
+            if (priorityPaymentsCount.getSupply().equals(Supply.특별공급) && priorityPaymentsCount.getSpecialSupply().equals(SpecialSupply.노부모부양)) { // 청약통장이 유효하면서 공급유형이 노부모부양인 경우,
                 if (priorityPaymentsCount.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityPaymentsCount.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityPaymentsCount.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityPaymentsCount.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
                     if (userBankbook.getPaymentsCount() >= priorityPaymentsCount.getCountPayments())
                         return true;

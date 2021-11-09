@@ -248,7 +248,7 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
         if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
-                if (((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)) && (calcAmericanAge(houseMember.getBirthDay()) < 19) && (houseMember.getMarriageDate() == null)) || (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))) { //결혼을 하지 않은 미성년자녀(태아 포함)
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && calcAmericanAge(houseMember.getBirthDay()) < 19 && houseMember.getMarriageDate() == null) || (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))) { //결혼을 하지 않은 미성년자녀(태아 포함)
                     minorCount++;
                 }
             }
@@ -257,7 +257,7 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
         else {
             for (HouseMember houseMember : houseMemberListUser) { //신청자 세대 조회
                 HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
-                if (((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)) && (calcAmericanAge(houseMember.getBirthDay()) < 19) && (houseMember.getMarriageDate() == null)) || (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))) {
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && calcAmericanAge(houseMember.getBirthDay()) < 19 && houseMember.getMarriageDate() == null) || (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))) {
                     minorCount++;
                 }
             }
@@ -265,12 +265,11 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
             List<HouseMember> houseMemberListSpouse = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); //배우자 세대 조회
             for (HouseMember houseMember : houseMemberListSpouse) {
                 HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
-                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반)) && (calcAmericanAge(houseMember.getBirthDay()) < 19) && (houseMember.getMarriageDate() == null)) {
+                if ((houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반) && calcAmericanAge(houseMember.getBirthDay()) < 19 && houseMember.getMarriageDate() == null) || (houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_태아))) {
                     minorCount++;
                 }
             }
         }
-
         return minorCount;
     }
 
@@ -321,16 +320,13 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
         List<PriorityJoinPeriod> priorityJoinPeriodList = priorityJoinPeriodRepository.findAll();
 
         for (PriorityJoinPeriod priorityJoinPeriod : priorityJoinPeriodList) {
-            if (userBankbook.getValidYn().equals(Yn.y)) { // 청약통장이 유효한 다자녀가구의 경우,
-                if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.다자녀가구)) {
-                    if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
-                        if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
-                            return true;
-                    }
+            if (priorityJoinPeriod.getSupply().equals(Supply.특별공급) && priorityJoinPeriod.getSpecialSupply().equals(SpecialSupply.다자녀가구)) {
+                if (priorityJoinPeriod.getSpeculationOverheated().equals(aptInfo.getSpeculationOverheated()) && priorityJoinPeriod.getSubscriptionOverheated().equals(aptInfo.getSubscriptionOverheated()) && priorityJoinPeriod.getAtrophyArea().equals(aptInfo.getAtrophyArea()) && priorityJoinPeriod.getMetropolitanAreaYn().equals(addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).get().getMetropolitanAreaYn())) {
+                    if (joinPeriod >= priorityJoinPeriod.getSubscriptionPeriod())
+                        return true;
                 }
             }
         }
-
         return false;
     }
 
