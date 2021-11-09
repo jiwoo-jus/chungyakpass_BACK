@@ -64,7 +64,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(generalMinyeongDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(generalMinyeongDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(generalMinyeongDto.getHousingType(),aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
         boolean meetLivingInSurroundAreaTf = generalPrivateVerificationService.meetLivingInSurroundArea(user, aptInfo);
         boolean accountTf = generalPrivateVerificationService.meetBankbookType(user, aptInfo, aptInfoTarget);
@@ -87,7 +87,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(generalKookminDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(generalKookminDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(generalKookminDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = generalKookminVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialPrivateMultiChildVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -108,7 +108,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(generalMultiChildDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(generalMultiChildDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(generalMultiChildDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialPrivateMultiChildVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialPrivateMultiChildVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -132,7 +132,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicMultiChildDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialKookminPublicMultiChildDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminPublicMultiChildDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialKookminPublicMultiChildVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialKookminPublicMultiChildVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -156,7 +156,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongOldParentDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialMinyeongOldParentDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialMinyeongOldParentDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialPrivateOldParentVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialPrivateOldParentVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -178,7 +178,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicOldParentDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialKookminPublicOldParentDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminPublicOldParentDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialKookminPublicOldParentVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialKookminPublicOldParentVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -202,7 +202,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongNewlyMarriedDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialMinyeongNewlyMarriedDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialMinyeongNewlyMarriedDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialPrivateNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialPrivateNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -228,7 +228,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminNewlyMarriedDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialKookminNewlyMarriedDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminNewlyMarriedDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialKookminNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialKookminNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -254,7 +254,7 @@ public class VerificationController {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicNewlyMarriedDto.getNotificationNumber()).get();
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialKookminPublicNewlyMarriedDto.getHousingType()).orElseThrow();
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminPublicNewlyMarriedDto.getHousingType(),aptInfo).orElseThrow();
 
         Integer americanAge = specialKookminPublicNewlyMarriedVerificationService.calcAmericanAge(houseMember.getBirthDay());
         boolean meetLivingInSurroundAreaTf = specialKookminPublicNewlyMarriedVerificationService.meetLivingInSurroundArea(user, aptInfo);
@@ -280,7 +280,7 @@ public class VerificationController {
     public ResponseEntity<SpecialPrivateFirstLifeResponseDto> generalMinyeong(@RequestBody SpecialPrivateFirstLifeDto specialPrivateFirstLifeDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialPrivateFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPrivateFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialPrivateFirstLifeDto.getHousingType(),aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHousingType = specialPrivateVerificationFirstLifeService.targetHousingType(aptInfoTarget);
         boolean targetHouseAmount = specialPrivateVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean homelessYn = specialPrivateVerificationFirstLifeService.homelessYn(user);
@@ -295,7 +295,7 @@ public class VerificationController {
     public ResponseEntity<SpecialPublicFirstLifeResponseDto> generalMinyeong(@RequestBody SpecialPublicFirstLifeDto specialPublicFirstLifeDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialPublicFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialPublicFirstLifeDto.getHousingType(),aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHouseAmount = specialPublicVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean homelessYn = specialPublicVerificationFirstLifeService.homelessYn(user);
         boolean vaildObject = specialPublicVerificationFirstLifeService.vaildObject(user, aptInfo);
@@ -311,7 +311,7 @@ public class VerificationController {
     public ResponseEntity<SpecialPublicSpecialLawFirstLifeResponseDto> specialPublicSpecialLawFirstLife(@RequestBody SpecialPublicSpecialLawFirstLifeDto specialPublicSpecialLawFirstLifeDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         AptInfo aptInfo = aptInfoRepository.findById(specialPublicSpecialLawFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingType(specialPublicSpecialLawFirstLifeDto.getHousingType()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialPublicSpecialLawFirstLifeDto.getHousingType(),aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
         boolean targetHouseAmount = specialPublicSpecialLawVerificationFirstLifeService.targetHouseAmount(aptInfo, aptInfoTarget);
         boolean monthOfAverageIncomePriority = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncomePriority(user);
         boolean monthOfAverageIncomeGeneral = specialPublicSpecialLawVerificationFirstLifeService.monthOfAverageIncomeGeneral(user);
