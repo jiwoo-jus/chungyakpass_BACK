@@ -2,6 +2,8 @@ package com.hanium.chungyakpassback.dto.verification;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @Builder
@@ -9,7 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 public class SpecialKookminPublicOldParentDto {
 
+    @NotNull
     public Integer notificationNumber;
+
+    @NotNull
     public String housingType;
 
 }
