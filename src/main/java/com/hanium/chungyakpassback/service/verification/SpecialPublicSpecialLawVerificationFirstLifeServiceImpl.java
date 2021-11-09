@@ -63,8 +63,8 @@ public class SpecialPublicSpecialLawVerificationFirstLifeServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean vaildObject(User user, AptInfo aptInfo) {
-        return specialPublicVerificationFirstLifeServiceImpl.vaildObject(user, aptInfo);
+    public boolean validObject(User user, AptInfo aptInfo) {
+        return specialPublicVerificationFirstLifeServiceImpl.validObject(user, aptInfo);
     }
 
     @Override

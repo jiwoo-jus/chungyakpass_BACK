@@ -8,7 +8,7 @@ public interface SpecialPrivateVerificationFirstLifeService {
     boolean targetHousingType(AptInfoTarget aptInfoTarget);
     boolean targetHouseAmount( AptInfo aptInfo, AptInfoTarget aptInfoTarget);
     boolean homelessYn(User user);
-    boolean vaildObject(User user, AptInfo aptInfo);
+    boolean validObject(User user, AptInfo aptInfo);
     boolean monthOfAverageIncomePriority(User user);
     boolean monthOfAverageIncomeGeneral(User user);
 
