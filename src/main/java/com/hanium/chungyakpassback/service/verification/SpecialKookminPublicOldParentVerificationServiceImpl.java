@@ -55,9 +55,9 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int calcAmericanAge(LocalDate birthday) {
-//        if (birthday == null) {
-//            throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
-//        }
+        if (birthday == null) {
+            throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
+        }
 
         LocalDate now = LocalDate.now();
         int americanAge = now.minusYears(birthday.getYear()).getYear();
