@@ -14,10 +14,10 @@ public class SpecialKookminPublicMultiChildResponseDto {
     boolean meetMonthlyAverageIncomeTf;
     boolean meetPropertyTf;
     boolean meetHomelessHouseholdMembersTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     Integer calcMinorChildren;
     boolean householderTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;

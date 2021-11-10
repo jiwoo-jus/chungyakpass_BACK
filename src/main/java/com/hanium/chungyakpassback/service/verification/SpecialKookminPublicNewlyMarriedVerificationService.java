@@ -15,7 +15,7 @@ public interface SpecialKookminPublicNewlyMarriedVerificationService {
 
     boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget); //청약통장유형조건충족여부
 
-    boolean meetRecipient(User user, SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto); //신혼부부공공주택적용국민주택대상자충족여부
+    boolean meetRecipient(User user); //신혼부부공공주택적용국민주택대상자충족여부
 
     boolean hasMinorChildren(User user); //미성년자녀존재여부
 
