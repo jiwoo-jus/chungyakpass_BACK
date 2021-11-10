@@ -16,6 +16,7 @@ public class SpecialMinyeongOldParentResponseDto {
     boolean meetHomelessHouseholdMembersTf;
     boolean householderTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean isRestrictedAreaTf;
     boolean meetDepositTf;
     boolean meetBankbookJoinPeriodTf;

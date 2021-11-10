@@ -19,6 +19,7 @@ public class SpecialKookminPublicOldParentResponseDto {
     boolean householderTf;
     boolean isRestrictedAreaTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
 

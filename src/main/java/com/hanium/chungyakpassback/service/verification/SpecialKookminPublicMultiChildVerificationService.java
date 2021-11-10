@@ -20,6 +20,8 @@ public interface SpecialKookminPublicMultiChildVerificationService {
 
     boolean meetHomelessHouseholdMembers(User user); //전세대원무주택세대구성원충족여부
 
+    boolean meetAllHouseMemberRewinningRestriction(User user); //전세대원재당첨제한여부
+
     int calcMinorChildren(User user); //미성년자녀수계산(태아 포함)
 
     boolean isHouseholder(User user); //세대주여부

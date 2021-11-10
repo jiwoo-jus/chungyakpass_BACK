@@ -17,6 +17,7 @@ public class SpecialKookminPublicMultiChildResponseDto {
     Integer calcMinorChildren;
     boolean householderTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;

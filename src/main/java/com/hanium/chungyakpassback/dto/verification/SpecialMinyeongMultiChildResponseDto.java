@@ -16,6 +16,7 @@ public class SpecialMinyeongMultiChildResponseDto {
     Integer calcMinorChildren;
     boolean householderTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean isRestrictedAreaTf;
     boolean meetHouseHavingLessThan2AptTf;
     boolean isPriorityApt;
