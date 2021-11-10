@@ -151,7 +151,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetMonthlyAverageIncomePriority(User user) { //월평균소득기준충족여부_우선공급
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAll();
+        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
         Optional<Income> noneDualIncome = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncomeAndApplicationPublicHousingSpecialLaws(SpecialSupply.신혼부부, Supply.우선공급, Yn.n, Yn.y);
         Optional<Income> dualIncome = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncomeAndApplicationPublicHousingSpecialLaws(SpecialSupply.신혼부부, Supply.우선공급, Yn.y, Yn.y);
@@ -159,10 +159,27 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        for (HouseMember houseMember : houseMemberListUser) {
-            houseMemberCount++;
-            if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
-                sumIncome += houseMember.getIncome();
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMember houseMember : houseMemberListUser) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
+        }
+        //배우자 분리세대일 경우
+        else {
+            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
+
+            for (HouseMember houseMember : houseMemberListUser) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
+            for (HouseMember houseMember : spouseHouseMemberList) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
         }
 
         System.out.println("세대구성원 수 : " + houseMemberCount);
@@ -217,7 +234,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetMonthlyAverageIncomeGeneral(User user) { //월평균소득기준충족여부_일반공급
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAll();
+        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
         Optional<Income> noneDualIncome = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncomeAndApplicationPublicHousingSpecialLaws(SpecialSupply.신혼부부, Supply.일반공급, Yn.n, Yn.y);
         Optional<Income> dualIncome = incomeRepository.findBySpecialSupplyAndSupplyAndDualIncomeAndApplicationPublicHousingSpecialLaws(SpecialSupply.신혼부부, Supply.일반공급, Yn.y, Yn.y);
@@ -225,10 +242,27 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        for (HouseMember houseMember : houseMemberListUser) {
-            houseMemberCount++;
-            if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
-                sumIncome += houseMember.getIncome();
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMember houseMember : houseMemberListUser) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
+        }
+        //배우자 분리세대일 경우
+        else {
+            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
+
+            for (HouseMember houseMember : houseMemberListUser) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
+            for (HouseMember houseMember : spouseHouseMemberList) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
         }
 
         System.out.println("세대구성원 수 : " + houseMemberCount);

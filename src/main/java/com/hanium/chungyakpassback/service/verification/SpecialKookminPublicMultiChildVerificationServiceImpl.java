@@ -94,53 +94,139 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetMonthlyAverageIncome(User user) { //월평균소득기준충족여부
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAll();
+        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
         List<Income> incomeList = incomeRepository.findAll();
 
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        for (HouseMember houseMember : houseMemberListUser) {
-            houseMemberCount++;
-            if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19) //만19세 이상만 소득 산정
-                sumIncome += houseMember.getIncome();
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMember houseMember : houseMemberListUser) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
+        }
+        //배우자 분리세대일 경우
+        else {
+            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
+
+            for (HouseMember houseMember : houseMemberListUser) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
+            for (HouseMember houseMember : spouseHouseMemberList) {
+                houseMemberCount++;
+                if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
+                    sumIncome += houseMember.getIncome();
+            }
         }
 
         System.out.println("세대구성원 수 : " + houseMemberCount);
         System.out.println("소득합산 : " + sumIncome);
 
-        for (HouseMember houseMember : houseMemberListUser) {
-            for (Income income : incomeList) {
-                if (income.getSpecialSupply().equals(SpecialSupply.다자녀가구)) {
-                    if (houseMemberCount <= 3) {
-                        if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 4) {
-                        if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 5) {
-                        if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 6) {
-                        if (sumIncome <= income.getAverageMonthlyIncome6peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 7) {
-                        if (sumIncome <= income.getAverageMonthlyIncome7peopleLessBelow()) {
-                            return true;
-                        }
-                    } else if (houseMemberCount <= 8) {
-                        if (sumIncome <= income.getAverageMonthlyIncome8peopleLessBelow()) {
-                            return true;
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMember houseMember : houseMemberListUser) {
+                for (Income income : incomeList) {
+                    if (income.getSpecialSupply().equals(SpecialSupply.다자녀가구)) {
+                        if (houseMemberCount <= 3) {
+                            if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 4) {
+                            if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 5) {
+                            if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 6) {
+                            if (sumIncome <= income.getAverageMonthlyIncome6peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 7) {
+                            if (sumIncome <= income.getAverageMonthlyIncome7peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 8) {
+                            if (sumIncome <= income.getAverageMonthlyIncome8peopleLessBelow()) {
+                                return true;
+                            }
                         }
                     }
                 }
             }
         }
+        //배우자 분리세대일 경우
+        else {
+            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
 
+            for (HouseMember houseMember : houseMemberListUser) {
+                for (Income income : incomeList) {
+                    if (income.getSpecialSupply().equals(SpecialSupply.다자녀가구)) {
+                        if (houseMemberCount <= 3) {
+                            if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 4) {
+                            if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 5) {
+                            if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 6) {
+                            if (sumIncome <= income.getAverageMonthlyIncome6peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 7) {
+                            if (sumIncome <= income.getAverageMonthlyIncome7peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 8) {
+                            if (sumIncome <= income.getAverageMonthlyIncome8peopleLessBelow()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            for (HouseMember houseMember : spouseHouseMemberList) {
+                for (Income income : incomeList) {
+                    if (income.getSpecialSupply().equals(SpecialSupply.다자녀가구)) {
+                        if (houseMemberCount <= 3) {
+                            if (sumIncome <= income.getAverageMonthlyIncome3peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 4) {
+                            if (sumIncome <= income.getAverageMonthlyIncome4peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 5) {
+                            if (sumIncome <= income.getAverageMonthlyIncome5peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 6) {
+                            if (sumIncome <= income.getAverageMonthlyIncome6peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 7) {
+                            if (sumIncome <= income.getAverageMonthlyIncome7peopleLessBelow()) {
+                                return true;
+                            }
+                        } else if (houseMemberCount <= 8) {
+                            if (sumIncome <= income.getAverageMonthlyIncome8peopleLessBelow()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
         return false;
     }
 
