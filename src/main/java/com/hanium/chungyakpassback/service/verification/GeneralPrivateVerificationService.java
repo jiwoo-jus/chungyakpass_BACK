@@ -25,6 +25,8 @@ public interface GeneralPrivateVerificationService {
 
     boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget); //주거전용 85 초과 공공건설임대주택, 수도권에 지정된 공공주택에서 공급하는 민영주택에 청약하는지 여부 확인
 
+    boolean meetAllHouseMemberRewinningRestriction(User user); //전세대원재당첨제한여부
+
     boolean meetDeposit(User user, AptInfoTarget aptInfoTarget); //예치금액충족여부확인
 
     boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo); //가입기간충족여부확인

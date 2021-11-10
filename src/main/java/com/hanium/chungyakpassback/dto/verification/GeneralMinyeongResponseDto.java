@@ -15,6 +15,7 @@ public class GeneralMinyeongResponseDto {
     boolean householderTf;
     boolean isRestrictedAreaTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean meetHouseHavingLessThan2AptTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetDepositTf;

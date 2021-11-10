@@ -41,6 +41,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     final PriorityDepositRepository priorityDepositRepository;
     final PrioritySubscriptionPeriodRepository prioritySubscriptionPeriodRepository;
     final PriorityJoinPeriodRepository priorityJoinPeriodRepository;
+    final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
 
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
@@ -246,7 +247,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         }
         //배우자 분리세대일 경우
         else {
-            if(houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse())==null){
+            if (houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()) == null) {
                 throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER);
             }
             List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
@@ -381,6 +382,58 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
                     if (periodYear <= 5)
                         return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean meetAllHouseMemberRewinningRestriction(User user) { //전세대원재당첨제한여부
+        LocalDate now = LocalDate.now(); //현재 날짜 가져오기
+
+        List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
+
+        //배우자와 같은 세대이거나, 미혼일 경우
+        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+            for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
+                List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
+
+                for (HouseMemberChungyakRestriction houseMemberChungyakRestriction : houseMemberChungyakRestrictionList) {
+                    if (!(houseMemberChungyakRestriction.getReWinningRestrictedDate() == null)) { // 재당첨제한 날짜가 있는 세대구성원만 조회
+                        if (houseMemberChungyakRestriction.getReWinningRestrictedDate().isAfter(now)) { // 현재 날짜와 비교하여 재당첨제한 기간이 끝났는지 판단
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        //배우자 분리세대일 경우
+        else {
+            List<HouseMemberChungyak> spouseHouseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getSpouseHouseMember());
+
+            for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
+                List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
+
+                for (HouseMemberChungyakRestriction houseMemberChungyakRestriction : houseMemberChungyakRestrictionList) {
+                    if (!(houseMemberChungyakRestriction.getReWinningRestrictedDate() == null)) { // 재당첨제한 날짜가 있는 세대구성원만 조회
+                        if (houseMemberChungyakRestriction.getReWinningRestrictedDate().isAfter(now)) { // 현재 날짜와 비교하여 재당첨제한 기간이 끝났는지 판단
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            for (HouseMemberChungyak houseMemberChungyak : spouseHouseMemberListUser) {
+                List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
+
+                for (HouseMemberChungyakRestriction houseMemberChungyakRestriction : houseMemberChungyakRestrictionList) {
+                    if (!(houseMemberChungyakRestriction.getReWinningRestrictedDate() == null)) { // 재당첨제한 날짜가 있는 세대구성원만 조회
+                        if (houseMemberChungyakRestriction.getReWinningRestrictedDate().isAfter(now)) { // 현재 날짜와 비교하여 재당첨제한 기간이 끝났는지 판단
+                            return false;
+                        }
+                    }
                 }
             }
         }

@@ -15,6 +15,7 @@ public class GeneralKookminResponseDto {
     boolean householderTf;
     boolean isRestrictedAreaTf;
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
 }
