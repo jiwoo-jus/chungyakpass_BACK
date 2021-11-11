@@ -85,10 +85,9 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
             int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
             if (stdBankbook.get().getNationalHousingSupplyPossible().equals(Yn.y)) {
                 return true;
-            } else {
-                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK);
             }
         }
+        return false;
     }
 
     @Override

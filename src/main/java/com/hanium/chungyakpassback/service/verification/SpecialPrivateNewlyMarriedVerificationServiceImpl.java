@@ -73,28 +73,25 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { // 청약통장유형조건충족여부 메소드
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty()) { // 만약 사용자의 청약통장이 입력되지 않았다면 경고문을 띄워줌
+        if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
-            // 청약통장 기준 정보 테이블에 담겨 있는 데이터와 사용자의 청약통장 정보랑 일치하는 데이터를 가져옴
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
             int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
-            if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) { // 사용자의 청약통장이 민영주택을 공급받을 수 있는 통장이라면,
-                if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) { // 사용자의 청약통장 종류가 청약 부금인지 확인하고, (주택청약종합저축, 청약예금은 이 부분 확인 안 함)
-                    if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) { // 사용자가 선택한 아파트의 주택형 <= 분양면적제한 85제곱미터일 경우, true
+            if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
+                if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
+                    if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
                         return true;
-                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) {
-                        throw new CustomException(ErrorCode.BAD_REQUEST_OVER_AREA_BANKBOOK); //청약부금일 경우, 면적이 85제곱미터를 초과할 경우 경고문을 띄워줌.
+                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
+                        return false;
                     }
-                    return false;
                 }
                 return true;
-            } else {
-                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK); // 사용자의 청약통장이 민영주택을 공급받을 수 있는 통장이 아닌 경우(청약저축) 경고문을 띄워줌.
             }
         }
+        return false;
     }
 
     @Override

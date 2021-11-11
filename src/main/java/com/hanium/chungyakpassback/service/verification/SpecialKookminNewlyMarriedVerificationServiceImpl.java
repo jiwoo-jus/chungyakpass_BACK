@@ -73,19 +73,18 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { // 청약통장유형조건충족여부 메소드
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty()) { // 만약 사용자의 청약통장이 입력되지 않았다면 경고문을 띄워줌
+        if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
             int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
-            if (stdBankbook.get().getNationalHousingSupplyPossible().equals(Yn.y)) { // 사용자의 청약통장이 국민주택을 공급받을 수 있는 통장이라면 true
+            if (stdBankbook.get().getNationalHousingSupplyPossible().equals(Yn.y)) {
                 return true;
-            } else {
-                throw new CustomException(ErrorCode.BAD_REQUEST_BANKBOOK); // 사용자의 청약통장이 국민주택을 공급받을 수 있는 통장이 아닌 경우(청약예금, 청약부금) 경고문을 띄워줌.
             }
         }
+        return false;
     }
 
     @Override
