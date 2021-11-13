@@ -256,7 +256,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetMarriagePeriodIn7years(User user) {
-        if (user.getHouseMember().getMarriageDate() == null) { //혼인신고일이 null일 경우 경고문을 띄워줌
+        if (user.getHouseMember().getMarriageDate() == null || user.getSpouseHouseMember().getMarriageDate() == null) { //혼인신고일이 null일 경우 경고문을 띄워줌
             throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
         } else if (calcDate(user.getHouseMember().getMarriageDate()) < 2555) { //신청자의 혼인기간이 7년 이내일 경우 true
             return true;
