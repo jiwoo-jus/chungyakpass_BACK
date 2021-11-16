@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.dto.verification;
 
-import com.hanium.chungyakpassback.entity.input.User;
 import lombok.*;
 
 @Getter
