@@ -1,12 +1,15 @@
 package com.hanium.chungyakpassback.entity.record;
 
+import com.hanium.chungyakpassback.entity.apt.AptInfo;
+import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_verification_record_general_kookmin_request")
 public class VerificationRecordGeneralKookminRequest {
@@ -15,10 +18,10 @@ public class VerificationRecordGeneralKookminRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "verification_record_general_kookmin_request_id")
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "verification_record_id")
-    private VerificationRecord verificationRecord; //청약자격결과
+//
+//    @OneToOne
+//    @JoinColumn(name = "verification_record_id")
+//    private VerificationRecord verificationRecord; //청약자격결과
 
     @Column
     private boolean meetLivingInSurroundAreaTf; //인근지역거주조건충족여부
@@ -47,10 +50,40 @@ public class VerificationRecordGeneralKookminRequest {
     @Column
     private boolean restrictedAreaTf; //규제지역여부
 
+
+    //아래는 프론트한테 받는 항목들
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "notification_number_id")
+    private AptInfo aptInfo; //아파트분양정보
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "info_target_id")
+    private AptInfoTarget aptInfoTarget; //주택형
+
+
+    //아래는 프론트한테 추가로 받는 항목들
+
+    @Setter
+    @Column
+    @Enumerated(EnumType.STRING)
+    public Yn sibilingSupportYn; //형제자매부양여부
+
+    @Setter
+    @Column
+    @Enumerated(EnumType.STRING)
+    public Yn twentiesSoleHouseHolderYn; //20대단독세대주여부
+
+    @Setter
+    @Column
+    @Enumerated(EnumType.STRING)
+    public Ranking ranking; //순위
+
+
     @Builder
-    public VerificationRecordGeneralKookminRequest(Long id, VerificationRecord verificationRecord, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf) {
-        this.id = id;
-        this.verificationRecord = verificationRecord;
+    public VerificationRecordGeneralKookminRequest(AptInfo aptInfo, AptInfoTarget aptInfoTarget, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf) {
+        this.aptInfo = aptInfo;
+        this.aptInfoTarget = aptInfoTarget;
         this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
         this.accountTf = accountTf;
         this.meetHomelessHouseholdMemberTf = meetHomelessHouseholdMemberTf;
@@ -60,5 +93,21 @@ public class VerificationRecordGeneralKookminRequest {
         this.meetBankbookJoinPeriodTf = meetBankbookJoinPeriodTf;
         this.meetNumberOfPaymentsTf = meetNumberOfPaymentsTf;
         this.restrictedAreaTf = restrictedAreaTf;
+
     }
+
+//    @Builder
+//    public VerificationRecordGeneralKookminRequest(Long id, VerificationRecord verificationRecord, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf) {
+//        this.id = id;
+//        this.verificationRecord = verificationRecord;
+//        this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
+//        this.accountTf = accountTf;
+//        this.meetHomelessHouseholdMemberTf = meetHomelessHouseholdMemberTf;
+//        this.householderTf = householderTf;
+//        this.meetAllHouseMemberNotWinningIn5yearsTf = meetAllHouseMemberNotWinningIn5yearsTf;
+//        this.meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestrictionTf;
+//        this.meetBankbookJoinPeriodTf = meetBankbookJoinPeriodTf;
+//        this.meetNumberOfPaymentsTf = meetNumberOfPaymentsTf;
+//        this.restrictedAreaTf = restrictedAreaTf;
+//    }
 }

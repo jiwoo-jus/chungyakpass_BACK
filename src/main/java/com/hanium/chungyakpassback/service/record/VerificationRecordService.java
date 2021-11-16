@@ -4,9 +4,9 @@ import com.hanium.chungyakpassback.dto.record.*;
 
 public interface VerificationRecordService {
 
-    VerificationRecordResponseDto verificationRecord(VerificationRecordDto verificationRecordDto);
+//    VerificationRecordResponseDto verificationRecord(VerificationRecordDto verificationRecordDto);
 
     VerificationRecordGeneralResponseDto verificationRecordGeneralResponse(VerificationRecordGeneralDto verificationRecordGeneralDto);
 
-    VerificationRecordGeneralKookminResponseDto verificationRecordGeneralKookminRequest(VerificationRecordGeneralKookminDto verificationRecordGeneralKookminDto);
+//    VerificationRecordGeneralKookminResponseDto verificationRecordGeneralKookminRequest(VerificationRecordGeneralKookminDto verificationRecordGeneralKookminDto);
 }

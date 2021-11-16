@@ -48,23 +48,23 @@ public class VerificationRecordGeneralKookminResponseDto {
 
     public boolean meetNumberOfPaymentsTf;
 
-    @Builder
-    public VerificationRecordGeneralKookminResponseDto(VerificationRecordGeneralKookminRequest verificationRecordGeneralKookminRequest) {
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        AptInfo aptInfo = aptInfoRepository.findById(generalKookminDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(generalKookminDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-
-        this.id = verificationRecordGeneralKookminRequest.getId();
-        this.verificationRecordId = verificationRecordGeneralKookminRequest.getVerificationRecord().getId();
-        this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
-        this.accountTf = accountTf;
-        this.meetHomelessHouseholdMembersTf = meetHomelessHouseholdMembersTf;
-        this.householderTf = householderTf;
-        this.isRestrictedAreaTf = isRestrictedAreaTf;
-        this.meetAllHouseMemberNotWinningIn5yearsTf = meetAllHouseMemberNotWinningIn5yearsTf;
-        this.meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestrictionTf;
-        this.meetBankbookJoinPeriodTf = meetBankbookJoinPeriodTf;
-        this.meetNumberOfPaymentsTf = meetNumberOfPaymentsTf;
-    }
+//    @Builder
+//    public VerificationRecordGeneralKookminResponseDto(VerificationRecordGeneralKookminRequest verificationRecordGeneralKookminRequest) {
+//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+//        AptInfo aptInfo = aptInfoRepository.findById(generalKookminDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+//        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(generalKookminDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+//
+//        this.id = verificationRecordGeneralKookminRequest.getId();
+//        this.verificationRecordId = verificationRecordGeneralKookminRequest.getVerificationRecord().getId();
+//        this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
+//        this.accountTf = accountTf;
+//        this.meetHomelessHouseholdMembersTf = meetHomelessHouseholdMembersTf;
+//        this.householderTf = householderTf;
+//        this.isRestrictedAreaTf = isRestrictedAreaTf;
+//        this.meetAllHouseMemberNotWinningIn5yearsTf = meetAllHouseMemberNotWinningIn5yearsTf;
+//        this.meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestrictionTf;
+//        this.meetBankbookJoinPeriodTf = meetBankbookJoinPeriodTf;
+//        this.meetNumberOfPaymentsTf = meetNumberOfPaymentsTf;
+//    }
 
 }

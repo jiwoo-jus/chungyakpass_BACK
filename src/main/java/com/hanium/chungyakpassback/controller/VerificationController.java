@@ -5,11 +5,13 @@ import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.User;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookminRequest;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
+import com.hanium.chungyakpassback.repository.record.VerificationRecordGeneralKookminRequestRepository;
 import com.hanium.chungyakpassback.service.verification.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
@@ -37,8 +39,10 @@ public class VerificationController {
     private final SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService;
     private final SpecialPrivateFirstLifeVerificationService specialPrivateFirstLifeVerificationService;
     private final SpecialKookminPublicFirstLifeVerificationService specialKookminPublicFirstLifeVerificationService;
+    private final VerificationRecordGeneralKookminRequestRepository verificationRecordGeneralKookminRequestRepository;
 
-    public VerificationController(UserRepository userRepository, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository, GeneralPrivateVerificationService generalPrivateVerificationService, GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPrivateNewlyMarriedVerificationService specialPrivateNewlyMarriedVerificationService, SpecialKookminNewlyMarriedVerificationService specialKookminNewlyMarriedVerificationService, SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService, SpecialPrivateFirstLifeVerificationService specialPrivateFirstLifeVerificationService, SpecialKookminPublicFirstLifeVerificationService specialKookminPublicFirstLifeVerificationService) {
+
+    public VerificationController(UserRepository userRepository, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository, GeneralPrivateVerificationService generalPrivateVerificationService, GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPrivateNewlyMarriedVerificationService specialPrivateNewlyMarriedVerificationService, SpecialKookminNewlyMarriedVerificationService specialKookminNewlyMarriedVerificationService, SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService, SpecialPrivateFirstLifeVerificationService specialPrivateFirstLifeVerificationService, SpecialKookminPublicFirstLifeVerificationService specialKookminPublicFirstLifeVerificationService, VerificationRecordGeneralKookminRequestRepository verificationRecordGeneralKookminRequestRepository) {
         this.userRepository = userRepository;
         this.aptInfoRepository = aptInfoRepository;
         this.aptInfoTargetRepository = aptInfoTargetRepository;
@@ -53,6 +57,7 @@ public class VerificationController {
         this.specialKookminPublicNewlyMarriedVerificationService = specialKookminPublicNewlyMarriedVerificationService;
         this.specialPrivateFirstLifeVerificationService = specialPrivateFirstLifeVerificationService;
         this.specialKookminPublicFirstLifeVerificationService = specialKookminPublicFirstLifeVerificationService;
+        this.verificationRecordGeneralKookminRequestRepository = verificationRecordGeneralKookminRequestRepository;
     }
 
 
@@ -99,7 +104,13 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = generalKookminVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = generalKookminVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new GeneralKookminResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+//        VerificationRecord verificationRecord = new VerificationRecord(user);
+        VerificationRecordGeneralKookminRequest verificationRecordGeneralKookminRequest = new VerificationRecordGeneralKookminRequest(aptInfo, aptInfoTarget, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf);
+
+//        verificationRecordRepository.save(verificationRecord);
+        verificationRecordGeneralKookminRequestRepository.save(verificationRecordGeneralKookminRequest);
+
+        return new ResponseEntity<>(new GeneralKookminResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, verificationRecordGeneralKookminRequest.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/minyeong/multichild") //특별다자녀민영

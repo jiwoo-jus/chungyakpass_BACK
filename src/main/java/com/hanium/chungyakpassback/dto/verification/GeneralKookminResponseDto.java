@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeneralKookminResponseDto {
+
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
     boolean accountTf;
@@ -18,4 +19,6 @@ public class GeneralKookminResponseDto {
     boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
+
+    Long verificationRecordGeneralKookminRequestId;
 }

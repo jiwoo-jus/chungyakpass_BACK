@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.dto.record;
 
-import com.hanium.chungyakpassback.entity.record.VerificationRecord;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookminRequest;
 import lombok.*;
 
@@ -36,18 +35,18 @@ public class VerificationRecordGeneralKookminDto {
     public boolean meetBankbookJoinPeriodTf;
 
     public boolean meetNumberOfPaymentsTf;
-
-    public VerificationRecordGeneralKookminRequest toEntity(VerificationRecord verificationRecord) {
-        return VerificationRecordGeneralKookminRequest.builder()
-                .verificationRecord(verificationRecord)
-                .accountTf(accountTf)
-                .meetHomelessHouseholdMemberTf(meetHomelessHouseholdMembersTf)
-                .householderTf(householderTf)
-                .meetAllHouseMemberNotWinningIn5yearsTf(meetAllHouseMemberNotWinningIn5yearsTf)
-                .meetAllHouseMemberRewinningRestrictionTf(meetAllHouseMemberRewinningRestrictionTf)
-                .meetBankbookJoinPeriodTf(meetBankbookJoinPeriodTf)
-                .meetNumberOfPaymentsTf(meetNumberOfPaymentsTf)
-                .build();
-    }
+//
+//    public VerificationRecordGeneralKookminRequest toEntity(VerificationRecord verificationRecord) {
+//        return VerificationRecordGeneralKookminRequest.builder()
+//                .verificationRecord(verificationRecord)
+//                .accountTf(accountTf)
+//                .meetHomelessHouseholdMemberTf(meetHomelessHouseholdMembersTf)
+//                .householderTf(householderTf)
+//                .meetAllHouseMemberNotWinningIn5yearsTf(meetAllHouseMemberNotWinningIn5yearsTf)
+//                .meetAllHouseMemberRewinningRestrictionTf(meetAllHouseMemberRewinningRestrictionTf)
+//                .meetBankbookJoinPeriodTf(meetBankbookJoinPeriodTf)
+//                .meetNumberOfPaymentsTf(meetNumberOfPaymentsTf)
+//                .build();
+//    }
 
 }

@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.dto.record;
 
-import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralResponse;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.Builder;
@@ -25,14 +24,14 @@ public class VerificationRecordGeneralResponseDto {
 
     public Ranking ranking; //순위
 
-    @Builder
-    public VerificationRecordGeneralResponseDto(VerificationRecordGeneralResponse verificationRecordGeneralResponse) {
-        this.id = verificationRecordGeneralResponse.getId();
-        this.verificationRecordId = verificationRecordGeneralResponse.getVerificationRecord().getId();
-        this.notificationNumber = verificationRecordGeneralResponse.getNotificationNumber();
-        this.housingType = verificationRecordGeneralResponse.getHousingType();
-        this.sibilingSupportYn = verificationRecordGeneralResponse.getSibilingSupportYn();
-        this.twentiesSoleHouseHolderYn = verificationRecordGeneralResponse.getTwentiesSoleHouseHolderYn();
-        this.ranking = verificationRecordGeneralResponse.getRanking();
-    }
+//    @Builder
+//    public VerificationRecordGeneralResponseDto(VerificationRecordGeneralResponse verificationRecordGeneralResponse) {
+//        this.id = verificationRecordGeneralResponse.getId();
+//        this.verificationRecordId = verificationRecordGeneralResponse.getVerificationRecord().getId();
+//        this.notificationNumber = verificationRecordGeneralResponse.getNotificationNumber();
+//        this.housingType = verificationRecordGeneralResponse.getHousingType();
+//        this.sibilingSupportYn = verificationRecordGeneralResponse.getSibilingSupportYn();
+//        this.twentiesSoleHouseHolderYn = verificationRecordGeneralResponse.getTwentiesSoleHouseHolderYn();
+//        this.ranking = verificationRecordGeneralResponse.getRanking();
+//    }
 }
