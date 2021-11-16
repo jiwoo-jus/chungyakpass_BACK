@@ -245,24 +245,28 @@ public class UserDataServiceImpl implements UserDataService{
     @Transactional(rollbackFor = Exception.class)
     public HttpStatus deleteHouseMember(Long id){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        House house = user.getHouse();
         HouseMember houseMember = houseMemberRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        House house = houseMember.getHouse();
 
-        houseMemberRelationRepository.delete(houseMemberRelationRepository.findByOpponent(houseMember).get());
+        HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
         houseMemberPropertyRepository.deleteAllByHouseMember(houseMember);
         for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakRepository.findAllByHouseMember(houseMember)){
             houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
             houseMemberChungyakRepository.delete(houseMemberChungyak);
         }
-        if (house.getHouseHolder().equals(houseMember)){
+        if (Optional.ofNullable(house.getHouseHolder()).isPresent()){
             house.setHouseHolder(null);
             houseRepository.save(house);}
-        if (houseMember.equals(user.getHouseMember()))
+        if (houseMemberRelation.getRelation().getRelation().equals(Relation.본인)){
             user.setHouseMember(null);
-        else if(houseMember.equals(user.getSpouseHouseMember()))
+            userRepository.save(user);}
+        else if(houseMemberRelation.getRelation().getRelation().equals(Relation.배우자)){
             user.setSpouseHouseMember(null);
-        userRepository.save(user);
+            userRepository.save(user);}
+
+        houseMemberRelationRepository.delete(houseMemberRelation);
         houseMemberRepository.delete(houseMember);
+
 
         return HttpStatus.OK;
     }
