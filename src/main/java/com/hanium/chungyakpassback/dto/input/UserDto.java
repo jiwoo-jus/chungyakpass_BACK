@@ -3,6 +3,7 @@ package com.hanium.chungyakpassback.dto.input;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 public class UserDto {
 
    @NotNull
+   @Email
    @Size(min = 3, max = 50)
    private String email;
 
