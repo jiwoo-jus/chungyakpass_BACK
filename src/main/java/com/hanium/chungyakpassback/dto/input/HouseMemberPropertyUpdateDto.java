@@ -6,6 +6,7 @@ import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
@@ -15,9 +16,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HouseMemberPropertyUpdateDto {
 
-
+    @NotBlank
     private Long houseMemberId; //세대구성원id
 
+    @NotBlank
     private Property property; //자산유형
 
     private Yn saleRightYn; //분양권여부

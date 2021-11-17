@@ -5,6 +5,7 @@ import com.hanium.chungyakpassback.entity.input.HouseMemberChungyak;
 import com.hanium.chungyakpassback.enumtype.*;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,14 +16,12 @@ import java.util.List;
 @AllArgsConstructor
 public class HouseMemberChungyakDto {
 
-//    private List<HouseMemberChungyakDto> houseMemberChungyakDtoList;
-
+    @NotBlank
     private Long houseMemberId; //세대구성원id
-
-//    private HouseMemberChungyakRestrictionResponseDto houseMemberChungyakRestrictionResponseDto ;
 
     private String houseName; //주택명
 
+    @NotBlank
     private Supply supply; //공급유형
 
     private SpecialSupply specialSupply; //특별공급유형
@@ -31,6 +30,7 @@ public class HouseMemberChungyakDto {
 
     private Ranking ranking; //순위
 
+    @NotBlank
     private Result result; //결과
 
     private Integer preliminaryNumber; //예비번호
