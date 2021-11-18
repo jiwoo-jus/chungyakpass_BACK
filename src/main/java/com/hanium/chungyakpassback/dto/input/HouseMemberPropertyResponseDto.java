@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -44,6 +45,10 @@ public class HouseMemberPropertyResponseDto {
 
     private LocalDate taxBaseDate; //과세기준일
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
 
     @Builder
     public HouseMemberPropertyResponseDto(HouseMemberProperty houseMemberProperty) {
@@ -61,6 +66,8 @@ public class HouseMemberPropertyResponseDto {
         this.exclusiveArea = houseMemberProperty.getExclusiveArea();
         this.amount = houseMemberProperty.getAmount();
         this.taxBaseDate = houseMemberProperty.getTaxBaseDate();
+        this.createdDate = houseMemberProperty.getCreatedDate();
+        this.modifiedDate = houseMemberProperty.getModifiedDate();
     }
 }
 

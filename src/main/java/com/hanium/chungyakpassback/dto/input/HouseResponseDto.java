@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class HouseResponseDto {
@@ -18,6 +20,11 @@ public class HouseResponseDto {
 
     private String zipcode;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
+
     @Builder
     public HouseResponseDto(House house){
         this.id = house.getId();
@@ -25,5 +32,7 @@ public class HouseResponseDto {
         this.addressLevel2Id = house.getAddressLevel2().getId();
         this.addressDetail = house.getAddressDetail();
         this.zipcode = house.getZipcode();
+        this.createdDate = house.getCreatedDate();
+        this.modifiedDate = house.getModifiedDate();
     }
 }

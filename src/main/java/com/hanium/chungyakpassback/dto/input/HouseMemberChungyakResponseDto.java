@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -37,6 +38,10 @@ public class HouseMemberChungyakResponseDto {
 
     private Yn cancelWinYn; //당첨취소여부
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
 
     @Builder
     public HouseMemberChungyakResponseDto(HouseMemberChungyak houseMemberChungyak){
@@ -52,5 +57,7 @@ public class HouseMemberChungyakResponseDto {
         this.winningDate = houseMemberChungyak.getWinningDate();
         this.raffle = houseMemberChungyak.getRaffle();
         this.cancelWinYn = houseMemberChungyak.getCancelWinYn();
+        this.createdDate = houseMemberChungyak.getCreatedDate();
+        this.modifiedDate = houseMemberChungyak.getModifiedDate();
     }
 }
