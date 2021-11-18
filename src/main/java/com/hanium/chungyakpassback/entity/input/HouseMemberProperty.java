@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
 import com.hanium.chungyakpassback.dto.input.HouseMemberPropertyUpdateDto;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.enumtype.NonResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Property;
 import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_house_member_property")
-public class HouseMemberProperty {
+public class HouseMemberProperty extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_property_id")

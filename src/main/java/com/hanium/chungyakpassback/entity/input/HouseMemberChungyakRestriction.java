@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
 import com.hanium.chungyakpassback.dto.input.HouseMemberChungyakRestrictionUpdateDto;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_house_member_chungyak_restriction")
-public class HouseMemberChungyakRestriction {
+public class HouseMemberChungyakRestriction extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_chungyak_restriction_id")
