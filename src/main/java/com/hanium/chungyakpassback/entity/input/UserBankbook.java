@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.entity.input;
 
 
 import com.hanium.chungyakpassback.dto.input.UserBankbookDto;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.enumtype.Bank;
 import com.hanium.chungyakpassback.enumtype.Bankbook;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_user_bankbook")
-public class UserBankbook {
+public class UserBankbook extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
