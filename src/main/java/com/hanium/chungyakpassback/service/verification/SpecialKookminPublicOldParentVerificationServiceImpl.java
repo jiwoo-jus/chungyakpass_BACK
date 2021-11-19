@@ -1,16 +1,28 @@
 package com.hanium.chungyakpassback.service.verification;
 
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicNewlyMarriedDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicNewlyMarriedResponseDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminNewlyMarried;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
 import com.hanium.chungyakpassback.entity.standard.PriorityPaymentsCount;
 import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
+import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
+import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialKookminOldParentRepository;
 import com.hanium.chungyakpassback.repository.standard.*;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +48,40 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
     final PriorityPaymentsCountRepository priorityPaymentsCountRepository;
     final BankbookRepository bankbookRepository;
     final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
+    final UserRepository userRepository;
+    final AptInfoTargetRepository aptInfoTargetRepository;
+    final AptInfoRepository aptInfoRepository;
+    final VerificationRecordSpecialKookminOldParentRepository verificationRecordSpecialKookminOldParentRepository;
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentService(SpecialKookminPublicOldParentDto specialKookminPublicOldParentDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicOldParentDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminPublicOldParentDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+
+        Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
+        boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = meetBankbookType(user, aptInfo, aptInfoTarget);
+        boolean meetMonthlyAverageIncome = meetMonthlyAverageIncome(user);
+        boolean meetPropertyTf = meetProperty(user);
+        boolean meetOldParentSupportMore3yearsTf = meetOldParentSupportMore3years(user);
+        boolean meetHomelessHouseholdMembersTf = meetHomelessHouseholdMembers(user);
+        boolean meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestriction(user);
+        boolean householderTf = isHouseholder(user);
+        boolean isRestrictedAreaTf = isRestrictedArea(aptInfo);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = meetAllHouseMemberNotWinningIn5years(user);
+        boolean meetBankbookJoinPeriodTf = meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
+
+        VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent = new VerificationRecordSpecialKookminOldParent(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, aptInfo, aptInfoTarget);
+        verificationRecordSpecialKookminOldParent.setRanking(specialKookminPublicOldParentDto.getRanking());
+        verificationRecordSpecialKookminOldParent.setKookminType(specialKookminPublicOldParentDto.getKookminType());
+        verificationRecordSpecialKookminOldParent.setSibilingSupportYn(specialKookminPublicOldParentDto.getSibilingSupportYn());
+        verificationRecordSpecialKookminOldParentRepository.save(verificationRecordSpecialKookminOldParent);
+        return new SpecialKookminPublicOldParentResponseDto(verificationRecordSpecialKookminOldParent);
+    }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));

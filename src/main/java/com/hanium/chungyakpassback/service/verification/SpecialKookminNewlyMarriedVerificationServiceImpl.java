@@ -1,16 +1,25 @@
 package com.hanium.chungyakpassback.service.verification;
 
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralMinyeong;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
 import com.hanium.chungyakpassback.entity.standard.PriorityPaymentsCount;
 import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
+import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
+import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialKookminNewlyMarriedRepository;
 import com.hanium.chungyakpassback.repository.standard.*;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +45,42 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
     final PriorityJoinPeriodRepository priorityJoinPeriodRepository;
     final PriorityPaymentsCountRepository priorityPaymentsCountRepository;
     final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
+    final UserRepository userRepository;
+    final AptInfoRepository aptInfoRepository;
+    final AptInfoTargetRepository aptInfoTargetRepository;
+    final VerificationRecordSpecialKookminNewlyMarriedRepository verificationRecordSpecialKookminNewlyMarriedRepository;
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialKookminNewlyMarriedResponseDto specialKookminNewlyMarriedService(SpecialKookminNewlyMarriedDto specialKookminNewlyMarriedDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialKookminNewlyMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminNewlyMarriedDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+
+        Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
+        boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = meetBankbookType(user, aptInfo, aptInfoTarget);
+        boolean meetMonthlyAverageIncomePriorityTf = meetMonthlyAverageIncomePriority(user);
+        boolean meetMonthlyAverageIncomeGeneralTf = meetMonthlyAverageIncomeGeneral(user);
+        boolean meetMarriagePeriodIn7yearsTf = meetMarriagePeriodIn7years(user);
+        boolean hasMinorChildren = hasMinorChildren(user);
+        boolean secondChungyak = secondChungyak(user);
+        boolean meetHomelessHouseholdMembersTf = meetHomelessHouseholdMembers(user);
+        boolean meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestriction(user);
+        boolean householderTf = isHouseholder(user);
+        boolean isRestrictedAreaTf = isRestrictedArea(aptInfo);
+        boolean meetBankbookJoinPeriodTf = meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
+
+        VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = new VerificationRecordSpecialKookminNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
+        verificationRecordSpecialKookminNewlyMarried.setRanking(specialKookminNewlyMarriedDto.getRanking());
+        verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminNewlyMarriedDto.getKookminType());
+        verificationRecordSpecialKookminNewlyMarried.setPreNewMarriedYn(specialKookminNewlyMarriedDto.getPreNewMarriedYn());
+        verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminNewlyMarriedDto.getSibilingSupportYn());
+        verificationRecordSpecialKookminNewlyMarriedRepository.save(verificationRecordSpecialKookminNewlyMarried);
+        return new SpecialKookminNewlyMarriedResponseDto(verificationRecordSpecialKookminNewlyMarried);
+    }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드
         // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

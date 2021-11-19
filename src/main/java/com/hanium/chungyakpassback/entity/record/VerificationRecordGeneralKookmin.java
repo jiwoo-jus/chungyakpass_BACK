@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.entity.record;
 
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_verification_record_general_kookmin")
-public class VerificationRecordGeneralKookmin {
+public class VerificationRecordGeneralKookmin extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,9 @@ public class VerificationRecordGeneralKookmin {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column
+    private Integer americanAge; //만나이
 
     @Column
     private boolean meetLivingInSurroundAreaTf; //인근지역거주조건충족여부
@@ -80,10 +84,10 @@ public class VerificationRecordGeneralKookmin {
     @Enumerated(EnumType.STRING)
     public Ranking ranking; //순위
 
-
     @Builder
-    public VerificationRecordGeneralKookmin(User user, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public VerificationRecordGeneralKookmin(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         this.user = user;
+        this.americanAge = americanAge;
         this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
         this.accountTf = accountTf;
         this.meetHomelessHouseholdMemberTf = meetHomelessHouseholdMemberTf;

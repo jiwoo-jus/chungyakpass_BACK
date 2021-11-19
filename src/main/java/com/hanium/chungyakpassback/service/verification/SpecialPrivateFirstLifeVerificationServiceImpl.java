@@ -1,16 +1,28 @@
 package com.hanium.chungyakpassback.service.verification;
 
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentResponseDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongFirstLifeDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongFirstLifeResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongFirstLife;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
 import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
+import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
+import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialMinyeongFirstLifeRepository;
 import com.hanium.chungyakpassback.repository.standard.*;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +46,41 @@ public class SpecialPrivateFirstLifeVerificationServiceImpl implements SpecialPr
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
     final IncomeRepository incomeRepository;
+    final UserRepository userRepository;
+    final AptInfoTargetRepository aptInfoTargetRepository;
+    final AptInfoRepository aptInfoRepository;
+    final VerificationRecordSpecialMinyeongFirstLifeRepository verificationRecordSpecialMinyeongFirstLifeRepository;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeService(SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialMinyeongFirstLifeDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+
+        Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
+        boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = meetBankbookType(user, aptInfo, aptInfoTarget);
+        boolean meetRecipientTf = meetRecipient(user);
+        boolean meetMonthlyAverageIncomePriorityTf = meetMonthlyAverageIncomePriority(user);
+        boolean meetMonthlyAverageIncomeGeneralTf = meetMonthlyAverageIncomeGeneral(user);
+        boolean meetHomelessHouseholdMembersTf = meetHomelessHouseholdMembers(user);
+        boolean householderTf = isHouseholder(user);
+        boolean meetAllHouseMemberNotWinningIn5yearsTf = meetAllHouseMemberNotWinningIn5years(user);
+        boolean meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestriction(user);
+        boolean isRestrictedAreaTf = isRestrictedArea(aptInfo);
+        boolean meetBankbookJoinPeriodTf = meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetDepositTf = meetDeposit(user, aptInfoTarget);
+
+        VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife = new VerificationRecordSpecialMinyeongFirstLife(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
+        verificationRecordSpecialMinyeongFirstLife.setRanking(specialMinyeongFirstLifeDto.getRanking());
+        verificationRecordSpecialMinyeongFirstLife.setTaxOver5yearsYn(specialMinyeongFirstLifeDto.getTaxOver5yearsYn());
+        verificationRecordSpecialMinyeongFirstLife.setFirstRankHistoryYn(specialMinyeongFirstLifeDto.getFirstRankHistoryYn());
+        verificationRecordSpecialMinyeongFirstLife.setSibilingSupportYn(specialMinyeongFirstLifeDto.getSibilingSupportYn());
+        verificationRecordSpecialMinyeongFirstLifeRepository.save(verificationRecordSpecialMinyeongFirstLife);
+        return new SpecialMinyeongFirstLifeResponseDto(verificationRecordSpecialMinyeongFirstLife);
+    }
 
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

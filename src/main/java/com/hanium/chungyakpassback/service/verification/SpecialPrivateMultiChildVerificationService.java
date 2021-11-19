@@ -1,5 +1,9 @@
 package com.hanium.chungyakpassback.service.verification;
 
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongFirstLifeDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongFirstLifeResponseDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongMultiChildDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongMultiChildResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
@@ -7,6 +11,8 @@ import com.hanium.chungyakpassback.entity.input.User;
 import java.time.LocalDate;
 
 public interface SpecialPrivateMultiChildVerificationService {
+
+    SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildService(SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 
@@ -19,8 +25,6 @@ public interface SpecialPrivateMultiChildVerificationService {
     int calcMinorChildren(User user); //미성년자녀수계산(태아 포함)
 
     boolean isHouseholder(User user); //세대주여부
-
-    boolean meetAllHouseMemberNotWinningIn5years(User user); //전세대원5년이내미당첨조건충족여부
 
     boolean meetAllHouseMemberRewinningRestriction(User user); //전세대원재당첨제한여부
 

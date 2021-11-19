@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.entity.record;
 
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_verification_record_special_minyeong_first_life")
-public class VerificationRecordSpecialMinyeongFirstLife {
+public class VerificationRecordSpecialMinyeongFirstLife extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

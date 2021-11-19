@@ -1,16 +1,28 @@
 package com.hanium.chungyakpassback.service.verification;
 
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicFirstLifeDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicFirstLifeResponseDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicMultiChildDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicMultiChildResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminFirstLife;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminMultiChild;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
 import com.hanium.chungyakpassback.entity.standard.PriorityPaymentsCount;
 import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
+import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
+import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialKookminMultiChildRepository;
 import com.hanium.chungyakpassback.repository.standard.*;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +46,39 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
     final PriorityPaymentsCountRepository priorityPaymentsCountRepository;
     final BankbookRepository bankbookRepository;
     final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
+    final UserRepository userRepository;
+    final AptInfoTargetRepository aptInfoTargetRepository;
+    final AptInfoRepository aptInfoRepository;
+    final VerificationRecordSpecialKookminMultiChildRepository verificationRecordSpecialKookminMultiChildRepository;
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildService(SpecialKookminPublicMultiChildDto specialKookminPublicMultiChildDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        HouseMember houseMember = user.getHouseMember();
+        AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicMultiChildDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(specialKookminPublicMultiChildDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+
+        Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
+        boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
+        boolean accountTf = meetBankbookType(user, aptInfo, aptInfoTarget);
+        boolean meetMonthlyAverageIncomeTf = meetMonthlyAverageIncome(user);
+        boolean meetPropertyTf = meetProperty(user);
+        boolean meetHomelessHouseholdMembersTf = meetHomelessHouseholdMembers(user);
+        boolean meetAllHouseMemberRewinningRestrictionTf = meetAllHouseMemberRewinningRestriction(user);
+        Integer calcMinorChildren = calcMinorChildren(user);
+        boolean householderTf = isHouseholder(user);
+        boolean isRestrictedAreaTf = isRestrictedArea(aptInfo);
+        boolean meetBankbookJoinPeriodTf = meetBankbookJoinPeriod(user, aptInfo);
+        boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
+
+        VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild = new VerificationRecordSpecialKookminMultiChild(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomeTf, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
+        verificationRecordSpecialKookminMultiChild.setRanking(specialKookminPublicMultiChildDto.getRanking());
+        verificationRecordSpecialKookminMultiChild.setKookminType(specialKookminPublicMultiChildDto.getKookminType());
+        verificationRecordSpecialKookminMultiChild.setSibilingSupportYn(specialKookminPublicMultiChildDto.getSibilingSupportYn());
+        verificationRecordSpecialKookminMultiChildRepository.save(verificationRecordSpecialKookminMultiChild);
+        return new SpecialKookminPublicMultiChildResponseDto(verificationRecordSpecialKookminMultiChild);
+    }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
@@ -496,57 +540,6 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
-        LocalDate now = LocalDate.now();
-        int periodYear = 0;
-
-        List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
-
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
-            for (HouseMember houseMember : houseMemberListUser) {
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
-
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-                    if (periodYear <= 5)
-                        return false;
-                }
-                return true;
-            }
-        }
-        //배우자 분리세대일 경우
-        else {
-            List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
-
-            for (HouseMember houseMember : houseMemberListUser) {
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
-
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-                    if (periodYear <= 5)
-                        return false;
-                }
-            }
-
-            for (HouseMember houseMember : spouseHouseMemberList) {
-                List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
-
-                for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakList) {
-                    periodYear = now.minusYears(houseMemberChungyak.getWinningDate().getYear()).getYear();
-
-                    if (periodYear <= 5)
-                        return false;
-                }
-            }
-        }
-        return true;
     }
 
     @Override

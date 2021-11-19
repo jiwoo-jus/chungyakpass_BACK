@@ -1,13 +1,18 @@
 package com.hanium.chungyakpassback.service.verification;
 
 
+import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongDto;
+import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
+import lombok.Builder;
 
 import java.time.LocalDate;
 
 public interface GeneralPrivateVerificationService {
+
+    GeneralMinyeongResponseDto generalMinyeongService(GeneralMinyeongDto generalMinyeongDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 
@@ -30,7 +35,5 @@ public interface GeneralPrivateVerificationService {
     boolean meetDeposit(User user, AptInfoTarget aptInfoTarget); //예치금액충족여부확인
 
     boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo); //가입기간충족여부확인
-
-
 
 }
