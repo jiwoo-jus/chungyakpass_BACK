@@ -45,29 +45,53 @@ public class VerificationController {
         this.verificationRecordService = verificationRecordService;
     }
 
-    @GetMapping("/general/minyeong")
+    @GetMapping("/record/all") //청악자격결과전체조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<UserVerificationRecordDto> readGeneralMinyeongPoint() {
+    public ResponseEntity<UserVerificationRecordDto> readAllUserVerificationRecord() {
+
+        return new ResponseEntity<>(verificationRecordService.readAllUserVerificationRecord(), HttpStatus.OK);
+    }
+
+    @GetMapping("/general/minyeong") //일반민영조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readGeneralMinyeongVerification() {
         return new ResponseEntity(verificationRecordService.recordGeneralMinyeongResponseVerification(), HttpStatus.OK);
     }
 
-    @PostMapping("/general/minyeong")
+    @PostMapping("/general/minyeong") //일반민영저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<GeneralMinyeongResponseDto> generalMinyeong(@RequestBody GeneralMinyeongDto generalMinyeongDto) {
         return new ResponseEntity<>(generalPrivateVerificationService.generalMinyeongService(generalMinyeongDto), HttpStatus.OK);
     }
 
+    @GetMapping("/general/kookmin") //일반국민조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readGeneralKookminVerification() {
+        return new ResponseEntity(verificationRecordService.recordGeneralKookminResponseVerification(), HttpStatus.OK);
+    }
 
-    @PostMapping("/general/kookmin") //일반국민
+    @PostMapping("/general/kookmin") //일반국민저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<GeneralKookminResponseDto> generalKookmin(@RequestBody GeneralKookminDto generalKookminDto) {
         return new ResponseEntity<>(generalKookminVerificationService.generalKookminService(generalKookminDto), HttpStatus.OK);
     }
 
-    @PostMapping("/special/minyeong/multichild") //특별다자녀민영
+    @GetMapping("/special/minyeong/multichild") //특별다자녀민영조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialMinyeongMultiChildVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialMinyeongMultiChildResponseVerification(), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/minyeong/multichild") //특별다자녀민영저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<SpecialMinyeongMultiChildResponseDto> specialMultiChild(@RequestBody SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto) {
         return new ResponseEntity<>(specialPrivateMultiChildVerificationService.specialMinyeongMultiChildService(specialMinyeongMultiChildDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/special/kookmin/public/multichild") //특별다자녀국민조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialKookminMultiChildVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialMinyeongMultiChildResponseVerification(), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/multichild") //특별다자녀국민공공주택
@@ -76,10 +100,22 @@ public class VerificationController {
         return new ResponseEntity<>(specialKookminPublicMultiChildVerificationService.specialKookminPublicMultiChildService(specialKookminPublicMultiChildDto), HttpStatus.OK);
     }
 
+    @GetMapping("/special/minyeong/oldparent") //특별노부모민영조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialMinyeongOldParentVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialMinyeongOldParentResponseVerification(), HttpStatus.OK);
+    }
+
     @PostMapping("/special/minyeong/oldparent") //특별노부모민영
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<SpecialMinyeongOldParentResponseDto> specialOldParent(@RequestBody SpecialMinyeongOldParentDto specialMinyeongOldParentDto) {
         return new ResponseEntity<>(specialPrivateOldParentVerificationService.specialMinyeongOldParentService(specialMinyeongOldParentDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/special/kookmin/public/oldparent") //특별노부모국민조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialKookminOldParentVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialKookminOldParentResponseVerification(), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/oldparent") //특별노부모국민공공주택
@@ -88,10 +124,22 @@ public class VerificationController {
         return new ResponseEntity<>(specialKookminPublicOldParentVerificationService.specialKookminPublicOldParentService(specialKookminPublicOldParentDto), HttpStatus.OK);
     }
 
+    @GetMapping("/special/minyeong/newlymarried") //특별신혼부부민영조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialMinyeongNewlyMarriedVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialMinyeongNewlyMarriedResponseVerification(), HttpStatus.OK);
+    }
+
     @PostMapping("/special/minyeong/newlymarried") //특별신혼부부민영
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<SpecialMinyeongNewlyMarriedResponseDto> specialNewlyMarried(@RequestBody SpecialMinyeongNewlyMarriedDto specialMinyeongNewlyMarriedDto) {
         return new ResponseEntity<>(specialPrivateNewlyMarriedVerificationService.specialMinyeongNewlyMarriedService(specialMinyeongNewlyMarriedDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/special/kookmin/newlymarried") //특별신혼부부국민조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialKookminPublicNewlyMarriedVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialKookminPublicNewlyMarriedResponseVerification(), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/newlymarried") //특별신혼부부국민
@@ -106,10 +154,22 @@ public class VerificationController {
         return new ResponseEntity<>(specialKookminPublicNewlyMarriedVerificationService.specialKookminPublicNewlyMarriedService(specialKookminPublicNewlyMarriedDto), HttpStatus.OK);
     }
 
+    @GetMapping("/special/minyeong/firstLife") //특별생애최초민영조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialMinyeongFirstLifeVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialMinyeongFirstLifeResponseVerification(), HttpStatus.OK);
+    }
+
     @PostMapping("/special/minyeong/firstLife") //특별생애최초민영
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<SpecialMinyeongFirstLifeResponseDto> specialFirstLife(@RequestBody SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto) {
         return new ResponseEntity<>(specialPrivateFirstLifeVerificationService.specialMinyeongFirstLifeService(specialMinyeongFirstLifeDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/special/kookmin/public/firstLife") //특별생애최초국민조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<UserVerificationRecordDto> readSpecialKookminFirstLifeVerification() {
+        return new ResponseEntity(verificationRecordService.recordSpecialKookminFirstLifeResponseVerification(), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/firstLife") //특별생애최초국민공공주택
