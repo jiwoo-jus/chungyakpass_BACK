@@ -21,4 +21,7 @@ public class SpecialMinyeongOldParentResponseDto {
     boolean meetDepositTf;
     boolean meetBankbookJoinPeriodTf;
 
+    Long verificationRecordSpecialMinyeongOldParentId;
+
+
 }

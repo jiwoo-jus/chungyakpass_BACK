@@ -23,4 +23,6 @@ public class SpecialMinyeongFirstLifeResponseDto {
     boolean meetBankbookJoinPeriodTf;
     boolean meetDepositTf;
 
+    Long verificationRecordSpecialMinyeongFirstLifeId;
+
 }

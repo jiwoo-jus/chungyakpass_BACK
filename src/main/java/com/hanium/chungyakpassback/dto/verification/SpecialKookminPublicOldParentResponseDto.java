@@ -23,4 +23,6 @@ public class SpecialKookminPublicOldParentResponseDto {
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
 
+    Long verificationRecordSpecialKookminOldParentId;
+
 }

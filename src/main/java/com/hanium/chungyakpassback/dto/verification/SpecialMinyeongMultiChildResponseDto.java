@@ -22,4 +22,6 @@ public class SpecialMinyeongMultiChildResponseDto {
     boolean isPriorityApt;
     boolean meetDepositTf;
     boolean meetBankbookJoinPeriodTf;
+
+    Long verificationRecordSpecialMinyeongMultiChildId;
 }

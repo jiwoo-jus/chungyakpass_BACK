@@ -24,4 +24,5 @@ public class SpecialKookminNewlyMarriedResponseDto {
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
 
+    Long verificationRecordSpecialKookminNewlyMarriedId;
 }

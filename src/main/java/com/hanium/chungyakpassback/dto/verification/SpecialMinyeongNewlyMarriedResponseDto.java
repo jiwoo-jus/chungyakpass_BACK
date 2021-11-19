@@ -24,4 +24,6 @@ public class SpecialMinyeongNewlyMarriedResponseDto {
     boolean meetBankbookJoinPeriodTf;
     boolean meetDepositTf;
 
+    Long verificationRecordSpecialMinyeongNewlyMarriedId;
+
 }

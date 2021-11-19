@@ -20,5 +20,6 @@ public class SpecialKookminPublicMultiChildResponseDto {
     boolean meetAllHouseMemberNotWinningIn5yearsTf;
     boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
-    boolean meetNumberOfPaymentsTf;
+
+    Long verificationRecordSpecialKookminMultiChildId;
 }

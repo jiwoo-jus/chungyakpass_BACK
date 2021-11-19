@@ -21,4 +21,6 @@ public class GeneralMinyeongResponseDto {
     boolean meetDepositTf;
     boolean isPriorityApt;
 
+    Long verificationRecordGeneralMinyeongId;
+
 }

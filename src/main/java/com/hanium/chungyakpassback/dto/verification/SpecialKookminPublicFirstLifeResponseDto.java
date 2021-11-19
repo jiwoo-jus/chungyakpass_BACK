@@ -24,4 +24,5 @@ public class SpecialKookminPublicFirstLifeResponseDto {
     boolean meetNumberOfPaymentsTf;
     boolean meetBankbookJoinPeriodTf;
 
+    Long verificationRecordSpecialKookminFirstLifeId;
 }

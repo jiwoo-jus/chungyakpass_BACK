@@ -5,13 +5,13 @@ import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.User;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookminRequest;
+import com.hanium.chungyakpassback.entity.record.*;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.apt.AptInfoTargetRepository;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
-import com.hanium.chungyakpassback.repository.record.VerificationRecordGeneralKookminRequestRepository;
+import com.hanium.chungyakpassback.repository.record.*;
 import com.hanium.chungyakpassback.service.verification.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
@@ -39,10 +39,18 @@ public class VerificationController {
     private final SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService;
     private final SpecialPrivateFirstLifeVerificationService specialPrivateFirstLifeVerificationService;
     private final SpecialKookminPublicFirstLifeVerificationService specialKookminPublicFirstLifeVerificationService;
-    private final VerificationRecordGeneralKookminRequestRepository verificationRecordGeneralKookminRequestRepository;
+    private final VerificationRecordGeneralKookminRepository verificationRecordGeneralKookminRepository;
+    private final VerificationRecordGeneralMinyeongRepository verificationRecordGeneralMinyeongRepository;
+    private final VerificationRecordSpecialMinyeongMultiChildRepository verificationRecordSpecialMinyeongMultiChildRepository;
+    private final VerificationRecordSpecialKookminMultiChildRepository verificationRecordSpecialKookminMultiChildRepository;
+    private final VerificationRecordSpecialMinyeongOldParentRepository verificationRecordSpecialMinyeongOldParentRepository;
+    private final VerificationRecordSpecialKookminOldParentRepository verificationRecordSpecialKookminOldParentRepository;
+    private final VerificationRecordSpecialMinyeongNewlyMarriedRepository verificationRecordSpecialMinyeongNewlyMarriedRepository;
+    private final VerificationRecordSpecialKookminNewlyMarriedRepository verificationRecordSpecialKookminNewlyMarriedRepository;
+    private final VerificationRecordSpecialMinyeongFirstLifeRepository verificationRecordSpecialMinyeongFirstLifeRepository;
+    private final VerificationRecordSpecialKookminFirstLifeRepository verificationRecordSpecialKookminFirstLifeRepository;
 
-
-    public VerificationController(UserRepository userRepository, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository, GeneralPrivateVerificationService generalPrivateVerificationService, GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPrivateNewlyMarriedVerificationService specialPrivateNewlyMarriedVerificationService, SpecialKookminNewlyMarriedVerificationService specialKookminNewlyMarriedVerificationService, SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService, SpecialPrivateFirstLifeVerificationService specialPrivateFirstLifeVerificationService, SpecialKookminPublicFirstLifeVerificationService specialKookminPublicFirstLifeVerificationService, VerificationRecordGeneralKookminRequestRepository verificationRecordGeneralKookminRequestRepository) {
+    public VerificationController(UserRepository userRepository, AptInfoRepository aptInfoRepository, AptInfoTargetRepository aptInfoTargetRepository, GeneralPrivateVerificationService generalPrivateVerificationService, GeneralKookminVerificationService generalKookminVerificationService, SpecialPrivateMultiChildVerificationService specialPrivateMultiChildVerificationService, SpecialKookminPublicMultiChildVerificationService specialKookminPublicMultiChildVerificationService, SpecialPrivateOldParentVerificationService specialPrivateOldParentVerificationService, SpecialKookminPublicOldParentVerificationService specialKookminPublicOldParentVerificationService, SpecialPrivateNewlyMarriedVerificationService specialPrivateNewlyMarriedVerificationService, SpecialKookminNewlyMarriedVerificationService specialKookminNewlyMarriedVerificationService, SpecialKookminPublicNewlyMarriedVerificationService specialKookminPublicNewlyMarriedVerificationService, SpecialPrivateFirstLifeVerificationService specialPrivateFirstLifeVerificationService, SpecialKookminPublicFirstLifeVerificationService specialKookminPublicFirstLifeVerificationService, VerificationRecordGeneralKookminRepository verificationRecordGeneralKookminRepository, VerificationRecordGeneralMinyeongRepository verificationRecordGeneralMinyeongRepository, VerificationRecordSpecialMinyeongMultiChildRepository verificationRecordSpecialMinyeongMultiChildRepository, VerificationRecordSpecialKookminMultiChildRepository verificationRecordSpecialKookminMultiChildRepository, VerificationRecordSpecialMinyeongOldParentRepository verificationRecordSpecialMinyeongOldParentRepository, VerificationRecordSpecialKookminOldParentRepository verificationRecordSpecialKookminOldParentRepository, VerificationRecordSpecialMinyeongNewlyMarriedRepository verificationRecordSpecialMinyeongNewlyMarriedRepository, VerificationRecordSpecialKookminNewlyMarriedRepository verificationRecordSpecialKookminNewlyMarriedRepository, VerificationRecordSpecialMinyeongFirstLifeRepository verificationRecordSpecialMinyeongFirstLifeRepository, VerificationRecordSpecialKookminFirstLifeRepository verificationRecordSpecialKookminFirstLifeRepository) {
         this.userRepository = userRepository;
         this.aptInfoRepository = aptInfoRepository;
         this.aptInfoTargetRepository = aptInfoTargetRepository;
@@ -57,9 +65,17 @@ public class VerificationController {
         this.specialKookminPublicNewlyMarriedVerificationService = specialKookminPublicNewlyMarriedVerificationService;
         this.specialPrivateFirstLifeVerificationService = specialPrivateFirstLifeVerificationService;
         this.specialKookminPublicFirstLifeVerificationService = specialKookminPublicFirstLifeVerificationService;
-        this.verificationRecordGeneralKookminRequestRepository = verificationRecordGeneralKookminRequestRepository;
+        this.verificationRecordGeneralKookminRepository = verificationRecordGeneralKookminRepository;
+        this.verificationRecordGeneralMinyeongRepository = verificationRecordGeneralMinyeongRepository;
+        this.verificationRecordSpecialMinyeongMultiChildRepository = verificationRecordSpecialMinyeongMultiChildRepository;
+        this.verificationRecordSpecialKookminMultiChildRepository = verificationRecordSpecialKookminMultiChildRepository;
+        this.verificationRecordSpecialMinyeongOldParentRepository = verificationRecordSpecialMinyeongOldParentRepository;
+        this.verificationRecordSpecialKookminOldParentRepository = verificationRecordSpecialKookminOldParentRepository;
+        this.verificationRecordSpecialMinyeongNewlyMarriedRepository = verificationRecordSpecialMinyeongNewlyMarriedRepository;
+        this.verificationRecordSpecialKookminNewlyMarriedRepository = verificationRecordSpecialKookminNewlyMarriedRepository;
+        this.verificationRecordSpecialMinyeongFirstLifeRepository = verificationRecordSpecialMinyeongFirstLifeRepository;
+        this.verificationRecordSpecialKookminFirstLifeRepository = verificationRecordSpecialKookminFirstLifeRepository;
     }
-
 
     @PostMapping("/general/minyeong")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -81,8 +97,11 @@ public class VerificationController {
         boolean meetDepositTf = generalPrivateVerificationService.meetDeposit(user, aptInfoTarget);
         boolean isPriorityApt = generalPrivateVerificationService.isPriorityApt(aptInfo, aptInfoTarget);
 
+        VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong = new VerificationRecordGeneralMinyeong(user, americanAge, meetLivingInSurroundAreaTf, accountTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetHouseHavingLessThan2AptTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, isPriorityApt, aptInfo, aptInfoTarget);
 
-        return new ResponseEntity<>(new GeneralMinyeongResponseDto(meetLivingInSurroundAreaTf, accountTf, americanAge, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetHouseHavingLessThan2AptTf, meetBankbookJoinPeriodTf, meetDepositTf, isPriorityApt), HttpStatus.OK);
+        verificationRecordGeneralMinyeongRepository.save(verificationRecordGeneralMinyeong);
+
+        return new ResponseEntity<>(new GeneralMinyeongResponseDto(meetLivingInSurroundAreaTf, accountTf, americanAge, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetHouseHavingLessThan2AptTf, meetBankbookJoinPeriodTf, meetDepositTf, isPriorityApt, verificationRecordGeneralMinyeong.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/general/kookmin") //일반국민
@@ -104,13 +123,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = generalKookminVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = generalKookminVerificationService.meetNumberOfPayments(user, aptInfo);
 
-//        VerificationRecord verificationRecord = new VerificationRecord(user);
-        VerificationRecordGeneralKookminRequest verificationRecordGeneralKookminRequest = new VerificationRecordGeneralKookminRequest(aptInfo, aptInfoTarget, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf);
+        VerificationRecordGeneralKookmin verificationRecordGeneralKookmin = new VerificationRecordGeneralKookmin(user, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
 
-//        verificationRecordRepository.save(verificationRecord);
-        verificationRecordGeneralKookminRequestRepository.save(verificationRecordGeneralKookminRequest);
+        verificationRecordGeneralKookminRepository.save(verificationRecordGeneralKookmin);
 
-        return new ResponseEntity<>(new GeneralKookminResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, verificationRecordGeneralKookminRequest.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(new GeneralKookminResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, verificationRecordGeneralKookmin.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/minyeong/multichild") //특별다자녀민영
@@ -135,7 +152,11 @@ public class VerificationController {
         boolean meetDepositTf = specialPrivateMultiChildVerificationService.meetDeposit(user, aptInfoTarget);
         boolean meetBankbookJoinPeriodTf = specialPrivateMultiChildVerificationService.meetBankbookJoinPeriod(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialMinyeongMultiChildResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetHouseHavingLessThan2Apt, isPriorityApt, meetDepositTf, meetBankbookJoinPeriodTf), HttpStatus.OK);
+        VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild = new VerificationRecordSpecialMinyeongMultiChild(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, isRestrictedAreaTf, meetHouseHavingLessThan2Apt, isPriorityApt, meetBankbookJoinPeriodTf, meetDepositTf, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialMinyeongMultiChildRepository.save(verificationRecordSpecialMinyeongMultiChild);
+
+        return new ResponseEntity<>(new SpecialMinyeongMultiChildResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetHouseHavingLessThan2Apt, isPriorityApt, meetDepositTf, meetBankbookJoinPeriodTf, verificationRecordSpecialMinyeongMultiChild.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/multichild") //특별다자녀국민공공주택
@@ -160,7 +181,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminPublicMultiChildVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminPublicMultiChildVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminPublicMultiChildResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomeTf, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+        VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild = new VerificationRecordSpecialKookminMultiChild(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomeTf, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialKookminMultiChildRepository.save(verificationRecordSpecialKookminMultiChild);
+
+        return new ResponseEntity<>(new SpecialKookminPublicMultiChildResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomeTf, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, verificationRecordSpecialKookminMultiChild.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/minyeong/oldparent") //특별노부모민영
@@ -183,7 +208,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialPrivateOldParentVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetDepositTf = specialPrivateOldParentVerificationService.meetDeposit(user, aptInfoTarget);
 
-        return new ResponseEntity<>(new SpecialMinyeongOldParentResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf), HttpStatus.OK);
+        VerificationRecordSpecialMinyeongOldParent verificationRecordSpecialMinyeongOldParent = new VerificationRecordSpecialMinyeongOldParent(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetDepositTf, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialMinyeongOldParentRepository.save(verificationRecordSpecialMinyeongOldParent);
+
+        return new ResponseEntity<>(new SpecialMinyeongOldParentResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf, verificationRecordSpecialMinyeongOldParent.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/oldparent") //특별노부모국민공공주택
@@ -208,7 +237,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminPublicOldParentVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminPublicOldParentVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminPublicOldParentResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+        VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent = new VerificationRecordSpecialKookminOldParent(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialKookminOldParentRepository.save(verificationRecordSpecialKookminOldParent);
+
+        return new ResponseEntity<>(new SpecialKookminPublicOldParentResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, verificationRecordSpecialKookminOldParent.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/minyeong/newlymarried") //특별신혼부부민영
@@ -234,7 +267,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialPrivateNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetDepositTf = specialPrivateNewlyMarriedVerificationService.meetDeposit(user, aptInfoTarget);
 
-        return new ResponseEntity<>(new SpecialMinyeongNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf), HttpStatus.OK);
+        VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried = new VerificationRecordSpecialMinyeongNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialMinyeongNewlyMarriedRepository.save(verificationRecordSpecialMinyeongNewlyMarried);
+
+        return new ResponseEntity<>(new SpecialMinyeongNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf, verificationRecordSpecialMinyeongNewlyMarried.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/newlymarried") //특별신혼부부국민
@@ -260,7 +297,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminNewlyMarriedVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+        VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = new VerificationRecordSpecialKookminNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialKookminNewlyMarriedRepository.save(verificationRecordSpecialKookminNewlyMarried);
+
+        return new ResponseEntity<>(new SpecialKookminNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, verificationRecordSpecialKookminNewlyMarried.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/newlymarried") //특별신혼부부국민공공주택
@@ -287,7 +328,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminPublicNewlyMarriedVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminPublicNewlyMarriedVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminPublicNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf), HttpStatus.OK);
+        VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = new VerificationRecordSpecialKookminNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, hasMinorChildren, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialKookminNewlyMarriedRepository.save(verificationRecordSpecialKookminNewlyMarried);
+
+        return new ResponseEntity<>(new SpecialKookminPublicNewlyMarriedResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, secondChungyak, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, verificationRecordSpecialKookminNewlyMarried.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/minyeong/firstLife") //특별생애최초민영
@@ -312,7 +357,11 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialPrivateFirstLifeVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetDepositTf = specialPrivateFirstLifeVerificationService.meetDeposit(user, aptInfoTarget);
 
-        return new ResponseEntity<>(new SpecialMinyeongFirstLifeResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf), HttpStatus.OK);
+        VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife = new VerificationRecordSpecialMinyeongFirstLife(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialMinyeongFirstLifeRepository.save(verificationRecordSpecialMinyeongFirstLife);
+
+        return new ResponseEntity<>(new SpecialMinyeongFirstLifeResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, isRestrictedAreaTf, meetBankbookJoinPeriodTf, meetDepositTf, verificationRecordSpecialMinyeongFirstLife.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/special/kookmin/public/firstLife") //특별생애최초국민공공주택
@@ -338,6 +387,10 @@ public class VerificationController {
         boolean meetBankbookJoinPeriodTf = specialKookminPublicFirstLifeVerificationService.meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = specialKookminPublicFirstLifeVerificationService.meetNumberOfPayments(user, aptInfo);
 
-        return new ResponseEntity<>(new SpecialKookminPublicFirstLifeResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, isRestrictedAreaTf, meetNumberOfPaymentsTf, meetBankbookJoinPeriodTf), HttpStatus.OK);
+        VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife = new VerificationRecordSpecialKookminFirstLife(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
+
+        verificationRecordSpecialKookminFirstLifeRepository.save(verificationRecordSpecialKookminFirstLife);
+
+        return new ResponseEntity<>(new SpecialKookminPublicFirstLifeResponseDto(americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, isRestrictedAreaTf, meetNumberOfPaymentsTf, meetBankbookJoinPeriodTf, verificationRecordSpecialKookminFirstLife.getId()), HttpStatus.OK);
     }
 }
