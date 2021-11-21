@@ -1,6 +1,9 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminNewlyMarried;
+import com.hanium.chungyakpassback.enumtype.KookminType;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialKookminPublicNewlyMarriedResponseDto {
+
+    Long verificationRecordSpecialKookminNewlyMarriedId;
 
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
@@ -27,10 +32,13 @@ public class SpecialKookminPublicNewlyMarriedResponseDto {
     boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
+    private Yn sibilingSupportYn;
+    private Yn preNewMarriedYn;
+    private KookminType kookminType;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    Long verificationRecordSpecialKookminNewlyMarriedId;
 
     @Builder
     public SpecialKookminPublicNewlyMarriedResponseDto(VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried) {
@@ -50,6 +58,10 @@ public class SpecialKookminPublicNewlyMarriedResponseDto {
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialKookminNewlyMarried.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationRecordSpecialKookminNewlyMarried.isMeetNumberOfPaymentsTf();
         this.verificationRecordSpecialKookminNewlyMarriedId = verificationRecordSpecialKookminNewlyMarried.getId();
+        this.sibilingSupportYn = verificationRecordSpecialKookminNewlyMarried.getSibilingSupportYn();
+        this.preNewMarriedYn = verificationRecordSpecialKookminNewlyMarried.getPreNewMarriedYn();
+        this.kookminType = verificationRecordSpecialKookminNewlyMarried.getKookminType();
+        this.ranking = verificationRecordSpecialKookminNewlyMarried.getRanking();
         this.createdDate = verificationRecordSpecialKookminNewlyMarried.getCreatedDate();
         this.modifiedDate = verificationRecordSpecialKookminNewlyMarried.getModifiedDate();
     }

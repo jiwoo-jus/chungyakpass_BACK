@@ -1,6 +1,8 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongFirstLife;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialMinyeongFirstLifeResponseDto {
+
+    Long verificationRecordSpecialMinyeongFirstLifeId;
 
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
@@ -25,10 +29,12 @@ public class SpecialMinyeongFirstLifeResponseDto {
     boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetDepositTf;
+    private Yn sibilingSupportYn;
+    private Yn taxOver5yearsYn;
+    private Yn firstRankHistoryYn;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-
-    Long verificationRecordSpecialMinyeongFirstLifeId;
 
     @Builder
     public SpecialMinyeongFirstLifeResponseDto(VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife) {
@@ -46,6 +52,10 @@ public class SpecialMinyeongFirstLifeResponseDto {
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialMinyeongFirstLife.isMeetBankbookJoinPeriodTf();
         this.meetDepositTf = verificationRecordSpecialMinyeongFirstLife.isMeetDepositTf();
         this.verificationRecordSpecialMinyeongFirstLifeId = verificationRecordSpecialMinyeongFirstLife.getId();
+        this.sibilingSupportYn = verificationRecordSpecialMinyeongFirstLife.getSibilingSupportYn();
+        this.taxOver5yearsYn = verificationRecordSpecialMinyeongFirstLife.getTaxOver5yearsYn();
+        this.firstRankHistoryYn = verificationRecordSpecialMinyeongFirstLife.getFirstRankHistoryYn();
+        this.ranking = verificationRecordSpecialMinyeongFirstLife.getRanking();
         this.createdDate = verificationRecordSpecialMinyeongFirstLife.getCreatedDate();
         this.modifiedDate = verificationRecordSpecialMinyeongFirstLife.getModifiedDate();
     }

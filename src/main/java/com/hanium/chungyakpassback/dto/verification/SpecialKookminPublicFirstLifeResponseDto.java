@@ -1,6 +1,9 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminFirstLife;
+import com.hanium.chungyakpassback.enumtype.KookminType;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialKookminPublicFirstLifeResponseDto {
+
+    Long verificationRecordSpecialKookminFirstLifeId;
 
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
@@ -26,10 +31,14 @@ public class SpecialKookminPublicFirstLifeResponseDto {
     boolean isRestrictedAreaTf;
     boolean meetNumberOfPaymentsTf;
     boolean meetBankbookJoinPeriodTf;
+    private Yn sibilingSupportYn;
+    private Yn taxOver5yearsYn;
+    private KookminType kookminType;
+    private Yn firstRankHistoryYn;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    Long verificationRecordSpecialKookminFirstLifeId;
 
     public SpecialKookminPublicFirstLifeResponseDto(VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife) {
         this.americanAge = verificationRecordSpecialKookminFirstLife.getAmericanAge();
@@ -49,5 +58,10 @@ public class SpecialKookminPublicFirstLifeResponseDto {
         this.verificationRecordSpecialKookminFirstLifeId = verificationRecordSpecialKookminFirstLife.getId();
         this.createdDate = verificationRecordSpecialKookminFirstLife.getCreatedDate();
         this.modifiedDate = verificationRecordSpecialKookminFirstLife.getModifiedDate();
+        this.sibilingSupportYn = verificationRecordSpecialKookminFirstLife.getSibilingSupportYn();
+        this.taxOver5yearsYn = verificationRecordSpecialKookminFirstLife.getTaxOver5yearsYn();
+        this.kookminType = verificationRecordSpecialKookminFirstLife.getKookminType();
+        this.firstRankHistoryYn = verificationRecordSpecialKookminFirstLife.getFirstRankHistoryYn();
+        this.ranking = verificationRecordSpecialKookminFirstLife.getRanking();
     }
 }

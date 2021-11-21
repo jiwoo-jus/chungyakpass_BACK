@@ -1,6 +1,8 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookmin;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GeneralKookminResponseDto {
 
+    Long verificationRecordGeneralKookminId;
+
     private Integer americanAge;
     private boolean meetLivingInSurroundAreaTf;
     private boolean accountTf;
@@ -22,10 +26,11 @@ public class GeneralKookminResponseDto {
     private boolean meetAllHouseMemberRewinningRestrictionTf;
     private boolean meetBankbookJoinPeriodTf;
     private boolean meetNumberOfPaymentsTf;
+    Yn sibilingSupportYn;
+    Yn twentiesSoleHouseHolderYn;
+    Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-
-    Long verificationRecordGeneralKookminId;
 
     @Builder
     public GeneralKookminResponseDto(VerificationRecordGeneralKookmin verificationRecordGeneralKookmin) {
@@ -40,6 +45,9 @@ public class GeneralKookminResponseDto {
         this.meetBankbookJoinPeriodTf = verificationRecordGeneralKookmin.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationRecordGeneralKookmin.isMeetNumberOfPaymentsTf();
         this.verificationRecordGeneralKookminId = verificationRecordGeneralKookmin.getId();
+        this.sibilingSupportYn = verificationRecordGeneralKookmin.getSibilingSupportYn();
+        this.twentiesSoleHouseHolderYn = verificationRecordGeneralKookmin.getTwentiesSoleHouseHolderYn();
+        this.ranking = verificationRecordGeneralKookmin.getRanking();
         this.createdDate = verificationRecordGeneralKookmin.getCreatedDate();
         this.modifiedDate = verificationRecordGeneralKookmin.getModifiedDate();
     }

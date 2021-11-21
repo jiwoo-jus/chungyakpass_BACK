@@ -1,6 +1,9 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminMultiChild;
+import com.hanium.chungyakpassback.enumtype.KookminType;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialKookminPublicMultiChildResponseDto {
+
+    Long verificationRecordSpecialKookminMultiChildId;
+
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
     boolean accountTf;
@@ -22,10 +28,12 @@ public class SpecialKookminPublicMultiChildResponseDto {
     boolean householderTf;
     boolean isRestrictedAreaTf;
     boolean meetBankbookJoinPeriodTf;
+    private Yn sibilingSupportYn;
+    private KookminType kookminType;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    Long verificationRecordSpecialKookminMultiChildId;
 
     @Builder
     public SpecialKookminPublicMultiChildResponseDto(VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild) {
@@ -41,6 +49,9 @@ public class SpecialKookminPublicMultiChildResponseDto {
         this.isRestrictedAreaTf = verificationRecordSpecialKookminMultiChild.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialKookminMultiChild.isMeetBankbookJoinPeriodTf();
         this.verificationRecordSpecialKookminMultiChildId = verificationRecordSpecialKookminMultiChild.getId();
+        this.sibilingSupportYn = verificationRecordSpecialKookminMultiChild.getSibilingSupportYn();
+        this.kookminType = verificationRecordSpecialKookminMultiChild.getKookminType();
+        this.ranking = verificationRecordSpecialKookminMultiChild.getRanking();
         this.createdDate = verificationRecordSpecialKookminMultiChild.getCreatedDate();
         this.modifiedDate = verificationRecordSpecialKookminMultiChild.getModifiedDate();
     }

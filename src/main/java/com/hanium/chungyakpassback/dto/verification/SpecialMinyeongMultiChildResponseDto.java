@@ -1,6 +1,8 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongMultiChild;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialMinyeongMultiChildResponseDto {
+
+    Long verificationRecordSpecialMinyeongMultiChildId;
 
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
@@ -24,10 +28,11 @@ public class SpecialMinyeongMultiChildResponseDto {
     boolean isPriorityApt;
     boolean meetDepositTf;
     boolean meetBankbookJoinPeriodTf;
+    private Yn sibilingSupportYn;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    Long verificationRecordSpecialMinyeongMultiChildId;
 
     @Builder
     public SpecialMinyeongMultiChildResponseDto(VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild) {
@@ -44,6 +49,8 @@ public class SpecialMinyeongMultiChildResponseDto {
         this.meetDepositTf = verificationRecordSpecialMinyeongMultiChild.isMeetDepositTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialMinyeongMultiChild.isMeetBankbookJoinPeriodTf();
         this.verificationRecordSpecialMinyeongMultiChildId = verificationRecordSpecialMinyeongMultiChild.getId();
+        this.sibilingSupportYn = verificationRecordSpecialMinyeongMultiChild.getSibilingSupportYn();
+        this.ranking = verificationRecordSpecialMinyeongMultiChild.getRanking();
         this.createdDate = verificationRecordSpecialMinyeongMultiChild.getCreatedDate();
         this.modifiedDate = verificationRecordSpecialMinyeongMultiChild.getModifiedDate();
     }

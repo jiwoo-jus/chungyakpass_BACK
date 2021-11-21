@@ -1,6 +1,9 @@
 package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
+import com.hanium.chungyakpassback.enumtype.KookminType;
+import com.hanium.chungyakpassback.enumtype.Ranking;
+import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialKookminPublicOldParentResponseDto {
+
+    Long verificationRecordSpecialKookminOldParentId;
 
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
@@ -25,10 +30,12 @@ public class SpecialKookminPublicOldParentResponseDto {
     boolean meetAllHouseMemberRewinningRestrictionTf;
     boolean meetBankbookJoinPeriodTf;
     boolean meetNumberOfPaymentsTf;
+    private Yn sibilingSupportYn;
+    private KookminType kookminType;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    Long verificationRecordSpecialKookminOldParentId;
 
     @Builder
     public SpecialKookminPublicOldParentResponseDto(VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent) {
@@ -46,6 +53,9 @@ public class SpecialKookminPublicOldParentResponseDto {
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialKookminOldParent.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationRecordSpecialKookminOldParent.isMeetNumberOfPaymentsTf();
         this.verificationRecordSpecialKookminOldParentId = verificationRecordSpecialKookminOldParent.getId();
+        this.sibilingSupportYn = verificationRecordSpecialKookminOldParent.getSibilingSupportYn();
+        this.kookminType = verificationRecordSpecialKookminOldParent.getKookminType();
+        this.ranking = verificationRecordSpecialKookminOldParent.getRanking();
         this.createdDate = verificationRecordSpecialKookminOldParent.getCreatedDate();
         this.modifiedDate = verificationRecordSpecialKookminOldParent.getModifiedDate();
     }
