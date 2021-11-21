@@ -2,10 +2,14 @@ package com.hanium.chungyakpassback.service.verification;
 
 import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongDto;
 import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongResponseDto;
+import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongUpdateDto;
+import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongOldParentUpdateDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookmin;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralMinyeong;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongOldParent;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
@@ -18,14 +22,11 @@ import com.hanium.chungyakpassback.repository.record.VerificationRecordGeneralMi
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,12 +73,21 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
         boolean isPriorityApt = isPriorityApt(aptInfo, aptInfoTarget);
 
         VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong = new VerificationRecordGeneralMinyeong(user, americanAge, meetLivingInSurroundAreaTf, accountTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetHouseHavingLessThan2AptTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, isPriorityApt, aptInfo, aptInfoTarget);
-        verificationRecordGeneralMinyeong.setRanking(generalMinyeongDto.getRanking());
-        verificationRecordGeneralMinyeong.setSibilingSupportYn(generalMinyeongDto.getSibilingSupportYn());
+//        verificationRecordGeneralMinyeong.setRanking(generalMinyeongDto.getRanking());
+//        verificationRecordGeneralMinyeong.setSibilingSupportYn(generalMinyeongDto.getSibilingSupportYn());
         verificationRecordGeneralMinyeongRepository.save(verificationRecordGeneralMinyeong);
         return new GeneralMinyeongResponseDto(verificationRecordGeneralMinyeong);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public GeneralMinyeongUpdateDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
+        VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong = verificationRecordGeneralMinyeongRepository.findById(verificationRecordGeneralMinyeongId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordGeneralMinyeong.setSibilingSupportYn(generalMinyeongUpdateDto.getSibilingSupportYn());
+        verificationRecordGeneralMinyeong.setRanking(generalMinyeongUpdateDto.getRanking());
+        verificationRecordGeneralMinyeongRepository.save(verificationRecordGeneralMinyeong);
+        return generalMinyeongUpdateDto;
+    }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));

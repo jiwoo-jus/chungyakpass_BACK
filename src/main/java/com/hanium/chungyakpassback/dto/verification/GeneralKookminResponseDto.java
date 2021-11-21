@@ -25,7 +25,7 @@ public class GeneralKookminResponseDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    Long verificationRecordGeneralKookminRequestId;
+    Long verificationRecordGeneralKookminId;
 
     @Builder
     public GeneralKookminResponseDto(VerificationRecordGeneralKookmin verificationRecordGeneralKookmin) {
@@ -39,7 +39,7 @@ public class GeneralKookminResponseDto {
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordGeneralKookmin.isMeetAllHouseMemberRewinningRestrictionTf();
         this.meetBankbookJoinPeriodTf = verificationRecordGeneralKookmin.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationRecordGeneralKookmin.isMeetNumberOfPaymentsTf();
-        this.verificationRecordGeneralKookminRequestId = verificationRecordGeneralKookmin.getId();
+        this.verificationRecordGeneralKookminId = verificationRecordGeneralKookmin.getId();
         this.createdDate = verificationRecordGeneralKookmin.getCreatedDate();
         this.modifiedDate = verificationRecordGeneralKookmin.getModifiedDate();
     }

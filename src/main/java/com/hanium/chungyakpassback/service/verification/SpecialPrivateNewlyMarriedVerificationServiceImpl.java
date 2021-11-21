@@ -1,9 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongMultiChildDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongMultiChildResponseDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongNewlyMarriedDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongNewlyMarriedResponseDto;
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
@@ -77,10 +74,20 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
         boolean meetDepositTf = meetDeposit(user, aptInfoTarget);
 
         VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried = new VerificationRecordSpecialMinyeongNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
-        verificationRecordSpecialMinyeongNewlyMarried.setRanking(specialMinyeongNewlyMarriedDto.getRanking());
-        verificationRecordSpecialMinyeongNewlyMarried.setSibilingSupportYn(specialMinyeongNewlyMarriedDto.getSibilingSupportYn());
+//        verificationRecordSpecialMinyeongNewlyMarried.setRanking(specialMinyeongNewlyMarriedDto.getRanking());
+//        verificationRecordSpecialMinyeongNewlyMarried.setSibilingSupportYn(specialMinyeongNewlyMarriedDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongNewlyMarriedRepository.save(verificationRecordSpecialMinyeongNewlyMarried);
         return new SpecialMinyeongNewlyMarriedResponseDto(verificationRecordSpecialMinyeongNewlyMarried);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto(Long verificationRecordSpecialMinyeongNewlyMarriedId, SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
+        VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried = verificationRecordSpecialMinyeongNewlyMarriedRepository.findById(verificationRecordSpecialMinyeongNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialMinyeongNewlyMarried.setSibilingSupportYn(specialMinyeongNewlyMarriedUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialMinyeongNewlyMarried.setRanking(specialMinyeongNewlyMarriedUpdateDto.getRanking());
+        verificationRecordSpecialMinyeongNewlyMarriedRepository.save(verificationRecordSpecialMinyeongNewlyMarried);
+        return specialMinyeongNewlyMarriedUpdateDto;
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드

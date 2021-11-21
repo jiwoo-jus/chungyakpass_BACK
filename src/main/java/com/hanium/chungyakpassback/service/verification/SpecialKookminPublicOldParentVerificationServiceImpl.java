@@ -1,9 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicNewlyMarriedDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicNewlyMarriedResponseDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentResponseDto;
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
@@ -76,11 +73,22 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
         boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
 
         VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent = new VerificationRecordSpecialKookminOldParent(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncome, meetPropertyTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, aptInfo, aptInfoTarget);
-        verificationRecordSpecialKookminOldParent.setRanking(specialKookminPublicOldParentDto.getRanking());
-        verificationRecordSpecialKookminOldParent.setKookminType(specialKookminPublicOldParentDto.getKookminType());
-        verificationRecordSpecialKookminOldParent.setSibilingSupportYn(specialKookminPublicOldParentDto.getSibilingSupportYn());
+//        verificationRecordSpecialKookminOldParent.setRanking(specialKookminPublicOldParentDto.getRanking());
+//        verificationRecordSpecialKookminOldParent.setKookminType(specialKookminPublicOldParentDto.getKookminType());
+//        verificationRecordSpecialKookminOldParent.setSibilingSupportYn(specialKookminPublicOldParentDto.getSibilingSupportYn());
         verificationRecordSpecialKookminOldParentRepository.save(verificationRecordSpecialKookminOldParent);
         return new SpecialKookminPublicOldParentResponseDto(verificationRecordSpecialKookminOldParent);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
+        VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent = verificationRecordSpecialKookminOldParentRepository.findById(verificationRecordSpecialKookminOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialKookminOldParent.setSibilingSupportYn(specialKookminPublicOldParentUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialKookminOldParent.setKookminType(specialKookminPublicOldParentUpdateDto.getKookminType());
+        verificationRecordSpecialKookminOldParent.setRanking(specialKookminPublicOldParentUpdateDto.getRanking());
+        verificationRecordSpecialKookminOldParentRepository.save(verificationRecordSpecialKookminOldParent);
+        return specialKookminPublicOldParentUpdateDto;
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

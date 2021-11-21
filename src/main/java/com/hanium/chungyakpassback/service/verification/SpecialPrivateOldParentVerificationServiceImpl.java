@@ -1,9 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongNewlyMarriedDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongNewlyMarriedResponseDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongOldParentDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongOldParentResponseDto;
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
@@ -76,10 +73,20 @@ public class SpecialPrivateOldParentVerificationServiceImpl implements SpecialPr
         boolean meetDepositTf = meetDeposit(user, aptInfoTarget);
 
         VerificationRecordSpecialMinyeongOldParent verificationRecordSpecialMinyeongOldParent = new VerificationRecordSpecialMinyeongOldParent(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetOldParentSupportMore3yearsTf, meetHomelessHouseholdMembersTf, householderTf, isRestrictedAreaTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetDepositTf, aptInfo, aptInfoTarget);
-        verificationRecordSpecialMinyeongOldParent.setRanking(specialMinyeongOldParentDto.getRanking());
-        verificationRecordSpecialMinyeongOldParent.setSibilingSupportYn(specialMinyeongOldParentDto.getSibilingSupportYn());
+//        verificationRecordSpecialMinyeongOldParent.setRanking(specialMinyeongOldParentDto.getRanking());
+//        verificationRecordSpecialMinyeongOldParent.setSibilingSupportYn(specialMinyeongOldParentDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongOldParentRepository.save(verificationRecordSpecialMinyeongOldParent);
         return new SpecialMinyeongOldParentResponseDto(verificationRecordSpecialMinyeongOldParent);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto(Long verificationRecordSpecialMinyeongOldParentId, SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto) {
+        VerificationRecordSpecialMinyeongOldParent verificationRecordSpecialMinyeongOldParent = verificationRecordSpecialMinyeongOldParentRepository.findById(verificationRecordSpecialMinyeongOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialMinyeongOldParent.setSibilingSupportYn(specialMinyeongOldParentUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialMinyeongOldParent.setRanking(specialMinyeongOldParentUpdateDto.getRanking());
+        verificationRecordSpecialMinyeongOldParentRepository.save(verificationRecordSpecialMinyeongOldParent);
+        return specialMinyeongOldParentUpdateDto;
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

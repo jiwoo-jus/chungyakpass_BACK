@@ -5,6 +5,7 @@ import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
+import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongFirstLife;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongMultiChild;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
@@ -72,12 +73,21 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
         boolean meetBankbookJoinPeriodTf = meetBankbookJoinPeriod(user, aptInfo);
 
         VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild = new VerificationRecordSpecialMinyeongMultiChild(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, calcMinorChildren, householderTf, isRestrictedAreaTf, meetHouseHavingLessThan2Apt, isPriorityApt, meetBankbookJoinPeriodTf, meetDepositTf, aptInfo, aptInfoTarget);
-        verificationRecordSpecialMinyeongMultiChild.setRanking(specialMinyeongMultiChildDto.getRanking());
-        verificationRecordSpecialMinyeongMultiChild.setSibilingSupportYn(specialMinyeongMultiChildDto.getSibilingSupportYn());
+//        verificationRecordSpecialMinyeongMultiChild.setRanking(specialMinyeongMultiChildDto.getRanking());
+//        verificationRecordSpecialMinyeongMultiChild.setSibilingSupportYn(specialMinyeongMultiChildDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongMultiChildRepository.save(verificationRecordSpecialMinyeongMultiChild);
         return new SpecialMinyeongMultiChildResponseDto(verificationRecordSpecialMinyeongMultiChild);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
+        VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild = verificationRecordSpecialMinyeongMultiChildRepository.findById(verificationRecordSpecialMinyeongMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialMinyeongMultiChild.setSibilingSupportYn(specialMinyeongMultiChildUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialMinyeongMultiChild.setRanking(specialMinyeongMultiChildUpdateDto.getRanking());
+        verificationRecordSpecialMinyeongMultiChildRepository.save(verificationRecordSpecialMinyeongMultiChild);
+        return specialMinyeongMultiChildUpdateDto;
+    }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));

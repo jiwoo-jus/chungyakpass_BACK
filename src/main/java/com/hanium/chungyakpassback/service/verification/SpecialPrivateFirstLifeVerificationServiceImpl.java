@@ -1,9 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminPublicOldParentResponseDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongFirstLifeDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongFirstLifeResponseDto;
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
@@ -74,14 +71,25 @@ public class SpecialPrivateFirstLifeVerificationServiceImpl implements SpecialPr
         boolean meetDepositTf = meetDeposit(user, aptInfoTarget);
 
         VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife = new VerificationRecordSpecialMinyeongFirstLife(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetDepositTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
-        verificationRecordSpecialMinyeongFirstLife.setRanking(specialMinyeongFirstLifeDto.getRanking());
-        verificationRecordSpecialMinyeongFirstLife.setTaxOver5yearsYn(specialMinyeongFirstLifeDto.getTaxOver5yearsYn());
-        verificationRecordSpecialMinyeongFirstLife.setFirstRankHistoryYn(specialMinyeongFirstLifeDto.getFirstRankHistoryYn());
-        verificationRecordSpecialMinyeongFirstLife.setSibilingSupportYn(specialMinyeongFirstLifeDto.getSibilingSupportYn());
+//        verificationRecordSpecialMinyeongFirstLife.setRanking(specialMinyeongFirstLifeDto.getRanking());
+//        verificationRecordSpecialMinyeongFirstLife.setTaxOver5yearsYn(specialMinyeongFirstLifeDto.getTaxOver5yearsYn());
+//        verificationRecordSpecialMinyeongFirstLife.setFirstRankHistoryYn(specialMinyeongFirstLifeDto.getFirstRankHistoryYn());
+//        verificationRecordSpecialMinyeongFirstLife.setSibilingSupportYn(specialMinyeongFirstLifeDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongFirstLifeRepository.save(verificationRecordSpecialMinyeongFirstLife);
         return new SpecialMinyeongFirstLifeResponseDto(verificationRecordSpecialMinyeongFirstLife);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
+        VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife = verificationRecordSpecialMinyeongFirstLifeRepository.findById(verificationRecordSpecialMinyeongFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialMinyeongFirstLife.setSibilingSupportYn(specialMinyeongFirstLifeUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialMinyeongFirstLife.setTaxOver5yearsYn(specialMinyeongFirstLifeUpdateDto.getTaxOver5yearsYn());
+        verificationRecordSpecialMinyeongFirstLife.setFirstRankHistoryYn(specialMinyeongFirstLifeUpdateDto.getFirstRankHistoryYn());
+        verificationRecordSpecialMinyeongFirstLife.setRanking(specialMinyeongFirstLifeUpdateDto.getRanking());
+        verificationRecordSpecialMinyeongFirstLifeRepository.save(verificationRecordSpecialMinyeongFirstLife);
+        return specialMinyeongFirstLifeUpdateDto;
+    }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));

@@ -1,14 +1,10 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.GeneralKookminDto;
-import com.hanium.chungyakpassback.dto.verification.GeneralKookminResponseDto;
-import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongDto;
-import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongResponseDto;
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookmin;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralMinyeong;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
 import com.hanium.chungyakpassback.entity.standard.PriorityPaymentsCount;
 import com.hanium.chungyakpassback.enumtype.*;
@@ -22,8 +18,6 @@ import com.hanium.chungyakpassback.repository.standard.BankbookRepository;
 import com.hanium.chungyakpassback.repository.standard.PriorityPaymentsCountRepository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,11 +65,22 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
         boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
 
         VerificationRecordGeneralKookmin verificationRecordGeneralKookmin = new VerificationRecordGeneralKookmin(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
-        verificationRecordGeneralKookmin.setRanking(generalKookminDto.getRanking());
-        verificationRecordGeneralKookmin.setSibilingSupportYn(generalKookminDto.getSibilingSupportYn());
-        verificationRecordGeneralKookmin.setTwentiesSoleHouseHolderYn(generalKookminDto.getTwentiesSoleHouseHolderYn());
+//        verificationRecordGeneralKookmin.setRanking(generalKookminDto.getRanking());
+//        verificationRecordGeneralKookmin.setSibilingSupportYn(generalKookminDto.getSibilingSupportYn());
+//        verificationRecordGeneralKookmin.setTwentiesSoleHouseHolderYn(generalKookminDto.getTwentiesSoleHouseHolderYn());
         verificationRecordGeneralKookminRepository.save(verificationRecordGeneralKookmin);
         return new GeneralKookminResponseDto(verificationRecordGeneralKookmin);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public GeneralKookminUpdateDto generalKookminUpdateDto(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto) {
+        VerificationRecordGeneralKookmin verificationRecordGeneralKookmin = verificationRecordGeneralKookminRepository.findById(verificationRecordGeneralKookminId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordGeneralKookmin.setSibilingSupportYn(generalKookminUpdateDto.getSibilingSupportYn());
+        verificationRecordGeneralKookmin.setTwentiesSoleHouseHolderYn(generalKookminUpdateDto.getTwentiesSoleHouseHolderYn());
+        verificationRecordGeneralKookmin.setRanking(generalKookminUpdateDto.getRanking());
+        verificationRecordGeneralKookminRepository.save(verificationRecordGeneralKookmin);
+        return generalKookminUpdateDto;
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

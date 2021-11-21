@@ -20,10 +20,10 @@ public class SpecialKookminPublicOldParentDto {
     @NotNull
     public String housingType;
 
-    public Yn sibilingSupportYn; //형제자매부양여부
-
-    public KookminType kookminType; //국민주택유형
-
-    public Ranking ranking; //순위
+//    public Yn sibilingSupportYn; //형제자매부양여부
+//
+//    public KookminType kookminType; //국민주택유형
+//
+//    public Ranking ranking; //순위
 
 }

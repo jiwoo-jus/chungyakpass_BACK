@@ -19,8 +19,8 @@ public class GeneralMinyeongDto {
     @NotNull
     public String housingType;
 
-    public Yn sibilingSupportYn; //형제자매부양여부
-
-    public Ranking ranking; //순위
+//    public Yn sibilingSupportYn; //형제자매부양여부
+//
+//    public Ranking ranking; //순위
 
 }

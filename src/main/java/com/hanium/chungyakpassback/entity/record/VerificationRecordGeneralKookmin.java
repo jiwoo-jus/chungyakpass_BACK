@@ -12,6 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_verification_record_general_kookmin")
 public class VerificationRecordGeneralKookmin extends BaseTime {

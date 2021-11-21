@@ -1,9 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongDto;
-import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongResponseDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminNewlyMarriedDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialKookminNewlyMarriedResponseDto;
+import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
@@ -13,6 +10,8 @@ import java.time.LocalDate;
 public interface SpecialKookminNewlyMarriedVerificationService {
 
     SpecialKookminNewlyMarriedResponseDto specialKookminNewlyMarriedService(SpecialKookminNewlyMarriedDto specialKookminNewlyMarriedDto);
+
+    SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

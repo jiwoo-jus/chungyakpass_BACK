@@ -73,13 +73,26 @@ public class SpecialKookminPublicFirstLifeVerificationServiceImpl implements Spe
         boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
 
         VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife = new VerificationRecordSpecialKookminFirstLife(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetPropertyTf, meetHomelessHouseholdMembersTf, householderTf, meetAllHouseMemberNotWinningIn5yearsTf, meetAllHouseMemberRewinningRestrictionTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, aptInfo, aptInfoTarget);
-        verificationRecordSpecialKookminFirstLife.setRanking(specialKookminPublicFirstLifeDto.getRanking());
-        verificationRecordSpecialKookminFirstLife.setTaxOver5yearsYn(specialKookminPublicFirstLifeDto.getTaxOver5yearsYn());
-        verificationRecordSpecialKookminFirstLife.setKookminType((specialKookminPublicFirstLifeDto.getKookminType()));
-        verificationRecordSpecialKookminFirstLife.setFirstRankHistoryYn(specialKookminPublicFirstLifeDto.getFirstRankHistoryYn());
-        verificationRecordSpecialKookminFirstLife.setSibilingSupportYn(specialKookminPublicFirstLifeDto.getSibilingSupportYn());
+//        verificationRecordSpecialKookminFirstLife.setRanking(specialKookminPublicFirstLifeDto.getRanking());
+//        verificationRecordSpecialKookminFirstLife.setTaxOver5yearsYn(specialKookminPublicFirstLifeDto.getTaxOver5yearsYn());
+//        verificationRecordSpecialKookminFirstLife.setKookminType((specialKookminPublicFirstLifeDto.getKookminType()));
+//        verificationRecordSpecialKookminFirstLife.setFirstRankHistoryYn(specialKookminPublicFirstLifeDto.getFirstRankHistoryYn());
+//        verificationRecordSpecialKookminFirstLife.setSibilingSupportYn(specialKookminPublicFirstLifeDto.getSibilingSupportYn());
         verificationRecordSpecialKookminFirstLifeRepository.save(verificationRecordSpecialKookminFirstLife);
         return new SpecialKookminPublicFirstLifeResponseDto(verificationRecordSpecialKookminFirstLife);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
+        VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife = verificationRecordSpecialKookminFirstLifeRepository.findById(verificationRecordSpecialKookminFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialKookminFirstLife.setSibilingSupportYn(specialKookminPublicFirstLifeUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialKookminFirstLife.setTaxOver5yearsYn(specialKookminPublicFirstLifeUpdateDto.getTaxOver5yearsYn());
+        verificationRecordSpecialKookminFirstLife.setKookminType(specialKookminPublicFirstLifeUpdateDto.getKookminType());
+        verificationRecordSpecialKookminFirstLife.setFirstRankHistoryYn(specialKookminPublicFirstLifeUpdateDto.getFirstRankHistoryYn());
+        verificationRecordSpecialKookminFirstLife.setRanking(specialKookminPublicFirstLifeUpdateDto.getRanking());
+        verificationRecordSpecialKookminFirstLifeRepository.save(verificationRecordSpecialKookminFirstLife);
+        return specialKookminPublicFirstLifeUpdateDto;
     }
 
 

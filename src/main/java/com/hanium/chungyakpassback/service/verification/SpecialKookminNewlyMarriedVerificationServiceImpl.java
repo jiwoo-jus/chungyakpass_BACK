@@ -74,12 +74,24 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
         boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
 
         VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = new VerificationRecordSpecialKookminNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, meetMarriagePeriodIn7yearsTf, hasMinorChildren, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
-        verificationRecordSpecialKookminNewlyMarried.setRanking(specialKookminNewlyMarriedDto.getRanking());
-        verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminNewlyMarriedDto.getKookminType());
-        verificationRecordSpecialKookminNewlyMarried.setPreNewMarriedYn(specialKookminNewlyMarriedDto.getPreNewMarriedYn());
-        verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminNewlyMarriedDto.getSibilingSupportYn());
+//        verificationRecordSpecialKookminNewlyMarried.setRanking(specialKookminNewlyMarriedDto.getRanking());
+//        verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminNewlyMarriedDto.getKookminType());
+//        verificationRecordSpecialKookminNewlyMarried.setPreNewMarriedYn(specialKookminNewlyMarriedDto.getPreNewMarriedYn());
+//        verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminNewlyMarriedDto.getSibilingSupportYn());
         verificationRecordSpecialKookminNewlyMarriedRepository.save(verificationRecordSpecialKookminNewlyMarried);
         return new SpecialKookminNewlyMarriedResponseDto(verificationRecordSpecialKookminNewlyMarried);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto) {
+        VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = verificationRecordSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminNewlyMarriedUpdateDto.getSibilingSupportYn());
+        verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminNewlyMarriedUpdateDto.getKookminType());
+        verificationRecordSpecialKookminNewlyMarried.setPreNewMarriedYn(specialKookminNewlyMarriedUpdateDto.getPreNewMarriedYn());
+        verificationRecordSpecialKookminNewlyMarried.setRanking(specialKookminNewlyMarriedUpdateDto.getRanking());
+        verificationRecordSpecialKookminNewlyMarriedRepository.save(verificationRecordSpecialKookminNewlyMarried);
+        return specialKookminNewlyMarriedUpdateDto;
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드
