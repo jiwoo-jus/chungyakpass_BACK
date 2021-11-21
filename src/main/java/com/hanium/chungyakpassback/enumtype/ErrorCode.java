@@ -41,6 +41,7 @@ public enum ErrorCode {
     NOT_FOUND_Child(NOT_FOUND, "자녀를 찾을 수 없습니다."),
     NOT_FOUND_INCOME(NOT_FOUND, "월평균소득을 찾을 수 없습니다"),
     NOT_FOUND_SPOUSE(NOT_FOUND, "배우자를 찾을 수 없습니다"),
+    NOT_FOUND_VERIFICATION_RECORD_ID(NOT_FOUND, "자격점검이력을 찾을 수 없습니다"),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
