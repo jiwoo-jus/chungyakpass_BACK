@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,9 +46,22 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialKookminMultiChildRepository verificationRecordSpecialKookminMultiChildRepository;
 
+    @Override //특별다자녀국민조회
+    public List<SpecialKookminPublicMultiChildResponseDto> readSpecialKookminMultiChildVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialKookminPublicMultiChildResponseDto> specialKookminPublicMultiChildResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild : verificationRecordSpecialKookminMultiChildRepository.findAllByUser(user)) {
+            SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildResponseDto = new SpecialKookminPublicMultiChildResponseDto(verificationRecordSpecialKookminMultiChild);
+            specialKookminPublicMultiChildResponseDtos.add(specialKookminPublicMultiChildResponseDto);
+        }
+
+        return specialKookminPublicMultiChildResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildService(SpecialKookminPublicMultiChildDto specialKookminPublicMultiChildDto) {
+    public SpecialKookminPublicMultiChildResponseDto createSpecialKookminPublicMultiChildVerification(SpecialKookminPublicMultiChildDto specialKookminPublicMultiChildDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicMultiChildDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -76,7 +90,7 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildUpdateDto(Long verificationRecordSpecialKookminMultiChildId, SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto) {
+    public SpecialKookminPublicMultiChildResponseDto updateSpecialKookminPublicMultiChildVerification(Long verificationRecordSpecialKookminMultiChildId, SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto) {
         VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild = verificationRecordSpecialKookminMultiChildRepository.findById(verificationRecordSpecialKookminMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminMultiChild.setSibilingSupportYn(specialKookminPublicMultiChildUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminMultiChild.setKookminType(specialKookminPublicMultiChildUpdateDto.getKookminType());

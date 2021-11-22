@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,9 +50,22 @@ public class SpecialKookminPublicFirstLifeVerificationServiceImpl implements Spe
     final AptInfoTargetRepository aptInfoTargetRepository;
     final VerificationRecordSpecialKookminFirstLifeRepository verificationRecordSpecialKookminFirstLifeRepository;
 
+    @Override //특별생애최초국민조회
+    public List<SpecialKookminPublicFirstLifeResponseDto> readSpecialKookminFirstLifeVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialKookminPublicFirstLifeResponseDto> specialKookminPublicFirstLifeResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife : verificationRecordSpecialKookminFirstLifeRepository.findAllByUser(user)) {
+            SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeResponseDto = new SpecialKookminPublicFirstLifeResponseDto(verificationRecordSpecialKookminFirstLife);
+            specialKookminPublicFirstLifeResponseDtos.add(specialKookminPublicFirstLifeResponseDto);
+        }
+
+        return specialKookminPublicFirstLifeResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeService(SpecialKookminPublicFirstLifeDto specialKookminPublicFirstLifeDto) {
+    public SpecialKookminPublicFirstLifeResponseDto createSpecialKookminPublicFirstLifeVerification(SpecialKookminPublicFirstLifeDto specialKookminPublicFirstLifeDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -84,7 +98,7 @@ public class SpecialKookminPublicFirstLifeVerificationServiceImpl implements Spe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeUpdateDto(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
+    public SpecialKookminPublicFirstLifeResponseDto updateSpecialKookminPublicFirstLifeVerification(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
         VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife = verificationRecordSpecialKookminFirstLifeRepository.findById(verificationRecordSpecialKookminFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminFirstLife.setSibilingSupportYn(specialKookminPublicFirstLifeUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminFirstLife.setTaxOver5yearsYn(specialKookminPublicFirstLifeUpdateDto.getTaxOver5yearsYn());

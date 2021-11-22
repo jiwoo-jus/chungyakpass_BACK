@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,9 +50,22 @@ public class SpecialPrivateOldParentVerificationServiceImpl implements SpecialPr
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialMinyeongOldParentRepository verificationRecordSpecialMinyeongOldParentRepository;
 
+    @Override //특별노부모민영조회
+    public List<SpecialMinyeongOldParentResponseDto> readSpecialMinyeongOldParentVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialMinyeongOldParentResponseDto> specialMinyeongOldParentResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialMinyeongOldParent verificationRecordSpecialMinyeongOldParent : verificationRecordSpecialMinyeongOldParentRepository.findAllByUser(user)) {
+            SpecialMinyeongOldParentResponseDto specialMinyeongOldParentResponseDto = new SpecialMinyeongOldParentResponseDto(verificationRecordSpecialMinyeongOldParent);
+            specialMinyeongOldParentResponseDtos.add(specialMinyeongOldParentResponseDto);
+        }
+
+        return specialMinyeongOldParentResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongOldParentResponseDto specialMinyeongOldParentService(SpecialMinyeongOldParentDto specialMinyeongOldParentDto) {
+    public SpecialMinyeongOldParentResponseDto createSpecialMinyeongOldParentVerification(SpecialMinyeongOldParentDto specialMinyeongOldParentDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongOldParentDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -78,7 +92,7 @@ public class SpecialPrivateOldParentVerificationServiceImpl implements SpecialPr
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongOldParentResponseDto specialMinyeongOldParentUpdateDto(Long verificationRecordSpecialMinyeongOldParentId, SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto) {
+    public SpecialMinyeongOldParentResponseDto updateSpecialMinyeongOldParentVerification(Long verificationRecordSpecialMinyeongOldParentId, SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto) {
         VerificationRecordSpecialMinyeongOldParent verificationRecordSpecialMinyeongOldParent = verificationRecordSpecialMinyeongOldParentRepository.findById(verificationRecordSpecialMinyeongOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongOldParent.setSibilingSupportYn(specialMinyeongOldParentUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongOldParent.setRanking(specialMinyeongOldParentUpdateDto.getRanking());

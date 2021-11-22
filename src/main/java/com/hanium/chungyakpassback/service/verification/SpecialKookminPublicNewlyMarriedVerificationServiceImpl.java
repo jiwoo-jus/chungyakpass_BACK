@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +48,22 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialKookminNewlyMarriedRepository verificationRecordSpecialKookminNewlyMarriedRepository;
 
+    @Override //특별신혼부부국민조회
+    public List<SpecialKookminPublicNewlyMarriedResponseDto> readSpecialKookminPublicNewlyMarriedVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialKookminPublicNewlyMarriedResponseDto> specialKookminPublicNewlyMarriedResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried : verificationRecordSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
+            SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedResponseDto = new SpecialKookminPublicNewlyMarriedResponseDto(verificationRecordSpecialKookminNewlyMarried);
+            specialKookminPublicNewlyMarriedResponseDtos.add(specialKookminPublicNewlyMarriedResponseDto);
+        }
+
+        return specialKookminPublicNewlyMarriedResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedService(SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto) {
+    public SpecialKookminPublicNewlyMarriedResponseDto createSpecialKookminPublicNewlyMarriedVerification(SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicNewlyMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -82,7 +96,7 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto) {
+    public SpecialKookminPublicNewlyMarriedResponseDto updateSpecialKookminPublicNewlyMarriedVerification(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto) {
         VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = verificationRecordSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminPublicNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminPublicNewlyMarriedUpdateDto.getKookminType());

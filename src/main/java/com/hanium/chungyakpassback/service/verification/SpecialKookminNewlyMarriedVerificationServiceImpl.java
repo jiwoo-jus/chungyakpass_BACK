@@ -49,7 +49,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminNewlyMarriedResponseDto specialKookminNewlyMarriedService(SpecialKookminNewlyMarriedDto specialKookminNewlyMarriedDto) {
+    public SpecialKookminNewlyMarriedResponseDto createSpecialKookminNewlyMarriedVerification(SpecialKookminNewlyMarriedDto specialKookminNewlyMarriedDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminNewlyMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -81,7 +81,7 @@ public class SpecialKookminNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminNewlyMarriedResponseDto specialKookminNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto) {
+    public SpecialKookminNewlyMarriedResponseDto updateSpecialKookminNewlyMarriedVerification(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto) {
         VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = verificationRecordSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminNewlyMarriedUpdateDto.getKookminType());

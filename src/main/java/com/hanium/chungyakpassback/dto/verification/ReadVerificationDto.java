@@ -1,4 +1,4 @@
-package com.hanium.chungyakpassback.dto.record;
+package com.hanium.chungyakpassback.dto.verification;
 
 import com.hanium.chungyakpassback.dto.verification.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class UserVerificationRecordDto {
+public class ReadVerificationDto {
 
     List<GeneralMinyeongResponseDto> generalMinyeongResponseDtos;
     List<GeneralKookminResponseDto> generalKookminResponseDtos;

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,9 +46,22 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
     final AptInfoTargetRepository aptInfoTargetRepository;
     final VerificationRecordGeneralKookminRepository verificationRecordGeneralKookminRepository;
 
+    @Override //일반국민조회
+    public List<GeneralKookminResponseDto> readGeneralKookminVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<GeneralKookminResponseDto> generalKookminResponseDtos = new ArrayList<>();
+        for (VerificationRecordGeneralKookmin verificationRecordGeneralKookmin : verificationRecordGeneralKookminRepository.findAllByUser(user)) {
+            GeneralKookminResponseDto generalKookminResponseDto = new GeneralKookminResponseDto(verificationRecordGeneralKookmin);
+            generalKookminResponseDtos.add(generalKookminResponseDto);
+        }
+
+        return generalKookminResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneralKookminResponseDto generalKookminService(GeneralKookminDto generalKookminDto) {
+    public GeneralKookminResponseDto createGeneralKookminVerification(GeneralKookminDto generalKookminDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(generalKookminDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -74,7 +88,7 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneralKookminResponseDto generalKookminUpdateDto(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto) {
+    public GeneralKookminResponseDto updateGeneralKookminVerification(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto) {
         VerificationRecordGeneralKookmin verificationRecordGeneralKookmin = verificationRecordGeneralKookminRepository.findById(verificationRecordGeneralKookminId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordGeneralKookmin.setSibilingSupportYn(generalKookminUpdateDto.getSibilingSupportYn());
         verificationRecordGeneralKookmin.setTwentiesSoleHouseHolderYn(generalKookminUpdateDto.getTwentiesSoleHouseHolderYn());

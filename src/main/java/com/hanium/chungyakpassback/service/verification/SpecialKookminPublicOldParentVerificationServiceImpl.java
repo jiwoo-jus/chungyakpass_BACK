@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +48,22 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialKookminOldParentRepository verificationRecordSpecialKookminOldParentRepository;
 
+    @Override //특별노부모국민조회
+    public List<SpecialKookminPublicOldParentResponseDto> readSpecialKookminOldParentVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialKookminPublicOldParentResponseDto> specialKookminPublicOldParentResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent : verificationRecordSpecialKookminOldParentRepository.findAllByUser(user)) {
+            SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentResponseDto = new SpecialKookminPublicOldParentResponseDto(verificationRecordSpecialKookminOldParent);
+            specialKookminPublicOldParentResponseDtos.add(specialKookminPublicOldParentResponseDto);
+        }
+
+        return specialKookminPublicOldParentResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentService(SpecialKookminPublicOldParentDto specialKookminPublicOldParentDto) {
+    public SpecialKookminPublicOldParentResponseDto createSpecialKookminPublicOldParentVerification(SpecialKookminPublicOldParentDto specialKookminPublicOldParentDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialKookminPublicOldParentDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -79,7 +93,7 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentUpdateDto(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
+    public SpecialKookminPublicOldParentResponseDto updateSpecialKookminPublicOldParentVerification(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
         VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent = verificationRecordSpecialKookminOldParentRepository.findById(verificationRecordSpecialKookminOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminOldParent.setSibilingSupportYn(specialKookminPublicOldParentUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminOldParent.setKookminType(specialKookminPublicOldParentUpdateDto.getKookminType());

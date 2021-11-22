@@ -8,12 +8,15 @@ import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface SpecialPrivateFirstLifeVerificationService {
 
-    SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeService(SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto);
+    List<SpecialMinyeongFirstLifeResponseDto> readSpecialMinyeongFirstLifeVerifications();
 
-    SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto);
+    SpecialMinyeongFirstLifeResponseDto createSpecialMinyeongFirstLifeVerification(SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto);
+
+    SpecialMinyeongFirstLifeResponseDto updateSpecialMinyeongFirstLifeVerification(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

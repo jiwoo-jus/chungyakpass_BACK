@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +48,22 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialMinyeongMultiChildRepository verificationRecordSpecialMinyeongMultiChildRepository;
 
+    @Override //특별다자녀민영조회
+    public List<SpecialMinyeongMultiChildResponseDto> readSpecialMinyeongMultiChildVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialMinyeongMultiChildResponseDto> specialMinyeongMultiChildResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild : verificationRecordSpecialMinyeongMultiChildRepository.findAllByUser(user)) {
+            SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildResponseDto = new SpecialMinyeongMultiChildResponseDto(verificationRecordSpecialMinyeongMultiChild);
+            specialMinyeongMultiChildResponseDtos.add(specialMinyeongMultiChildResponseDto);
+        }
+
+        return specialMinyeongMultiChildResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildService(SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto) {
+    public SpecialMinyeongMultiChildResponseDto createSpecialMinyeongMultiChildVerification(SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongMultiChildDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -77,7 +91,7 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
+    public SpecialMinyeongMultiChildResponseDto updateSpecialMinyeongMultiChildVerification(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
         VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild = verificationRecordSpecialMinyeongMultiChildRepository.findById(verificationRecordSpecialMinyeongMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongMultiChild.setSibilingSupportYn(specialMinyeongMultiChildUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongMultiChild.setRanking(specialMinyeongMultiChildUpdateDto.getRanking());

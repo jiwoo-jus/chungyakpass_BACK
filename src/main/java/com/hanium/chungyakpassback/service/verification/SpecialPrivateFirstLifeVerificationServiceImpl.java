@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,9 +46,22 @@ public class SpecialPrivateFirstLifeVerificationServiceImpl implements SpecialPr
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialMinyeongFirstLifeRepository verificationRecordSpecialMinyeongFirstLifeRepository;
 
+    @Override //특별생애최초민영조회
+    public List<SpecialMinyeongFirstLifeResponseDto> readSpecialMinyeongFirstLifeVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife : verificationRecordSpecialMinyeongFirstLifeRepository.findAllByUser(user)) {
+            SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeResponseDto = new SpecialMinyeongFirstLifeResponseDto(verificationRecordSpecialMinyeongFirstLife);
+            specialMinyeongFirstLifeResponseDtos.add(specialMinyeongFirstLifeResponseDto);
+        }
+
+        return specialMinyeongFirstLifeResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeService(SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto) {
+    public SpecialMinyeongFirstLifeResponseDto createSpecialMinyeongFirstLifeVerification(SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongFirstLifeDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -78,7 +92,7 @@ public class SpecialPrivateFirstLifeVerificationServiceImpl implements SpecialPr
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
+    public SpecialMinyeongFirstLifeResponseDto updateSpecialMinyeongFirstLifeVerification(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
         VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife = verificationRecordSpecialMinyeongFirstLifeRepository.findById(verificationRecordSpecialMinyeongFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongFirstLife.setSibilingSupportYn(specialMinyeongFirstLifeUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongFirstLife.setTaxOver5yearsYn(specialMinyeongFirstLifeUpdateDto.getTaxOver5yearsYn());

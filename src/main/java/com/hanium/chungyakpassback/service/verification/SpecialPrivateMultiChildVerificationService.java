@@ -6,12 +6,15 @@ import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface SpecialPrivateMultiChildVerificationService {
 
-    SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildService(SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto);
+    List<SpecialMinyeongMultiChildResponseDto> readSpecialMinyeongMultiChildVerifications();
 
-    SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto);
+    SpecialMinyeongMultiChildResponseDto createSpecialMinyeongMultiChildVerification(SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto);
+
+    SpecialMinyeongMultiChildResponseDto updateSpecialMinyeongMultiChildVerification(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

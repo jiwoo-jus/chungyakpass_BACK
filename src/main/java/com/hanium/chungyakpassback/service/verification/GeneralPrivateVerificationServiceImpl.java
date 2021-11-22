@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,9 +50,22 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
     final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
     final VerificationRecordGeneralMinyeongRepository verificationRecordGeneralMinyeongRepository;
 
+    @Override //일반민영조회
+    public List<GeneralMinyeongResponseDto> readGeneralMinyeongVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<GeneralMinyeongResponseDto> generalMinyeongResponseDtos = new ArrayList<>();
+        for (VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong : verificationRecordGeneralMinyeongRepository.findAllByUser(user)) {
+            GeneralMinyeongResponseDto generalMinyeongResponseDto = new GeneralMinyeongResponseDto(verificationRecordGeneralMinyeong);
+            generalMinyeongResponseDtos.add(generalMinyeongResponseDto);
+        }
+
+        return generalMinyeongResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneralMinyeongResponseDto generalMinyeongService(GeneralMinyeongDto generalMinyeongDto) {
+    public GeneralMinyeongResponseDto createGeneralMinyeongVerification(GeneralMinyeongDto generalMinyeongDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(generalMinyeongDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -78,7 +92,7 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneralMinyeongResponseDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
+    public GeneralMinyeongResponseDto updateGeneralMinyeongVerification(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
         VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong = verificationRecordGeneralMinyeongRepository.findById(verificationRecordGeneralMinyeongId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordGeneralMinyeong.setSibilingSupportYn(generalMinyeongUpdateDto.getSibilingSupportYn());
         verificationRecordGeneralMinyeong.setRanking(generalMinyeongUpdateDto.getRanking());

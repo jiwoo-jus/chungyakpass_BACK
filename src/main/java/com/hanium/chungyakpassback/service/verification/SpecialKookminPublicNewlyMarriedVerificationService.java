@@ -6,12 +6,15 @@ import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.User;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface SpecialKookminPublicNewlyMarriedVerificationService {
 
-    SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedService(SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto);
+    List<SpecialKookminPublicNewlyMarriedResponseDto> readSpecialKookminPublicNewlyMarriedVerifications();
 
-    SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto);
+    SpecialKookminPublicNewlyMarriedResponseDto createSpecialKookminPublicNewlyMarriedVerification(SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto);
+
+    SpecialKookminPublicNewlyMarriedResponseDto updateSpecialKookminPublicNewlyMarriedVerification(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

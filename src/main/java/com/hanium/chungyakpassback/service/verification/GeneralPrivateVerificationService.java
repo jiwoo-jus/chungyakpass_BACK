@@ -10,12 +10,15 @@ import com.hanium.chungyakpassback.entity.input.User;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface GeneralPrivateVerificationService {
 
-    GeneralMinyeongResponseDto generalMinyeongService(GeneralMinyeongDto generalMinyeongDto);
+    List<GeneralMinyeongResponseDto> readGeneralMinyeongVerifications();
 
-    GeneralMinyeongResponseDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto);
+    GeneralMinyeongResponseDto createGeneralMinyeongVerification(GeneralMinyeongDto generalMinyeongDto);
+
+    GeneralMinyeongResponseDto updateGeneralMinyeongVerification(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

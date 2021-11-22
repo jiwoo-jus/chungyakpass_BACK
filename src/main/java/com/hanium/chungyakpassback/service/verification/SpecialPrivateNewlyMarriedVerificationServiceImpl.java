@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +48,22 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
     final AptInfoRepository aptInfoRepository;
     final VerificationRecordSpecialMinyeongNewlyMarriedRepository verificationRecordSpecialMinyeongNewlyMarriedRepository;
 
+    @Override //특별신혼부부민영조회
+    public List<SpecialMinyeongNewlyMarriedResponseDto> readSpecialMinyeongNewlyMarriedVerifications() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialMinyeongNewlyMarriedResponseDto> specialMinyeongNewlyMarriedResponseDtos = new ArrayList<>();
+        for (VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried : verificationRecordSpecialMinyeongNewlyMarriedRepository.findAllByUser(user)) {
+            SpecialMinyeongNewlyMarriedResponseDto specialMinyeongNewlyMarriedResponseDto = new SpecialMinyeongNewlyMarriedResponseDto(verificationRecordSpecialMinyeongNewlyMarried);
+            specialMinyeongNewlyMarriedResponseDtos.add(specialMinyeongNewlyMarriedResponseDto);
+        }
+
+        return specialMinyeongNewlyMarriedResponseDtos;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongNewlyMarriedResponseDto specialMinyeongNewlyMarriedService(SpecialMinyeongNewlyMarriedDto specialMinyeongNewlyMarriedDto) {
+    public SpecialMinyeongNewlyMarriedResponseDto createSpecialMinyeongNewlyMarriedVerification(SpecialMinyeongNewlyMarriedDto specialMinyeongNewlyMarriedDto) {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongNewlyMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
@@ -79,7 +93,7 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongNewlyMarriedResponseDto specialMinyeongNewlyMarriedUpdateDto(Long verificationRecordSpecialMinyeongNewlyMarriedId, SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
+    public SpecialMinyeongNewlyMarriedResponseDto updateSpecialMinyeongNewlyMarriedVerification(Long verificationRecordSpecialMinyeongNewlyMarriedId, SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
         VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried = verificationRecordSpecialMinyeongNewlyMarriedRepository.findById(verificationRecordSpecialMinyeongNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongNewlyMarried.setSibilingSupportYn(specialMinyeongNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongNewlyMarried.setRanking(specialMinyeongNewlyMarriedUpdateDto.getRanking());
