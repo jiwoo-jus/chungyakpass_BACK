@@ -19,6 +19,7 @@ public class HouseMemberChungyakDto {
     @NotBlank
     private Long houseMemberId; //세대구성원id
 
+    @NotBlank
     private String houseName; //주택명
 
     @NotBlank

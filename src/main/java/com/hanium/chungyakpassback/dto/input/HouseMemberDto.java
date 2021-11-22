@@ -25,6 +25,7 @@ public class HouseMemberDto {
     @NotBlank
     private String name; //이름
 
+    @NotBlank
     private LocalDate birthDay; //생년월일
 
     @NotBlank
