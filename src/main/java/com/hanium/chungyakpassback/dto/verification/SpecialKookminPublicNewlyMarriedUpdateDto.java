@@ -14,13 +14,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SpecialKookminPublicNewlyMarriedUpdateDto {
 
-    public Yn sibilingSupportYn; //형제자매부양여부
+    private Yn sibilingSupportYn; //형제자매부양여부
 
-    public Yn preNewMarriedYn; //예비신혼부부여부
+    private Yn preNewMarriedYn; //예비신혼부부여부
 
-    public KookminType kookminType; //국민주택유형
+    private KookminType kookminType; //국민주택유형
 
-    public Ranking ranking; //순위
-
+    private Ranking ranking; //순위
 
 }

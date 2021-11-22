@@ -15,23 +15,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SpecialKookminPublicNewlyMarriedResponseDto {
 
-    Long verificationRecordSpecialKookminNewlyMarriedId;
+    private Long verificationRecordSpecialKookminNewlyMarriedId;
 
-    Integer americanAge;
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    boolean meetRecipientTf;
-    boolean hasMinorChildren;
-    boolean meetMonthlyAverageIncomePriorityTf;
-    boolean meetMonthlyAverageIncomeGeneralTf;
-    boolean meetPropertyTf;
-    boolean secondChungyak;
-    boolean meetHomelessHouseholdMembersTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
-    boolean householderTf;
-    boolean isRestrictedAreaTf;
-    boolean meetBankbookJoinPeriodTf;
-    boolean meetNumberOfPaymentsTf;
+    private Integer americanAge;
+    private boolean meetLivingInSurroundAreaTf;
+    private boolean accountTf;
+    private boolean meetRecipientTf;
+    private boolean hasMinorChildren;
+    private boolean meetMonthlyAverageIncomePriorityTf;
+    private boolean meetMonthlyAverageIncomeGeneralTf;
+    private boolean meetPropertyTf;
+    private boolean secondChungyak;
+    private boolean meetHomelessHouseholdMembersTf;
+    private boolean meetAllHouseMemberRewinningRestrictionTf;
+    private boolean householderTf;
+    private boolean restrictedAreaTf;
+    private boolean meetBankbookJoinPeriodTf;
+    private boolean meetNumberOfPaymentsTf;
     private Yn sibilingSupportYn;
     private Yn preNewMarriedYn;
     private KookminType kookminType;
@@ -54,7 +54,7 @@ public class SpecialKookminPublicNewlyMarriedResponseDto {
         this.meetHomelessHouseholdMembersTf = verificationRecordSpecialKookminNewlyMarried.isMeetHomelessHouseholdMemberTf();
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordSpecialKookminNewlyMarried.isMeetAllHouseMemberRewinningRestrictionTf();
         this.householderTf = verificationRecordSpecialKookminNewlyMarried.isHouseholderTf();
-        this.isRestrictedAreaTf = verificationRecordSpecialKookminNewlyMarried.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationRecordSpecialKookminNewlyMarried.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialKookminNewlyMarried.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationRecordSpecialKookminNewlyMarried.isMeetNumberOfPaymentsTf();
         this.verificationRecordSpecialKookminNewlyMarriedId = verificationRecordSpecialKookminNewlyMarried.getId();

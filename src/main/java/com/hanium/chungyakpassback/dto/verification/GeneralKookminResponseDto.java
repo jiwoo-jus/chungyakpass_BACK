@@ -14,21 +14,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GeneralKookminResponseDto {
 
-    Long verificationRecordGeneralKookminId;
+    private Long verificationRecordGeneralKookminId;
 
     private Integer americanAge;
     private boolean meetLivingInSurroundAreaTf;
     private boolean accountTf;
     private boolean meetHomelessHouseholdMembersTf;
     private boolean householderTf;
-    private boolean isRestrictedAreaTf;
+    private boolean restrictedAreaTf;
     private boolean meetAllHouseMemberNotWinningIn5yearsTf;
     private boolean meetAllHouseMemberRewinningRestrictionTf;
     private boolean meetBankbookJoinPeriodTf;
     private boolean meetNumberOfPaymentsTf;
-    Yn sibilingSupportYn;
-    Yn twentiesSoleHouseHolderYn;
-    Ranking ranking;
+    private Yn sibilingSupportYn;
+    private Yn twentiesSoleHouseHolderYn;
+    private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -39,7 +39,7 @@ public class GeneralKookminResponseDto {
         this.accountTf = verificationRecordGeneralKookmin.isAccountTf();
         this.meetHomelessHouseholdMembersTf = verificationRecordGeneralKookmin.isMeetHomelessHouseholdMemberTf();
         this.householderTf = verificationRecordGeneralKookmin.isHouseholderTf();
-        this.isRestrictedAreaTf = verificationRecordGeneralKookmin.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationRecordGeneralKookmin.isRestrictedAreaTf();
         this.meetAllHouseMemberNotWinningIn5yearsTf = verificationRecordGeneralKookmin.isMeetAllHouseMemberNotWinningIn5yearsTf();
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordGeneralKookmin.isMeetAllHouseMemberRewinningRestrictionTf();
         this.meetBankbookJoinPeriodTf = verificationRecordGeneralKookmin.isMeetBankbookJoinPeriodTf();

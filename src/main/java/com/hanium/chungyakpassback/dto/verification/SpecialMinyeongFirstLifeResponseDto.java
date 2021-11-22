@@ -14,21 +14,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SpecialMinyeongFirstLifeResponseDto {
 
-    Long verificationRecordSpecialMinyeongFirstLifeId;
+    private Long verificationRecordSpecialMinyeongFirstLifeId;
 
-    Integer americanAge;
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    boolean meetRecipientTf;
-    boolean meetMonthlyAverageIncomePriorityTf;
-    boolean meetMonthlyAverageIncomeGeneralTf;
-    boolean meetHomelessHouseholdMembersTf;
-    boolean householderTf;
-    boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
-    boolean isRestrictedAreaTf;
-    boolean meetBankbookJoinPeriodTf;
-    boolean meetDepositTf;
+    private Integer americanAge;
+    private boolean meetLivingInSurroundAreaTf;
+    private boolean accountTf;
+    private boolean meetRecipientTf;
+    private boolean meetMonthlyAverageIncomePriorityTf;
+    private boolean meetMonthlyAverageIncomeGeneralTf;
+    private boolean meetHomelessHouseholdMembersTf;
+    private boolean householderTf;
+    private boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    private boolean meetAllHouseMemberRewinningRestrictionTf;
+    private boolean restrictedAreaTf;
+    private boolean meetBankbookJoinPeriodTf;
+    private boolean meetDepositTf;
     private Yn sibilingSupportYn;
     private Yn taxOver5yearsYn;
     private Yn firstRankHistoryYn;
@@ -48,7 +48,7 @@ public class SpecialMinyeongFirstLifeResponseDto {
         this.householderTf = verificationRecordSpecialMinyeongFirstLife.isHouseholderTf();
         this.meetAllHouseMemberNotWinningIn5yearsTf = verificationRecordSpecialMinyeongFirstLife.isMeetAllHouseMemberNotWinningIn5yearsTf();
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordSpecialMinyeongFirstLife.isMeetAllHouseMemberRewinningRestrictionTf();
-        this.isRestrictedAreaTf = verificationRecordSpecialMinyeongFirstLife.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationRecordSpecialMinyeongFirstLife.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialMinyeongFirstLife.isMeetBankbookJoinPeriodTf();
         this.meetDepositTf = verificationRecordSpecialMinyeongFirstLife.isMeetDepositTf();
         this.verificationRecordSpecialMinyeongFirstLifeId = verificationRecordSpecialMinyeongFirstLife.getId();

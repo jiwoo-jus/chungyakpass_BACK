@@ -14,25 +14,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SpecialMinyeongMultiChildResponseDto {
 
-    Long verificationRecordSpecialMinyeongMultiChildId;
+    private Long verificationRecordSpecialMinyeongMultiChildId;
 
-    Integer americanAge;
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    boolean meetHomelessHouseholdMembersTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
-    Integer calcMinorChildren;
-    boolean householderTf;
-    boolean isRestrictedAreaTf;
-    boolean meetHouseHavingLessThan2AptTf;
-    boolean isPriorityApt;
-    boolean meetDepositTf;
-    boolean meetBankbookJoinPeriodTf;
+    private Integer americanAge;
+    private boolean meetLivingInSurroundAreaTf;
+    private boolean accountTf;
+    private boolean meetHomelessHouseholdMembersTf;
+    private boolean meetAllHouseMemberRewinningRestrictionTf;
+    private Integer calcMinorChildren;
+    private boolean householderTf;
+    private boolean restrictedAreaTf;
+    private boolean meetHouseHavingLessThan2AptTf;
+    private boolean priorityApt;
+    private boolean meetDepositTf;
+    private boolean meetBankbookJoinPeriodTf;
     private Yn sibilingSupportYn;
     private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-
 
     @Builder
     public SpecialMinyeongMultiChildResponseDto(VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild) {
@@ -43,9 +42,9 @@ public class SpecialMinyeongMultiChildResponseDto {
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordSpecialMinyeongMultiChild.isMeetAllHouseMemberRewinningRestrictionTf();
         this.calcMinorChildren = verificationRecordSpecialMinyeongMultiChild.getCalcMinorChildren();
         this.householderTf = verificationRecordSpecialMinyeongMultiChild.isHouseholderTf();
-        this.isRestrictedAreaTf = verificationRecordSpecialMinyeongMultiChild.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationRecordSpecialMinyeongMultiChild.isRestrictedAreaTf();
         this.meetHouseHavingLessThan2AptTf = verificationRecordSpecialMinyeongMultiChild.isMeetHouseHavingLessThan2AptTf();
-        this.isPriorityApt = verificationRecordSpecialMinyeongMultiChild.isPriorityApt();
+        this.priorityApt = verificationRecordSpecialMinyeongMultiChild.isPriorityApt();
         this.meetDepositTf = verificationRecordSpecialMinyeongMultiChild.isMeetDepositTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialMinyeongMultiChild.isMeetBankbookJoinPeriodTf();
         this.verificationRecordSpecialMinyeongMultiChildId = verificationRecordSpecialMinyeongMultiChild.getId();

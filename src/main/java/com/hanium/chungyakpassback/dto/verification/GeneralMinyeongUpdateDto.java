@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GeneralMinyeongUpdateDto {
 
-    public Yn sibilingSupportYn; //형제자매부양여부
+    private Yn sibilingSupportYn; //형제자매부양여부
 
-    public Ranking ranking; //순위
+    private Ranking ranking; //순위
 
 }

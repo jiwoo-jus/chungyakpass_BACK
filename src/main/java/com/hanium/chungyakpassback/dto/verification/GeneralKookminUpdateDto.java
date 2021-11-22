@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GeneralKookminUpdateDto {
 
-    Yn sibilingSupportYn; //형제자매부양여부
+    private Yn sibilingSupportYn; //형제자매부양여부
 
-    Yn twentiesSoleHouseHolderYn; //20대단독세대주여부
+    private Yn twentiesSoleHouseHolderYn; //20대단독세대주여부
 
-    Ranking ranking; //순위
+    private Ranking ranking; //순위
 
 }

@@ -15,19 +15,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SpecialKookminPublicMultiChildResponseDto {
 
-    Long verificationRecordSpecialKookminMultiChildId;
+    private Long verificationRecordSpecialKookminMultiChildId;
 
-    Integer americanAge;
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    boolean meetMonthlyAverageIncomeTf;
-    boolean meetPropertyTf;
-    boolean meetHomelessHouseholdMembersTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
-    Integer calcMinorChildren;
-    boolean householderTf;
-    boolean isRestrictedAreaTf;
-    boolean meetBankbookJoinPeriodTf;
+    private Integer americanAge;
+    private boolean meetLivingInSurroundAreaTf;
+    private boolean accountTf;
+    private boolean meetMonthlyAverageIncomeTf;
+    private boolean meetPropertyTf;
+    private boolean meetHomelessHouseholdMembersTf;
+    private boolean meetAllHouseMemberRewinningRestrictionTf;
+    private Integer calcMinorChildren;
+    private boolean householderTf;
+    private boolean restrictedAreaTf;
+    private boolean meetBankbookJoinPeriodTf;
     private Yn sibilingSupportYn;
     private KookminType kookminType;
     private Ranking ranking;
@@ -46,7 +46,7 @@ public class SpecialKookminPublicMultiChildResponseDto {
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordSpecialKookminMultiChild.isMeetAllHouseMemberRewinningRestrictionTf();
         this.calcMinorChildren = verificationRecordSpecialKookminMultiChild.getCalcMinorChildren();
         this.householderTf = verificationRecordSpecialKookminMultiChild.isHouseholderTf();
-        this.isRestrictedAreaTf = verificationRecordSpecialKookminMultiChild.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationRecordSpecialKookminMultiChild.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialKookminMultiChild.isMeetBankbookJoinPeriodTf();
         this.verificationRecordSpecialKookminMultiChildId = verificationRecordSpecialKookminMultiChild.getId();
         this.sibilingSupportYn = verificationRecordSpecialKookminMultiChild.getSibilingSupportYn();

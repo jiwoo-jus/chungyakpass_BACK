@@ -15,27 +15,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SpecialKookminPublicOldParentResponseDto {
 
-    Long verificationRecordSpecialKookminOldParentId;
+    private Long verificationRecordSpecialKookminOldParentId;
 
-    Integer americanAge;
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    boolean meetMonthlyAverageIncomeTf;
-    boolean meetPropertyTf;
-    boolean meetOldParentSupportMore3yearsTf;
-    boolean meetHomelessHouseholdMembersTf;
-    boolean householderTf;
-    boolean isRestrictedAreaTf;
-    boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
-    boolean meetBankbookJoinPeriodTf;
-    boolean meetNumberOfPaymentsTf;
+    private Integer americanAge;
+    private boolean meetLivingInSurroundAreaTf;
+    private boolean accountTf;
+    private boolean meetMonthlyAverageIncomeTf;
+    private boolean meetPropertyTf;
+    private boolean meetOldParentSupportMore3yearsTf;
+    private boolean meetHomelessHouseholdMembersTf;
+    private boolean householderTf;
+    private boolean restrictedAreaTf;
+    private boolean meetAllHouseMemberNotWinningIn5yearsTf;
+    private boolean meetAllHouseMemberRewinningRestrictionTf;
+    private boolean meetBankbookJoinPeriodTf;
+    private boolean meetNumberOfPaymentsTf;
     private Yn sibilingSupportYn;
     private KookminType kookminType;
     private Ranking ranking;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-
 
     @Builder
     public SpecialKookminPublicOldParentResponseDto(VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent) {
@@ -47,7 +46,7 @@ public class SpecialKookminPublicOldParentResponseDto {
         this.meetOldParentSupportMore3yearsTf = verificationRecordSpecialKookminOldParent.isMeetOldParentSupportMore3yearsTf();
         this.meetHomelessHouseholdMembersTf = verificationRecordSpecialKookminOldParent.isMeetHomelessHouseholdMemberTf();
         this.householderTf = verificationRecordSpecialKookminOldParent.isHouseholderTf();
-        this.isRestrictedAreaTf = verificationRecordSpecialKookminOldParent.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationRecordSpecialKookminOldParent.isRestrictedAreaTf();
         this.meetAllHouseMemberNotWinningIn5yearsTf = verificationRecordSpecialKookminOldParent.isMeetAllHouseMemberNotWinningIn5yearsTf();
         this.meetAllHouseMemberRewinningRestrictionTf = verificationRecordSpecialKookminOldParent.isMeetAllHouseMemberRewinningRestrictionTf();
         this.meetBankbookJoinPeriodTf = verificationRecordSpecialKookminOldParent.isMeetBankbookJoinPeriodTf();
