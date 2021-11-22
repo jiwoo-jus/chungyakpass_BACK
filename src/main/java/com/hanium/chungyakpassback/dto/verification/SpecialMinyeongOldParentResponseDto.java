@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.dto.verification;
 
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongOldParent;
+import com.hanium.chungyakpassback.entity.verification.VerificationRecordSpecialMinyeongOldParent;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;

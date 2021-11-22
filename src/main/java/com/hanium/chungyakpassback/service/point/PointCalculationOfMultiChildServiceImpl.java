@@ -1,20 +1,26 @@
 package com.hanium.chungyakpassback.service.point;
 
-import com.hanium.chungyakpassback.dto.point.SpecialPointOfMultiChildDto;
+import com.hanium.chungyakpassback.dto.point.SpecialMinyeongPointOfMultiChildDto;
+import com.hanium.chungyakpassback.dto.point.SpecialMinyeongPointOfMultiChildResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
+import com.hanium.chungyakpassback.entity.point.RecordSpecialMinyeongPointOfMultiChild;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.enumtype.MultiChildHouseholdType;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
+import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRepository;
 import com.hanium.chungyakpassback.repository.input.UserBankbookRepository;
+import com.hanium.chungyakpassback.repository.input.UserRepository;
+import com.hanium.chungyakpassback.repository.point.RecordSpecialMinyeongPointOfMultiChildRepository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +40,42 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
     final GeneralPrivateVerificationServiceImpl generalPrivateVerificationServiceImpl;
     final PointCalculationOfNewMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final AddressLevel1Repository addressLevel1Repository;
+    final RecordSpecialMinyeongPointOfMultiChildRepository recordSpecialMinyeongPointOfMultiChildRepository;
+    final UserRepository userRepository;
+    final AptInfoRepository aptInfoRepository;
+
+    @Override
+    public List<SpecialMinyeongPointOfMultiChildResponseDto> readMultiChildPointCalculations() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialMinyeongPointOfMultiChildResponseDto> specialMinyeongPointOfMultiChildResponseDtos = new ArrayList<>();
+        for (RecordSpecialMinyeongPointOfMultiChild recordSpecialMinyeongPointOfMultiChild : recordSpecialMinyeongPointOfMultiChildRepository.findAllByUser(user)) {
+            SpecialMinyeongPointOfMultiChildResponseDto specialMinyeongPointOfMultiChildResponseDto = new SpecialMinyeongPointOfMultiChildResponseDto(recordSpecialMinyeongPointOfMultiChild);
+            specialMinyeongPointOfMultiChildResponseDtos.add(specialMinyeongPointOfMultiChildResponseDto);
+        }
+
+        return specialMinyeongPointOfMultiChildResponseDtos;
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SpecialMinyeongPointOfMultiChildResponseDto createMultiChildPointCalculation(SpecialMinyeongPointOfMultiChildDto specialMinyeongPointOfMultiChildDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfMultiChildDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        MultiChildHouseholdType multiChildHouseholdType = specialMinyeongPointOfMultiChildDto.getMultiChildHouseholdType();
+        Integer numberOfChild = numberOfChild(user);
+        Integer numberOfChildUnder6Year = numberOfChildUnder6Year(user);
+        Integer bankbookJoinPeriod = bankbookJoinPeriod(user);
+        Integer periodOfApplicableAreaResidence = periodOfApplicableAreaResidence(user, aptInfo);
+        Integer periodOfHomelessness = periodOfHomelessness(user);
+        Integer generationComposition = generationComposition(specialMinyeongPointOfMultiChildDto);
+        Integer total = numberOfChild + numberOfChildUnder6Year + bankbookJoinPeriod + periodOfApplicableAreaResidence + periodOfHomelessness + generationComposition;
+
+        RecordSpecialMinyeongPointOfMultiChild recordSpecialMinyeongPointOfMultiChild = new RecordSpecialMinyeongPointOfMultiChild(user, aptInfo, multiChildHouseholdType, numberOfChild, numberOfChildUnder6Year, bankbookJoinPeriod, periodOfApplicableAreaResidence, periodOfHomelessness, generationComposition, total);
+        recordSpecialMinyeongPointOfMultiChildRepository.save(recordSpecialMinyeongPointOfMultiChild);
+        return new SpecialMinyeongPointOfMultiChildResponseDto(recordSpecialMinyeongPointOfMultiChild);
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -42,7 +84,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 19);
         for (int u = 0; u <= 2; u++) {
             if (Minors >= u + 3) {
-                  NumberOfChildGetPoint = u * 5 + 30;
+                NumberOfChildGetPoint = u * 5 + 30;
             }
         }
         return NumberOfChildGetPoint;
@@ -56,7 +98,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 6);
         for (int u = 1; u <= 3; u++) {
             if (Minors >= u) {
-                  NumberOfChildUnder6YearGetPoint = u * 5;
+                NumberOfChildUnder6YearGetPoint = u * 5;
             }
         }
         return NumberOfChildUnder6YearGetPoint;
@@ -80,38 +122,35 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         int joinPeriodOfYear = periodOfYear(optUserBankbook.get().getJoinDate());
         if (joinPeriodOfYear >= 10) {
-             bankbookJoinPeriodGetPoint = 5;
+            bankbookJoinPeriodGetPoint = 5;
         }
         return bankbookJoinPeriodGetPoint;
     }
 
-    public List periodOfApplicableAreaResidenceGetPoint(User user,Integer periodOfResidenceGetPoint, LocalDate lateDate,List lateDateList) {
+    public List periodOfApplicableAreaResidenceGetPoint(User user, Integer periodOfResidenceGetPoint, LocalDate lateDate, List lateDateList) {
 
         LocalDate birthDayAfter19Year = user.getHouseMember().getBirthDay().plusYears(19);
-        if (birthDayAfter19Year.isAfter(user.getHouseMember().getMarriageDate())){
+        if (birthDayAfter19Year.isAfter(user.getHouseMember().getMarriageDate())) {
             if (user.getHouseMember().getMarriageDate().isAfter(user.getHouseMember().getTransferDate())) {
                 lateDate = user.getHouseMember().getMarriageDate();
             } else {
                 lateDate = user.getHouseMember().getTransferDate();
             }
-        }
-        else if(user.getHouseMember().getMarriageDate()==null|| birthDayAfter19Year.isBefore(user.getHouseMember().getMarriageDate())) {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
+        } else if (user.getHouseMember().getMarriageDate() == null || birthDayAfter19Year.isBefore(user.getHouseMember().getMarriageDate())) {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
             if (birthDayAfter19Year.isAfter(user.getHouseMember().getTransferDate())) {
                 lateDate = birthDayAfter19Year;
-            }
-            else {
+            } else {
                 lateDate = user.getHouseMember().getTransferDate();
             }
         }
         lateDateList.add(lateDate);
 
-        for(int i=0;i<lateDateList.size();i++) {
-            System.out.println("lateDateList"+lateDateList.get(i));
+        for (int i = 0; i < lateDateList.size(); i++) {
+            System.out.println("lateDateList" + lateDateList.get(i));
         }
 
         return lateDateList;
     }
-
 
 
     @Override
@@ -124,11 +163,11 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         if (userAddressLevel1.getNearbyArea() == 1) {
             if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
-                lateDateList = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint,lateDate,lateDateList);
+                lateDateList = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint, lateDate, lateDateList);
             }
         } else {
             if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) {
-                lateDateList = periodOfApplicableAreaResidenceGetPoint(user,periodOfResidenceGetPoint,lateDate,lateDateList);
+                lateDateList = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint, lateDate, lateDateList);
             }
         }
         lateDateList.sort(Collections.reverseOrder());
@@ -147,36 +186,36 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer generationComposition(SpecialPointOfMultiChildDto specialPointOfMultiChildDto) {
+    public Integer generationComposition(SpecialMinyeongPointOfMultiChildDto specialMinyeongPointOfMultiChildDto) {
         Integer generationCompositionGetPoint = 0;
-        if (specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.한부모가족)||specialPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.삼세대이상)) {
-             generationCompositionGetPoint = 5;
+        if (specialMinyeongPointOfMultiChildDto.getMultiChildHouseholdType() == null) {
+            return generationCompositionGetPoint;
+        } else if (specialMinyeongPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.한부모가족) || specialMinyeongPointOfMultiChildDto.getMultiChildHouseholdType().equals(MultiChildHouseholdType.삼세대이상)) {
+            generationCompositionGetPoint = 5;
         }
         return generationCompositionGetPoint;
     }
 
 
-    public List periodHomeless(HouseMember houseMember,LocalDate lateDate,List lateDateList) {
+    public List periodHomeless(HouseMember houseMember, LocalDate lateDate, List lateDateList) {
         LocalDate birthDayAfter19Year = houseMember.getBirthDay().plusYears(19);
-        if (birthDayAfter19Year.isAfter(houseMember.getMarriageDate())){
+        if (birthDayAfter19Year.isAfter(houseMember.getMarriageDate())) {
             if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
-                    lateDate = houseMember.getMarriageDate();
-                } else {
-                    lateDate = houseMember.getHomelessStartDate();
-                }
+                lateDate = houseMember.getMarriageDate();
+            } else {
+                lateDate = houseMember.getHomelessStartDate();
             }
-        else if(houseMember.getMarriageDate()==null|| birthDayAfter19Year.isBefore(houseMember.getMarriageDate())) {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
+        } else if (houseMember.getMarriageDate() == null || birthDayAfter19Year.isBefore(houseMember.getMarriageDate())) {//만 19세 이상 결혼 시 19세 생일 년도와 무주택 기간중 늦은 날
             if (birthDayAfter19Year.isAfter(houseMember.getHomelessStartDate())) {
                 lateDate = birthDayAfter19Year;
-            }
-            else {
+            } else {
                 lateDate = houseMember.getHomelessStartDate();
             }
         }
         lateDateList.add(lateDate);
 
-        for(int i=0;i<lateDateList.size();i++) {
-            System.out.println("lateDateList"+lateDateList.get(i));
+        for (int i = 0; i < lateDateList.size(); i++) {
+            System.out.println("lateDateList" + lateDateList.get(i));
         }
         return lateDateList;
     }
@@ -190,7 +229,7 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
         List<LocalDate> lateDateList = new ArrayList<>();//배우자와 본인중 무주택시점이 늦은날을 저장하는 리스트
 
         if ((generalPrivateVerificationServiceImpl.calcAmericanAge(user.getHouseMember().getBirthDay()) < 30 && user.getSpouseHouseMember() == null) || user.getHouseMember().getForeignerYn().equals(Yn.y)) {//만30세미만 미혼이거나 무주택시작일이 없으면 0점
-            return periodOfHomelessnessGetPoint =0;
+            return periodOfHomelessnessGetPoint = 0;
         }
         //배우자가 있는데 혼인신고일이 null일경우 에러 호출
         else {
@@ -199,13 +238,12 @@ public class PointCalculationOfMultiChildServiceImpl implements PointCalculation
             }
             //배우자가 null 이거나 신청자의 배우자의 무주택 시작일이 혼인신고일 전이면 신청자의 무주택기간만 산정
             else if (user.getSpouseHouseMember() == null || (user.getSpouseHouseMember().getMarriageDate().isAfter(user.getSpouseHouseMember().getHomelessStartDate()))) {
-                periodHomeless(user.getHouseMember(),lateDate,lateDateList);
+                periodHomeless(user.getHouseMember(), lateDate, lateDateList);
             }
             //아니면 신청자와 배우자의 무주택기간 산정
-            else
-            {
-                periodHomeless(user.getHouseMember(),lateDate,lateDateList);
-                periodHomeless(user.getSpouseHouseMember(),lateDate,lateDateList);
+            else {
+                periodHomeless(user.getHouseMember(), lateDate, lateDateList);
+                periodHomeless(user.getSpouseHouseMember(), lateDate, lateDateList);
             }
         }
 

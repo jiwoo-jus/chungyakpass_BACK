@@ -1,9 +1,10 @@
-package com.hanium.chungyakpassback.entity.record;
+package com.hanium.chungyakpassback.entity.verification;
 
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.entity.input.User;
+import com.hanium.chungyakpassback.enumtype.KookminType;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
@@ -14,12 +15,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "inp_verification_record_general_kookmin")
-public class VerificationRecordGeneralKookmin extends BaseTime {
+@Table(name = "inp_verification_record_special_kookmin_first_life")
+public class VerificationRecordSpecialKookminFirstLife extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "verification_record_general_kookmin_id")
+    @Column(name = "verification_record_special_minyeong_first_life_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +35,18 @@ public class VerificationRecordGeneralKookmin extends BaseTime {
 
     @Column
     private boolean accountTf; //청약통장유형조건충족여부
+
+    @Column
+    private boolean meetRecipient; //생애최초대상자충족여부
+
+    @Column
+    private boolean meetMonthlyAverageIncomePriority; //월평균소득기준충족여부_우선공급
+
+    @Column
+    private boolean meetMonthlyAverageIncomeGeneral; //월평균소득기준충족여부_일반공급
+
+    @Column
+    private boolean meetPropertyTf; //자산기준충족여부
 
     @Column
     private boolean meetHomelessHouseholdMemberTf; //전세대원무주택구성원충족여부
@@ -56,7 +69,6 @@ public class VerificationRecordGeneralKookmin extends BaseTime {
     @Column
     private boolean restrictedAreaTf; //규제지역여부
 
-
     //아래는 프론트한테 받는 항목들
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,7 +78,6 @@ public class VerificationRecordGeneralKookmin extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "info_target_id")
     private AptInfoTarget aptInfoTarget; //주택형
-
 
     //아래는 프론트한테 추가로 받는 항목들
 
@@ -78,7 +89,17 @@ public class VerificationRecordGeneralKookmin extends BaseTime {
     @Setter
     @Column
     @Enumerated(EnumType.STRING)
-    public Yn twentiesSoleHouseHolderYn; //20대단독세대주여부
+    public Yn taxOver5yearsYn; //5년이상소득세납부여부
+
+    @Setter
+    @Column
+    @Enumerated(EnumType.STRING)
+    public KookminType kookminType; //국민주택종류
+
+    @Setter
+    @Column
+    @Enumerated(EnumType.STRING)
+    public Yn firstRankHistoryYn; //일반공급1순위당첨이력
 
     @Setter
     @Column
@@ -86,11 +107,15 @@ public class VerificationRecordGeneralKookmin extends BaseTime {
     public Ranking ranking; //순위
 
     @Builder
-    public VerificationRecordGeneralKookmin(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public VerificationRecordSpecialKookminFirstLife(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetRecipient, boolean meetMonthlyAverageIncomePriority, boolean meetMonthlyAverageIncomeGeneral, boolean meetPropertyTf, boolean meetHomelessHouseholdMemberTf, boolean householderTf, boolean meetAllHouseMemberNotWinningIn5yearsTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         this.user = user;
         this.americanAge = americanAge;
         this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
         this.accountTf = accountTf;
+        this.meetRecipient = meetRecipient;
+        this.meetMonthlyAverageIncomePriority = meetMonthlyAverageIncomePriority;
+        this.meetMonthlyAverageIncomeGeneral = meetMonthlyAverageIncomeGeneral;
+        this.meetPropertyTf = meetPropertyTf;
         this.meetHomelessHouseholdMemberTf = meetHomelessHouseholdMemberTf;
         this.householderTf = householderTf;
         this.meetAllHouseMemberNotWinningIn5yearsTf = meetAllHouseMemberNotWinningIn5yearsTf;

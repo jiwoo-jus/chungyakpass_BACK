@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.dto.verification;
 
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
+import com.hanium.chungyakpassback.entity.verification.VerificationRecordSpecialKookminOldParent;
 import com.hanium.chungyakpassback.enumtype.KookminType;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;

@@ -1,4 +1,4 @@
-package com.hanium.chungyakpassback.entity.record;
+package com.hanium.chungyakpassback.entity.verification;
 
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;

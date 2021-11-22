@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialMinyeongPointOfNewMarriedDto {
-    Integer notificationNumber;
+    private Integer notificationNumber;
 }

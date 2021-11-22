@@ -1,7 +1,9 @@
 package com.hanium.chungyakpassback.service.point;
 
 import com.hanium.chungyakpassback.dto.point.GeneralMinyeongPointDto;
+import com.hanium.chungyakpassback.dto.point.GeneralMinyeongResponsePointDto;
 import com.hanium.chungyakpassback.entity.input.*;
+import com.hanium.chungyakpassback.entity.point.RecordGeneralMinyeongPoint;
 import com.hanium.chungyakpassback.entity.standard.Bankbook;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
 import com.hanium.chungyakpassback.enumtype.Relation;
@@ -9,8 +11,10 @@ import com.hanium.chungyakpassback.enumtype.ResidentialBuilding;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.point.RecordGeneralMinyeongPointRepository;
 import com.hanium.chungyakpassback.repository.standard.BankbookRepository;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +36,43 @@ public class PointCalculationServiceImpl implements PointCalculationService {
     final GeneralPrivateVerificationServiceImpl generalPrivateVerificationServiceImpl;
     final HouseMemberPropertyRepository houseMemberPropertyRepository;
     final HouseMemberRelationRepository houseMemberRelationRepository;
+    final UserRepository userRepository;
+    final RecordGeneralMinyeongPointRepository recordGeneralMinyeongPointRepository;
+
+    @Override
+    public List<GeneralMinyeongResponsePointDto> readGeneralMinyeongResponsePointCalculations() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<GeneralMinyeongResponsePointDto> generalMinyeongResponsePointDtos = new ArrayList<>();
+        for (RecordGeneralMinyeongPoint recordGeneralMinyeongPoint : recordGeneralMinyeongPointRepository.findAllByUser(user)) {
+            GeneralMinyeongResponsePointDto generalMinyeongResponsePointDto = new GeneralMinyeongResponsePointDto(recordGeneralMinyeongPoint);
+            generalMinyeongResponsePointDtos.add(generalMinyeongResponsePointDto);
+        }
+
+        return generalMinyeongResponsePointDtos;
+    }
+
+    @Override
+    public GeneralMinyeongResponsePointDto createGeneralMinyeongPointCalculation(GeneralMinyeongPointDto generalMinyeongPointDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        Long houseMemberId = generalMinyeongPointDto.getHouseMemberId();
+        Yn parentsDeathYn = generalMinyeongPointDto.getParentsDeathYn();
+        Yn divorceYn = generalMinyeongPointDto.getDivorceYn();
+        Yn sameResidentRegistrationYn = generalMinyeongPointDto.getSameResidentRegistrationYn();
+        Yn stayOverYn = generalMinyeongPointDto.getStayOverYn();
+        Yn nowStayOverYn = generalMinyeongPointDto.getNowStayOverYn();
+        Integer periodOfHomelessness = periodOfHomelessness(user);
+        Integer bankbookJoinPeriod = bankbookJoinPeriod(user);
+        Integer numberOfDependents = numberOfDependents(user, generalMinyeongPointDto);
+        boolean bankBookVaildYn = bankBookVaildYn(user);
+        Integer total = periodOfHomelessness + bankbookJoinPeriod + numberOfDependents;
+
+        RecordGeneralMinyeongPoint recordGeneralMinyeongPoint = new RecordGeneralMinyeongPoint(user, houseMemberId, parentsDeathYn, divorceYn, sameResidentRegistrationYn, stayOverYn, nowStayOverYn, periodOfHomelessness, bankbookJoinPeriod, numberOfDependents, bankBookVaildYn, total);
+        recordGeneralMinyeongPointRepository.save(recordGeneralMinyeongPoint);
+
+        return new GeneralMinyeongResponsePointDto(recordGeneralMinyeongPoint);
+    }
+
 
     //세대구성원별 무주택기간을 구하는 메소드
     public List periodHomeless(HouseMember houseMember, List lateDateList, LocalDate lateDate) {
@@ -46,8 +87,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
                 } else {
                     lateDate = houseMember.getHomelessStartDate();
                 }
-            }
-            else if(birthDayAfter30Year.isAfter(houseMember.getMarriageDate())) {
+            } else if (birthDayAfter30Year.isAfter(houseMember.getMarriageDate())) {
                 //만30세 이전 혼인신고시 혼인신고일과 무주택된 날중 늦은 날짜
                 if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = houseMember.getMarriageDate();
@@ -57,8 +97,8 @@ public class PointCalculationServiceImpl implements PointCalculationService {
             }
             lateDateList.add(lateDate);
         }
-        for(int i=0;i<lateDateList.size();i++) {
-            System.out.println("lateDateList"+lateDateList.get(i));
+        for (int i = 0; i < lateDateList.size(); i++) {
+            System.out.println("lateDateList" + lateDateList.get(i));
         }
         return lateDateList;
     }
@@ -95,7 +135,7 @@ public class PointCalculationServiceImpl implements PointCalculationService {
         }
         lateDateList.sort(Collections.reverseOrder());
         LocalDate mostLateDate = lateDateList.get(0);
-        System.out.println("mostLateDate"+mostLateDate);
+        System.out.println("mostLateDate" + mostLateDate);
         int periodOfHomelessness = periodOfYear(mostLateDate);
         //무주택기간을 기간으로 계산함
         for (int z = 1; z <= 15; z++) {

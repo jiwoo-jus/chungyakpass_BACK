@@ -1,14 +1,8 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.point.*;
-import com.hanium.chungyakpassback.entity.apt.AptInfo;
-import com.hanium.chungyakpassback.entity.input.User;
-import com.hanium.chungyakpassback.enumtype.ErrorCode;
-import com.hanium.chungyakpassback.handler.CustomException;
-import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
-import com.hanium.chungyakpassback.repository.input.UserRepository;
+import com.hanium.chungyakpassback.dto.point.ReadPointCalculationDto;
 import com.hanium.chungyakpassback.service.point.*;
-import com.hanium.chungyakpassback.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,89 +14,88 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/point")
 public class PointController {
     private final PointCalculationService pointCalculationService;
-    private final UserRepository userRepository;
-    private final AptInfoRepository aptInfoRepository;
     private final PointCalculationOfMultiChildService pointCalculationOfMultiChildService;
     private final PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService;
     private final PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService;
     private final PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService;
+    private final ReadPointCalculationService readPointCalculationService;
 
-    public PointController(PointCalculationService pointCalculationService, UserRepository userRepository, AptInfoRepository aptInfoRepository, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService, PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService)  {
+    public PointController(PointCalculationService pointCalculationService, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService, PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService, ReadPointCalculationService readPointCalculationService) {
         this.pointCalculationService = pointCalculationService;
-        this.userRepository = userRepository;
-        this.aptInfoRepository = aptInfoRepository;
         this.pointCalculationOfMultiChildService = pointCalculationOfMultiChildService;
         this.pointCalculationOfNewMarriedService = pointCalculationOfNewMarriedService;
         this.pointCalculationOfOldParentSupportService = pointCalculationOfOldParentSupportService;
         this.pointCalculationOfSingleParentsService = pointCalculationOfSingleParentsService;
+        this.readPointCalculationService = readPointCalculationService;
     }
 
-
-    @PostMapping("/genereal/minyeoung")
+    @GetMapping("/record/point") //청악가배점결과전체조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<GeneralMinyeongResponsePointDto> generalMinyeongPoint(@RequestBody GeneralMinyeongPointDto generalMinyeongPointDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        Integer periodOfHomelessness = pointCalculationService.periodOfHomelessness(user);
-        Integer periodOfBankbook = pointCalculationService.bankbookJoinPeriod(user);
-        Integer numberOfDependents = pointCalculationService.numberOfDependents(user, generalMinyeongPointDto);
-        boolean bankBookVaildYn = pointCalculationService.bankBookVaildYn(user);
-        return new ResponseEntity<>(new GeneralMinyeongResponsePointDto(periodOfHomelessness, periodOfBankbook, numberOfDependents,bankBookVaildYn), HttpStatus.OK);
+    public ResponseEntity<ReadPointCalculationDto> readAllUserPointRecord() {
+
+        return new ResponseEntity<>(readPointCalculationService.readAllUserPointRecord(), HttpStatus.OK);
     }
 
-
-    @PostMapping("/special/multiChild")
+    @GetMapping("/general/minyeong") //일반민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialPointOfMultiChildResponseDto> specialMultiChildPoint(@RequestBody SpecialPointOfMultiChildDto specialPointOfMultiChildDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        AptInfo aptInfo = aptInfoRepository.findById(specialPointOfMultiChildDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        Integer numberOfChild = pointCalculationOfMultiChildService.numberOfChild(user);
-        Integer numberOfChildUnder6Year = pointCalculationOfMultiChildService.numberOfChildUnder6Year(user);
-        Integer bankbookJoinPeriod = pointCalculationOfMultiChildService.bankbookJoinPeriod(user);
-        Integer periodOfApplicableAreaResidence = pointCalculationOfMultiChildService.periodOfApplicableAreaResidence(user, aptInfo);
-        Integer periodOfHomelessness = pointCalculationOfMultiChildService.periodOfHomelessness(user);
-        Integer generationComposition = pointCalculationOfMultiChildService.generationComposition (specialPointOfMultiChildDto);
-        return new ResponseEntity<>(new SpecialPointOfMultiChildResponseDto(numberOfChild,numberOfChildUnder6Year,bankbookJoinPeriod,periodOfApplicableAreaResidence,periodOfHomelessness,generationComposition), HttpStatus.OK);
+    public ResponseEntity<ReadPointCalculationDto> readGeneralMinyeongResponsePointCalculations() {
+        return new ResponseEntity(pointCalculationService.readGeneralMinyeongResponsePointCalculations(), HttpStatus.OK);
     }
 
-
-    @PostMapping ("/special/newMarried")
+    @PostMapping("/general/minyeong") //일반민영저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarried(@RequestBody SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfNewMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        Integer numberOfMinors = pointCalculationOfNewMarriedService.numberOfMinors(user);
-        Integer periodOfMarriged = pointCalculationOfNewMarriedService.periodOfMarriged(user);
-        Integer bankbookPaymentsCount = pointCalculationOfNewMarriedService.bankbookPaymentsCount(user);
-        Integer periodOfApplicableAreaResidence =  pointCalculationOfNewMarriedService.periodOfApplicableAreaResidence ( user, aptInfo);
-        Integer monthOfAverageIncome = pointCalculationOfNewMarriedService.monthOfAverageIncome(user);
-
-        return new ResponseEntity<>(new SpecialMinyeongPointOfNewMarriedResponseDto(numberOfMinors,periodOfMarriged,bankbookPaymentsCount,periodOfApplicableAreaResidence,monthOfAverageIncome), HttpStatus.OK);
+    public ResponseEntity<GeneralMinyeongResponsePointDto> createGeneralMinyeongPointCalculation(@RequestBody GeneralMinyeongPointDto generalMinyeongPointDto) {
+        return new ResponseEntity<>(pointCalculationService.createGeneralMinyeongPointCalculation(generalMinyeongPointDto), HttpStatus.OK);
     }
 
-    @PostMapping ("/special/singleParents")
+    @GetMapping("/special/multiChild") //다자녀조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfSingleParentsResponseDto> specialMinyeongPointOfNewMarried(@RequestBody SpecialMinyeongPointOfSingleParentsDto specialMinyeongPointOfSingleParentsDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfSingleParentsDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-
-        Integer numberOfMinors = pointCalculationOfSingleParentsService.numberOfMinors(user);
-        Integer ageOfMostYoungChild = pointCalculationOfSingleParentsService.ageOfMostYoungChild(user);
-        Integer bankbookPaymentsCount = pointCalculationOfSingleParentsService.bankbookPaymentsCount(user);
-        Integer periodOfApplicableAreaResidence =  pointCalculationOfSingleParentsService.periodOfApplicableAreaResidence ( user, aptInfo);
-        Integer monthOfAverageIncome = pointCalculationOfSingleParentsService.monthOfAverageIncome(user);
-
-        return new ResponseEntity<>(new SpecialMinyeongPointOfSingleParentsResponseDto(numberOfMinors,ageOfMostYoungChild,bankbookPaymentsCount,periodOfApplicableAreaResidence,monthOfAverageIncome), HttpStatus.OK);
+    public ResponseEntity<ReadPointCalculationDto> readMultiChildPointCalculations() {
+        return new ResponseEntity(pointCalculationOfMultiChildService.readMultiChildPointCalculations(), HttpStatus.OK);
     }
 
-    @PostMapping("/special/oldParentsSupport")
+    @PostMapping("/special/multiChild") //다자녀저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialPointOfOldParentsSupportResponseDto> generalMinyeongPoint(@RequestBody SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto){
-        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-        Integer periodOfHomelessness = pointCalculationOfOldParentSupportService.periodOfHomelessness(user);
-        Integer periodOfBankbook = pointCalculationOfOldParentSupportService.bankbookJoinPeriod(user);
-        Integer numberOfDependents = pointCalculationOfOldParentSupportService.numberOfDependents(user, specialPointOfOldParentsSupportDto);
-        boolean bankBookVaildYn = pointCalculationOfOldParentSupportService.bankBookVaildYn(user);
-        return new ResponseEntity<>(new SpecialPointOfOldParentsSupportResponseDto(periodOfHomelessness, periodOfBankbook, numberOfDependents,bankBookVaildYn), HttpStatus.OK);
+    public ResponseEntity<SpecialMinyeongPointOfMultiChildResponseDto> createMultiChildPointCalculation(@RequestBody SpecialMinyeongPointOfMultiChildDto specialMinyeongPointOfMultiChildDto) {
+        return new ResponseEntity<>(pointCalculationOfMultiChildService.createMultiChildPointCalculation(specialMinyeongPointOfMultiChildDto), HttpStatus.OK);
     }
+
+    @GetMapping("/special/newlyMarried") //신혼부부조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<ReadPointCalculationDto> readNewlyMarriedPointCalculations() {
+        return new ResponseEntity(pointCalculationOfNewMarriedService.readNewlyMarriedPointCalculations(), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/newlyMarried") //신혼부부저장
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialMinyeongPointOfNewMarriedResponseDto> createNewlyMarriedPointCalculation(@RequestBody SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto) {
+
+        return new ResponseEntity<>(pointCalculationOfNewMarriedService.createNewlyMarriedPointCalculation(specialMinyeongPointOfNewMarriedDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/special/singleParents") //한부모조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<ReadPointCalculationDto> readSingleParentsPointCalculations() {
+        return new ResponseEntity(pointCalculationOfSingleParentsService.readSingleParentsPointCalculations(), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/singleParents") //한부모저장
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialMinyeongPointOfSingleParentsResponseDto> createSingleParentsPointCalculation(@RequestBody SpecialMinyeongPointOfSingleParentsDto specialMinyeongPointOfSingleParentsDto) {
+        return new ResponseEntity<>(pointCalculationOfSingleParentsService.createSingleParentsPointCalculation(specialMinyeongPointOfSingleParentsDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/special/oldParentsSupport") //노부모조회
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<ReadPointCalculationDto> readOldParentsSupportPointCalculations() {
+        return new ResponseEntity(pointCalculationOfOldParentSupportService.readOldParentsSupportPointCalculations(), HttpStatus.OK);
+    }
+
+    @PostMapping("/special/oldParentsSupport") //노부모저장
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<SpecialMinyeongPointOfOldParentsSupportResponseDto> createOldParentsSupportPointCalculation(@RequestBody SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto) {
+        return new ResponseEntity<>(pointCalculationOfOldParentSupportService.createOldParentsSupportPointCalculation(specialPointOfOldParentsSupportDto), HttpStatus.OK);
+    }
+
 
 }

@@ -1,8 +1,7 @@
-package com.hanium.chungyakpassback.repository.record;
+package com.hanium.chungyakpassback.repository.verification;
 
 import com.hanium.chungyakpassback.entity.input.User;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongNewlyMarried;
+import com.hanium.chungyakpassback.entity.verification.VerificationRecordSpecialMinyeongNewlyMarried;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,10 +1,13 @@
 package com.hanium.chungyakpassback.service.point;
 
+import com.hanium.chungyakpassback.dto.point.SpecialMinyeongPointOfNewMarriedDto;
+import com.hanium.chungyakpassback.dto.point.SpecialMinyeongPointOfNewMarriedResponseDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
 import com.hanium.chungyakpassback.entity.input.HouseMemberRelation;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.input.UserBankbook;
+import com.hanium.chungyakpassback.entity.point.RecordSpecialMinyeongPointOfNewMarried;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.enumtype.ErrorCode;
@@ -12,19 +15,21 @@ import com.hanium.chungyakpassback.enumtype.Relation;
 import com.hanium.chungyakpassback.enumtype.Supply;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import com.hanium.chungyakpassback.handler.CustomException;
+import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
 import com.hanium.chungyakpassback.repository.input.*;
+import com.hanium.chungyakpassback.repository.point.RecordSpecialMinyeongPointOfNewMarriedRepository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel2Repository;
 import com.hanium.chungyakpassback.repository.standard.IncomeRepository;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationService;
 import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
+import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +47,38 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     final AddressLevel2Repository addressLevel2Repository;
     final AddressLevel1Repository addressLevel1Repository;
     final UserRepository userRepository;
+    final RecordSpecialMinyeongPointOfNewMarriedRepository recordSpecialMinyeongPointOfNewMarriedRepository;
+    final AptInfoRepository aptInfoRepository;
+
+    @Override
+    public List<SpecialMinyeongPointOfNewMarriedResponseDto> readNewlyMarriedPointCalculations() {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+
+        List<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarriedResponseDtos = new ArrayList<>();
+        for (RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried : recordSpecialMinyeongPointOfNewMarriedRepository.findAllByUser(user)) {
+            SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto = new SpecialMinyeongPointOfNewMarriedResponseDto(recordSpecialMinyeongPointOfNewMarried);
+            specialMinyeongPointOfNewMarriedResponseDtos.add(specialMinyeongPointOfNewMarriedResponseDto);
+        }
+
+        return specialMinyeongPointOfNewMarriedResponseDtos;
+    }
+
+    @Override
+    public SpecialMinyeongPointOfNewMarriedResponseDto createNewlyMarriedPointCalculation(SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto) {
+        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+        AptInfo aptInfo = aptInfoRepository.findById(specialMinyeongPointOfNewMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        Integer numberOfMinors = numberOfMinors(user);
+        Integer periodOfMarriged = periodOfMarriged(user);
+        Integer bankbookPaymentsCount = bankbookPaymentsCount(user);
+        Integer periodOfApplicableAreaResidence = periodOfApplicableAreaResidence(user, aptInfo);
+        Integer monthOfAverageIncome = monthOfAverageIncome(user);
+        Integer total = numberOfMinors + periodOfMarriged + bankbookPaymentsCount + periodOfApplicableAreaResidence + monthOfAverageIncome;
+        RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried = new RecordSpecialMinyeongPointOfNewMarried(user, aptInfo, numberOfMinors, periodOfMarriged, bankbookPaymentsCount, periodOfApplicableAreaResidence, monthOfAverageIncome, total);
+        recordSpecialMinyeongPointOfNewMarriedRepository.save(recordSpecialMinyeongPointOfNewMarried);
+
+        return new SpecialMinyeongPointOfNewMarriedResponseDto(recordSpecialMinyeongPointOfNewMarried);
+    }
+
 
     public Integer numberOfChild(User user, int standardAge) {
         int Minors = 0;
@@ -161,25 +198,65 @@ public class PointCalculationOfNewMarriedServiceImpl implements PointCalculation
     @Override
     @Transactional(rollbackFor = Exception.class)//납입횟수
     public Integer bankbookPaymentsCount(User user) {
-        Integer paymentsCountGetPoint = 0;
+        Integer bankbookPaymentsCount = 0;
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
 
-        int bankbookPaymentsCount = optUserBankbook.get().getPaymentsCount();
-        if (bankbookPaymentsCount < 6) {
-            return paymentsCountGetPoint;
+        int bankbookPayments = optUserBankbook.get().getPaymentsCount();
+        if (bankbookPayments < 6) {
+            return bankbookPaymentsCount;
         }
         for (int i = 1; i <= 2; i++) {
-            if (bankbookPaymentsCount < i * 12) {
-                return paymentsCountGetPoint = i;
+            if (bankbookPayments < i * 12) {
+                return bankbookPaymentsCount = i;
             }
         }
-        if (bankbookPaymentsCount >= 24) {
-            return paymentsCountGetPoint = 3;
+        if (bankbookPayments >= 24) {
+            return bankbookPaymentsCount = 3;
         }
-        return paymentsCountGetPoint;
+
+
+//        List<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarriedResponseDtos = new ArrayList<>();
+//
+//        for(RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried : recordSpecialMinyeongPointOfNewMarriedRepository.findAllByUser(user)){
+//            SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto = new SpecialMinyeongPointOfNewMarriedResponseDto(recordSpecialMinyeongPointOfNewMarried);
+//            specialMinyeongPointOfNewMarriedResponseDtos.add(specialMinyeongPointOfNewMarriedResponseDto);
+//        }
+//
+//        for (SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto : specialMinyeongPointOfNewMarriedResponseDtos) {
+//            RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried = RecordSpecialMinyeongPointOfNewMarried.builder()
+//                    .user(user)
+//                    .bankbookPaymentsCount(specialMinyeongPointOfNewMarriedResponseDto.getBankbookPaymentsCount())
+//                    .build();
+//            recordSpecialMinyeongPointOfNewMarriedRepository.save(recordSpecialMinyeongPointOfNewMarried);
+//
+//        }
+
+        return bankbookPaymentsCount;
     }
+
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto){
+//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+//        return new UserBankbookResponseDto(userBankbookRepository.save(userBankbookDto.toEntity(user)));
+//    }
+
+
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public List<UserBankbookResponseDto> readUserBankbooks(){
+//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
+//        List<UserBankbookResponseDto> userBankbookResponseDtos = new ArrayList<>();
+//
+//        for(UserBankbook userBankbook : userBankbookRepository.findAllByUser(user)){
+//            UserBankbookResponseDto userBankbookResponseDto = new UserBankbookResponseDto(userBankbook);
+//            userBankbookResponseDtos.add(userBankbookResponseDto);
+//        }
+//        return userBankbookResponseDtos;
+//    }
+
 
     public int periodOfYear(LocalDate joinDate) {
         LocalDate now = LocalDate.now();
