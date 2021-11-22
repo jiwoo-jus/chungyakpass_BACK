@@ -4,7 +4,6 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminMultiChild;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
@@ -18,8 +17,6 @@ import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialKo
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,14 +82,14 @@ public class SpecialKookminPublicNewlyMarriedVerificationServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto) {
+    public SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto) {
         VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried = verificationRecordSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminNewlyMarried.setSibilingSupportYn(specialKookminPublicNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminNewlyMarried.setKookminType(specialKookminPublicNewlyMarriedUpdateDto.getKookminType());
         verificationRecordSpecialKookminNewlyMarried.setPreNewMarriedYn(specialKookminPublicNewlyMarriedUpdateDto.getPreNewMarriedYn());
         verificationRecordSpecialKookminNewlyMarried.setRanking(specialKookminPublicNewlyMarriedUpdateDto.getRanking());
         verificationRecordSpecialKookminNewlyMarriedRepository.save(verificationRecordSpecialKookminNewlyMarried);
-        return specialKookminPublicNewlyMarriedUpdateDto;
+        return new SpecialKookminPublicNewlyMarriedResponseDto(verificationRecordSpecialKookminNewlyMarried);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드

@@ -84,7 +84,7 @@ public class SpecialKookminPublicFirstLifeVerificationServiceImpl implements Spe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
+    public SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeUpdateDto(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
         VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife = verificationRecordSpecialKookminFirstLifeRepository.findById(verificationRecordSpecialKookminFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminFirstLife.setSibilingSupportYn(specialKookminPublicFirstLifeUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminFirstLife.setTaxOver5yearsYn(specialKookminPublicFirstLifeUpdateDto.getTaxOver5yearsYn());
@@ -92,7 +92,7 @@ public class SpecialKookminPublicFirstLifeVerificationServiceImpl implements Spe
         verificationRecordSpecialKookminFirstLife.setFirstRankHistoryYn(specialKookminPublicFirstLifeUpdateDto.getFirstRankHistoryYn());
         verificationRecordSpecialKookminFirstLife.setRanking(specialKookminPublicFirstLifeUpdateDto.getRanking());
         verificationRecordSpecialKookminFirstLifeRepository.save(verificationRecordSpecialKookminFirstLife);
-        return specialKookminPublicFirstLifeUpdateDto;
+        return new SpecialKookminPublicFirstLifeResponseDto(verificationRecordSpecialKookminFirstLife);
     }
 
 

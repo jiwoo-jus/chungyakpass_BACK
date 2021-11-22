@@ -4,7 +4,6 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminFirstLife;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminMultiChild;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
@@ -18,8 +17,6 @@ import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialKo
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,13 +76,13 @@ public class SpecialKookminPublicMultiChildVerificationServiceImpl implements Sp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto(Long verificationRecordSpecialKookminMultiChildId, SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto) {
+    public SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildUpdateDto(Long verificationRecordSpecialKookminMultiChildId, SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto) {
         VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild = verificationRecordSpecialKookminMultiChildRepository.findById(verificationRecordSpecialKookminMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminMultiChild.setSibilingSupportYn(specialKookminPublicMultiChildUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminMultiChild.setKookminType(specialKookminPublicMultiChildUpdateDto.getKookminType());
         verificationRecordSpecialKookminMultiChild.setRanking(specialKookminPublicMultiChildUpdateDto.getRanking());
         verificationRecordSpecialKookminMultiChildRepository.save(verificationRecordSpecialKookminMultiChild);
-        return specialKookminPublicMultiChildUpdateDto;
+        return new SpecialKookminPublicMultiChildResponseDto(verificationRecordSpecialKookminMultiChild);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

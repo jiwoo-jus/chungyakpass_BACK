@@ -4,8 +4,6 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongFirstLife;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongMultiChild;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
@@ -22,8 +20,6 @@ import com.hanium.chungyakpassback.repository.standard.PriorityDepositRepository
 import com.hanium.chungyakpassback.repository.standard.PriorityJoinPeriodRepository;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,12 +77,12 @@ public class SpecialPrivateMultiChildVerificationServiceImpl implements SpecialP
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
+    public SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
         VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild = verificationRecordSpecialMinyeongMultiChildRepository.findById(verificationRecordSpecialMinyeongMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongMultiChild.setSibilingSupportYn(specialMinyeongMultiChildUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongMultiChild.setRanking(specialMinyeongMultiChildUpdateDto.getRanking());
         verificationRecordSpecialMinyeongMultiChildRepository.save(verificationRecordSpecialMinyeongMultiChild);
-        return specialMinyeongMultiChildUpdateDto;
+        return new SpecialMinyeongMultiChildResponseDto(verificationRecordSpecialMinyeongMultiChild);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

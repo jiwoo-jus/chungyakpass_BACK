@@ -4,7 +4,6 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongFirstLife;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
@@ -18,8 +17,6 @@ import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialMi
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,14 +78,14 @@ public class SpecialPrivateFirstLifeVerificationServiceImpl implements SpecialPr
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
+    public SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
         VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife = verificationRecordSpecialMinyeongFirstLifeRepository.findById(verificationRecordSpecialMinyeongFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongFirstLife.setSibilingSupportYn(specialMinyeongFirstLifeUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongFirstLife.setTaxOver5yearsYn(specialMinyeongFirstLifeUpdateDto.getTaxOver5yearsYn());
         verificationRecordSpecialMinyeongFirstLife.setFirstRankHistoryYn(specialMinyeongFirstLifeUpdateDto.getFirstRankHistoryYn());
         verificationRecordSpecialMinyeongFirstLife.setRanking(specialMinyeongFirstLifeUpdateDto.getRanking());
         verificationRecordSpecialMinyeongFirstLifeRepository.save(verificationRecordSpecialMinyeongFirstLife);
-        return specialMinyeongFirstLifeUpdateDto;
+        return new SpecialMinyeongFirstLifeResponseDto(verificationRecordSpecialMinyeongFirstLife);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

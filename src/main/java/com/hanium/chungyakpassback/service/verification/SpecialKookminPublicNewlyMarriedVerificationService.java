@@ -11,7 +11,7 @@ public interface SpecialKookminPublicNewlyMarriedVerificationService {
 
     SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedService(SpecialKookminPublicNewlyMarriedDto specialKookminPublicNewlyMarriedDto);
 
-    SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto);
+    SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedUpdateDto(Long verificationRecordSpecialKookminNewlyMarriedId, SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

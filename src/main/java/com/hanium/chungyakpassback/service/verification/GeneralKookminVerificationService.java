@@ -11,7 +11,7 @@ public interface GeneralKookminVerificationService {
 
     GeneralKookminResponseDto generalKookminService(GeneralKookminDto generalKookminDto);
 
-    GeneralKookminUpdateDto generalKookminUpdateDto(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto);
+    GeneralKookminResponseDto generalKookminUpdateDto(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

@@ -11,7 +11,7 @@ public interface SpecialKookminPublicOldParentVerificationService {
 
     SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentService(SpecialKookminPublicOldParentDto specialKookminPublicOldParentDto);
 
-    SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto);
+    SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentUpdateDto(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

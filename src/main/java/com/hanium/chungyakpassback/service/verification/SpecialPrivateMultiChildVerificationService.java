@@ -11,7 +11,7 @@ public interface SpecialPrivateMultiChildVerificationService {
 
     SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildService(SpecialMinyeongMultiChildDto specialMinyeongMultiChildDto);
 
-    SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto);
+    SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildUpdateDto(Long verificationRecordSpecialMinyeongMultiChildId, SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

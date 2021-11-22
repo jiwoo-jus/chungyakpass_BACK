@@ -13,7 +13,7 @@ public interface SpecialPrivateFirstLifeVerificationService {
 
     SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeService(SpecialMinyeongFirstLifeDto specialMinyeongFirstLifeDto);
 
-    SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto);
+    SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeUpdateDto(Long verificationRecordSpecialMinyeongFirstLifeId, SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

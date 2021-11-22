@@ -3,13 +3,10 @@ package com.hanium.chungyakpassback.service.verification;
 import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongDto;
 import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongResponseDto;
 import com.hanium.chungyakpassback.dto.verification.GeneralMinyeongUpdateDto;
-import com.hanium.chungyakpassback.dto.verification.SpecialMinyeongOldParentUpdateDto;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralKookmin;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordGeneralMinyeong;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongOldParent;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
@@ -81,12 +78,12 @@ public class GeneralPrivateVerificationServiceImpl implements GeneralPrivateVeri
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneralMinyeongUpdateDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
+    public GeneralMinyeongResponseDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
         VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong = verificationRecordGeneralMinyeongRepository.findById(verificationRecordGeneralMinyeongId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordGeneralMinyeong.setSibilingSupportYn(generalMinyeongUpdateDto.getSibilingSupportYn());
         verificationRecordGeneralMinyeong.setRanking(generalMinyeongUpdateDto.getRanking());
         verificationRecordGeneralMinyeongRepository.save(verificationRecordGeneralMinyeong);
-        return generalMinyeongUpdateDto;
+        return new GeneralMinyeongResponseDto(verificationRecordGeneralMinyeong);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

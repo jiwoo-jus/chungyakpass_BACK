@@ -4,7 +4,6 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongMultiChild;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialMinyeongNewlyMarried;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityDeposit;
@@ -18,8 +17,6 @@ import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialMi
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,12 +79,12 @@ public class SpecialPrivateNewlyMarriedVerificationServiceImpl implements Specia
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto(Long verificationRecordSpecialMinyeongNewlyMarriedId, SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
+    public SpecialMinyeongNewlyMarriedResponseDto specialMinyeongNewlyMarriedUpdateDto(Long verificationRecordSpecialMinyeongNewlyMarriedId, SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
         VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried = verificationRecordSpecialMinyeongNewlyMarriedRepository.findById(verificationRecordSpecialMinyeongNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialMinyeongNewlyMarried.setSibilingSupportYn(specialMinyeongNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialMinyeongNewlyMarried.setRanking(specialMinyeongNewlyMarriedUpdateDto.getRanking());
         verificationRecordSpecialMinyeongNewlyMarriedRepository.save(verificationRecordSpecialMinyeongNewlyMarried);
-        return specialMinyeongNewlyMarriedUpdateDto;
+        return new SpecialMinyeongNewlyMarriedResponseDto(verificationRecordSpecialMinyeongNewlyMarried);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드

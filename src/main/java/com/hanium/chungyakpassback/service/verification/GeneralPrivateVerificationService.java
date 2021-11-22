@@ -15,7 +15,7 @@ public interface GeneralPrivateVerificationService {
 
     GeneralMinyeongResponseDto generalMinyeongService(GeneralMinyeongDto generalMinyeongDto);
 
-    GeneralMinyeongUpdateDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto);
+    GeneralMinyeongResponseDto generalMinyeongUpdateDto(Long verificationRecordGeneralMinyeongId, GeneralMinyeongUpdateDto generalMinyeongUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

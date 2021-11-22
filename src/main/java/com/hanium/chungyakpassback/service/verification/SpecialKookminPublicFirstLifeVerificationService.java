@@ -11,7 +11,7 @@ public interface SpecialKookminPublicFirstLifeVerificationService {
 
     SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeService(SpecialKookminPublicFirstLifeDto specialKookminPublicFirstLifeDto);
 
-    SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto);
+    SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeUpdateDto(Long verificationRecordSpecialKookminFirstLifeId, SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이계산
 

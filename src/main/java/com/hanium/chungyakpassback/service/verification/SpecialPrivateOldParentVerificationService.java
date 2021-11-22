@@ -11,7 +11,7 @@ public interface SpecialPrivateOldParentVerificationService {
 
     SpecialMinyeongOldParentResponseDto specialMinyeongOldParentService(SpecialMinyeongOldParentDto specialMinyeongOldParentDto);
 
-    SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto(Long verificationRecordSpecialMinyeongOldParentId, SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto);
+    SpecialMinyeongOldParentResponseDto specialMinyeongOldParentUpdateDto(Long verificationRecordSpecialMinyeongOldParentId, SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

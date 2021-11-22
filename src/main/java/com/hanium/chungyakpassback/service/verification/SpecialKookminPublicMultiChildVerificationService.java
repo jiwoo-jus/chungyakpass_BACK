@@ -11,7 +11,7 @@ public interface SpecialKookminPublicMultiChildVerificationService {
 
     SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildService(SpecialKookminPublicMultiChildDto specialKookminPublicMultiChildDto);
 
-    SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto(Long verificationRecordSpecialKookminMultiChildId, SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto);
+    SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildUpdateDto(Long verificationRecordSpecialKookminMultiChildId, SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto);
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

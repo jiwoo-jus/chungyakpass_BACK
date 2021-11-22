@@ -74,13 +74,13 @@ public class GeneralKookminVerificationServiceImpl implements GeneralKookminVeri
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneralKookminUpdateDto generalKookminUpdateDto(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto) {
+    public GeneralKookminResponseDto generalKookminUpdateDto(Long verificationRecordGeneralKookminId, GeneralKookminUpdateDto generalKookminUpdateDto) {
         VerificationRecordGeneralKookmin verificationRecordGeneralKookmin = verificationRecordGeneralKookminRepository.findById(verificationRecordGeneralKookminId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordGeneralKookmin.setSibilingSupportYn(generalKookminUpdateDto.getSibilingSupportYn());
         verificationRecordGeneralKookmin.setTwentiesSoleHouseHolderYn(generalKookminUpdateDto.getTwentiesSoleHouseHolderYn());
         verificationRecordGeneralKookmin.setRanking(generalKookminUpdateDto.getRanking());
         verificationRecordGeneralKookminRepository.save(verificationRecordGeneralKookmin);
-        return generalKookminUpdateDto;
+        return new GeneralKookminResponseDto(verificationRecordGeneralKookmin);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환

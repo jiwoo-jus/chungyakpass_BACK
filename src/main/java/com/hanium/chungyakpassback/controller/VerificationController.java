@@ -62,7 +62,7 @@ public class VerificationController {
 
     @PatchMapping("/general/minyeong/{verificationRecordGeneralMinyeongId}") //일반민영업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<GeneralMinyeongUpdateDto> generalMinyeongUpdateDto(@PathVariable Long verificationRecordGeneralMinyeongId, @RequestBody GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
+    public ResponseEntity<GeneralMinyeongResponseDto> generalMinyeongUpdateDto(@PathVariable Long verificationRecordGeneralMinyeongId, @RequestBody GeneralMinyeongUpdateDto generalMinyeongUpdateDto) {
         return ResponseEntity.ok(generalPrivateVerificationService.generalMinyeongUpdateDto(verificationRecordGeneralMinyeongId, generalMinyeongUpdateDto));
     }
 
@@ -80,7 +80,7 @@ public class VerificationController {
 
     @PatchMapping("/general/kookmin/{verificationRecordGeneralKookminId}") //일반국민업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<GeneralKookminUpdateDto> generalKookminUpdateDto(@PathVariable Long verificationRecordGeneralKookminId, @RequestBody GeneralKookminUpdateDto generalKookminUpdateDto) {
+    public ResponseEntity<GeneralKookminResponseDto> generalKookminUpdateDto(@PathVariable Long verificationRecordGeneralKookminId, @RequestBody GeneralKookminUpdateDto generalKookminUpdateDto) {
         return ResponseEntity.ok(generalKookminVerificationService.generalKookminUpdateDto(verificationRecordGeneralKookminId, generalKookminUpdateDto));
     }
 
@@ -99,7 +99,7 @@ public class VerificationController {
     @PatchMapping("/special/minyeong/multichild/{verificationRecordSpecialMinyeongMultiChildId}") //특별다자녀민영업데이트
     //특별신혼부부국민공공주택업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongMultiChildUpdateDto> specialMinyeongMultiChildUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongMultiChildId, @RequestBody SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
+    public ResponseEntity<SpecialMinyeongMultiChildResponseDto> specialMinyeongMultiChildUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongMultiChildId, @RequestBody SpecialMinyeongMultiChildUpdateDto specialMinyeongMultiChildUpdateDto) {
         return ResponseEntity.ok(specialPrivateMultiChildVerificationService.specialMinyeongMultiChildUpdateDto(verificationRecordSpecialMinyeongMultiChildId, specialMinyeongMultiChildUpdateDto));
     }
 
@@ -117,7 +117,7 @@ public class VerificationController {
 
     @PatchMapping("/special/kookmin/public/multichild/{verificationRecordSpecialKookminMultiChildId}") //특별다자녀국민공공주택업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialKookminPublicMultiChildUpdateDto> specialKookminPublicMultiChildUpdateDto(@PathVariable Long verificationRecordSpecialKookminMultiChildId, @RequestBody SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto) {
+    public ResponseEntity<SpecialKookminPublicMultiChildResponseDto> specialKookminPublicMultiChildUpdateDto(@PathVariable Long verificationRecordSpecialKookminMultiChildId, @RequestBody SpecialKookminPublicMultiChildUpdateDto specialKookminPublicMultiChildUpdateDto) {
         return ResponseEntity.ok(specialKookminPublicMultiChildVerificationService.specialKookminPublicMultiChildUpdateDto(verificationRecordSpecialKookminMultiChildId, specialKookminPublicMultiChildUpdateDto));
     }
 
@@ -133,9 +133,9 @@ public class VerificationController {
         return new ResponseEntity<>(specialPrivateOldParentVerificationService.specialMinyeongOldParentService(specialMinyeongOldParentDto), HttpStatus.OK);
     }
 
-    @PatchMapping("/special/minyeong/oldparent/{verificationRecordSpecialMinyeongOldParentId}") //특별신혼부부민영업데이트
+    @PatchMapping("/special/minyeong/oldparent/{verificationRecordSpecialMinyeongOldParentId}") //특별노부모민영업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongOldParentUpdateDto> specialMinyeongOldParentUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongOldParentId, @RequestBody SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto) {
+    public ResponseEntity<SpecialMinyeongOldParentResponseDto> specialMinyeongOldParentUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongOldParentId, @RequestBody SpecialMinyeongOldParentUpdateDto specialMinyeongOldParentUpdateDto) {
         return ResponseEntity.ok(specialPrivateOldParentVerificationService.specialMinyeongOldParentUpdateDto(verificationRecordSpecialMinyeongOldParentId, specialMinyeongOldParentUpdateDto));
     }
 
@@ -153,7 +153,7 @@ public class VerificationController {
 
     @PatchMapping("/special/kookmin/public/oldparent/{verificationRecordSpecialKookminOldParentId}") //특별노부모국민공공주택업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialKookminPublicOldParentUpdateDto> specialKookminPublicOldParentUpdateDto(@PathVariable Long verificationRecordSpecialKookminOldParentId, @RequestBody SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
+    public ResponseEntity<SpecialKookminPublicOldParentResponseDto> specialKookminPublicOldParentUpdateDto(@PathVariable Long verificationRecordSpecialKookminOldParentId, @RequestBody SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
         return ResponseEntity.ok(specialKookminPublicOldParentVerificationService.specialKookminPublicOldParentUpdateDto(verificationRecordSpecialKookminOldParentId, specialKookminPublicOldParentUpdateDto));
     }
 
@@ -171,7 +171,7 @@ public class VerificationController {
 
     @PatchMapping("/special/minyeong/newlymarried/{verificationRecordSpecialMinyeongNewlyMarriedId}") //특별신혼부부민영업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongNewlyMarriedUpdateDto> specialMinyeongNewlyMarriedUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongNewlyMarriedId, @RequestBody SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
+    public ResponseEntity<SpecialMinyeongNewlyMarriedResponseDto> specialMinyeongNewlyMarriedUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongNewlyMarriedId, @RequestBody SpecialMinyeongNewlyMarriedUpdateDto specialMinyeongNewlyMarriedUpdateDto) {
         return ResponseEntity.ok(specialPrivateNewlyMarriedVerificationService.specialMinyeongNewlyMarriedUpdateDto(verificationRecordSpecialMinyeongNewlyMarriedId, specialMinyeongNewlyMarriedUpdateDto));
     }
 
@@ -189,7 +189,7 @@ public class VerificationController {
 
     @PatchMapping("/special/kookmin/newlymarried/{verificationRecordSpecialKookminNewlyMarriedId}") //특별신혼부부국민업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialKookminNewlyMarriedUpdateDto> specialKookminNewlyMarriedUpdateDto(@PathVariable Long verificationRecordSpecialKookminNewlyMarriedId, @RequestBody SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto) {
+    public ResponseEntity<SpecialKookminNewlyMarriedResponseDto> specialKookminNewlyMarriedUpdateDto(@PathVariable Long verificationRecordSpecialKookminNewlyMarriedId, @RequestBody SpecialKookminNewlyMarriedUpdateDto specialKookminNewlyMarriedUpdateDto) {
         return ResponseEntity.ok(specialKookminNewlyMarriedVerificationService.specialKookminNewlyMarriedUpdateDto(verificationRecordSpecialKookminNewlyMarriedId, specialKookminNewlyMarriedUpdateDto));
     }
 
@@ -202,7 +202,7 @@ public class VerificationController {
     @PatchMapping("/special/kookmin/public/newlymarried/{verificationRecordSpecialKookminNewlyMarriedId}")
     //특별신혼부부국민공공주택업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialKookminPublicNewlyMarriedUpdateDto> specialKookminPublicNewlyMarriedUpdateDto(@PathVariable Long verificationRecordSpecialKookminNewlyMarriedId, @RequestBody SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto) {
+    public ResponseEntity<SpecialKookminPublicNewlyMarriedResponseDto> specialKookminPublicNewlyMarriedUpdateDto(@PathVariable Long verificationRecordSpecialKookminNewlyMarriedId, @RequestBody SpecialKookminPublicNewlyMarriedUpdateDto specialKookminPublicNewlyMarriedUpdateDto) {
         return ResponseEntity.ok(specialKookminPublicNewlyMarriedVerificationService.specialKookminPublicNewlyMarriedUpdateDto(verificationRecordSpecialKookminNewlyMarriedId, specialKookminPublicNewlyMarriedUpdateDto));
     }
 
@@ -220,7 +220,7 @@ public class VerificationController {
 
     @PatchMapping("/special/minyeong/firstLife/{verificationRecordSpecialMinyeongFirstLifeId}") //특별생애최초민영업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongFirstLifeUpdateDto> specialMinyeongFirstLifeUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongFirstLifeId, @RequestBody SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
+    public ResponseEntity<SpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeUpdateDto(@PathVariable Long verificationRecordSpecialMinyeongFirstLifeId, @RequestBody SpecialMinyeongFirstLifeUpdateDto specialMinyeongFirstLifeUpdateDto) {
         return ResponseEntity.ok(specialPrivateFirstLifeVerificationService.specialMinyeongFirstLifeUpdateDto(verificationRecordSpecialMinyeongFirstLifeId, specialMinyeongFirstLifeUpdateDto));
     }
 
@@ -239,7 +239,7 @@ public class VerificationController {
     @PatchMapping("/special/kookmin/public/firstLife/{verificationRecordSpecialKookminFirstLifeId}") //특별생애최초국민공공주택업데이트
     //특별신혼부부국민공공주택업데이트
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialKookminPublicFirstLifeUpdateDto> specialKookminPublicFirstLifeUpdateDto(@PathVariable Long verificationRecordSpecialKookminFirstLifeId, @RequestBody SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
+    public ResponseEntity<SpecialKookminPublicFirstLifeResponseDto> specialKookminPublicFirstLifeUpdateDto(@PathVariable Long verificationRecordSpecialKookminFirstLifeId, @RequestBody SpecialKookminPublicFirstLifeUpdateDto specialKookminPublicFirstLifeUpdateDto) {
         return ResponseEntity.ok(specialKookminPublicFirstLifeVerificationService.specialKookminPublicFirstLifeUpdateDto(verificationRecordSpecialKookminFirstLifeId, specialKookminPublicFirstLifeUpdateDto));
     }
 

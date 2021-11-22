@@ -4,7 +4,6 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.entity.record.VerificationRecordSpecialKookminOldParent;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
@@ -18,8 +17,6 @@ import com.hanium.chungyakpassback.repository.record.VerificationRecordSpecialKo
 import com.hanium.chungyakpassback.repository.standard.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,13 +79,13 @@ public class SpecialKookminPublicOldParentVerificationServiceImpl implements Spe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
+    public SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentUpdateDto(Long verificationRecordSpecialKookminOldParentId, SpecialKookminPublicOldParentUpdateDto specialKookminPublicOldParentUpdateDto) {
         VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent = verificationRecordSpecialKookminOldParentRepository.findById(verificationRecordSpecialKookminOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationRecordSpecialKookminOldParent.setSibilingSupportYn(specialKookminPublicOldParentUpdateDto.getSibilingSupportYn());
         verificationRecordSpecialKookminOldParent.setKookminType(specialKookminPublicOldParentUpdateDto.getKookminType());
         verificationRecordSpecialKookminOldParent.setRanking(specialKookminPublicOldParentUpdateDto.getRanking());
         verificationRecordSpecialKookminOldParentRepository.save(verificationRecordSpecialKookminOldParent);
-        return specialKookminPublicOldParentUpdateDto;
+        return new SpecialKookminPublicOldParentResponseDto(verificationRecordSpecialKookminOldParent);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
