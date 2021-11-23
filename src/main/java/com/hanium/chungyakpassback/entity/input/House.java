@@ -35,7 +35,7 @@ public class House extends BaseTime {
     @Column
     private String zipcode;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_holder_id")
     private HouseMember houseHolder;
 
