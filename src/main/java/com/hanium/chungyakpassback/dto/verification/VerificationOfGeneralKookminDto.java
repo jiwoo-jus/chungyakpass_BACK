@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.dto.verification;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -11,10 +12,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class VerificationOfGeneralKookminDto {
 
-    @NotNull
+    @NotBlank
     private Integer notificationNumber;
 
-    @NotNull
+    @NotBlank
     private String housingType;
 
 }

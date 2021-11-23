@@ -4,6 +4,7 @@ import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -13,14 +14,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class VerificationOfSpecialMinyeongNewlyMarriedDto {
 
-    @NotNull
+    @NotBlank
     public Integer notificationNumber;
 
-    @NotNull
+    @NotBlank
     public String housingType;
-
-//    public Yn sibilingSupportYn; //형제자매부양여부
-//
-//    public Ranking ranking; //순위
 
 }

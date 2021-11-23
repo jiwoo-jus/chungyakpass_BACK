@@ -7,18 +7,24 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class VerificationOfSpecialMinyeongFirstLifeUpdateDto {
 
+    @NotBlank
     private Yn sibilingSupportYn; //형제자매부양여부
 
+    @NotBlank
     private Yn taxOver5yearsYn; //5년이상소득세납부여부
 
+    @NotBlank
     private Yn firstRankHistoryYn; //일반공급1순위당첨이력
 
+    @NotBlank
     private Ranking ranking; //순위
 
 }
