@@ -4,11 +4,17 @@ import com.hanium.chungyakpassback.entity.input.House;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 public class HouseResponseDto {
     private Long id;
+
+    @Setter
+    private Long houseHolderId;
 
     private Long addressLevel1Id;
 
@@ -18,6 +24,10 @@ public class HouseResponseDto {
 
     private String zipcode;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
     @Builder
     public HouseResponseDto(House house){
         this.id = house.getId();
@@ -25,5 +35,7 @@ public class HouseResponseDto {
         this.addressLevel2Id = house.getAddressLevel2().getId();
         this.addressDetail = house.getAddressDetail();
         this.zipcode = house.getZipcode();
+        this.createdDate = house.getCreatedDate();
+        this.modifiedDate = house.getModifiedDate();
     }
 }

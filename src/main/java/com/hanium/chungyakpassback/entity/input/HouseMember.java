@@ -1,6 +1,7 @@
 package com.hanium.chungyakpassback.entity.input;
 
 import com.hanium.chungyakpassback.dto.input.HouseMemberUpdateDto;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
@@ -11,10 +12,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name="inp_house_member")
-public class HouseMember {
+public class HouseMember extends BaseTime {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_id")
     private Long id;
 
@@ -25,6 +27,9 @@ public class HouseMember {
 //    @Column
 //    @Enumerated(EnumType.STRING)
 //    private Yn isHouseholderYn; //세대주여부
+
+//    @OneToOne(mappedBy = "houseMember")
+//    HouseMemberAdditionalInfo houseMemberAdditionalInfo;
 
     @Column
     private String name; //이름

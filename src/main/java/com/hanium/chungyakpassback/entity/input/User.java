@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.entity.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanium.chungyakpassback.entity.authority.Authority;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_user")
-public class User {
+public class User extends BaseTime {
 
     @JsonIgnore
     @Id

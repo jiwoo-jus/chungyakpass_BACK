@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 public class UserBankbookResponseDto {
@@ -24,6 +25,10 @@ public class UserBankbookResponseDto {
 
     private Integer paymentsCount; //납입횟수
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
 
     @Builder
     public UserBankbookResponseDto(UserBankbook userBankbook){
@@ -33,6 +38,8 @@ public class UserBankbookResponseDto {
         this.joinDate = userBankbook.getJoinDate();
         this.deposit = userBankbook.getDeposit();
         this.paymentsCount = userBankbook.getPaymentsCount();
+        this.createdDate = userBankbook.getCreatedDate();
+        this.modifiedDate = userBankbook.getModifiedDate();
     }
 
 //    private Yn validYn; //유효여부

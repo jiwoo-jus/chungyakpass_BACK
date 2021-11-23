@@ -5,6 +5,7 @@ import com.hanium.chungyakpassback.enumtype.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -36,6 +37,10 @@ public class HouseMemberChungyakReadDto{
 
     private HouseMemberChungyakRestrictionReadDto houseMemberChungyakRestrictionReadDto;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
     @Builder
     public HouseMemberChungyakReadDto(HouseMemberChungyak houseMemberChungyak, HouseMemberChungyakRestrictionReadDto houseMemberChungyakRestrictionReadDto){
         this.id = houseMemberChungyak.getId();
@@ -50,6 +55,8 @@ public class HouseMemberChungyakReadDto{
         this.winningDate = houseMemberChungyak.getWinningDate();
         this.raffle = houseMemberChungyak.getRaffle();
         this.cancelWinYn = houseMemberChungyak.getCancelWinYn();
+        this.createdDate = houseMemberChungyak.getCreatedDate();
+        this.modifiedDate = houseMemberChungyak.getModifiedDate();
     }
 
     @Builder
@@ -65,6 +72,8 @@ public class HouseMemberChungyakReadDto{
         this.winningDate = houseMemberChungyak.getWinningDate();
         this.raffle = houseMemberChungyak.getRaffle();
         this.cancelWinYn = houseMemberChungyak.getCancelWinYn();
+        this.createdDate = houseMemberChungyak.getCreatedDate();
+        this.modifiedDate = houseMemberChungyak.getModifiedDate();
     }
 
 }

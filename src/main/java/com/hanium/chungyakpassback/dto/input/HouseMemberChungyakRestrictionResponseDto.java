@@ -7,6 +7,7 @@ import com.hanium.chungyakpassback.repository.input.HouseMemberChungyakRestricti
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -29,6 +30,11 @@ public class HouseMemberChungyakRestrictionResponseDto {
 
     private LocalDate additionalPointSystemRestrictedDate; //가점제당첨제한일
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
+
     @Builder
     public HouseMemberChungyakRestrictionResponseDto(HouseMemberChungyakRestriction houseMemberChungyakRestriction){
         this.id = houseMemberChungyakRestriction.getId();
@@ -38,5 +44,7 @@ public class HouseMemberChungyakRestrictionResponseDto {
         this.unqualifiedSubscriberRestrictedDate = houseMemberChungyakRestriction.getUnqualifiedSubscriberRestrictedDate();
         this.regulatedAreaFirstPriorityRestrictedDate = houseMemberChungyakRestriction.getRegulatedAreaFirstPriorityRestrictedDate();
         this.additionalPointSystemRestrictedDate = houseMemberChungyakRestriction.getAdditionalPointSystemRestrictedDate();
+        this.createdDate = houseMemberChungyakRestriction.getCreatedDate();
+        this.modifiedDate = houseMemberChungyakRestriction.getModifiedDate();
     }
 }

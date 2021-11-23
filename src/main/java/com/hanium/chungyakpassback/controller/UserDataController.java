@@ -2,10 +2,12 @@ package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.input.*;
 import com.hanium.chungyakpassback.entity.input.HouseMember;
+import com.hanium.chungyakpassback.entity.input.HouseMemberAdditionalInfo;
 import com.hanium.chungyakpassback.entity.input.HouseMemberProperty;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.service.input.UserDataService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -119,6 +121,27 @@ public class UserDataController {
     public ResponseEntity<HouseHolderDto> houseHolder(@PathVariable Long id, @RequestBody HouseHolderDto houseHolderDto){
 
         return ResponseEntity.ok(userDataService.houseHolder(id, houseHolderDto));
+    }
+
+    @PostMapping("/house/member/additional-info")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<HouseMemberAdditionalInfoResponseDto> houseMemberAdditionalInfo(@RequestBody HouseMemberAdditionalInfoDto houseMemberAdditionalInfoDto){
+
+        return ResponseEntity.ok(userDataService.houseMemberAdditionalInfo(houseMemberAdditionalInfoDto));
+    }
+
+    @PutMapping("/house/member/additional-info/{houseMemberAdditionalInfoId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<HouseMemberAdditionalInfoResponseDto> updateHouseMemberAdditionalInfo(@PathVariable Long houseMemberAdditionalInfoId, @RequestBody HouseMemberAdditionalInfoUpdateDto houseMemberAdditionalInfoUpdateDto){
+
+        return ResponseEntity.ok(userDataService.updateHouseMemberAdditionalInfo(houseMemberAdditionalInfoId, houseMemberAdditionalInfoUpdateDto));
+    }
+
+    @DeleteMapping("/house/member/additional-info/{houseMemberAdditionalInfoId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity deleteHouseMemberAdditionalInfo(@PathVariable Long houseMemberAdditionalInfoId){
+
+        return ResponseEntity.ok(userDataService.deleteHouseMemberAdditionalInfo(houseMemberAdditionalInfoId));
     }
 
     @GetMapping("/house/member/property/{houseMemberId}")

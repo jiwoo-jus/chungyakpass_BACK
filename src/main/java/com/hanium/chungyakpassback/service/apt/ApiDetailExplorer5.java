@@ -44,8 +44,9 @@ public class ApiDetailExplorer5 {
     public String GetAptApi(String aptUrl, int pageNo, int manageNo) {
         try {
             StringBuilder urlBuilder = new StringBuilder(aptUrl); /*URL*///주택번호와 url을 받는다.
-            urlBuilder.append("?").append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8)).append("=r%2B2HI8hwDijPaCvVzQvg1O6birty3yCNr1QCk30cBuFXESl9etAWiSqbfS8cCStGjXXcfT2yfcfXlEgViCgMmg%3D%3D"); /*Service Key*/
-
+            urlBuilder.append("?").append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8)).append("=BmqDlfkTCepN%2F%2B8XBveSElPppoonFGeljKmlxIZDZV589UGOa%2B3U3sHN5fCNuT2jBnOn1iTVWFQTdDMcRdnohA%3D%3D"); /*Service Key*/
+//=BmqDlfkTCepN%2F%2B8XBveSElPppoonFGeljKmlxIZDZV589UGOa%2B3U3sHN5fCNuT2jBnOn1iTVWFQTdDMcRdnohA%3D%3D
+//=r%2B2HI8hwDijPaCvVzQvg1O6birty3yCNr1QCk30cBuFXESl9etAWiSqbfS8cCStGjXXcfT2yfcfXlEgViCgMmg%3D%3D
             urlBuilder.append("&").append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(String.valueOf(pageNo), StandardCharsets.UTF_8));
 
             if (manageNo == 0) {

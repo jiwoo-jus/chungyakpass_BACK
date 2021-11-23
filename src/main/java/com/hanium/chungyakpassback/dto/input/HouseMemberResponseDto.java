@@ -7,8 +7,10 @@ import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -36,6 +38,14 @@ public class HouseMemberResponseDto {
 
     private Integer income; //월평균소득
 
+    @Setter
+    private HouseMemberAdditionalInfoResponseDto houseMemberAdditionalInfoResponseDto;
+
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
+
     @Builder
     public HouseMemberResponseDto(HouseMember houseMember, Relation relation) {
         this.id = houseMember.getId();
@@ -49,6 +59,9 @@ public class HouseMemberResponseDto {
         this.homelessStartDate = houseMember.getHomelessStartDate();
         this.transferDate = houseMember.getTransferDate();
         this.income = houseMember.getIncome();
+        this.houseMemberAdditionalInfoResponseDto = null;
+        this.createdDate = houseMember.getCreatedDate();
+        this.modifiedDate = houseMember.getModifiedDate();
     }
 }
 //

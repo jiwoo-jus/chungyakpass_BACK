@@ -5,6 +5,7 @@ import com.hanium.chungyakpassback.entity.input.HouseMemberChungyakRestriction;
 import com.hanium.chungyakpassback.enumtype.Yn;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,8 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class HouseMemberChungyakRestrictionDto {
 
-//    private List<HouseMemberChungyakRestrictionDto> houseMemberChungyakRestrictionDtoList;
-
+    @NotBlank
     private Long houseMemberChungyakId; //세대구성원청약신청내역id
 
     private LocalDate reWinningRestrictedDate; //재당첨제한일

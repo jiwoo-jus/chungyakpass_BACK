@@ -37,6 +37,12 @@ public interface UserDataService {
 
     HouseHolderDto houseHolder(Long id, HouseHolderDto houseHolderDto);
 
+    HouseMemberAdditionalInfoResponseDto houseMemberAdditionalInfo(HouseMemberAdditionalInfoDto houseMemberAdditionalInfoDto);
+
+    HouseMemberAdditionalInfoResponseDto updateHouseMemberAdditionalInfo(Long houseMemberAdditionalInfoId, HouseMemberAdditionalInfoUpdateDto houseMemberAdditionalInfoUpdateDto);
+
+    HttpStatus deleteHouseMemberAdditionalInfo(Long houseMemberAdditionalInfoId);
+
     List<HouseMemberPropertyResponseDto> readHouseMemberProperties(Long houseMemberId);
 
     HouseMemberPropertyResponseDto houseMemberProperty(HouseMemberPropertyDto houseMemberPropertyDto);

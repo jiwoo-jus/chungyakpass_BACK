@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.entity.input;
 
 import com.hanium.chungyakpassback.dto.input.HouseDto;
 import com.hanium.chungyakpassback.dto.input.HouseUpdateDto;
+import com.hanium.chungyakpassback.entity.base.BaseTime;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel1;
 import com.hanium.chungyakpassback.entity.standard.AddressLevel2;
 import lombok.*;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="inp_house")
-public class House {
+public class House extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_id")
@@ -34,7 +35,7 @@ public class House {
     @Column
     private String zipcode;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_holder_id")
     private HouseMember houseHolder;
 
