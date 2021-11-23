@@ -23,7 +23,7 @@ public class HouseMemberChungyakRestriction extends BaseTime {
 //    @JoinColumn(name = "house_member_id")
 //    private HouseMember houseMember;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_member_chungyak_id")
     private HouseMemberChungyak houseMemberChungyak;
 

@@ -20,8 +20,8 @@ public class HouseMemberChungyak extends BaseTime {
     @Column(name = "house_member_chungyak_id")
     private Long id;
 
-    @OneToOne(mappedBy = "houseMemberChungyak")
-    private HouseMemberChungyakRestriction houseMemberChungyakRestriction;
+//    @OneToOne(mappedBy = "houseMemberChungyak")
+//    private HouseMemberChungyakRestriction houseMemberChungyakRestriction;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_member_id")
