@@ -38,6 +38,7 @@ public class UserDataServiceImpl implements UserDataService{
     private final AddressLevel1Repository addressLevel1Repository;
     private final AddressLevel2Repository addressLevel2Repository;
     private final RelationRepository relationRepository;
+    private final HouseMemberAdditionalInfoRepository houseMemberAdditionalInfoRepository;
 
 
     @Override
@@ -164,7 +165,11 @@ public class UserDataServiceImpl implements UserDataService{
         List<HouseMemberResponseDto> houseMemberResponseDtos = new ArrayList<>();
         for(HouseMember houseMember : houseMemberRepository.findAllByHouse(house)){
             HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
+            HouseMemberAdditionalInfo houseMemberAdditionalInfo = houseMemberAdditionalInfoRepository.findByHouseMember(houseMember);
             HouseMemberResponseDto houseMemberResponseDto = new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation());
+            if (houseMemberAdditionalInfo != null)
+                houseMemberResponseDto.setHouseMemberAdditionalInfoResponseDto(new HouseMemberAdditionalInfoResponseDto(houseMemberAdditionalInfo));
+//                HouseMemberResponseDto houseMemberResponseDto = new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation(), new HouseMemberAdditionalInfoResponseDto(houseMemberAdditionalInfo));
             houseMemberResponseDtos.add(houseMemberResponseDto);
         }
         return houseMemberResponseDtos;
@@ -238,7 +243,12 @@ public class UserDataServiceImpl implements UserDataService{
         houseMember.updateHouseMember(houseMemberupdateDto);
         houseMemberRepository.save(houseMember);
 
-        return new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation());
+        HouseMemberResponseDto houseMemberResponseDto = new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation());
+        if (houseMemberAdditionalInfoRepository.findByHouseMember(houseMember) != null)
+            houseMemberResponseDto.setHouseMemberAdditionalInfoResponseDto(new HouseMemberAdditionalInfoResponseDto(houseMemberAdditionalInfoRepository.findByHouseMember(houseMember)));
+
+        return houseMemberResponseDto;
+//        return new HouseMemberResponseDto(houseMember, houseMemberRelation.getRelation().getRelation(), new HouseMemberAdditionalInfoResponseDto(houseMemberAdditionalInfoRepository.findByHouseMember(houseMember)));
     }
 
     @Override
@@ -250,6 +260,7 @@ public class UserDataServiceImpl implements UserDataService{
 
         HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByOpponent(houseMember).get();
         houseMemberPropertyRepository.deleteAllByHouseMember(houseMember);
+        houseMemberAdditionalInfoRepository.deleteByHouseMember(houseMember);
         for (HouseMemberChungyak houseMemberChungyak : houseMemberChungyakRepository.findAllByHouseMember(houseMember)){
             houseMemberChungyakRestrictionRepository.deleteByHouseMemberChungyak(houseMemberChungyak);
             houseMemberChungyakRepository.delete(houseMemberChungyak);
@@ -293,6 +304,36 @@ public class UserDataServiceImpl implements UserDataService{
         houseRepository.save(house);
 
         return houseHolderDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public HouseMemberAdditionalInfoResponseDto houseMemberAdditionalInfo(HouseMemberAdditionalInfoDto houseMemberAdditionalInfoDto){
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberAdditionalInfoDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        if (houseMemberAdditionalInfoRepository.findByHouseMember(houseMember) != null)
+            throw new CustomException(ErrorCode.DUPLICATE_HOUSE_MEMBER_ADDITIONAL_INFO);
+        HouseMemberAdditionalInfo houseMemberAdditionalInfo = houseMemberAdditionalInfoDto.toEntity(houseMember);
+        houseMemberAdditionalInfoRepository.save(houseMemberAdditionalInfo);
+        return new HouseMemberAdditionalInfoResponseDto(houseMemberAdditionalInfo);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public HouseMemberAdditionalInfoResponseDto updateHouseMemberAdditionalInfo(Long houseMemberAdditionalInfoId, HouseMemberAdditionalInfoUpdateDto houseMemberAdditionalInfoUpdateDto){
+        HouseMemberAdditionalInfo houseMemberAdditionalInfo = houseMemberAdditionalInfoRepository.findById(houseMemberAdditionalInfoId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER_ADDITIONAL_INFO));
+        HouseMember houseMember = houseMemberRepository.findById(houseMemberAdditionalInfoUpdateDto.getHouseMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER));
+        if (houseMemberAdditionalInfo.getHouseMember() != houseMember && houseMemberAdditionalInfoRepository.findByHouseMember(houseMember) != null)
+            throw new CustomException(ErrorCode.DUPLICATE_HOUSE_MEMBER_ADDITIONAL_INFO);
+        houseMemberAdditionalInfo.updateHouseMemberAdditionalInfo(houseMember, houseMemberAdditionalInfoUpdateDto);
+        houseMemberAdditionalInfoRepository.save(houseMemberAdditionalInfo);
+        return new HouseMemberAdditionalInfoResponseDto(houseMemberAdditionalInfo);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public HttpStatus deleteHouseMemberAdditionalInfo(Long houseMemberAdditionalInfoId){
+        houseMemberAdditionalInfoRepository.deleteById(houseMemberAdditionalInfoId);
+        return HttpStatus.OK;
     }
 
     @Override
