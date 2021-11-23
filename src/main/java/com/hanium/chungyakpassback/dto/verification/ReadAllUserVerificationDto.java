@@ -20,7 +20,7 @@ public class ReadAllUserVerificationDto {
     List<VerificationOfSpecialMinyeongNewlyMarriedResponseDto> verificationOfSpecialMinyeongNewlyMarriedResponseDtos;
     //    List<SpecialKookminNewlyMarriedResponseDto> specialKookminNewlyMarriedResponseDtos;
     List<VerificationOfSpecialKookminPublicNewlyMarriedResponseDto> verificationOfSpecialKookminPublicNewlyMarriedResponseDtos;
-    List<VerificationOfSpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeResponseDtos;
+    List<VerificationOfSpecialMinyeongFirstLifeResponseDto> verificationOfSpecialMinyeongFirstLifeResponseDtos;
     List<VerificationOfSpecialKookminPublicFirstLifeResponseDto> verificationOfSpecialKookminPublicFirstLifeResponseDtos;
 
 }
