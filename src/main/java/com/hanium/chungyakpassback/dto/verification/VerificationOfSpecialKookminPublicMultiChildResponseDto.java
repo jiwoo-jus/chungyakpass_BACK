@@ -28,6 +28,7 @@ public class VerificationOfSpecialKookminPublicMultiChildResponseDto {
     private boolean householderTf;
     private boolean restrictedAreaTf;
     private boolean meetBankbookJoinPeriodTf;
+    private boolean meetNumberOfPaymentsTf;
     private Yn sibilingSupportYn;
     private KookminType kookminType;
     private Ranking ranking;
@@ -48,6 +49,7 @@ public class VerificationOfSpecialKookminPublicMultiChildResponseDto {
         this.householderTf = verificationOfSpecialKookminMultiChild.isHouseholderTf();
         this.restrictedAreaTf = verificationOfSpecialKookminMultiChild.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationOfSpecialKookminMultiChild.isMeetBankbookJoinPeriodTf();
+        this.meetNumberOfPaymentsTf = verificationOfSpecialKookminMultiChild.isMeetNumberOfPaymentsTf();
         this.verificationRecordSpecialKookminMultiChildId = verificationOfSpecialKookminMultiChild.getId();
         this.sibilingSupportYn = verificationOfSpecialKookminMultiChild.getSibilingSupportYn();
         this.kookminType = verificationOfSpecialKookminMultiChild.getKookminType();
