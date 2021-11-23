@@ -2800,8 +2800,8 @@ VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (50, '특별공급', '다자녀가구', 'n', 'n', 'n', 'n', 6);
 
 INSERT INTO std_priority_subscription_period (PRIORITY_SUBSCRIPTION_PERIOD_ID, SUPPLY, SPECIAL_SUPPLY,
-                                             SPECULATION_OVERHEATED, SUBSCRIPTION_OVERHEATED, ATROPHY_AREA,
-                                             METROPOLITAN_AREA_YN, SUBSCRIPTION_PERIOD)
+                                              SPECULATION_OVERHEATED, SUBSCRIPTION_OVERHEATED, ATROPHY_AREA,
+                                              METROPOLITAN_AREA_YN, SUBSCRIPTION_PERIOD)
 VALUES (1, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (2, '일반공급', NULL, 'y', 'y', 'n', 'y', 24),
        (3, '일반공급', NULL, 'y', 'y', 'n', 'n', 24),
@@ -2869,7 +2869,7 @@ VALUES (1, 0, 85, '서울부산', 3000000),
        (12, 135, NULL, '기타시군', 5000000);
 
 insert into std_bankbook(STD_BANKBOOK_ID, BANKBOOK, NATIONAL_HOUSING_SUPPLY_POSSIBLE,
-                          PRIVATE_HOUSING_SUPPLY_IS_POSSIBLE, RESTRICTION_SALE_AREA)
+                         PRIVATE_HOUSING_SUPPLY_IS_POSSIBLE, RESTRICTION_SALE_AREA)
 VALUES (1, '주택청약종합저축', 'y', 'y', NULL),
        (2, '청약저축', 'y', 'n', NULL),
        (3, '청약예금', 'n', 'y', NULL),
