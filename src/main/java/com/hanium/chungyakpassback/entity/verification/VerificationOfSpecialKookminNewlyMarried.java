@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "inp_verification_record_special_kookmin_newly_married")
-public class VerificationOfpecialKookminNewlyMarried extends BaseTime {
+public class VerificationOfSpecialKookminNewlyMarried extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,8 +81,15 @@ public class VerificationOfpecialKookminNewlyMarried extends BaseTime {
     @JoinColumn(name = "notification_number_id")
     private AptInfo aptInfo; //아파트분양정보
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "info_target_id")
+//    private AptInfoTarget aptInfoTarget; //주택형
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "info_target_id")
+    @JoinColumns({
+            @JoinColumn(name = "info_target_id"),
+            @JoinColumn(name = "id")
+    })
     private AptInfoTarget aptInfoTarget; //주택형
 
     //아래는 프론트한테 추가로 받는 항목들
@@ -108,7 +115,7 @@ public class VerificationOfpecialKookminNewlyMarried extends BaseTime {
     public Ranking ranking; //순위
 
     @Builder
-    public VerificationOfpecialKookminNewlyMarried(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetMonthlyAverageIncomePriority, boolean meetMonthlyAverageIncomeGeneral, boolean meetMarriagePeriodIn7yearsTf, boolean hasMinorChildren, boolean meetHomelessHouseholdMemberTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean householderTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, boolean secondChungyak, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public VerificationOfSpecialKookminNewlyMarried(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetMonthlyAverageIncomePriority, boolean meetMonthlyAverageIncomeGeneral, boolean meetMarriagePeriodIn7yearsTf, boolean hasMinorChildren, boolean meetHomelessHouseholdMemberTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean householderTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, boolean secondChungyak, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         this.user = user;
         this.americanAge = americanAge;
         this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;
@@ -128,7 +135,7 @@ public class VerificationOfpecialKookminNewlyMarried extends BaseTime {
         this.aptInfoTarget = aptInfoTarget;
     }
 
-    public VerificationOfpecialKookminNewlyMarried(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetRecipientTf, boolean meetMonthlyAverageIncomePriority, boolean meetMonthlyAverageIncomeGeneral, boolean meetPropertyTf, boolean meetMarriagePeriodIn7yearsTf, boolean hasMinorChildren, boolean meetHomelessHouseholdMemberTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean householderTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, boolean secondChungyak, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public VerificationOfSpecialKookminNewlyMarried(User user, Integer americanAge, boolean meetLivingInSurroundAreaTf, boolean accountTf, boolean meetRecipientTf, boolean meetMonthlyAverageIncomePriority, boolean meetMonthlyAverageIncomeGeneral, boolean meetPropertyTf, boolean meetMarriagePeriodIn7yearsTf, boolean hasMinorChildren, boolean meetHomelessHouseholdMemberTf, boolean meetAllHouseMemberRewinningRestrictionTf, boolean householderTf, boolean meetBankbookJoinPeriodTf, boolean meetNumberOfPaymentsTf, boolean restrictedAreaTf, boolean secondChungyak, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         this.user = user;
         this.americanAge = americanAge;
         this.meetLivingInSurroundAreaTf = meetLivingInSurroundAreaTf;

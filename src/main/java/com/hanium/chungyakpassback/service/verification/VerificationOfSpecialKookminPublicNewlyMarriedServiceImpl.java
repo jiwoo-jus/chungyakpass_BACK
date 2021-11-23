@@ -4,10 +4,10 @@ import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.apt.AptInfo;
 import com.hanium.chungyakpassback.entity.apt.AptInfoTarget;
 import com.hanium.chungyakpassback.entity.input.*;
-import com.hanium.chungyakpassback.entity.verification.VerificationOfpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.entity.standard.Income;
 import com.hanium.chungyakpassback.entity.standard.PriorityJoinPeriod;
 import com.hanium.chungyakpassback.entity.standard.PriorityPaymentsCount;
+import com.hanium.chungyakpassback.entity.verification.VerificationOfSpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.enumtype.*;
 import com.hanium.chungyakpassback.handler.CustomException;
 import com.hanium.chungyakpassback.repository.apt.AptInfoRepository;
@@ -53,8 +53,8 @@ public class VerificationOfSpecialKookminPublicNewlyMarriedServiceImpl implement
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         List<VerificationOfSpecialKookminPublicNewlyMarriedResponseDto> verificationOfSpecialKookminPublicNewlyMarriedResponseDtos = new ArrayList<>();
-        for (VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried : verificationOfSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
-            VerificationOfSpecialKookminPublicNewlyMarriedResponseDto verificationOfSpecialKookminPublicNewlyMarriedResponseDto = new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfpecialKookminNewlyMarried);
+        for (VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried : verificationOfSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
+            VerificationOfSpecialKookminPublicNewlyMarriedResponseDto verificationOfSpecialKookminPublicNewlyMarriedResponseDto = new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfSpecialKookminNewlyMarried);
             verificationOfSpecialKookminPublicNewlyMarriedResponseDtos.add(verificationOfSpecialKookminPublicNewlyMarriedResponseDto);
         }
 
@@ -85,21 +85,21 @@ public class VerificationOfSpecialKookminPublicNewlyMarriedServiceImpl implement
         boolean meetBankbookJoinPeriodTf = meetBankbookJoinPeriod(user, aptInfo);
         boolean meetNumberOfPaymentsTf = meetNumberOfPayments(user, aptInfo);
 
-        VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried = new VerificationOfpecialKookminNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, hasMinorChildren, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
-        verificationOfSpecialKookminNewlyMarriedRepository.save(verificationOfpecialKookminNewlyMarried);
-        return new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfpecialKookminNewlyMarried);
+        VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried = new VerificationOfSpecialKookminNewlyMarried(user, americanAge, meetLivingInSurroundAreaTf, accountTf, meetRecipientTf, hasMinorChildren, meetMonthlyAverageIncomePriorityTf, meetMonthlyAverageIncomeGeneralTf, hasMinorChildren, meetPropertyTf, meetHomelessHouseholdMembersTf, meetAllHouseMemberRewinningRestrictionTf, householderTf, meetBankbookJoinPeriodTf, meetNumberOfPaymentsTf, isRestrictedAreaTf, secondChungyak, aptInfo, aptInfoTarget);
+        verificationOfSpecialKookminNewlyMarriedRepository.save(verificationOfSpecialKookminNewlyMarried);
+        return new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfSpecialKookminNewlyMarried);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public VerificationOfSpecialKookminPublicNewlyMarriedResponseDto updateSpecialKookminPublicNewlyMarriedVerification(Long verificationRecordSpecialKookminNewlyMarriedId, VerificationOfSpecialKookminPublicNewlyMarriedUpdateDto verificationOfSpecialKookminPublicNewlyMarriedUpdateDto) {
-        VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried = verificationOfSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
-        verificationOfpecialKookminNewlyMarried.setSibilingSupportYn(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getSibilingSupportYn());
-        verificationOfpecialKookminNewlyMarried.setKookminType(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getKookminType());
-        verificationOfpecialKookminNewlyMarried.setPreNewMarriedYn(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getPreNewMarriedYn());
-        verificationOfpecialKookminNewlyMarried.setRanking(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getRanking());
-        verificationOfSpecialKookminNewlyMarriedRepository.save(verificationOfpecialKookminNewlyMarried);
-        return new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfpecialKookminNewlyMarried);
+        VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried = verificationOfSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+        verificationOfSpecialKookminNewlyMarried.setSibilingSupportYn(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getSibilingSupportYn());
+        verificationOfSpecialKookminNewlyMarried.setKookminType(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getKookminType());
+        verificationOfSpecialKookminNewlyMarried.setPreNewMarriedYn(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getPreNewMarriedYn());
+        verificationOfSpecialKookminNewlyMarried.setRanking(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getRanking());
+        verificationOfSpecialKookminNewlyMarriedRepository.save(verificationOfSpecialKookminNewlyMarried);
+        return new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfSpecialKookminNewlyMarried);
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드

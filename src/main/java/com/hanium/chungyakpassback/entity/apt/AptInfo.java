@@ -22,7 +22,7 @@ import java.time.YearMonth;
 @Table(name = "apt_info")
 public class AptInfo {
     @Id
-    @Column(name = "notification_number_id")
+    @Column(name = "apt_info_id_notification_number")
     private Integer notificationNumber;
 
     @Column

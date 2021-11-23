@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.dto.verification;
 
-import com.hanium.chungyakpassback.entity.verification.VerificationOfpecialKookminNewlyMarried;
+import com.hanium.chungyakpassback.entity.verification.VerificationOfSpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.enumtype.KookminType;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -39,7 +39,7 @@ public class VerificationOfSpecialKookminNewlyMarriedResponseDto {
     private LocalDateTime modifiedDate;
 
     @Builder
-    public VerificationOfSpecialKookminNewlyMarriedResponseDto(VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried) {
+    public VerificationOfSpecialKookminNewlyMarriedResponseDto(VerificationOfSpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried) {
         this.americanAge = verificationOfpecialKookminNewlyMarried.getAmericanAge();
         this.meetLivingInSurroundAreaTf = verificationOfpecialKookminNewlyMarried.isMeetLivingInSurroundAreaTf();
         this.accountTf = verificationOfpecialKookminNewlyMarried.isAccountTf();

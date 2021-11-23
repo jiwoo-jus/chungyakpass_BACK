@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.dto.verification;
 
-import com.hanium.chungyakpassback.entity.verification.VerificationOfpecialKookminNewlyMarried;
+import com.hanium.chungyakpassback.entity.verification.VerificationOfSpecialKookminNewlyMarried;
 import com.hanium.chungyakpassback.enumtype.KookminType;
 import com.hanium.chungyakpassback.enumtype.Ranking;
 import com.hanium.chungyakpassback.enumtype.Yn;
@@ -41,28 +41,28 @@ public class VerificationOfSpecialKookminPublicNewlyMarriedResponseDto {
 
 
     @Builder
-    public VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried) {
-        this.americanAge = verificationOfpecialKookminNewlyMarried.getAmericanAge();
-        this.meetLivingInSurroundAreaTf = verificationOfpecialKookminNewlyMarried.isMeetLivingInSurroundAreaTf();
-        this.accountTf = verificationOfpecialKookminNewlyMarried.isAccountTf();
-        this.meetRecipientTf = verificationOfpecialKookminNewlyMarried.isMeetRecipientTf();
-        this.hasMinorChildren = verificationOfpecialKookminNewlyMarried.isHasMinorChildren();
-        this.meetMonthlyAverageIncomePriorityTf = verificationOfpecialKookminNewlyMarried.isMeetMonthlyAverageIncomePriority();
-        this.meetMonthlyAverageIncomeGeneralTf = verificationOfpecialKookminNewlyMarried.isMeetMonthlyAverageIncomeGeneral();
-        this.meetPropertyTf = verificationOfpecialKookminNewlyMarried.isMeetPropertyTf();
-        this.secondChungyak = verificationOfpecialKookminNewlyMarried.isSecondChungyak();
-        this.meetHomelessHouseholdMembersTf = verificationOfpecialKookminNewlyMarried.isMeetHomelessHouseholdMemberTf();
-        this.meetAllHouseMemberRewinningRestrictionTf = verificationOfpecialKookminNewlyMarried.isMeetAllHouseMemberRewinningRestrictionTf();
-        this.householderTf = verificationOfpecialKookminNewlyMarried.isHouseholderTf();
-        this.restrictedAreaTf = verificationOfpecialKookminNewlyMarried.isRestrictedAreaTf();
-        this.meetBankbookJoinPeriodTf = verificationOfpecialKookminNewlyMarried.isMeetBankbookJoinPeriodTf();
-        this.meetNumberOfPaymentsTf = verificationOfpecialKookminNewlyMarried.isMeetNumberOfPaymentsTf();
-        this.verificationRecordSpecialKookminNewlyMarriedId = verificationOfpecialKookminNewlyMarried.getId();
-        this.sibilingSupportYn = verificationOfpecialKookminNewlyMarried.getSibilingSupportYn();
-        this.preNewMarriedYn = verificationOfpecialKookminNewlyMarried.getPreNewMarriedYn();
-        this.kookminType = verificationOfpecialKookminNewlyMarried.getKookminType();
-        this.ranking = verificationOfpecialKookminNewlyMarried.getRanking();
-        this.createdDate = verificationOfpecialKookminNewlyMarried.getCreatedDate();
-        this.modifiedDate = verificationOfpecialKookminNewlyMarried.getModifiedDate();
+    public VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried) {
+        this.americanAge = verificationOfSpecialKookminNewlyMarried.getAmericanAge();
+        this.meetLivingInSurroundAreaTf = verificationOfSpecialKookminNewlyMarried.isMeetLivingInSurroundAreaTf();
+        this.accountTf = verificationOfSpecialKookminNewlyMarried.isAccountTf();
+        this.meetRecipientTf = verificationOfSpecialKookminNewlyMarried.isMeetRecipientTf();
+        this.hasMinorChildren = verificationOfSpecialKookminNewlyMarried.isHasMinorChildren();
+        this.meetMonthlyAverageIncomePriorityTf = verificationOfSpecialKookminNewlyMarried.isMeetMonthlyAverageIncomePriority();
+        this.meetMonthlyAverageIncomeGeneralTf = verificationOfSpecialKookminNewlyMarried.isMeetMonthlyAverageIncomeGeneral();
+        this.meetPropertyTf = verificationOfSpecialKookminNewlyMarried.isMeetPropertyTf();
+        this.secondChungyak = verificationOfSpecialKookminNewlyMarried.isSecondChungyak();
+        this.meetHomelessHouseholdMembersTf = verificationOfSpecialKookminNewlyMarried.isMeetHomelessHouseholdMemberTf();
+        this.meetAllHouseMemberRewinningRestrictionTf = verificationOfSpecialKookminNewlyMarried.isMeetAllHouseMemberRewinningRestrictionTf();
+        this.householderTf = verificationOfSpecialKookminNewlyMarried.isHouseholderTf();
+        this.restrictedAreaTf = verificationOfSpecialKookminNewlyMarried.isRestrictedAreaTf();
+        this.meetBankbookJoinPeriodTf = verificationOfSpecialKookminNewlyMarried.isMeetBankbookJoinPeriodTf();
+        this.meetNumberOfPaymentsTf = verificationOfSpecialKookminNewlyMarried.isMeetNumberOfPaymentsTf();
+        this.verificationRecordSpecialKookminNewlyMarriedId = verificationOfSpecialKookminNewlyMarried.getId();
+        this.sibilingSupportYn = verificationOfSpecialKookminNewlyMarried.getSibilingSupportYn();
+        this.preNewMarriedYn = verificationOfSpecialKookminNewlyMarried.getPreNewMarriedYn();
+        this.kookminType = verificationOfSpecialKookminNewlyMarried.getKookminType();
+        this.ranking = verificationOfSpecialKookminNewlyMarried.getRanking();
+        this.createdDate = verificationOfSpecialKookminNewlyMarried.getCreatedDate();
+        this.modifiedDate = verificationOfSpecialKookminNewlyMarried.getModifiedDate();
     }
 }

@@ -76,8 +76,8 @@ public class ReadAllUserVerificationServiceImpl implements ReadAllUserVerificati
         }
 
         List<VerificationOfSpecialKookminPublicNewlyMarriedResponseDto> verificationOfSpecialKookminPublicNewlyMarriedResponseDtos = new ArrayList<>();
-        for (VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried : verificationOfSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
-            VerificationOfSpecialKookminPublicNewlyMarriedResponseDto verificationOfSpecialKookminPublicNewlyMarriedResponseDto = new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfpecialKookminNewlyMarried);
+        for (VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried : verificationOfSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
+            VerificationOfSpecialKookminPublicNewlyMarriedResponseDto verificationOfSpecialKookminPublicNewlyMarriedResponseDto = new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfSpecialKookminNewlyMarried);
             verificationOfSpecialKookminPublicNewlyMarriedResponseDtos.add(verificationOfSpecialKookminPublicNewlyMarriedResponseDto);
         }
 

@@ -16,11 +16,12 @@ import java.io.Serializable;
 public class AptInfoTarget {
 
     @Id
+    @Column(name = "apt_info_target_id_housing_type")
     private String housingType;//주택형
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notification_number_id")
+    @JoinColumn(name = "apt_info_target_id_notification_number")
     private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
 
     @Column
