@@ -10,7 +10,7 @@ import com.hanium.chungyakpassback.repository.input.UserBankbookRepository;
 import com.hanium.chungyakpassback.repository.input.UserRepository;
 import com.hanium.chungyakpassback.repository.point.*;
 import com.hanium.chungyakpassback.repository.standard.AddressLevel1Repository;
-import com.hanium.chungyakpassback.service.verification.GeneralPrivateVerificationServiceImpl;
+import com.hanium.chungyakpassback.service.verification.VerificationOfGeneralMinyeongServiceImpl;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,15 +26,15 @@ public class ReadPointCalculationServiceImpl implements ReadPointCalculationServ
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final UserBankbookRepository userBankbookRepository;
     final HouseMemberRepository houseMemberRepository;
-    final GeneralPrivateVerificationServiceImpl generalPrivateVerificationServiceImpl;
-    final PointCalculationOfNewMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
+    final VerificationOfGeneralMinyeongServiceImpl generalPrivateVerificationServiceImpl;
+    final PointOfNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final AddressLevel1Repository addressLevel1Repository;
 //    final RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried;
-    final RecordGeneralMinyeongPointRepository recordGeneralMinyeongPointRepository;
-    final RecordSpecialMinyeongPointOfNewMarriedRepository recordSpecialMinyeongPointOfNewMarriedRepository;
-    final RecordSpecialMinyeongPointOfSingleParentsRepository recordSpecialMinyeongPointOfSingleParentsRepository;
-    final RecordSpecialMinyeongPointOfMultiChildRepository recordSpecialMinyeongPointOfMultiChildRepository;
-    final RecordSpecialMinyeongPointOfOldParentsSupportRepository recordSpecialMinyeongPointOfOldParentsSupportRepository;
+    final PointOfGeneralMinyeongRepository pointOfGeneralMinyeongRepository;
+    final PointOfSpecialMinyeongNewlyMarriedRepository pointOfSpecialMinyeongNewlyMarriedRepository;
+    final PointOfSpecialMinyeongSingleParentsRepository pointOfSpecialMinyeongSingleParentsRepository;
+    final PointOfSpecialMinyeongMultiChildRepository pointOfSpecialMinyeongMultiChildRepository;
+    final PointOfSpecialMinyeongOldParentsSupportRepository pointOfSpecialMinyeongOldParentsSupportRepository;
 
 
     @Override
@@ -42,39 +42,39 @@ public class ReadPointCalculationServiceImpl implements ReadPointCalculationServ
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 //        UserPointRecordDto userPointRecordDto = new UserPointRecordDto();
 
-        List<GeneralMinyeongResponsePointDto> generalMinyeongResponsePointDtos = new ArrayList<>();
-        for (RecordGeneralMinyeongPoint recordGeneralMinyeongPoint : recordGeneralMinyeongPointRepository.findAllByUser(user)){
-            GeneralMinyeongResponsePointDto generalMinyeongResponsePointDto = new GeneralMinyeongResponsePointDto(recordGeneralMinyeongPoint);
-            generalMinyeongResponsePointDtos.add(generalMinyeongResponsePointDto);
+        List<PointOfGeneralMinyeongResponseDto> pointOfGeneralMinyeongResponseDtos = new ArrayList<>();
+        for (PointOfGeneralMinyeong pointOfGeneralMinyeong : pointOfGeneralMinyeongRepository.findAllByUser(user)){
+            PointOfGeneralMinyeongResponseDto pointOfGeneralMinyeongResponseDto = new PointOfGeneralMinyeongResponseDto(pointOfGeneralMinyeong);
+            pointOfGeneralMinyeongResponseDtos.add(pointOfGeneralMinyeongResponseDto);
         }
 
-        List<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarriedResponseDtos = new ArrayList<>();
-        for (RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried : recordSpecialMinyeongPointOfNewMarriedRepository.findAllByUser(user)){
-            SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto = new SpecialMinyeongPointOfNewMarriedResponseDto(recordSpecialMinyeongPointOfNewMarried);
-            specialMinyeongPointOfNewMarriedResponseDtos.add(specialMinyeongPointOfNewMarriedResponseDto);
+        List<PointOfSpecialMinyeongNewlyMarriedResponseDto> pointOfSpecialMinyeongNewlyMarriedResponseDtos = new ArrayList<>();
+        for (PointOfSpecialMinyeongNewlyMarried pointOfSpecialMinyeongNewlyMarried : pointOfSpecialMinyeongNewlyMarriedRepository.findAllByUser(user)){
+            PointOfSpecialMinyeongNewlyMarriedResponseDto pointOfSpecialMinyeongNewlyMarriedResponseDto = new PointOfSpecialMinyeongNewlyMarriedResponseDto(pointOfSpecialMinyeongNewlyMarried);
+            pointOfSpecialMinyeongNewlyMarriedResponseDtos.add(pointOfSpecialMinyeongNewlyMarriedResponseDto);
         }
-        List<SpecialMinyeongPointOfSingleParentsResponseDto> specialMinyeongPointOfSingleParentsResponseDtos = new ArrayList<>();
-        for (RecordSpecialMinyeongPointOfSingleParents recordSpecialMinyeongPointOfSingleParents : recordSpecialMinyeongPointOfSingleParentsRepository.findAllByUser(user)){
-            SpecialMinyeongPointOfSingleParentsResponseDto specialMinyeongPointOfSingleParentsResponseDto = new SpecialMinyeongPointOfSingleParentsResponseDto(recordSpecialMinyeongPointOfSingleParents);
-            specialMinyeongPointOfSingleParentsResponseDtos.add(specialMinyeongPointOfSingleParentsResponseDto);
+        List<PointOfSpecialMinyeongSingleParentsResponseDto> pointOfSpecialMinyeongSingleParentsResponseDtos = new ArrayList<>();
+        for (PointOfSpecialMinyeongSingleParents pointOfSpecialMinyeongSingleParents : pointOfSpecialMinyeongSingleParentsRepository.findAllByUser(user)){
+            PointOfSpecialMinyeongSingleParentsResponseDto pointOfSpecialMinyeongSingleParentsResponseDto = new PointOfSpecialMinyeongSingleParentsResponseDto(pointOfSpecialMinyeongSingleParents);
+            pointOfSpecialMinyeongSingleParentsResponseDtos.add(pointOfSpecialMinyeongSingleParentsResponseDto);
         }
-        List<SpecialMinyeongPointOfMultiChildResponseDto> specialMinyeongPointOfMultiChildResponseDtos = new ArrayList<>();
-        for (RecordSpecialMinyeongPointOfMultiChild recordSpecialMinyeongPointOfMultiChild : recordSpecialMinyeongPointOfMultiChildRepository.findAllByUser(user)){
-            SpecialMinyeongPointOfMultiChildResponseDto specialMinyeongPointOfMultiChildResponseDto = new SpecialMinyeongPointOfMultiChildResponseDto(recordSpecialMinyeongPointOfMultiChild);
-            specialMinyeongPointOfMultiChildResponseDtos.add(specialMinyeongPointOfMultiChildResponseDto);
+        List<PointOfSpecialMinyeongMultiChildResponseDto> pointOfSpecialMinyeongMultiChildResponseDtos = new ArrayList<>();
+        for (PointOfSpecialMinyeongMultiChild pointOfSpecialMinyeongMultiChild : pointOfSpecialMinyeongMultiChildRepository.findAllByUser(user)){
+            PointOfSpecialMinyeongMultiChildResponseDto pointOfSpecialMinyeongMultiChildResponseDto = new PointOfSpecialMinyeongMultiChildResponseDto(pointOfSpecialMinyeongMultiChild);
+            pointOfSpecialMinyeongMultiChildResponseDtos.add(pointOfSpecialMinyeongMultiChildResponseDto);
         }
 
-        List<SpecialMinyeongPointOfOldParentsSupportResponseDto> specialMinyeongPointOfOldParentsSupportResponseDtos = new ArrayList<>();
-        for (RecordSpecialMinyeongPointOfOldParentsSupport recordSpecialMinyeongPointOfOldParentsSupport : recordSpecialMinyeongPointOfOldParentsSupportRepository.findAllByUser(user)){
-            SpecialMinyeongPointOfOldParentsSupportResponseDto specialMinyeongPointOfOldParentsSupportResponseDto = new SpecialMinyeongPointOfOldParentsSupportResponseDto(recordSpecialMinyeongPointOfOldParentsSupport);
-            specialMinyeongPointOfOldParentsSupportResponseDtos.add(specialMinyeongPointOfOldParentsSupportResponseDto);
+        List<PointOfSpecialMinyeongOldParentsSupportResponseDto> pointOfSpecialMinyeongOldParentsSupportResponseDtos = new ArrayList<>();
+        for (PointOfSpecialMinyeongOldParentsSupport pointOfSpecialMinyeongOldParentsSupport : pointOfSpecialMinyeongOldParentsSupportRepository.findAllByUser(user)){
+            PointOfSpecialMinyeongOldParentsSupportResponseDto pointOfSpecialMinyeongOldParentsSupportResponseDto = new PointOfSpecialMinyeongOldParentsSupportResponseDto(pointOfSpecialMinyeongOldParentsSupport);
+            pointOfSpecialMinyeongOldParentsSupportResponseDtos.add(pointOfSpecialMinyeongOldParentsSupportResponseDto);
         }
         ReadPointCalculationDto readPointCalculationDto = ReadPointCalculationDto.builder()
-                .generalMinyeongResponsePointDtos(generalMinyeongResponsePointDtos)
-                .specialMinyeongPointOfNewMarriedResponseDtos(specialMinyeongPointOfNewMarriedResponseDtos)
-                .specialMinyeongPointOfSingleParentsResponseDtos(specialMinyeongPointOfSingleParentsResponseDtos)
-                .specialMinyeongPointOfMultiChildResponseDtos(specialMinyeongPointOfMultiChildResponseDtos)
-                .specialMinyeongPointOfOldParentsSupportResponseDtos(specialMinyeongPointOfOldParentsSupportResponseDtos)
+                .pointOfGeneralMinyeongResponseDtos(pointOfGeneralMinyeongResponseDtos)
+                .pointOfSpecialMinyeongNewlyMarriedResponseDtos(pointOfSpecialMinyeongNewlyMarriedResponseDtos)
+                .pointOfSpecialMinyeongSingleParentsResponseDtos(pointOfSpecialMinyeongSingleParentsResponseDtos)
+                .pointOfSpecialMinyeongMultiChildResponseDtos(pointOfSpecialMinyeongMultiChildResponseDtos)
+                .pointOfSpecialMinyeongOldParentsSupportResponseDtos(pointOfSpecialMinyeongOldParentsSupportResponseDtos)
                 .build();
 
         return readPointCalculationDto;

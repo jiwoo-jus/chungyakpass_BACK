@@ -11,16 +11,16 @@ import java.util.List;
 @AllArgsConstructor
 public class ReadVerificationDto {
 
-    List<GeneralMinyeongResponseDto> generalMinyeongResponseDtos;
-    List<GeneralKookminResponseDto> generalKookminResponseDtos;
-    List<SpecialMinyeongMultiChildResponseDto> specialMinyeongMultiChildResponseDtos;
-    List<SpecialKookminPublicMultiChildResponseDto> specialKookminPublicMultiChildResponseDtos;
-    List<SpecialMinyeongOldParentResponseDto> specialMinyeongOldParentResponseDtos;
-    List<SpecialKookminPublicOldParentResponseDto> specialKookminPublicOldParentResponseDtos;
-    List<SpecialMinyeongNewlyMarriedResponseDto> specialMinyeongNewlyMarriedResponseDtos;
+    List<VerificationOfGeneralMinyeongResponseDto> verificationOfGeneralMinyeongResponseDtos;
+    List<VerificationOfGeneralKookminResponseDto> verificationOfGeneralKookminResponseDtos;
+    List<VerificationOfSpecialMinyeongMultiChildResponseDto> verificationOfSpecialMinyeongMultiChildResponseDtos;
+    List<VerificationOfSpecialKookminPublicMultiChildResponseDto> verificationOfSpecialKookminPublicMultiChildResponseDtos;
+    List<VerificationOfSpecialMinyeongOldParentResponseDto> verificationOfSpecialMinyeongOldParentResponseDtos;
+    List<VerificationOfSpecialKookminPublicOldParentResponseDto> verificationOfSpecialKookminPublicOldParentResponseDtos;
+    List<VerificationOfSpecialMinyeongNewlyMarriedResponseDto> verificationOfSpecialMinyeongNewlyMarriedResponseDtos;
     //    List<SpecialKookminNewlyMarriedResponseDto> specialKookminNewlyMarriedResponseDtos;
-    List<SpecialKookminPublicNewlyMarriedResponseDto> specialKookminPublicNewlyMarriedResponseDtos;
-    List<SpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeResponseDtos;
-    List<SpecialKookminPublicFirstLifeResponseDto> specialKookminPublicFirstLifeResponseDtos;
+    List<VerificationOfSpecialKookminPublicNewlyMarriedResponseDto> verificationOfSpecialKookminPublicNewlyMarriedResponseDtos;
+    List<VerificationOfSpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeResponseDtos;
+    List<VerificationOfSpecialKookminPublicFirstLifeResponseDto> verificationOfSpecialKookminPublicFirstLifeResponseDtos;
 
 }

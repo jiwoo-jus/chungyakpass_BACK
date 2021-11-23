@@ -18,92 +18,92 @@ import java.util.List;
 public class ReadVerificationServiceImpl implements ReadVerificationService {
 
     final UserRepository userRepository;
-    final VerificationRecordGeneralMinyeongRepository verificationRecordGeneralMinyeongRepository;
-    final VerificationRecordGeneralKookminRepository verificationRecordGeneralKookminRepository;
-    final VerificationRecordSpecialMinyeongMultiChildRepository verificationRecordSpecialMinyeongMultiChildRepository;
-    final VerificationRecordSpecialKookminMultiChildRepository verificationRecordSpecialKookminMultiChildRepository;
-    final VerificationRecordSpecialMinyeongOldParentRepository verificationRecordSpecialMinyeongOldParentRepository;
-    final VerificationRecordSpecialKookminOldParentRepository verificationRecordSpecialKookminOldParentRepository;
-    final VerificationRecordSpecialMinyeongNewlyMarriedRepository verificationRecordSpecialMinyeongNewlyMarriedRepository;
-    final VerificationRecordSpecialKookminNewlyMarriedRepository verificationRecordSpecialKookminNewlyMarriedRepository;
-    final VerificationRecordSpecialMinyeongFirstLifeRepository verificationRecordSpecialMinyeongFirstLifeRepository;
-    final VerificationRecordSpecialKookminFirstLifeRepository verificationRecordSpecialKookminFirstLifeRepository;
+    final VerificationOfGeneralMinyeongRepository verificationOfGeneralMinyeongRepository;
+    final VerificationOfGeneralKookminRepository verificationOfGeneralKookminRepository;
+    final VerificationOfSpecialMinyeongMultiChildRepository verificationOfSpecialMinyeongMultiChildRepository;
+    final VerificationOfSpecialKookminMultiChildRepository verificationOfSpecialKookminMultiChildRepository;
+    final VerificationOfSpecialMinyeongOldParentRepository verificationOfSpecialMinyeongOldParentRepository;
+    final VerificationOfSpecialKookminOldParentRepository verificationOfSpecialKookminOldParentRepository;
+    final VerificationOfSpecialMinyeongNewlyMarriedRepository verificationOfSpecialMinyeongNewlyMarriedRepository;
+    final VerificationOfSpecialKookminNewlyMarriedRepository verificationOfSpecialKookminNewlyMarriedRepository;
+    final VerificationOfSpecialMinyeongFirstLifeRepository verificationOfSpecialMinyeongFirstLifeRepository;
+    final VerificationOfSpecialKookminFirstLifeRepository verificationOfSpecialKookminFirstLifeRepository;
 
     @Override
     public ReadVerificationDto readAllVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
-        List<GeneralMinyeongResponseDto> generalMinyeongResponseDtos = new ArrayList<>();
-        for (VerificationRecordGeneralMinyeong verificationRecordGeneralMinyeong : verificationRecordGeneralMinyeongRepository.findAllByUser(user)) {
-            GeneralMinyeongResponseDto generalMinyeongResponseDto = new GeneralMinyeongResponseDto(verificationRecordGeneralMinyeong);
-            generalMinyeongResponseDtos.add(generalMinyeongResponseDto);
+        List<VerificationOfGeneralMinyeongResponseDto> verificationOfGeneralMinyeongResponseDtos = new ArrayList<>();
+        for (VerificationOfGeneralMinyeong verificationOfGeneralMinyeong : verificationOfGeneralMinyeongRepository.findAllByUser(user)) {
+            VerificationOfGeneralMinyeongResponseDto verificationOfGeneralMinyeongResponseDto = new VerificationOfGeneralMinyeongResponseDto(verificationOfGeneralMinyeong);
+            verificationOfGeneralMinyeongResponseDtos.add(verificationOfGeneralMinyeongResponseDto);
         }
 
-        List<GeneralKookminResponseDto> generalKookminResponseDtos = new ArrayList<>();
-        for (VerificationRecordGeneralKookmin verificationRecordGeneralKookmin : verificationRecordGeneralKookminRepository.findAllByUser(user)) {
-            GeneralKookminResponseDto generalKookminResponseDto = new GeneralKookminResponseDto(verificationRecordGeneralKookmin);
-            generalKookminResponseDtos.add(generalKookminResponseDto);
+        List<VerificationOfGeneralKookminResponseDto> verificationOfGeneralKookminResponseDtos = new ArrayList<>();
+        for (VerificationOfGeneralKookmin verificationOfGeneralKookmin : verificationOfGeneralKookminRepository.findAllByUser(user)) {
+            VerificationOfGeneralKookminResponseDto verificationOfGeneralKookminResponseDto = new VerificationOfGeneralKookminResponseDto(verificationOfGeneralKookmin);
+            verificationOfGeneralKookminResponseDtos.add(verificationOfGeneralKookminResponseDto);
         }
 
-        List<SpecialMinyeongMultiChildResponseDto> specialMinyeongMultiChildResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialMinyeongMultiChild verificationRecordSpecialMinyeongMultiChild : verificationRecordSpecialMinyeongMultiChildRepository.findAllByUser(user)) {
-            SpecialMinyeongMultiChildResponseDto specialMinyeongMultiChildResponseDto = new SpecialMinyeongMultiChildResponseDto(verificationRecordSpecialMinyeongMultiChild);
-            specialMinyeongMultiChildResponseDtos.add(specialMinyeongMultiChildResponseDto);
+        List<VerificationOfSpecialMinyeongMultiChildResponseDto> verificationOfSpecialMinyeongMultiChildResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialMinyeongMultiChild verificationOfSpecialMinyeongMultiChild : verificationOfSpecialMinyeongMultiChildRepository.findAllByUser(user)) {
+            VerificationOfSpecialMinyeongMultiChildResponseDto verificationOfSpecialMinyeongMultiChildResponseDto = new VerificationOfSpecialMinyeongMultiChildResponseDto(verificationOfSpecialMinyeongMultiChild);
+            verificationOfSpecialMinyeongMultiChildResponseDtos.add(verificationOfSpecialMinyeongMultiChildResponseDto);
         }
 
-        List<SpecialKookminPublicMultiChildResponseDto> specialKookminPublicMultiChildResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialKookminMultiChild verificationRecordSpecialKookminMultiChild : verificationRecordSpecialKookminMultiChildRepository.findAllByUser(user)) {
-            SpecialKookminPublicMultiChildResponseDto specialKookminPublicMultiChildResponseDto = new SpecialKookminPublicMultiChildResponseDto(verificationRecordSpecialKookminMultiChild);
-            specialKookminPublicMultiChildResponseDtos.add(specialKookminPublicMultiChildResponseDto);
+        List<VerificationOfSpecialKookminPublicMultiChildResponseDto> verificationOfSpecialKookminPublicMultiChildResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialKookminMultiChild verificationOfSpecialKookminMultiChild : verificationOfSpecialKookminMultiChildRepository.findAllByUser(user)) {
+            VerificationOfSpecialKookminPublicMultiChildResponseDto verificationOfSpecialKookminPublicMultiChildResponseDto = new VerificationOfSpecialKookminPublicMultiChildResponseDto(verificationOfSpecialKookminMultiChild);
+            verificationOfSpecialKookminPublicMultiChildResponseDtos.add(verificationOfSpecialKookminPublicMultiChildResponseDto);
         }
 
-        List<SpecialMinyeongOldParentResponseDto> specialMinyeongOldParentResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialMinyeongOldParent verificationRecordSpecialMinyeongOldParent : verificationRecordSpecialMinyeongOldParentRepository.findAllByUser(user)) {
-            SpecialMinyeongOldParentResponseDto specialMinyeongOldParentResponseDto = new SpecialMinyeongOldParentResponseDto(verificationRecordSpecialMinyeongOldParent);
-            specialMinyeongOldParentResponseDtos.add(specialMinyeongOldParentResponseDto);
+        List<VerificationOfSpecialMinyeongOldParentResponseDto> verificationOfSpecialMinyeongOldParentResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialMinyeongOldParent verificationOfSpecialMinyeongOldParent : verificationOfSpecialMinyeongOldParentRepository.findAllByUser(user)) {
+            VerificationOfSpecialMinyeongOldParentResponseDto verificationOfSpecialMinyeongOldParentResponseDto = new VerificationOfSpecialMinyeongOldParentResponseDto(verificationOfSpecialMinyeongOldParent);
+            verificationOfSpecialMinyeongOldParentResponseDtos.add(verificationOfSpecialMinyeongOldParentResponseDto);
         }
 
-        List<SpecialKookminPublicOldParentResponseDto> specialKookminPublicOldParentResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialKookminOldParent verificationRecordSpecialKookminOldParent : verificationRecordSpecialKookminOldParentRepository.findAllByUser(user)) {
-            SpecialKookminPublicOldParentResponseDto specialKookminPublicOldParentResponseDto = new SpecialKookminPublicOldParentResponseDto(verificationRecordSpecialKookminOldParent);
-            specialKookminPublicOldParentResponseDtos.add(specialKookminPublicOldParentResponseDto);
+        List<VerificationOfSpecialKookminPublicOldParentResponseDto> verificationOfSpecialKookminPublicOldParentResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialKookminOldParent verificationOfSpecialKookminOldParent : verificationOfSpecialKookminOldParentRepository.findAllByUser(user)) {
+            VerificationOfSpecialKookminPublicOldParentResponseDto verificationOfSpecialKookminPublicOldParentResponseDto = new VerificationOfSpecialKookminPublicOldParentResponseDto(verificationOfSpecialKookminOldParent);
+            verificationOfSpecialKookminPublicOldParentResponseDtos.add(verificationOfSpecialKookminPublicOldParentResponseDto);
         }
 
-        List<SpecialMinyeongNewlyMarriedResponseDto> specialMinyeongNewlyMarriedResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialMinyeongNewlyMarried verificationRecordSpecialMinyeongNewlyMarried : verificationRecordSpecialMinyeongNewlyMarriedRepository.findAllByUser(user)) {
-            SpecialMinyeongNewlyMarriedResponseDto specialMinyeongNewlyMarriedResponseDto = new SpecialMinyeongNewlyMarriedResponseDto(verificationRecordSpecialMinyeongNewlyMarried);
-            specialMinyeongNewlyMarriedResponseDtos.add(specialMinyeongNewlyMarriedResponseDto);
+        List<VerificationOfSpecialMinyeongNewlyMarriedResponseDto> verificationOfSpecialMinyeongNewlyMarriedResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialMinyeongNewlyMarried verificationOfSpecialMinyeongNewlyMarried : verificationOfSpecialMinyeongNewlyMarriedRepository.findAllByUser(user)) {
+            VerificationOfSpecialMinyeongNewlyMarriedResponseDto verificationOfSpecialMinyeongNewlyMarriedResponseDto = new VerificationOfSpecialMinyeongNewlyMarriedResponseDto(verificationOfSpecialMinyeongNewlyMarried);
+            verificationOfSpecialMinyeongNewlyMarriedResponseDtos.add(verificationOfSpecialMinyeongNewlyMarriedResponseDto);
         }
 
-        List<SpecialKookminPublicNewlyMarriedResponseDto> specialKookminPublicNewlyMarriedResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialKookminNewlyMarried verificationRecordSpecialKookminNewlyMarried : verificationRecordSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
-            SpecialKookminPublicNewlyMarriedResponseDto specialKookminPublicNewlyMarriedResponseDto = new SpecialKookminPublicNewlyMarriedResponseDto(verificationRecordSpecialKookminNewlyMarried);
-            specialKookminPublicNewlyMarriedResponseDtos.add(specialKookminPublicNewlyMarriedResponseDto);
+        List<VerificationOfSpecialKookminPublicNewlyMarriedResponseDto> verificationOfSpecialKookminPublicNewlyMarriedResponseDtos = new ArrayList<>();
+        for (VerificationOfpecialKookminNewlyMarried verificationOfpecialKookminNewlyMarried : verificationOfSpecialKookminNewlyMarriedRepository.findAllByUser(user)) {
+            VerificationOfSpecialKookminPublicNewlyMarriedResponseDto verificationOfSpecialKookminPublicNewlyMarriedResponseDto = new VerificationOfSpecialKookminPublicNewlyMarriedResponseDto(verificationOfpecialKookminNewlyMarried);
+            verificationOfSpecialKookminPublicNewlyMarriedResponseDtos.add(verificationOfSpecialKookminPublicNewlyMarriedResponseDto);
         }
 
-        List<SpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialMinyeongFirstLife verificationRecordSpecialMinyeongFirstLife : verificationRecordSpecialMinyeongFirstLifeRepository.findAllByUser(user)) {
-            SpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeResponseDto = new SpecialMinyeongFirstLifeResponseDto(verificationRecordSpecialMinyeongFirstLife);
+        List<VerificationOfSpecialMinyeongFirstLifeResponseDto> specialMinyeongFirstLifeResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialMinyeongFirstLife verificationOfSpecialMinyeongFirstLife : verificationOfSpecialMinyeongFirstLifeRepository.findAllByUser(user)) {
+            VerificationOfSpecialMinyeongFirstLifeResponseDto specialMinyeongFirstLifeResponseDto = new VerificationOfSpecialMinyeongFirstLifeResponseDto(verificationOfSpecialMinyeongFirstLife);
             specialMinyeongFirstLifeResponseDtos.add(specialMinyeongFirstLifeResponseDto);
         }
 
-        List<SpecialKookminPublicFirstLifeResponseDto> specialKookminPublicFirstLifeResponseDtos = new ArrayList<>();
-        for (VerificationRecordSpecialKookminFirstLife verificationRecordSpecialKookminFirstLife : verificationRecordSpecialKookminFirstLifeRepository.findAllByUser(user)) {
-            SpecialKookminPublicFirstLifeResponseDto specialKookminPublicFirstLifeResponseDto = new SpecialKookminPublicFirstLifeResponseDto(verificationRecordSpecialKookminFirstLife);
-            specialKookminPublicFirstLifeResponseDtos.add(specialKookminPublicFirstLifeResponseDto);
+        List<VerificationOfSpecialKookminPublicFirstLifeResponseDto> verificationOfSpecialKookminPublicFirstLifeResponseDtos = new ArrayList<>();
+        for (VerificationOfSpecialKookminFirstLife verificationOfSpecialKookminFirstLife : verificationOfSpecialKookminFirstLifeRepository.findAllByUser(user)) {
+            VerificationOfSpecialKookminPublicFirstLifeResponseDto verificationOfSpecialKookminPublicFirstLifeResponseDto = new VerificationOfSpecialKookminPublicFirstLifeResponseDto(verificationOfSpecialKookminFirstLife);
+            verificationOfSpecialKookminPublicFirstLifeResponseDtos.add(verificationOfSpecialKookminPublicFirstLifeResponseDto);
         }
 
         ReadVerificationDto readVerificationDto = ReadVerificationDto.builder()
-                .generalMinyeongResponseDtos(generalMinyeongResponseDtos)
-                .generalKookminResponseDtos(generalKookminResponseDtos)
-                .specialMinyeongMultiChildResponseDtos(specialMinyeongMultiChildResponseDtos)
-                .specialKookminPublicMultiChildResponseDtos(specialKookminPublicMultiChildResponseDtos)
-                .specialMinyeongOldParentResponseDtos(specialMinyeongOldParentResponseDtos)
-                .specialKookminPublicOldParentResponseDtos(specialKookminPublicOldParentResponseDtos)
-                .specialMinyeongNewlyMarriedResponseDtos(specialMinyeongNewlyMarriedResponseDtos)
-                .specialKookminPublicNewlyMarriedResponseDtos(specialKookminPublicNewlyMarriedResponseDtos)
+                .verificationOfGeneralMinyeongResponseDtos(verificationOfGeneralMinyeongResponseDtos)
+                .verificationOfGeneralKookminResponseDtos(verificationOfGeneralKookminResponseDtos)
+                .verificationOfSpecialMinyeongMultiChildResponseDtos(verificationOfSpecialMinyeongMultiChildResponseDtos)
+                .verificationOfSpecialKookminPublicMultiChildResponseDtos(verificationOfSpecialKookminPublicMultiChildResponseDtos)
+                .verificationOfSpecialMinyeongOldParentResponseDtos(verificationOfSpecialMinyeongOldParentResponseDtos)
+                .verificationOfSpecialKookminPublicOldParentResponseDtos(verificationOfSpecialKookminPublicOldParentResponseDtos)
+                .verificationOfSpecialMinyeongNewlyMarriedResponseDtos(verificationOfSpecialMinyeongNewlyMarriedResponseDtos)
+                .verificationOfSpecialKookminPublicNewlyMarriedResponseDtos(verificationOfSpecialKookminPublicNewlyMarriedResponseDtos)
                 .specialMinyeongFirstLifeResponseDtos(specialMinyeongFirstLifeResponseDtos)
-                .specialKookminPublicFirstLifeResponseDtos(specialKookminPublicFirstLifeResponseDtos)
+                .verificationOfSpecialKookminPublicFirstLifeResponseDtos(verificationOfSpecialKookminPublicFirstLifeResponseDtos)
                 .build();
 
         return readVerificationDto;

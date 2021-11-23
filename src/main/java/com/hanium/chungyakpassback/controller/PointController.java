@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/point")
 public class PointController {
-    private final PointCalculationService pointCalculationService;
-    private final PointCalculationOfMultiChildService pointCalculationOfMultiChildService;
-    private final PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService;
-    private final PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService;
-    private final PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService;
+    private final PointOfService pointOfService;
+    private final PointOfMultiChildService pointOfMultiChildService;
+    private final PointOfNewlyMarriedService pointOfNewlyMarriedService;
+    private final PointOfOldParentSupportService pointOfOldParentSupportService;
+    private final PointOfSingleParentsService pointOfSingleParentsService;
     private final ReadPointCalculationService readPointCalculationService;
 
-    public PointController(PointCalculationService pointCalculationService, PointCalculationOfMultiChildService pointCalculationOfMultiChildService, PointCalculationOfNewMarriedService pointCalculationOfNewMarriedService, PointCalculationOfOldParentSupportService pointCalculationOfOldParentSupportService, PointCalculationOfSingleParentsService pointCalculationOfSingleParentsService, ReadPointCalculationService readPointCalculationService) {
-        this.pointCalculationService = pointCalculationService;
-        this.pointCalculationOfMultiChildService = pointCalculationOfMultiChildService;
-        this.pointCalculationOfNewMarriedService = pointCalculationOfNewMarriedService;
-        this.pointCalculationOfOldParentSupportService = pointCalculationOfOldParentSupportService;
-        this.pointCalculationOfSingleParentsService = pointCalculationOfSingleParentsService;
+    public PointController(PointOfService pointOfService, PointOfMultiChildService pointOfMultiChildService, PointOfNewlyMarriedService pointOfNewlyMarriedService, PointOfOldParentSupportService pointOfOldParentSupportService, PointOfSingleParentsService pointOfSingleParentsService, ReadPointCalculationService readPointCalculationService) {
+        this.pointOfService = pointOfService;
+        this.pointOfMultiChildService = pointOfMultiChildService;
+        this.pointOfNewlyMarriedService = pointOfNewlyMarriedService;
+        this.pointOfOldParentSupportService = pointOfOldParentSupportService;
+        this.pointOfSingleParentsService = pointOfSingleParentsService;
         this.readPointCalculationService = readPointCalculationService;
     }
 
@@ -39,62 +39,62 @@ public class PointController {
     @GetMapping("/general/minyeong") //일반민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadPointCalculationDto> readGeneralMinyeongResponsePointCalculations() {
-        return new ResponseEntity(pointCalculationService.readGeneralMinyeongResponsePointCalculations(), HttpStatus.OK);
+        return new ResponseEntity(pointOfService.readGeneralMinyeongResponsePointCalculations(), HttpStatus.OK);
     }
 
     @PostMapping("/general/minyeong") //일반민영저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<GeneralMinyeongResponsePointDto> createGeneralMinyeongPointCalculation(@RequestBody GeneralMinyeongPointDto generalMinyeongPointDto) {
-        return new ResponseEntity<>(pointCalculationService.createGeneralMinyeongPointCalculation(generalMinyeongPointDto), HttpStatus.OK);
+    public ResponseEntity<PointOfGeneralMinyeongResponseDto> createGeneralMinyeongPointCalculation(@RequestBody PointOfGeneralMinyeongDto pointOfGeneralMinyeongDto) {
+        return new ResponseEntity<>(pointOfService.createGeneralMinyeongPointCalculation(pointOfGeneralMinyeongDto), HttpStatus.OK);
     }
 
     @GetMapping("/special/multiChild") //다자녀조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadPointCalculationDto> readMultiChildPointCalculations() {
-        return new ResponseEntity(pointCalculationOfMultiChildService.readMultiChildPointCalculations(), HttpStatus.OK);
+        return new ResponseEntity(pointOfMultiChildService.readMultiChildPointCalculations(), HttpStatus.OK);
     }
 
     @PostMapping("/special/multiChild") //다자녀저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfMultiChildResponseDto> createMultiChildPointCalculation(@RequestBody SpecialMinyeongPointOfMultiChildDto specialMinyeongPointOfMultiChildDto) {
-        return new ResponseEntity<>(pointCalculationOfMultiChildService.createMultiChildPointCalculation(specialMinyeongPointOfMultiChildDto), HttpStatus.OK);
+    public ResponseEntity<PointOfSpecialMinyeongMultiChildResponseDto> createMultiChildPointCalculation(@RequestBody PointOfSpecialMinyeongMultiChildDto pointOfSpecialMinyeongMultiChildDto) {
+        return new ResponseEntity<>(pointOfMultiChildService.createMultiChildPointCalculation(pointOfSpecialMinyeongMultiChildDto), HttpStatus.OK);
     }
 
     @GetMapping("/special/newlyMarried") //신혼부부조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadPointCalculationDto> readNewlyMarriedPointCalculations() {
-        return new ResponseEntity(pointCalculationOfNewMarriedService.readNewlyMarriedPointCalculations(), HttpStatus.OK);
+        return new ResponseEntity(pointOfNewlyMarriedService.readNewlyMarriedPointCalculations(), HttpStatus.OK);
     }
 
     @PostMapping("/special/newlyMarried") //신혼부부저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfNewMarriedResponseDto> createNewlyMarriedPointCalculation(@RequestBody SpecialMinyeongPointOfNewMarriedDto specialMinyeongPointOfNewMarriedDto) {
+    public ResponseEntity<PointOfSpecialMinyeongNewlyMarriedResponseDto> createNewlyMarriedPointCalculation(@RequestBody PointOfSpecialMinyeongNewlyMarriedDto pointOfSpecialMinyeongNewlyMarriedDto) {
 
-        return new ResponseEntity<>(pointCalculationOfNewMarriedService.createNewlyMarriedPointCalculation(specialMinyeongPointOfNewMarriedDto), HttpStatus.OK);
+        return new ResponseEntity<>(pointOfNewlyMarriedService.createNewlyMarriedPointCalculation(pointOfSpecialMinyeongNewlyMarriedDto), HttpStatus.OK);
     }
 
     @GetMapping("/special/singleParents") //한부모조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadPointCalculationDto> readSingleParentsPointCalculations() {
-        return new ResponseEntity(pointCalculationOfSingleParentsService.readSingleParentsPointCalculations(), HttpStatus.OK);
+        return new ResponseEntity(pointOfSingleParentsService.readSingleParentsPointCalculations(), HttpStatus.OK);
     }
 
     @PostMapping("/special/singleParents") //한부모저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfSingleParentsResponseDto> createSingleParentsPointCalculation(@RequestBody SpecialMinyeongPointOfSingleParentsDto specialMinyeongPointOfSingleParentsDto) {
-        return new ResponseEntity<>(pointCalculationOfSingleParentsService.createSingleParentsPointCalculation(specialMinyeongPointOfSingleParentsDto), HttpStatus.OK);
+    public ResponseEntity<PointOfSpecialMinyeongSingleParentsResponseDto> createSingleParentsPointCalculation(@RequestBody PointOfSpecialMinyeongSingleParentsDto pointOfSpecialMinyeongSingleParentsDto) {
+        return new ResponseEntity<>(pointOfSingleParentsService.createSingleParentsPointCalculation(pointOfSpecialMinyeongSingleParentsDto), HttpStatus.OK);
     }
 
     @GetMapping("/special/oldParentsSupport") //노부모조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadPointCalculationDto> readOldParentsSupportPointCalculations() {
-        return new ResponseEntity(pointCalculationOfOldParentSupportService.readOldParentsSupportPointCalculations(), HttpStatus.OK);
+        return new ResponseEntity(pointOfOldParentSupportService.readOldParentsSupportPointCalculations(), HttpStatus.OK);
     }
 
     @PostMapping("/special/oldParentsSupport") //노부모저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<SpecialMinyeongPointOfOldParentsSupportResponseDto> createOldParentsSupportPointCalculation(@RequestBody SpecialPointOfOldParentsSupportDto specialPointOfOldParentsSupportDto) {
-        return new ResponseEntity<>(pointCalculationOfOldParentSupportService.createOldParentsSupportPointCalculation(specialPointOfOldParentsSupportDto), HttpStatus.OK);
+    public ResponseEntity<PointOfSpecialMinyeongOldParentsSupportResponseDto> createOldParentsSupportPointCalculation(@RequestBody PointOfSpecialOldParentsSupportDto pointOfSpecialOldParentsSupportDto) {
+        return new ResponseEntity<>(pointOfOldParentSupportService.createOldParentsSupportPointCalculation(pointOfSpecialOldParentsSupportDto), HttpStatus.OK);
     }
 
 
