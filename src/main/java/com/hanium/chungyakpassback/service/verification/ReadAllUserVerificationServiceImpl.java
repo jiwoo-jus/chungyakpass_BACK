@@ -102,7 +102,7 @@ public class ReadAllUserVerificationServiceImpl implements ReadAllUserVerificati
                 .verificationOfSpecialKookminPublicOldParentResponseDtos(verificationOfSpecialKookminPublicOldParentResponseDtos)
                 .verificationOfSpecialMinyeongNewlyMarriedResponseDtos(verificationOfSpecialMinyeongNewlyMarriedResponseDtos)
                 .verificationOfSpecialKookminPublicNewlyMarriedResponseDtos(verificationOfSpecialKookminPublicNewlyMarriedResponseDtos)
-                .specialMinyeongFirstLifeResponseDtos(specialMinyeongFirstLifeResponseDtos)
+                .verificationOfSpecialMinyeongFirstLifeResponseDtos(specialMinyeongFirstLifeResponseDtos)
                 .verificationOfSpecialKookminPublicFirstLifeResponseDtos(verificationOfSpecialKookminPublicFirstLifeResponseDtos)
                 .build();
 
