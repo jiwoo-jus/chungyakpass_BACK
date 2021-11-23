@@ -4,6 +4,7 @@ import com.hanium.chungyakpassback.entity.input.House;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class HouseResponseDto {
     private Long id;
+
+    @Setter
+    private Long houseHolderId;
 
     private Long addressLevel1Id;
 
@@ -23,7 +27,6 @@ public class HouseResponseDto {
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
-
 
     @Builder
     public HouseResponseDto(House house){

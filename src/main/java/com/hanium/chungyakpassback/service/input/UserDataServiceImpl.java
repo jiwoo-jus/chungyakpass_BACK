@@ -85,11 +85,20 @@ public class UserDataServiceImpl implements UserDataService{
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         HouseReadDto houseReadDto = new HouseReadDto();
-        if(user.getHouse() != null)
-            houseReadDto.setHouseResponseDto(new HouseResponseDto(user.getHouse()));
-        if(user.getSpouseHouse() != null)
-            houseReadDto.setSpouseHouseResponseDto(new HouseResponseDto(user.getSpouseHouse()));
-
+        if(user.getHouse() != null){
+            HouseResponseDto houseResponseDto = new HouseResponseDto(user.getHouse());
+            HouseMember houseHolder = user.getHouse().getHouseHolder();
+            if (houseHolder != null)
+                houseResponseDto.setHouseHolderId(houseHolder.getId());
+            houseReadDto.setHouseResponseDto(houseResponseDto);
+        }
+        if(user.getSpouseHouse() != null) {
+            HouseResponseDto spouseHouseResponseDto = new HouseResponseDto(user.getSpouseHouse());
+            HouseMember spouseHouseHolder = user.getSpouseHouse().getHouseHolder();
+            if (spouseHouseHolder != null)
+                spouseHouseResponseDto.setHouseHolderId(spouseHouseHolder.getId());
+            houseReadDto.setSpouseHouseResponseDto(spouseHouseResponseDto);
+        }
         return houseReadDto;
     }
 
@@ -114,7 +123,11 @@ public class UserDataServiceImpl implements UserDataService{
         else user.setHouse(house);
         userRepository.save(user);
 
-        return new HouseResponseDto(house);
+        HouseResponseDto houseResponseDto = new HouseResponseDto(house);
+        if (house.getHouseHolder() != null)
+            houseResponseDto.setHouseHolderId(house.getHouseHolder().getId());
+
+        return houseResponseDto;
     }
 
     @Override
@@ -125,7 +138,11 @@ public class UserDataServiceImpl implements UserDataService{
         AddressLevel1 addressLevel1 = addressLevel1Repository.findByAddressLevel1(houseUpdateDto.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel2 addressLevel2 = addressLevel2Repository.findByAddressLevel1AndAddressLevel2(addressLevel1, houseUpdateDto.getAddressLevel2()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL2));
         house = house.update(addressLevel1, addressLevel2, houseUpdateDto);
-        return new HouseResponseDto(houseRepository.save(house));
+        HouseResponseDto houseResponseDto = new HouseResponseDto(houseRepository.save(house));
+        if (house.getHouseHolder() != null)
+            houseResponseDto.setHouseHolderId(house.getHouseHolder().getId());
+
+        return houseResponseDto;
     }
 
     @Override
