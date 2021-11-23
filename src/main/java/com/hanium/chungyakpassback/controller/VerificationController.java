@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.controller;
 
-import com.hanium.chungyakpassback.dto.verification.ReadVerificationDto;
+import com.hanium.chungyakpassback.dto.verification.ReadAllUserVerificationDto;
 import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.service.verification.*;
 import org.springframework.http.HttpStatus;
@@ -24,9 +24,9 @@ public class VerificationController {
     private final VerificationOfSpecialKookminPublicNewlyMarriedService verificationOfSpecialKookminPublicNewlyMarriedService;
     private final VerificationOfSpecialMinyeongFirstLifeService verificationOfSpecialMinyeongFirstLifeService;
     private final VerificationOfSpecialKookminPublicFirstLifeService verificationOfSpecialKookminPublicFirstLifeService;
-    public final ReadVerificationService readVerificationService;
+    public final ReadAllUserVerificationService readAllUserVerificationService;
 
-    public VerificationController(VerificationOfGeneralMinyeongService verificationOfGeneralMinyeongService, VerificationOfGeneralKookminService verificationOfGeneralKookminService, VerificationOfSpecialMinyeongMultiChildService verificationOfSpecialMinyeongMultiChildService, VerificationOfSpecialKookminPublicMultiChildService verificationOfSpecialKookminPublicMultiChildService, VerificationOfSpecialMinyeongOldParentService verificationOfSpecialMinyeongOldParentService, VerificationOfSpecialKookminPublicOldParentService verificationOfSpecialKookminPublicOldParentService, VerificationOfSpecialMinyeongNewlyMarriedService verificationOfSpecialMinyeongNewlyMarriedService, VerificationOfSpecialKookminNewlyMarriedService verificationOfSpecialKookminNewlyMarriedService, VerificationOfSpecialKookminPublicNewlyMarriedService verificationOfSpecialKookminPublicNewlyMarriedService, VerificationOfSpecialMinyeongFirstLifeService verificationOfSpecialMinyeongFirstLifeService, VerificationOfSpecialKookminPublicFirstLifeService verificationOfSpecialKookminPublicFirstLifeService, ReadVerificationService readVerificationService) {
+    public VerificationController(VerificationOfGeneralMinyeongService verificationOfGeneralMinyeongService, VerificationOfGeneralKookminService verificationOfGeneralKookminService, VerificationOfSpecialMinyeongMultiChildService verificationOfSpecialMinyeongMultiChildService, VerificationOfSpecialKookminPublicMultiChildService verificationOfSpecialKookminPublicMultiChildService, VerificationOfSpecialMinyeongOldParentService verificationOfSpecialMinyeongOldParentService, VerificationOfSpecialKookminPublicOldParentService verificationOfSpecialKookminPublicOldParentService, VerificationOfSpecialMinyeongNewlyMarriedService verificationOfSpecialMinyeongNewlyMarriedService, VerificationOfSpecialKookminNewlyMarriedService verificationOfSpecialKookminNewlyMarriedService, VerificationOfSpecialKookminPublicNewlyMarriedService verificationOfSpecialKookminPublicNewlyMarriedService, VerificationOfSpecialMinyeongFirstLifeService verificationOfSpecialMinyeongFirstLifeService, VerificationOfSpecialKookminPublicFirstLifeService verificationOfSpecialKookminPublicFirstLifeService, ReadAllUserVerificationService readAllUserVerificationService) {
         this.verificationOfGeneralMinyeongService = verificationOfGeneralMinyeongService;
         this.verificationOfGeneralKookminService = verificationOfGeneralKookminService;
         this.verificationOfSpecialMinyeongMultiChildService = verificationOfSpecialMinyeongMultiChildService;
@@ -38,19 +38,19 @@ public class VerificationController {
         this.verificationOfSpecialKookminPublicNewlyMarriedService = verificationOfSpecialKookminPublicNewlyMarriedService;
         this.verificationOfSpecialMinyeongFirstLifeService = verificationOfSpecialMinyeongFirstLifeService;
         this.verificationOfSpecialKookminPublicFirstLifeService = verificationOfSpecialKookminPublicFirstLifeService;
-        this.readVerificationService = readVerificationService;
+        this.readAllUserVerificationService = readAllUserVerificationService;
     }
 
     @GetMapping("/record/all") //청악자격결과전체조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readAllVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readAllVerifications() {
 
-        return new ResponseEntity<>(readVerificationService.readAllVerifications(), HttpStatus.OK);
+        return new ResponseEntity<>(readAllUserVerificationService.readAllVerifications(), HttpStatus.OK);
     }
 
     @GetMapping("/general/minyeong") //일반민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readGeneralMinyeongVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readGeneralMinyeongVerifications() {
         return new ResponseEntity(verificationOfGeneralMinyeongService.readGeneralMinyeongVerifications(), HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class VerificationController {
 
     @GetMapping("/general/kookmin") //일반국민조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readGeneralKookminVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readGeneralKookminVerifications() {
         return new ResponseEntity(verificationOfGeneralKookminService.readGeneralKookminVerifications(), HttpStatus.OK);
     }
 
@@ -86,7 +86,7 @@ public class VerificationController {
 
     @GetMapping("/special/minyeong/multiChild") //특별다자녀민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialMinyeongMultiChildVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialMinyeongMultiChildVerifications() {
         return new ResponseEntity(verificationOfSpecialMinyeongMultiChildService.readSpecialMinyeongMultiChildVerifications(), HttpStatus.OK);
     }
 
@@ -105,7 +105,7 @@ public class VerificationController {
 
     @GetMapping("/special/kookmin/public/multiChild") //특별다자녀국민조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialKookminMultiChildVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialKookminMultiChildVerifications() {
         return new ResponseEntity(verificationOfSpecialKookminPublicMultiChildService.readSpecialKookminMultiChildVerifications(), HttpStatus.OK);
     }
 
@@ -123,7 +123,7 @@ public class VerificationController {
 
     @GetMapping("/special/minyeong/oldParent") //특별노부모민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialMinyeongOldParentVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialMinyeongOldParentVerifications() {
         return new ResponseEntity(verificationOfSpecialMinyeongOldParentService.readSpecialMinyeongOldParentVerifications(), HttpStatus.OK);
     }
 
@@ -141,7 +141,7 @@ public class VerificationController {
 
     @GetMapping("/special/kookmin/public/oldparent") //특별노부모국민조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialKookminOldParentVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialKookminOldParentVerifications() {
         return new ResponseEntity(verificationOfSpecialKookminPublicOldParentService.readSpecialKookminOldParentVerifications(), HttpStatus.OK);
     }
 
@@ -159,7 +159,7 @@ public class VerificationController {
 
     @GetMapping("/special/minyeong/newlyMarried") //특별신혼부부민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialMinyeongNewlyMarriedVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialMinyeongNewlyMarriedVerifications() {
         return new ResponseEntity(verificationOfSpecialMinyeongNewlyMarriedService.readSpecialMinyeongNewlyMarriedVerifications(), HttpStatus.OK);
     }
 
@@ -177,7 +177,7 @@ public class VerificationController {
 
     @GetMapping("/special/kookmin/newlyMarried") //특별신혼부부국민조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialKookminPublicNewlyMarriedVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialKookminPublicNewlyMarriedVerifications() {
         return new ResponseEntity(verificationOfSpecialKookminPublicNewlyMarriedService.readSpecialKookminPublicNewlyMarriedVerifications(), HttpStatus.OK);
     }
 
@@ -208,7 +208,7 @@ public class VerificationController {
 
     @GetMapping("/special/minyeong/firstLife") //특별생애최초민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialMinyeongFirstLifeVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialMinyeongFirstLifeVerifications() {
         return new ResponseEntity(verificationOfSpecialMinyeongFirstLifeService.readSpecialMinyeongFirstLifeVerifications(), HttpStatus.OK);
     }
 
@@ -226,7 +226,7 @@ public class VerificationController {
 
     @GetMapping("/special/kookmin/public/firstLife") //특별생애최초국민조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadVerificationDto> readSpecialKookminFirstLifeVerifications() {
+    public ResponseEntity<ReadAllUserVerificationDto> readSpecialKookminFirstLifeVerifications() {
         return new ResponseEntity(verificationOfSpecialKookminPublicFirstLifeService.readSpecialKookminFirstLifeVerifications(), HttpStatus.OK);
     }
 

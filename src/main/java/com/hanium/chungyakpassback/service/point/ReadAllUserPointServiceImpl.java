@@ -1,7 +1,7 @@
 package com.hanium.chungyakpassback.service.point;
 
 import com.hanium.chungyakpassback.dto.point.*;
-import com.hanium.chungyakpassback.dto.point.ReadPointCalculationDto;
+import com.hanium.chungyakpassback.dto.point.ReadAllUserPointDto;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.point.*;
 import com.hanium.chungyakpassback.repository.input.HouseMemberRelationRepository;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class ReadPointCalculationServiceImpl implements ReadPointCalculationService {
+public class ReadAllUserPointServiceImpl implements ReadAllUserPointService {
     final UserRepository userRepository;
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final UserBankbookRepository userBankbookRepository;
@@ -38,7 +38,7 @@ public class ReadPointCalculationServiceImpl implements ReadPointCalculationServ
 
 
     @Override
-    public ReadPointCalculationDto readAllUserPointRecord(){
+    public ReadAllUserPointDto readAllUserPointRecord(){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 //        UserPointRecordDto userPointRecordDto = new UserPointRecordDto();
 
@@ -69,7 +69,7 @@ public class ReadPointCalculationServiceImpl implements ReadPointCalculationServ
             PointOfSpecialMinyeongOldParentsSupportResponseDto pointOfSpecialMinyeongOldParentsSupportResponseDto = new PointOfSpecialMinyeongOldParentsSupportResponseDto(pointOfSpecialMinyeongOldParentsSupport);
             pointOfSpecialMinyeongOldParentsSupportResponseDtos.add(pointOfSpecialMinyeongOldParentsSupportResponseDto);
         }
-        ReadPointCalculationDto readPointCalculationDto = ReadPointCalculationDto.builder()
+        ReadAllUserPointDto readAllUserPointDto = ReadAllUserPointDto.builder()
                 .pointOfGeneralMinyeongResponseDtos(pointOfGeneralMinyeongResponseDtos)
                 .pointOfSpecialMinyeongNewlyMarriedResponseDtos(pointOfSpecialMinyeongNewlyMarriedResponseDtos)
                 .pointOfSpecialMinyeongSingleParentsResponseDtos(pointOfSpecialMinyeongSingleParentsResponseDtos)
@@ -77,7 +77,7 @@ public class ReadPointCalculationServiceImpl implements ReadPointCalculationServ
                 .pointOfSpecialMinyeongOldParentsSupportResponseDtos(pointOfSpecialMinyeongOldParentsSupportResponseDtos)
                 .build();
 
-        return readPointCalculationDto;
+        return readAllUserPointDto;
     }
 
 //    @Override

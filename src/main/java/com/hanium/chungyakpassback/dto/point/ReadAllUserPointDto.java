@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class ReadPointCalculationDto {
+public class ReadAllUserPointDto {
     List<PointOfGeneralMinyeongResponseDto> pointOfGeneralMinyeongResponseDtos;
     List<PointOfSpecialMinyeongNewlyMarriedResponseDto> pointOfSpecialMinyeongNewlyMarriedResponseDtos;
     List<PointOfSpecialMinyeongSingleParentsResponseDto> pointOfSpecialMinyeongSingleParentsResponseDtos;

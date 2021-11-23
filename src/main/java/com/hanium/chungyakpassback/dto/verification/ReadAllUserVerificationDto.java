@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class ReadVerificationDto {
+public class ReadAllUserVerificationDto {
 
     List<VerificationOfGeneralMinyeongResponseDto> verificationOfGeneralMinyeongResponseDtos;
     List<VerificationOfGeneralKookminResponseDto> verificationOfGeneralKookminResponseDtos;

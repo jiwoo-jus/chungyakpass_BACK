@@ -1,10 +1,10 @@
 package com.hanium.chungyakpassback.service.point;
 
-import com.hanium.chungyakpassback.dto.point.ReadPointCalculationDto;
+import com.hanium.chungyakpassback.dto.point.ReadAllUserPointDto;
 
-public interface ReadPointCalculationService {
+public interface ReadAllUserPointService {
 
-    ReadPointCalculationDto readAllUserPointRecord();
+    ReadAllUserPointDto readAllUserPointRecord();
 
 //    List<GeneralMinyeongResponsePointDto> recordGeneralMinyeongResponsePoint();
 //

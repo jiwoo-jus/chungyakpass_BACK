@@ -1,6 +1,6 @@
 package com.hanium.chungyakpassback.service.verification;
 
-import com.hanium.chungyakpassback.dto.verification.ReadVerificationDto;
+import com.hanium.chungyakpassback.dto.verification.ReadAllUserVerificationDto;
 import com.hanium.chungyakpassback.dto.verification.*;
 import com.hanium.chungyakpassback.entity.input.User;
 import com.hanium.chungyakpassback.entity.verification.*;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class ReadVerificationServiceImpl implements ReadVerificationService {
+public class ReadAllUserVerificationServiceImpl implements ReadAllUserVerificationService {
 
     final UserRepository userRepository;
     final VerificationOfGeneralMinyeongRepository verificationOfGeneralMinyeongRepository;
@@ -30,7 +30,7 @@ public class ReadVerificationServiceImpl implements ReadVerificationService {
     final VerificationOfSpecialKookminFirstLifeRepository verificationOfSpecialKookminFirstLifeRepository;
 
     @Override
-    public ReadVerificationDto readAllVerifications() {
+    public ReadAllUserVerificationDto readAllVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
         List<VerificationOfGeneralMinyeongResponseDto> verificationOfGeneralMinyeongResponseDtos = new ArrayList<>();
@@ -93,7 +93,7 @@ public class ReadVerificationServiceImpl implements ReadVerificationService {
             verificationOfSpecialKookminPublicFirstLifeResponseDtos.add(verificationOfSpecialKookminPublicFirstLifeResponseDto);
         }
 
-        ReadVerificationDto readVerificationDto = ReadVerificationDto.builder()
+        ReadAllUserVerificationDto readAllUserVerificationDto = ReadAllUserVerificationDto.builder()
                 .verificationOfGeneralMinyeongResponseDtos(verificationOfGeneralMinyeongResponseDtos)
                 .verificationOfGeneralKookminResponseDtos(verificationOfGeneralKookminResponseDtos)
                 .verificationOfSpecialMinyeongMultiChildResponseDtos(verificationOfSpecialMinyeongMultiChildResponseDtos)
@@ -106,7 +106,7 @@ public class ReadVerificationServiceImpl implements ReadVerificationService {
                 .verificationOfSpecialKookminPublicFirstLifeResponseDtos(verificationOfSpecialKookminPublicFirstLifeResponseDtos)
                 .build();
 
-        return readVerificationDto;
+        return readAllUserVerificationDto;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.hanium.chungyakpassback.controller;
 
 import com.hanium.chungyakpassback.dto.point.*;
-import com.hanium.chungyakpassback.dto.point.ReadPointCalculationDto;
+import com.hanium.chungyakpassback.dto.point.ReadAllUserPointDto;
 import com.hanium.chungyakpassback.service.point.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,27 +18,27 @@ public class PointController {
     private final PointOfNewlyMarriedService pointOfNewlyMarriedService;
     private final PointOfOldParentSupportService pointOfOldParentSupportService;
     private final PointOfSingleParentsService pointOfSingleParentsService;
-    private final ReadPointCalculationService readPointCalculationService;
+    private final ReadAllUserPointService readAllUserPointService;
 
-    public PointController(PointOfService pointOfService, PointOfMultiChildService pointOfMultiChildService, PointOfNewlyMarriedService pointOfNewlyMarriedService, PointOfOldParentSupportService pointOfOldParentSupportService, PointOfSingleParentsService pointOfSingleParentsService, ReadPointCalculationService readPointCalculationService) {
+    public PointController(PointOfService pointOfService, PointOfMultiChildService pointOfMultiChildService, PointOfNewlyMarriedService pointOfNewlyMarriedService, PointOfOldParentSupportService pointOfOldParentSupportService, PointOfSingleParentsService pointOfSingleParentsService, ReadAllUserPointService readAllUserPointService) {
         this.pointOfService = pointOfService;
         this.pointOfMultiChildService = pointOfMultiChildService;
         this.pointOfNewlyMarriedService = pointOfNewlyMarriedService;
         this.pointOfOldParentSupportService = pointOfOldParentSupportService;
         this.pointOfSingleParentsService = pointOfSingleParentsService;
-        this.readPointCalculationService = readPointCalculationService;
+        this.readAllUserPointService = readAllUserPointService;
     }
 
     @GetMapping("/record/point") //청악가배점결과전체조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadPointCalculationDto> readAllUserPointRecord() {
+    public ResponseEntity<ReadAllUserPointDto> readAllUserPointRecord() {
 
-        return new ResponseEntity<>(readPointCalculationService.readAllUserPointRecord(), HttpStatus.OK);
+        return new ResponseEntity<>(readAllUserPointService.readAllUserPointRecord(), HttpStatus.OK);
     }
 
     @GetMapping("/general/minyeong") //일반민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadPointCalculationDto> readGeneralMinyeongResponsePointCalculations() {
+    public ResponseEntity<ReadAllUserPointDto> readGeneralMinyeongResponsePointCalculations() {
         return new ResponseEntity(pointOfService.readGeneralMinyeongResponsePointCalculations(), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class PointController {
 
     @GetMapping("/special/multiChild") //다자녀조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadPointCalculationDto> readMultiChildPointCalculations() {
+    public ResponseEntity<ReadAllUserPointDto> readMultiChildPointCalculations() {
         return new ResponseEntity(pointOfMultiChildService.readMultiChildPointCalculations(), HttpStatus.OK);
     }
 
@@ -62,7 +62,7 @@ public class PointController {
 
     @GetMapping("/special/newlyMarried") //신혼부부조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadPointCalculationDto> readNewlyMarriedPointCalculations() {
+    public ResponseEntity<ReadAllUserPointDto> readNewlyMarriedPointCalculations() {
         return new ResponseEntity(pointOfNewlyMarriedService.readNewlyMarriedPointCalculations(), HttpStatus.OK);
     }
 
@@ -75,7 +75,7 @@ public class PointController {
 
     @GetMapping("/special/singleParents") //한부모조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadPointCalculationDto> readSingleParentsPointCalculations() {
+    public ResponseEntity<ReadAllUserPointDto> readSingleParentsPointCalculations() {
         return new ResponseEntity(pointOfSingleParentsService.readSingleParentsPointCalculations(), HttpStatus.OK);
     }
 
@@ -87,7 +87,7 @@ public class PointController {
 
     @GetMapping("/special/oldParentsSupport") //노부모조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ReadPointCalculationDto> readOldParentsSupportPointCalculations() {
+    public ResponseEntity<ReadAllUserPointDto> readOldParentsSupportPointCalculations() {
         return new ResponseEntity(pointOfOldParentSupportService.readOldParentsSupportPointCalculations(), HttpStatus.OK);
     }
 
