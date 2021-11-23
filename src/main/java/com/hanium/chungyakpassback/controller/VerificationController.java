@@ -139,7 +139,7 @@ public class VerificationController {
         return ResponseEntity.ok(verificationOfSpecialMinyeongOldParentService.updateSpecialMinyeongOldParentVerification(verificationRecordSpecialMinyeongOldParentId, verificationOfSpecialMinyeongOldParentUpdateDto));
     }
 
-    @GetMapping("/special/kookmin/public/oldparent") //특별노부모국민조회
+    @GetMapping("/special/kookmin/public/oldParent") //특별노부모국민조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadAllUserVerificationDto> readSpecialKookminOldParentVerifications() {
         return new ResponseEntity(verificationOfSpecialKookminPublicOldParentService.readSpecialKookminOldParentVerifications(), HttpStatus.OK);
