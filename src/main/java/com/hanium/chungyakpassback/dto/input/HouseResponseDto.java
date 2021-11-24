@@ -1,6 +1,8 @@
 package com.hanium.chungyakpassback.dto.input;
 
 import com.hanium.chungyakpassback.entity.input.House;
+import com.hanium.chungyakpassback.enumtype.AddressLevel1;
+import com.hanium.chungyakpassback.enumtype.AddressLevel2;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +18,9 @@ public class HouseResponseDto {
     @Setter
     private Long houseHolderId;
 
-    private Long addressLevel1Id;
+    private AddressLevel1 addressLevel1;
 
-    private Long addressLevel2Id;
+    private AddressLevel2 addressLevel2;
 
     private String addressDetail;
 
@@ -31,8 +33,8 @@ public class HouseResponseDto {
     @Builder
     public HouseResponseDto(House house){
         this.id = house.getId();
-        this.addressLevel1Id = house.getAddressLevel1().getId();
-        this.addressLevel2Id = house.getAddressLevel2().getId();
+        this.addressLevel1 = house.getAddressLevel1().getAddressLevel1();
+        this.addressLevel2 = house.getAddressLevel2().getAddressLevel2();
         this.addressDetail = house.getAddressDetail();
         this.zipcode = house.getZipcode();
         this.createdDate = house.getCreatedDate();
