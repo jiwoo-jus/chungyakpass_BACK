@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/point")
 public class PointController {
-    private final PointOfService pointOfService;
+    private final PointOfMinyeongService pointOfMinyeongService;
     private final PointOfMultiChildService pointOfMultiChildService;
     private final PointOfNewlyMarriedService pointOfNewlyMarriedService;
     private final PointOfOldParentSupportService pointOfOldParentSupportService;
     private final PointOfSingleParentsService pointOfSingleParentsService;
     private final ReadAllUserPointService readAllUserPointService;
 
-    public PointController(PointOfService pointOfService, PointOfMultiChildService pointOfMultiChildService, PointOfNewlyMarriedService pointOfNewlyMarriedService, PointOfOldParentSupportService pointOfOldParentSupportService, PointOfSingleParentsService pointOfSingleParentsService, ReadAllUserPointService readAllUserPointService) {
-        this.pointOfService = pointOfService;
+    public PointController(PointOfMinyeongService pointOfMinyeongService, PointOfMultiChildService pointOfMultiChildService, PointOfNewlyMarriedService pointOfNewlyMarriedService, PointOfOldParentSupportService pointOfOldParentSupportService, PointOfSingleParentsService pointOfSingleParentsService, ReadAllUserPointService readAllUserPointService) {
+        this.pointOfMinyeongService = pointOfMinyeongService;
         this.pointOfMultiChildService = pointOfMultiChildService;
         this.pointOfNewlyMarriedService = pointOfNewlyMarriedService;
         this.pointOfOldParentSupportService = pointOfOldParentSupportService;
@@ -39,13 +39,13 @@ public class PointController {
     @GetMapping("/general/minyeong") //일반민영조회
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ReadAllUserPointDto> readGeneralMinyeongResponsePointCalculations() {
-        return new ResponseEntity(pointOfService.readGeneralMinyeongResponsePointCalculations(), HttpStatus.OK);
+        return new ResponseEntity(pointOfMinyeongService.readGeneralMinyeongResponsePointCalculations(), HttpStatus.OK);
     }
 
     @PostMapping("/general/minyeong") //일반민영저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<PointOfGeneralMinyeongResponseDto> createGeneralMinyeongPointCalculation(@RequestBody PointOfGeneralMinyeongDto pointOfGeneralMinyeongDto) {
-        return new ResponseEntity<>(pointOfService.createGeneralMinyeongPointCalculation(pointOfGeneralMinyeongDto), HttpStatus.OK);
+        return new ResponseEntity<>(pointOfMinyeongService.createGeneralMinyeongPointCalculation(pointOfGeneralMinyeongDto), HttpStatus.OK);
     }
 
     @GetMapping("/special/multi-child") //다자녀조회
