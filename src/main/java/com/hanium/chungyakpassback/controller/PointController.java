@@ -93,8 +93,8 @@ public class PointController {
 
     @PostMapping("/special/old-parents-support") //노부모저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<PointOfSpecialMinyeongOldParentsSupportResponseDto> createOldParentsSupportPointCalculation(@RequestBody PointOfSpecialOldParentsSupportDto pointOfSpecialOldParentsSupportDto) {
-        return new ResponseEntity<>(pointOfSpecialMinyeongOldParentSupportService.createOldParentsSupportPointCalculation(pointOfSpecialOldParentsSupportDto), HttpStatus.OK);
+    public ResponseEntity<PointOfSpecialMinyeongOldParentsSupportResponseDto> createOldParentsSupportPointCalculation() {
+        return new ResponseEntity<>(pointOfSpecialMinyeongOldParentSupportService.createOldParentsSupportPointCalculation(), HttpStatus.OK);
     }
 
 

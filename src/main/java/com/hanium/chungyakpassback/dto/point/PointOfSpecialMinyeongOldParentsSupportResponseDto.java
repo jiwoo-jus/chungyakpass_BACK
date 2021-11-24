@@ -14,12 +14,6 @@ import java.time.LocalDateTime;
 
 public class PointOfSpecialMinyeongOldParentsSupportResponseDto {
     private Long id;
-    private Long houseMemberId;
-    private Yn parentsDeathYn;
-    private Yn divorceYn;
-    private Yn sameResidentRegistrationYn;
-    private Yn stayOverYn;
-    private Yn nowStayOverYn;
     private Integer periodOfHomelessness;
     private Integer bankbookJoinPeriod;
     private Integer numberOfDependents;
@@ -31,12 +25,6 @@ public class PointOfSpecialMinyeongOldParentsSupportResponseDto {
     @Builder
     public PointOfSpecialMinyeongOldParentsSupportResponseDto(PointOfSpecialMinyeongOldParentsSupport pointOfSpecialMinyeongOldParentsSupport){
         this.id = pointOfSpecialMinyeongOldParentsSupport.getId();
-        this.houseMemberId = pointOfSpecialMinyeongOldParentsSupport.getHouseMemberId();
-        this.parentsDeathYn = pointOfSpecialMinyeongOldParentsSupport.getParentsDeathYn();
-        this.divorceYn = pointOfSpecialMinyeongOldParentsSupport.getDivorceYn();
-        this.sameResidentRegistrationYn = pointOfSpecialMinyeongOldParentsSupport.getSameResidentRegistrationYn();
-        this.stayOverYn = pointOfSpecialMinyeongOldParentsSupport.getStayOverYn();
-        this.nowStayOverYn = pointOfSpecialMinyeongOldParentsSupport.getNowStayOverYn();
         this.periodOfHomelessness = pointOfSpecialMinyeongOldParentsSupport.getPeriodOfHomelessness();
         this.bankbookJoinPeriod = pointOfSpecialMinyeongOldParentsSupport.getBankbookJoinPeriod();
         this.numberOfDependents = pointOfSpecialMinyeongOldParentsSupport.getNumberOfDependents();

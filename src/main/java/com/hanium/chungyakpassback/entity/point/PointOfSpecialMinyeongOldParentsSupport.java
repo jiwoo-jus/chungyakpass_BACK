@@ -24,24 +24,6 @@ public class PointOfSpecialMinyeongOldParentsSupport extends BaseTime {
     private User user;
 
     @Column
-    Long houseMemberId;
-
-    @Column
-    Yn parentsDeathYn;
-
-    @Column
-    Yn divorceYn;
-
-    @Column
-    Yn sameResidentRegistrationYn;
-
-    @Column
-    Yn stayOverYn;
-
-    @Column
-    Yn nowStayOverYn;
-
-    @Column
     Integer periodOfHomelessness;
 
     @Column
@@ -57,14 +39,8 @@ public class PointOfSpecialMinyeongOldParentsSupport extends BaseTime {
     Integer total;
 
     @Builder
-    public PointOfSpecialMinyeongOldParentsSupport(User user, Long houseMemberId, Yn parentsDeathYn, Yn divorceYn, Yn sameResidentRegistrationYn, Yn stayOverYn, Yn nowStayOverYn, Integer periodOfHomelessness, Integer bankbookJoinPeriod, Integer numberOfDependents, boolean bankBookVaildYn, Integer total) {
+    public PointOfSpecialMinyeongOldParentsSupport(User user, Integer periodOfHomelessness, Integer bankbookJoinPeriod, Integer numberOfDependents, boolean bankBookVaildYn, Integer total) {
         this.user = user;
-        this.houseMemberId = houseMemberId;
-        this.parentsDeathYn = parentsDeathYn;
-        this.divorceYn = divorceYn;
-        this.sameResidentRegistrationYn = sameResidentRegistrationYn;
-        this.stayOverYn = stayOverYn;
-        this.nowStayOverYn = nowStayOverYn;
         this.periodOfHomelessness = periodOfHomelessness;
         this.bankbookJoinPeriod = bankbookJoinPeriod;
         this.numberOfDependents = numberOfDependents;
