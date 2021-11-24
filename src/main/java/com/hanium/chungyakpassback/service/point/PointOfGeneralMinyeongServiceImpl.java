@@ -245,9 +245,9 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
         List<HouseMemberRelation> houseMemberRelations = houseMemberRelationRepository.findAllByUser(user);
         for(int i=0; i<houseMemberRelations.size(); i++){
             HouseMemberRelation houseMemberRelation = houseMemberRelations.get(i);
-            if(houseMemberRelation.getRelation().equals(Relation.본인))
+            if(houseMemberRelation.getRelation().getRelation().equals(Relation.본인))
                 continue;
-            if(houseMemberRelation.getRelation().equals(Relation.배우자)){
+            if(houseMemberRelation.getRelation().getRelation().equals(Relation.배우자)){
                 numberOfFamily++;
                 continue;
             }
