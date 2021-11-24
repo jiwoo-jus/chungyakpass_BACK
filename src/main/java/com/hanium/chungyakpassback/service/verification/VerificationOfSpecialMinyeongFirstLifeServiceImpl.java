@@ -88,8 +88,8 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialMinyeongFirstLifeResponseDto updateSpecialMinyeongFirstLifeVerification(Long verificationRecordSpecialMinyeongFirstLifeId, VerificationOfSpecialMinyeongFirstLifeUpdateDto verificationOfSpecialMinyeongFirstLifeUpdateDto) {
-        VerificationOfSpecialMinyeongFirstLife verificationOfSpecialMinyeongFirstLife = verificationOfSpecialMinyeongFirstLifeRepository.findById(verificationRecordSpecialMinyeongFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialMinyeongFirstLifeResponseDto updateSpecialMinyeongFirstLifeVerification(Long id, VerificationOfSpecialMinyeongFirstLifeUpdateDto verificationOfSpecialMinyeongFirstLifeUpdateDto) {
+        VerificationOfSpecialMinyeongFirstLife verificationOfSpecialMinyeongFirstLife = verificationOfSpecialMinyeongFirstLifeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialMinyeongFirstLife.setSibilingSupportYn(verificationOfSpecialMinyeongFirstLifeUpdateDto.getSibilingSupportYn());
         verificationOfSpecialMinyeongFirstLife.setTaxOver5yearsYn(verificationOfSpecialMinyeongFirstLifeUpdateDto.getTaxOver5yearsYn());
         verificationOfSpecialMinyeongFirstLife.setFirstRankHistoryYn(verificationOfSpecialMinyeongFirstLifeUpdateDto.getFirstRankHistoryYn());

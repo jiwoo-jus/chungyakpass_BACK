@@ -33,12 +33,12 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class PointOfMultiChildServiceImpl implements PointOfMultiChildService {
+public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpecialMinyeongMultiChildService {
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final UserBankbookRepository userBankbookRepository;
     final HouseMemberRepository houseMemberRepository;
     final VerificationOfGeneralMinyeongServiceImpl generalPrivateVerificationServiceImpl;
-    final PointOfNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
+    final PointOfSpecialMinyeongNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final AddressLevel1Repository addressLevel1Repository;
     final PointOfSpecialMinyeongMultiChildRepository pointOfSpecialMinyeongMultiChildRepository;
     final UserRepository userRepository;

@@ -6,7 +6,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 
 import java.util.List;
 
-public interface PointOfMinyeongService {
+public interface PointOfGeneralMinyeongService {
 
     List<PointOfGeneralMinyeongResponseDto> readGeneralMinyeongResponsePointCalculations();
 

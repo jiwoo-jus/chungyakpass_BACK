@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "point_minyeong")
+@Table(name = "point_of_general_minyeong")
 public class PointOfGeneralMinyeong extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "point_minyeong_id")
+    @Column(name = "point_of_general_minyeong_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,14 +56,14 @@ public class PointOfGeneralMinyeong extends BaseTime {
     Integer total;
 
     @Builder
-    public PointOfGeneralMinyeong(User user, Long houseMemberId, Yn parentsDeathYn, Yn divorceYn, Yn sameResidentRegistrationYn, Yn stayOverYn, Yn nowStayOverYn, Integer periodOfHomelessness, Integer bankbookJoinPeriod, Integer numberOfDependents, boolean bankBookVaildYn, Integer total ) {
+    public PointOfGeneralMinyeong(User user, Long houseMemberId, Yn parentsDeathYn, Yn divorceYn, Yn sameResidentRegistrationYn, Yn stayOverYn, Yn nowStayOverYn, Integer periodOfHomelessness, Integer bankbookJoinPeriod, Integer numberOfDependents, boolean bankBookVaildYn, Integer total) {
         this.user = user;
         this.houseMemberId = houseMemberId;
-        this.parentsDeathYn =parentsDeathYn;
+        this.parentsDeathYn = parentsDeathYn;
         this.divorceYn = divorceYn;
-        this.sameResidentRegistrationYn =sameResidentRegistrationYn;
+        this.sameResidentRegistrationYn = sameResidentRegistrationYn;
         this.stayOverYn = stayOverYn;
-        this.nowStayOverYn= nowStayOverYn;
+        this.nowStayOverYn = nowStayOverYn;
         this.periodOfHomelessness = periodOfHomelessness;
         this.bankbookJoinPeriod = bankbookJoinPeriod;
         this.numberOfDependents = numberOfDependents;

@@ -26,8 +26,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class PointOfSingleParentsServiceImpl implements PointOfSingleParentsService {
-    final PointOfNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
+public class PointOfSpecialMinyeongSingleParentsServiceImpl implements PointOfSpecialMinyeongSingleParentsService {
+    final PointOfSpecialMinyeongNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final VerificationOfGeneralMinyeongServiceImpl generalPrivateVerificationServiceImpl;
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final UserRepository userRepository;

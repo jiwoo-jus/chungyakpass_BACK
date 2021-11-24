@@ -14,12 +14,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "inp_verification_record_special_minyeong_multi_child")
+@Table(name = "verification_of_special_minyeong_multi_child")
 public class VerificationOfSpecialMinyeongMultiChild extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "verification_record_special_minyeong_multi_child_id")
+    @Column(name = "verification_of_special_minyeong_multi_child_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -91,8 +91,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialMinyeongNewlyMarriedResponseDto updateSpecialMinyeongNewlyMarriedVerification(Long verificationRecordSpecialMinyeongNewlyMarriedId, VerificationOfSpecialMinyeongNewlyMarriedUpdateDto verificationOfSpecialMinyeongNewlyMarriedUpdateDto) {
-        VerificationOfSpecialMinyeongNewlyMarried verificationOfSpecialMinyeongNewlyMarried = verificationOfSpecialMinyeongNewlyMarriedRepository.findById(verificationRecordSpecialMinyeongNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialMinyeongNewlyMarriedResponseDto updateSpecialMinyeongNewlyMarriedVerification(Long id, VerificationOfSpecialMinyeongNewlyMarriedUpdateDto verificationOfSpecialMinyeongNewlyMarriedUpdateDto) {
+        VerificationOfSpecialMinyeongNewlyMarried verificationOfSpecialMinyeongNewlyMarried = verificationOfSpecialMinyeongNewlyMarriedRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialMinyeongNewlyMarried.setSibilingSupportYn(verificationOfSpecialMinyeongNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationOfSpecialMinyeongNewlyMarried.setRanking(verificationOfSpecialMinyeongNewlyMarriedUpdateDto.getRanking());
         verificationOfSpecialMinyeongNewlyMarriedRepository.save(verificationOfSpecialMinyeongNewlyMarried);

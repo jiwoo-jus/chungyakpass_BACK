@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VerificationOfSpecialKookminPublicMultiChildResponseDto {
 
-    private Long verificationRecordSpecialKookminMultiChildId;
+    private Long id;
 
     private Integer americanAge;
     private boolean meetLivingInSurroundAreaTf;
@@ -50,7 +50,7 @@ public class VerificationOfSpecialKookminPublicMultiChildResponseDto {
         this.restrictedAreaTf = verificationOfSpecialKookminMultiChild.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationOfSpecialKookminMultiChild.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationOfSpecialKookminMultiChild.isMeetNumberOfPaymentsTf();
-        this.verificationRecordSpecialKookminMultiChildId = verificationOfSpecialKookminMultiChild.getId();
+        this.id = verificationOfSpecialKookminMultiChild.getId();
         this.sibilingSupportYn = verificationOfSpecialKookminMultiChild.getSibilingSupportYn();
         this.kookminType = verificationOfSpecialKookminMultiChild.getKookminType();
         this.ranking = verificationOfSpecialKookminMultiChild.getRanking();

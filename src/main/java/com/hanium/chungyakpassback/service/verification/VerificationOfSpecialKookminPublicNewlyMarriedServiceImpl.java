@@ -92,8 +92,8 @@ public class VerificationOfSpecialKookminPublicNewlyMarriedServiceImpl implement
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialKookminPublicNewlyMarriedResponseDto updateSpecialKookminPublicNewlyMarriedVerification(Long verificationRecordSpecialKookminNewlyMarriedId, VerificationOfSpecialKookminPublicNewlyMarriedUpdateDto verificationOfSpecialKookminPublicNewlyMarriedUpdateDto) {
-        VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried = verificationOfSpecialKookminNewlyMarriedRepository.findById(verificationRecordSpecialKookminNewlyMarriedId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialKookminPublicNewlyMarriedResponseDto updateSpecialKookminPublicNewlyMarriedVerification(Long id, VerificationOfSpecialKookminPublicNewlyMarriedUpdateDto verificationOfSpecialKookminPublicNewlyMarriedUpdateDto) {
+        VerificationOfSpecialKookminNewlyMarried verificationOfSpecialKookminNewlyMarried = verificationOfSpecialKookminNewlyMarriedRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialKookminNewlyMarried.setSibilingSupportYn(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getSibilingSupportYn());
         verificationOfSpecialKookminNewlyMarried.setKookminType(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getKookminType());
         verificationOfSpecialKookminNewlyMarried.setPreNewMarriedYn(verificationOfSpecialKookminPublicNewlyMarriedUpdateDto.getPreNewMarriedYn());

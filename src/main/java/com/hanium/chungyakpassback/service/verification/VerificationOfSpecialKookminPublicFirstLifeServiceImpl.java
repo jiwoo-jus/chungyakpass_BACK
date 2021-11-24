@@ -90,8 +90,8 @@ public class VerificationOfSpecialKookminPublicFirstLifeServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialKookminPublicFirstLifeResponseDto updateSpecialKookminPublicFirstLifeVerification(Long verificationRecordSpecialKookminFirstLifeId, VerificationOfSpecialKookminPublicFirstLifeUpdateDto verificationOfSpecialKookminPublicFirstLifeUpdateDto) {
-        VerificationOfSpecialKookminFirstLife verificationOfSpecialKookminFirstLife = verificationOfSpecialKookminFirstLifeRepository.findById(verificationRecordSpecialKookminFirstLifeId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialKookminPublicFirstLifeResponseDto updateSpecialKookminPublicFirstLifeVerification(Long id, VerificationOfSpecialKookminPublicFirstLifeUpdateDto verificationOfSpecialKookminPublicFirstLifeUpdateDto) {
+        VerificationOfSpecialKookminFirstLife verificationOfSpecialKookminFirstLife = verificationOfSpecialKookminFirstLifeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialKookminFirstLife.setSibilingSupportYn(verificationOfSpecialKookminPublicFirstLifeUpdateDto.getSibilingSupportYn());
         verificationOfSpecialKookminFirstLife.setTaxOver5yearsYn(verificationOfSpecialKookminPublicFirstLifeUpdateDto.getTaxOver5yearsYn());
         verificationOfSpecialKookminFirstLife.setKookminType(verificationOfSpecialKookminPublicFirstLifeUpdateDto.getKookminType());

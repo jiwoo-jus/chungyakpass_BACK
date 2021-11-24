@@ -89,8 +89,8 @@ public class VerificationOfSpecialMinyeongMultiChildServiceImpl implements Verif
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialMinyeongMultiChildResponseDto updateSpecialMinyeongMultiChildVerification(Long verificationRecordSpecialMinyeongMultiChildId, VerificationOfSpecialMinyeongMultiChildUpdateDto verificationOfSpecialMinyeongMultiChildUpdateDto) {
-        VerificationOfSpecialMinyeongMultiChild verificationOfSpecialMinyeongMultiChild = verificationOfSpecialMinyeongMultiChildRepository.findById(verificationRecordSpecialMinyeongMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialMinyeongMultiChildResponseDto updateSpecialMinyeongMultiChildVerification(Long id, VerificationOfSpecialMinyeongMultiChildUpdateDto verificationOfSpecialMinyeongMultiChildUpdateDto) {
+        VerificationOfSpecialMinyeongMultiChild verificationOfSpecialMinyeongMultiChild = verificationOfSpecialMinyeongMultiChildRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialMinyeongMultiChild.setSibilingSupportYn(verificationOfSpecialMinyeongMultiChildUpdateDto.getSibilingSupportYn());
         verificationOfSpecialMinyeongMultiChild.setRanking(verificationOfSpecialMinyeongMultiChildUpdateDto.getRanking());
         verificationOfSpecialMinyeongMultiChildRepository.save(verificationOfSpecialMinyeongMultiChild);

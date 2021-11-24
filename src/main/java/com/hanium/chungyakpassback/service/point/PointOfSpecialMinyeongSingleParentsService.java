@@ -7,7 +7,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 
 import java.util.List;
 
-public interface PointOfSingleParentsService {
+public interface PointOfSpecialMinyeongSingleParentsService {
 
     List<PointOfSpecialMinyeongSingleParentsResponseDto> readSingleParentsPointCalculations();
 

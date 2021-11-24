@@ -90,8 +90,8 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialMinyeongOldParentResponseDto updateSpecialMinyeongOldParentVerification(Long verificationRecordSpecialMinyeongOldParentId, VerificationOfSpecialMinyeongOldParentUpdateDto verificationOfSpecialMinyeongOldParentUpdateDto) {
-        VerificationOfSpecialMinyeongOldParent verificationOfSpecialMinyeongOldParent = verificationOfSpecialMinyeongOldParentRepository.findById(verificationRecordSpecialMinyeongOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialMinyeongOldParentResponseDto updateSpecialMinyeongOldParentVerification(Long id, VerificationOfSpecialMinyeongOldParentUpdateDto verificationOfSpecialMinyeongOldParentUpdateDto) {
+        VerificationOfSpecialMinyeongOldParent verificationOfSpecialMinyeongOldParent = verificationOfSpecialMinyeongOldParentRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialMinyeongOldParent.setSibilingSupportYn(verificationOfSpecialMinyeongOldParentUpdateDto.getSibilingSupportYn());
         verificationOfSpecialMinyeongOldParent.setRanking(verificationOfSpecialMinyeongOldParentUpdateDto.getRanking());
         verificationOfSpecialMinyeongOldParentRepository.save(verificationOfSpecialMinyeongOldParent);

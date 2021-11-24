@@ -35,9 +35,9 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class PointOfNewlyMarriedServiceImpl implements PointOfNewlyMarriedService {
+public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpecialMinyeongNewlyMarriedService {
     final VerificationOfGeneralMinyeongServiceImpl generalPrivateVerificationServiceImpl;
-    final PointOfMinyeongServiceImpl pointOfServiceImpl;
+    final PointOfGeneralMinyeongServiceImpl pointOfServiceImpl;
     final VerificationOfGeneralMinyeongService verificationOfGeneralMinyeongService;
     final HouseMemberRelationRepository houseMemberRelationRepository;
     final HouseMemberRepository houseMemberRepository;
