@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VerificationOfSpecialKookminPublicNewlyMarriedResponseDto {
 
-    private Long verificationRecordSpecialKookminNewlyMarriedId;
+    private Long id;
 
     private Integer americanAge;
     private boolean meetLivingInSurroundAreaTf;
@@ -57,7 +57,7 @@ public class VerificationOfSpecialKookminPublicNewlyMarriedResponseDto {
         this.restrictedAreaTf = verificationOfSpecialKookminNewlyMarried.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationOfSpecialKookminNewlyMarried.isMeetBankbookJoinPeriodTf();
         this.meetNumberOfPaymentsTf = verificationOfSpecialKookminNewlyMarried.isMeetNumberOfPaymentsTf();
-        this.verificationRecordSpecialKookminNewlyMarriedId = verificationOfSpecialKookminNewlyMarried.getId();
+        this.id = verificationOfSpecialKookminNewlyMarried.getId();
         this.sibilingSupportYn = verificationOfSpecialKookminNewlyMarried.getSibilingSupportYn();
         this.preNewMarriedYn = verificationOfSpecialKookminNewlyMarried.getPreNewMarriedYn();
         this.kookminType = verificationOfSpecialKookminNewlyMarried.getKookminType();

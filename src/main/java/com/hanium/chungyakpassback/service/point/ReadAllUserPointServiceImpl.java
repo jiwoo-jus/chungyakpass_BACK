@@ -27,7 +27,7 @@ public class ReadAllUserPointServiceImpl implements ReadAllUserPointService {
     final UserBankbookRepository userBankbookRepository;
     final HouseMemberRepository houseMemberRepository;
     final VerificationOfGeneralMinyeongServiceImpl generalPrivateVerificationServiceImpl;
-    final PointOfNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
+    final PointOfSpecialMinyeongNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final AddressLevel1Repository addressLevel1Repository;
 //    final RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried;
     final PointOfGeneralMinyeongRepository pointOfGeneralMinyeongRepository;

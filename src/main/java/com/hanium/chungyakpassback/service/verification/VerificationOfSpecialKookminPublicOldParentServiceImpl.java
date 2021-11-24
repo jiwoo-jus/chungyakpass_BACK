@@ -90,8 +90,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialKookminPublicOldParentResponseDto updateSpecialKookminPublicOldParentVerification(Long verificationRecordSpecialKookminOldParentId, VerificationOfSpecialKookminPublicOldParentUpdateDto verificationOfSpecialKookminPublicOldParentUpdateDto) {
-        VerificationOfSpecialKookminOldParent verificationOfSpecialKookminOldParent = verificationOfSpecialKookminOldParentRepository.findById(verificationRecordSpecialKookminOldParentId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialKookminPublicOldParentResponseDto updateSpecialKookminPublicOldParentVerification(Long id, VerificationOfSpecialKookminPublicOldParentUpdateDto verificationOfSpecialKookminPublicOldParentUpdateDto) {
+        VerificationOfSpecialKookminOldParent verificationOfSpecialKookminOldParent = verificationOfSpecialKookminOldParentRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialKookminOldParent.setSibilingSupportYn(verificationOfSpecialKookminPublicOldParentUpdateDto.getSibilingSupportYn());
         verificationOfSpecialKookminOldParent.setKookminType(verificationOfSpecialKookminPublicOldParentUpdateDto.getKookminType());
         verificationOfSpecialKookminOldParent.setRanking(verificationOfSpecialKookminPublicOldParentUpdateDto.getRanking());

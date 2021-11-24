@@ -85,8 +85,8 @@ public class VerificationOfGeneralKookminServiceImpl implements VerificationOfGe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfGeneralKookminResponseDto updateGeneralKookminVerification(Long verificationRecordGeneralKookminId, VerificationOfGeneralKookminUpdateDto verificationOfGeneralKookminUpdateDto) {
-        VerificationOfGeneralKookmin verificationOfGeneralKookmin = verificationOfGeneralKookminRepository.findById(verificationRecordGeneralKookminId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfGeneralKookminResponseDto updateGeneralKookminVerification(Long id, VerificationOfGeneralKookminUpdateDto verificationOfGeneralKookminUpdateDto) {
+        VerificationOfGeneralKookmin verificationOfGeneralKookmin = verificationOfGeneralKookminRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfGeneralKookmin.setSibilingSupportYn(verificationOfGeneralKookminUpdateDto.getSibilingSupportYn());
         verificationOfGeneralKookmin.setTwentiesSoleHouseHolderYn(verificationOfGeneralKookminUpdateDto.getTwentiesSoleHouseHolderYn());
         verificationOfGeneralKookmin.setRanking(verificationOfGeneralKookminUpdateDto.getRanking());

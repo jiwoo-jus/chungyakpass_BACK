@@ -7,7 +7,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 
 import java.util.List;
 
-public interface PointOfMultiChildService {
+public interface PointOfSpecialMinyeongMultiChildService {
 
     List<PointOfSpecialMinyeongMultiChildResponseDto> readMultiChildPointCalculations();
 

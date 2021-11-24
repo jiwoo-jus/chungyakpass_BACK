@@ -87,8 +87,8 @@ public class VerificationOfSpecialKookminPublicMultiChildServiceImpl implements 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfSpecialKookminPublicMultiChildResponseDto updateSpecialKookminPublicMultiChildVerification(Long verificationRecordSpecialKookminMultiChildId, VerificationOfSpecialKookminPublicMultiChildUpdateDto verificationOfSpecialKookminPublicMultiChildUpdateDto) {
-        VerificationOfSpecialKookminMultiChild verificationOfSpecialKookminMultiChild = verificationOfSpecialKookminMultiChildRepository.findById(verificationRecordSpecialKookminMultiChildId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfSpecialKookminPublicMultiChildResponseDto updateSpecialKookminPublicMultiChildVerification(Long id, VerificationOfSpecialKookminPublicMultiChildUpdateDto verificationOfSpecialKookminPublicMultiChildUpdateDto) {
+        VerificationOfSpecialKookminMultiChild verificationOfSpecialKookminMultiChild = verificationOfSpecialKookminMultiChildRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfSpecialKookminMultiChild.setSibilingSupportYn(verificationOfSpecialKookminPublicMultiChildUpdateDto.getSibilingSupportYn());
         verificationOfSpecialKookminMultiChild.setKookminType(verificationOfSpecialKookminPublicMultiChildUpdateDto.getKookminType());
         verificationOfSpecialKookminMultiChild.setRanking(verificationOfSpecialKookminPublicMultiChildUpdateDto.getRanking());

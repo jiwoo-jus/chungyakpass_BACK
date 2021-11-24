@@ -7,7 +7,7 @@ import com.hanium.chungyakpassback.entity.input.User;
 
 import java.util.List;
 
-public interface PointOfNewlyMarriedService {
+public interface PointOfSpecialMinyeongNewlyMarriedService {
 
     List<PointOfSpecialMinyeongNewlyMarriedResponseDto> readNewlyMarriedPointCalculations();
 

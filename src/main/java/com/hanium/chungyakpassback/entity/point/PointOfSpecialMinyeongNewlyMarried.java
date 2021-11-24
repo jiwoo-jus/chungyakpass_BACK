@@ -11,12 +11,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "point_newmarried")
+@Table(name = "point_of_special_minyeong_newly_married")
 public class PointOfSpecialMinyeongNewlyMarried extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "point_newmarried_id")
+    @Column(name = "point_of_special_minyeong_newly_married_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,7 +52,7 @@ public class PointOfSpecialMinyeongNewlyMarried extends BaseTime {
 //    LocalDateTime modifiedDate;
 
     @Builder
-    public PointOfSpecialMinyeongNewlyMarried(User user, com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, Integer numberOfMinors, Integer periodOfMarriged, Integer bankbookPaymentsCount, Integer periodOfApplicableAreaResidence , Integer monthOfAverageIncome, Integer total) {
+    public PointOfSpecialMinyeongNewlyMarried(User user, com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, Integer numberOfMinors, Integer periodOfMarriged, Integer bankbookPaymentsCount, Integer periodOfApplicableAreaResidence, Integer monthOfAverageIncome, Integer total) {
         this.user = user;
         this.aptInfo = aptInfo;
         this.numberOfMinors = numberOfMinors;

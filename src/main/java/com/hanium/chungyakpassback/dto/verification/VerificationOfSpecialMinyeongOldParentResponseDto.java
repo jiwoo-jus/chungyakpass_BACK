@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class VerificationOfSpecialMinyeongOldParentResponseDto {
 
-    Long verificationRecordSpecialMinyeongOldParentId;
+    Long id;
 
     Integer americanAge;
     boolean meetLivingInSurroundAreaTf;
@@ -46,7 +46,7 @@ public class VerificationOfSpecialMinyeongOldParentResponseDto {
         this.isRestrictedAreaTf = verificationOfSpecialMinyeongOldParent.isRestrictedAreaTf();
         this.meetDepositTf = verificationOfSpecialMinyeongOldParent.isMeetDepositTf();
         this.meetBankbookJoinPeriodTf = verificationOfSpecialMinyeongOldParent.isMeetBankbookJoinPeriodTf();
-        this.verificationRecordSpecialMinyeongOldParentId = verificationOfSpecialMinyeongOldParent.getId();
+        this.id = verificationOfSpecialMinyeongOldParent.getId();
         this.sibilingSupportYn = verificationOfSpecialMinyeongOldParent.getSibilingSupportYn();
         this.ranking = verificationOfSpecialMinyeongOldParent.getRanking();
         this.createdDate = verificationOfSpecialMinyeongOldParent.getCreatedDate();

@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "point_singleParents")
+@Table(name = "point_of_special_minyeong_single_parents")
 public class PointOfSpecialMinyeongSingleParents extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "point_singleParents_id")
+    @Column(name = "point_of_special_minyeong_single_parents_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,7 +45,7 @@ public class PointOfSpecialMinyeongSingleParents extends BaseTime {
     private Integer total;
 
     @Builder
-    public PointOfSpecialMinyeongSingleParents(User user, AptInfo aptInfo, Integer numberOfMinors, Integer ageOfMostYoungChild, Integer bankbookPaymentsCount, Integer periodOfApplicableAreaResidence , Integer monthOfAverageIncome, Integer total) {
+    public PointOfSpecialMinyeongSingleParents(User user, AptInfo aptInfo, Integer numberOfMinors, Integer ageOfMostYoungChild, Integer bankbookPaymentsCount, Integer periodOfApplicableAreaResidence, Integer monthOfAverageIncome, Integer total) {
         this.user = user;
         this.aptInfo = aptInfo;
         this.numberOfMinors = numberOfMinors;

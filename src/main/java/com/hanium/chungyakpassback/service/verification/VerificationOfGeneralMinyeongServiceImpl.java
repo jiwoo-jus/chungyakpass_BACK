@@ -90,8 +90,8 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public VerificationOfGeneralMinyeongResponseDto updateGeneralMinyeongVerification(Long verificationRecordGeneralMinyeongId, VerificationOfGeneralMinyeongUpdateDto verificationOfGeneralMinyeongUpdateDto) {
-        VerificationOfGeneralMinyeong verificationOfGeneralMinyeong = verificationOfGeneralMinyeongRepository.findById(verificationRecordGeneralMinyeongId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
+    public VerificationOfGeneralMinyeongResponseDto updateGeneralMinyeongVerification(Long id, VerificationOfGeneralMinyeongUpdateDto verificationOfGeneralMinyeongUpdateDto) {
+        VerificationOfGeneralMinyeong verificationOfGeneralMinyeong = verificationOfGeneralMinyeongRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION_RECORD_ID));
         verificationOfGeneralMinyeong.setSibilingSupportYn(verificationOfGeneralMinyeongUpdateDto.getSibilingSupportYn());
         verificationOfGeneralMinyeong.setRanking(verificationOfGeneralMinyeongUpdateDto.getRanking());
         verificationOfGeneralMinyeongRepository.save(verificationOfGeneralMinyeong);

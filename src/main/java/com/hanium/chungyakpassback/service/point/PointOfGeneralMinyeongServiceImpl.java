@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class PointOfServiceImpl implements PointOfService {
+public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeongService {
     final HouseMemberRepository houseMemberRepository;
     final BankbookRepository bankbookRepository;
     final HouseRepository houseRepository;
