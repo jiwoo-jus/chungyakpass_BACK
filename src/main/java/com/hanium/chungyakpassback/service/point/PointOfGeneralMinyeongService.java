@@ -1,6 +1,5 @@
 package com.hanium.chungyakpassback.service.point;
 
-import com.hanium.chungyakpassback.dto.point.PointOfGeneralMinyeongDto;
 import com.hanium.chungyakpassback.dto.point.PointOfGeneralMinyeongResponseDto;
 import com.hanium.chungyakpassback.entity.input.User;
 
@@ -10,13 +9,13 @@ public interface PointOfGeneralMinyeongService {
 
     List<PointOfGeneralMinyeongResponseDto> readGeneralMinyeongResponsePointCalculations();
 
-    PointOfGeneralMinyeongResponseDto createGeneralMinyeongPointCalculation(PointOfGeneralMinyeongDto pointOfGeneralMinyeongDto);
+    PointOfGeneralMinyeongResponseDto createGeneralMinyeongPointCalculation();
 
     Integer periodOfHomelessness(User user);
 
     Integer bankbookJoinPeriod(User user);
 
-    Integer numberOfDependents(User user, PointOfGeneralMinyeongDto pointOfGeneralMinyeongDto);
+    Integer numberOfDependents(User user);
 
     boolean bankBookVaildYn(User user);
 }

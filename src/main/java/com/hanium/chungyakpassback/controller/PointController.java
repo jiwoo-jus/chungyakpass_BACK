@@ -44,8 +44,8 @@ public class PointController {
 
     @PostMapping("/general/minyeong") //일반민영저장
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<PointOfGeneralMinyeongResponseDto> createGeneralMinyeongPointCalculation(@RequestBody PointOfGeneralMinyeongDto pointOfGeneralMinyeongDto) {
-        return new ResponseEntity<>(pointOfGeneralMinyeongService.createGeneralMinyeongPointCalculation(pointOfGeneralMinyeongDto), HttpStatus.OK);
+    public ResponseEntity<PointOfGeneralMinyeongResponseDto> createGeneralMinyeongPointCalculation() {
+        return new ResponseEntity<>(pointOfGeneralMinyeongService.createGeneralMinyeongPointCalculation(), HttpStatus.OK);
     }
 
     @GetMapping("/special/multi-child") //다자녀조회

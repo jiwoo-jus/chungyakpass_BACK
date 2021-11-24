@@ -13,12 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PointOfGeneralMinyeongResponseDto {
     private Long id;
-    private Long houseMemberId;
-    private Yn parentsDeathYn;
-    private Yn divorceYn;
-    private Yn sameResidentRegistrationYn;
-    private Yn stayOverYn;
-    private Yn nowStayOverYn;
     private Integer periodOfHomelessness;
     private Integer bankbookJoinPeriod;
     private Integer numberOfDependents;
@@ -30,12 +24,6 @@ public class PointOfGeneralMinyeongResponseDto {
     @Builder
     public PointOfGeneralMinyeongResponseDto(PointOfGeneralMinyeong pointOfGeneralMinyeong){
         this.id = pointOfGeneralMinyeong.getId();
-        this.houseMemberId = pointOfGeneralMinyeong.getHouseMemberId();
-        this.parentsDeathYn = pointOfGeneralMinyeong.getParentsDeathYn();
-        this.divorceYn = pointOfGeneralMinyeong.getDivorceYn();
-        this.sameResidentRegistrationYn = pointOfGeneralMinyeong.getSameResidentRegistrationYn();
-        this.stayOverYn = pointOfGeneralMinyeong.getStayOverYn();
-        this.nowStayOverYn = pointOfGeneralMinyeong.getNowStayOverYn();
         this.periodOfHomelessness = pointOfGeneralMinyeong.getPeriodOfHomelessness();
         this.bankbookJoinPeriod = pointOfGeneralMinyeong.getBankbookJoinPeriod();
         this.numberOfDependents = pointOfGeneralMinyeong.getNumberOfDependents();
