@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserBankbookRepository extends JpaRepository<UserBankbook, Long> {
-
-//    Optional<UserBankbook> findByUserId(Long userId);
-
     Optional<UserBankbook> findByUser(User user);
-
     List<UserBankbook> findAllByUser(User user);
-
 }

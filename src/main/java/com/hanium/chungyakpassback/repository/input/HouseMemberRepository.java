@@ -7,10 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface HouseMemberRepository extends JpaRepository<HouseMember, Long> {
-
     List<HouseMember> findAllByHouse(House house);
-    void deleteAllByHouse(House house);
-
 }
