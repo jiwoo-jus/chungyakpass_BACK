@@ -15,22 +15,22 @@ import javax.validation.constraints.NotBlank;
 public class HouseMemberAdditionalInfoDto {
 
     @NotBlank
-    private Long houseMemberId;
+    private Long houseMemberId;  //세대구성원 id
 
     @NotBlank
-    private Yn parentsDeathYn;
+    private Yn parentsDeathYn; //부모 사망 여부
 
     @NotBlank
-    private Yn divorceYn;
+    private Yn divorceYn; //이혼 여부
 
     @NotBlank
-    private Yn sameResidentRegistrationYn;
+    private Yn sameResidentRegistrationYn; //회원 세대 거주 여부
 
     @NotBlank
-    private Yn stayOverYn;
+    private Yn stayOverYn; //해외 및 요양시설 체류 이력 여부
 
     @NotBlank
-    private Yn nowStayOverYn;
+    private Yn nowStayOverYn; //현재 해외 및 요양시설 체류 여부
 
     public HouseMemberAdditionalInfo toEntity(HouseMember houseMember){
         return HouseMemberAdditionalInfo.builder()

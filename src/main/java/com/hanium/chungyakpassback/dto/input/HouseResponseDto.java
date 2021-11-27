@@ -13,18 +13,18 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class HouseResponseDto {
-    private Long id;
+    private Long id; //세대 id
 
     @Setter
-    private Long houseHolderId;
+    private Long houseHolderId; //세대주 세대구성원 id
 
-    private AddressLevel1 addressLevel1;
+    private AddressLevel1 addressLevel1; //지역레벨1
 
-    private AddressLevel2 addressLevel2;
+    private AddressLevel2 addressLevel2; //지역레벨2
 
-    private String addressDetail;
+    private String addressDetail; //상세주소
 
-    private String zipcode;
+    private String zipcode; //우편번호
 
     private LocalDateTime createdDate;
 

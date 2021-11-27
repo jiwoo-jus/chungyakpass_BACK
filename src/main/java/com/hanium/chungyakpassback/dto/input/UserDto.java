@@ -17,11 +17,11 @@ public class UserDto {
    @NotNull
    @Email
    @Size(min = 3, max = 50)
-   private String email;
+   private String email; //이메일
 
    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
    @NotNull
    @Size(min = 3, max = 100)
-   private String password;
+   private String password; //비밀번호
 
 }

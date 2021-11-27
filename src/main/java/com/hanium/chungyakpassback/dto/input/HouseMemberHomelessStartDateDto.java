@@ -14,5 +14,5 @@ import java.time.LocalDate;
 @Builder
 public class HouseMemberHomelessStartDateDto {
     @NotBlank
-    LocalDate homelessStartDate;
+    LocalDate homelessStartDate; // 무주택 시작일
 }

@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class HouseReadDto {
 
-    HouseResponseDto houseResponseDto;
+    HouseResponseDto houseResponseDto; //회원 세대 response dto
 
-    HouseResponseDto spouseHouseResponseDto;
+    HouseResponseDto spouseHouseResponseDto; //배우자 세대 response dto
 
 }

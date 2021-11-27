@@ -35,7 +35,7 @@ public class HouseMemberChungyakReadDto{
 
     private Yn cancelWinYn; //당첨취소여부
 
-    private HouseMemberChungyakRestrictionReadDto houseMemberChungyakRestrictionReadDto;
+    private HouseMemberChungyakRestrictionReadDto houseMemberChungyakRestrictionReadDto; //세대구성원 추가정보 dto
 
     private LocalDateTime createdDate;
 
