@@ -8,10 +8,10 @@ import org.json.JSONObject;
 
 @Getter
 public class AptInfo2Dto {
-    public Integer notificationNumber;
-    public AddressLevel1 addressLevel1;
-    public HousingType housingType;
-    public String constructionCompany;//건설업체
+    public Integer notificationNumber; //공고번호
+    public AddressLevel1 addressLevel1; //지역레벨1
+    public HousingType housingType; //공급유형
+    public String constructionCompany; //건설업체
 
     @Builder
     public AptInfo2Dto(JSONObject itemJson){

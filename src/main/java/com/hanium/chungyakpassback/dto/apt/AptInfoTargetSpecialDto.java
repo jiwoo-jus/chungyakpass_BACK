@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 @Getter
 public class AptInfoTargetSpecialDto {
-    private Integer notificationNumber;
+    private Integer notificationNumber; //공고번호
     private String housingType;
     private int supplyMultiChildHousehold;//공급세대수_다자녀가구;
     private int supplyNewlyMarriedCouple;//공급세대수_신혼부부

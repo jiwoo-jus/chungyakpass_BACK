@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CrawlingAptInfoDto {
-    public Integer notificationNumber;
+    public Integer notificationNumber; //공고번호
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM", timezone = "Asia/Seoul")
     public YearMonth scheduledOccupancy;//입주예정월
     public Yn speculationOverheated;//투기과열지구
@@ -22,7 +22,7 @@ public class CrawlingAptInfoDto {
     public Yn publicRentalHousing;//공공건설임대주택
     public Yn largeDevelopmentzone;//대규모택지개발지구
     public Yn specialActPublicHousing;//공공주택특별법적용
-    public Yn privateInMetropolitan;
+    public Yn privateInMetropolitan;//수도권내민영공공주택지구
 
     @Builder
     public CrawlingAptInfoDto(String content, Integer number, String string) {
