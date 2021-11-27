@@ -31,11 +31,4 @@ public class Bankbook {
     @Column
     private Integer restrictionSaleArea;
 
-//    @Builder
-//    public Bankbook(com.hanium.chungyakpassback.enumtype.Bankbook bankbook, Yn nationalHousingSupplyPossible, Yn privateHousingSupplyIsPossible, Integer restrictionSaleArea) {
-//        this.bankbook = bankbook;
-//        this.nationalHousingSupplyPossible = nationalHousingSupplyPossible;
-//        this.privateHousingSupplyIsPossible = privateHousingSupplyIsPossible;
-//        this.restrictionSaleArea = restrictionSaleArea;
-//    }
 }

@@ -22,9 +22,4 @@ public class AddressLevel2 {
     @Enumerated(EnumType.STRING)
     private com.hanium.chungyakpassback.enumtype.AddressLevel2 addressLevel2;
 
-//    @Builder
-//    public AddressLevel2(AddressLevel1 addressLevel1, com.hanium.chungyakpassback.enumtype.AddressLevel2 addressLevel2) {
-//        this.addressLevel1 = addressLevel1;
-//        this.addressLevel2 = addressLevel2;
-//    }
 }
