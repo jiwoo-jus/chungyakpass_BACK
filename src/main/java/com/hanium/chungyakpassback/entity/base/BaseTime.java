@@ -17,9 +17,9 @@ public abstract class BaseTime {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate; //생성일
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedDate; //최종수정일
 
 }
