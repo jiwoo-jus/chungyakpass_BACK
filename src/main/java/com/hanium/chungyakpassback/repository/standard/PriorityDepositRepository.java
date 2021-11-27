@@ -8,7 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PriorityDepositRepository extends JpaRepository<PriorityDeposit, Long> {
-
     List<PriorityDeposit> findByDepositArea(DepositArea depositArea);
-
 }

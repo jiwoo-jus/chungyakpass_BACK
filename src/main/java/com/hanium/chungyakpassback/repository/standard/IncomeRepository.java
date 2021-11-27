@@ -12,10 +12,6 @@ import java.util.Optional;
 
 public interface IncomeRepository extends JpaRepository<Income, Long> {
     Optional<Income> findBySpecialSupplyAndSupplyAndAndHousingType(SpecialSupply specialSupply, Supply supply, HousingType housingType);
-
     Optional<Income> findBySpecialSupplyAndSupplyAndDualIncomeAndApplicationPublicHousingSpecialLaws(SpecialSupply specialSupply, Supply supply, Yn dualIncome, Yn applicationPublicHousingSpecialLaws);
-
-    List<Income> findAllBySpecialSupply(SpecialSupply specialSupply);
-
     List<Income> findAllBySupply(Supply supply);
 }
