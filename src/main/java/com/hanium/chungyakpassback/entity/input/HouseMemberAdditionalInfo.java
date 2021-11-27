@@ -19,26 +19,26 @@ public class HouseMemberAdditionalInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_additional_info_id")
-    private Long id;
+    private Long id; //세대구성원추가정보id
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_member_id")
-    private HouseMember houseMember;
+    private HouseMember houseMember; //세대구성원
 
     @Column
-    Yn parentsDeathYn;
+    Yn parentsDeathYn; //부모사망여부
 
     @Column
-    Yn divorceYn;
+    Yn divorceYn; //이혼 여부
 
     @Column
-    Yn sameResidentRegistrationYn;
+    Yn sameResidentRegistrationYn; //회원 세대 거주 여부
 
     @Column
-    Yn stayOverYn;
+    Yn stayOverYn; //해외or요양시설 거주 이력 여부
 
     @Column
-    Yn nowStayOverYn;
+    Yn nowStayOverYn; //현재 해외or요양시설 거주 여부
 
     public HouseMemberAdditionalInfo updateHouseMemberAdditionalInfo(HouseMember houseMember, HouseMemberAdditionalInfoUpdateDto houseMemberAdditionalInfoUpdateDto){
         this.houseMember = houseMember;

@@ -17,15 +17,11 @@ public class HouseMemberChungyakRestriction extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_chungyak_restriction_id")
-    private Long id;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "house_member_id")
-//    private HouseMember houseMember;
+    private Long id; //세대구성원청약제한사항id
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_member_chungyak_id")
-    private HouseMemberChungyak houseMemberChungyak;
+    private HouseMemberChungyak houseMemberChungyak; //세대구성원 청약신청이력
 
     @Column
     private LocalDate reWinningRestrictedDate; //재당첨제한일

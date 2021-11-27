@@ -19,25 +19,25 @@ public class House extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_id")
-    private Long id;
+    private Long id; //세대id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_level1")
-    private com.hanium.chungyakpassback.entity.standard.AddressLevel1 addressLevel1;
+    private com.hanium.chungyakpassback.entity.standard.AddressLevel1 addressLevel1; //지역레벨1
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_level2")
-    private com.hanium.chungyakpassback.entity.standard.AddressLevel2 addressLevel2;
+    private com.hanium.chungyakpassback.entity.standard.AddressLevel2 addressLevel2; //지역레벨2
 
     @Column
-    private String addressDetail;
+    private String addressDetail; //상세주소
 
     @Column
-    private String zipcode;
+    private String zipcode; //우편번호
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_holder_id")
-    private HouseMember houseHolder;
+    private HouseMember houseHolder; //세대주 세대구성원
 
 
     @Builder

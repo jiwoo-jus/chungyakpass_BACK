@@ -18,18 +18,11 @@ public class HouseMember extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_id")
-    private Long id;
+    private Long id; //세대구성원id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_id")
     private House house; //세대
-
-//    @Column
-//    @Enumerated(EnumType.STRING)
-//    private Yn isHouseholderYn; //세대주여부
-
-//    @OneToOne(mappedBy = "houseMember")
-//    HouseMemberAdditionalInfo houseMemberAdditionalInfo;
 
     @Column
     private String name; //이름
