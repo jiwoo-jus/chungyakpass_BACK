@@ -44,12 +44,6 @@ public class PointOfSpecialMinyeongNewlyMarried extends BaseTime {
 
     @Column
     private Integer total;
-//
-//    @Column
-//    LocalDateTime createdDate;
-//
-//    @Column
-//    LocalDateTime modifiedDate;
 
     @Builder
     public PointOfSpecialMinyeongNewlyMarried(User user, com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, Integer numberOfMinors, Integer periodOfMarriged, Integer bankbookPaymentsCount, Integer periodOfApplicableAreaResidence, Integer monthOfAverageIncome, Integer total) {
@@ -61,9 +55,6 @@ public class PointOfSpecialMinyeongNewlyMarried extends BaseTime {
         this.periodOfApplicableAreaResidence = periodOfApplicableAreaResidence;
         this.monthOfAverageIncome = monthOfAverageIncome;
         this.total = total;
-//        this.createdDate = createdDate;
-//        this.modifiedDate = modifiedDate;
-
     }
 
 
