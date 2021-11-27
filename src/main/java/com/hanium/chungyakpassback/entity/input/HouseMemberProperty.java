@@ -20,11 +20,11 @@ public class HouseMemberProperty extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_property_id")
-    private Long id;
+    private Long id; //세대구성원자산id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_member_id")
-    private HouseMember houseMember;
+    private HouseMember houseMember; //세대구성원
 
     @Column
     @Enumerated(EnumType.STRING)

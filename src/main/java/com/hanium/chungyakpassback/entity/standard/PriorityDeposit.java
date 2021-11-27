@@ -29,11 +29,4 @@ public class PriorityDeposit {
     @Column
     private int deposit;
 
-    @Builder
-    public PriorityDeposit(Integer areaOver, Integer areaLessOrEqual, DepositArea depositArea, int deposit) {
-        this.areaOver = areaOver;
-        this.areaLessOrEqual = areaLessOrEqual;
-        this.depositArea = depositArea;
-        this.deposit = deposit;
-    }
 }

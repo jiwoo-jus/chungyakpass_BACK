@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class HouseMemberResponseDto {
-    private Long id;
+    private Long id; //세대구성원 id
 
-    private Long houseId;
+    private Long houseId; //세대 id
 
-    private Relation relation;
+    private Relation relation; //회원과의 관계
 
     private String name; //이름
 

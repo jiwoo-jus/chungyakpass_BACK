@@ -7,12 +7,12 @@ import org.json.JSONObject;
 
 @Getter
 public class AptInfoTargetDto {
-    private Integer notificationNumber;
-    private String housingType;
-    private Double supplyArea;
-    private Integer supplyGeneral;
-    private Integer supplySpecial;
-    private Integer supplyTotal;
+    private Integer notificationNumber; //공고번호
+    private String housingType; //주택형
+    private Double supplyArea; //공급면적
+    private Integer supplyGeneral; //공급세대수_일반공급
+    private Integer supplySpecial; //공급세대수_특별공급
+    private Integer supplyTotal; //공급세대수_전체
 
     @Builder
     public AptInfoTargetDto(JSONObject itemJson){

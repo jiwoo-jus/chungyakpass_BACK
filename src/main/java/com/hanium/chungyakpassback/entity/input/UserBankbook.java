@@ -21,11 +21,11 @@ public class UserBankbook extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_bankbook_id")
-    private Long id;
+    private Long id; //회원청약통장id
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; //회원
 
     @Column
     @Enumerated(EnumType.STRING)

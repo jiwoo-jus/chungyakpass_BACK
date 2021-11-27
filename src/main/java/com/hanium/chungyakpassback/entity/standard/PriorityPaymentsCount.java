@@ -45,14 +45,4 @@ public class PriorityPaymentsCount {
     @Column
     private int countPayments;
 
-    @Builder
-    public PriorityPaymentsCount(Supply supply, SpecialSupply specialSupplyType, Yn overheated_speculation_zone, Yn overheated_subscription_area, Yn atrophy_area, Yn metropolitanAreaYn, int number_payments) {
-        this.supply = supply;
-        this.specialSupply = specialSupplyType;
-        this.speculationOverheated = overheated_speculation_zone;
-        this.subscriptionOverheated = overheated_subscription_area;
-        this.atrophyArea = atrophy_area;
-        this.metropolitanAreaYn = metropolitanAreaYn;
-        this.countPayments = number_payments;
-    }
 }

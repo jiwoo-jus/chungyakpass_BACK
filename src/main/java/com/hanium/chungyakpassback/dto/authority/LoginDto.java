@@ -14,9 +14,9 @@ public class LoginDto {
 
    @NotNull
    @Size(min = 3, max = 50)
-   private String email;
+   private String email; //이메일
 
    @NotNull
    @Size(min = 3, max = 100)
-   private String password;
+   private String password; //비밀번호
 }

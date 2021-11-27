@@ -31,11 +31,4 @@ public class AddressLevel1 {
     @Enumerated(EnumType.STRING)
     private Yn metropolitanAreaYn;
 
-//    @Builder
-//    public AddressLevel1(com.hanium.chungyakpassback.enumtype.AddressLevel1 addressLevel1, int nearbyArea, DepositArea depositArea, Yn metropolitanArea) {
-//        this.addressLevel1 = addressLevel1;
-//        this.nearbyArea = nearbyArea;
-//        this.depositArea = depositArea;
-//        this.metropolitanArea = metropolitanArea;
-//    }
 }

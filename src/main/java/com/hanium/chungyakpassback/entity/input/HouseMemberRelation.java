@@ -15,20 +15,20 @@ public class HouseMemberRelation extends BaseTime {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "house_member_relation_id")
-    private Long id;
+    private Long id; //세대구성원관계id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; //회원
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "opponent_house_member_id")
-    private HouseMember opponent;
+    private HouseMember opponent; //상대 세대구성원
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "relation_id")
-    private com.hanium.chungyakpassback.entity.standard.Relation relation;
+    private com.hanium.chungyakpassback.entity.standard.Relation relation; //관계
 
 
     @Builder
@@ -37,9 +37,4 @@ public class HouseMemberRelation extends BaseTime {
         this.opponent = opponent;
         this.relation = relation;
     }
-
-//    public HouseMemberRelation updateHouseMemberRelation(User user, HouseMember houseMember, Relation relation){
-//        this.relation = relation;
-//        return this;
-//    }
 }

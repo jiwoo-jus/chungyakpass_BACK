@@ -15,11 +15,11 @@ import java.util.Arrays;
 
 @Getter
 public class AptInfoDto {
-    private Integer notificationNumber;
-    public AddressLevel1 addressLevel1;
-    private AddressLevel2 addressLevel2;
-    private String detailAddress;
-    public HousingType housingType;
+    private Integer notificationNumber; //공고번호
+    public AddressLevel1 addressLevel1; //지역레벨1
+    private AddressLevel2 addressLevel2; //지역레벨2
+    private String detailAddress; //상세주소
+    public HousingType housingType; //공급유형
     public Yn specialActPublicHousing;//공공주택특별법적용
     private String houseName;//주택명
     public String constructionCompany;//건설업체

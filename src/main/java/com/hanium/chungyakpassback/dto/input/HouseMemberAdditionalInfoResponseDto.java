@@ -14,19 +14,19 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class HouseMemberAdditionalInfoResponseDto {
 
-    private Long houseMemberAdditionalInfoId;
+    private Long houseMemberAdditionalInfoId; //세대구성원 추가정보 id
 
-    private Long houseMemberId;
+    private Long houseMemberId; //세대구성원 id
 
-    private Yn parentsDeathYn;
+    private Yn parentsDeathYn; //부모 사망 여부
 
-    private Yn divorceYn;
+    private Yn divorceYn; //이혼 여부
 
-    private Yn sameResidentRegistrationYn;
+    private Yn sameResidentRegistrationYn; //회원 세대 거주 여부
 
-    private Yn stayOverYn;
+    private Yn stayOverYn; //해외 및 요양시설 체류 이력 여부
 
-    private Yn nowStayOverYn;
+    private Yn nowStayOverYn; //현재 해외 및 요양시설 체류 여부
 
     public HouseMemberAdditionalInfoResponseDto(HouseMemberAdditionalInfo houseMemberAdditionalInfo) {
         this.houseMemberAdditionalInfoId = houseMemberAdditionalInfo.getId();

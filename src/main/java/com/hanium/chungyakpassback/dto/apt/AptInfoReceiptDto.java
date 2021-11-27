@@ -12,18 +12,18 @@ public class AptInfoReceiptDto {
     private Integer notificationNumber;
     private LocalDate specialReceptionStartDate;//특별공급접수시작일
     private LocalDate specialReceptionEndDate;//특별공급접수종료일
-    private LocalDate priorityApplicableAreaStart;//일순위접수일해당지역
-    private LocalDate priorityApplicableAreaEnd;
-    private LocalDate priorityGyeonggiAreaStart;//일순위접수일경기지역
-    private LocalDate priorityGyeonggiAreaEnd;//일순위접수일경기지역
-    private LocalDate priorityOtherAreaStart;//일순위접수일기타지역
-    private LocalDate priorityOtherAreaEnd;//일순위접수일기타지역
-    private LocalDate secondApplicableAreaStart;//이순위접수일해당지역
-    private LocalDate secondApplicableAreaEnd;//이순위접수일해당지역
-    private LocalDate secondGyeonggiAreaStart;//이순위접수일경기지역
-    private LocalDate secondGyeonggiAreaEnd;
-    private LocalDate secondOtherAreaStart;//이순위접수일기타지역
-    private LocalDate secondOtherAreaEnd;//이순위접수일기타지역
+    private LocalDate priorityApplicableAreaStart;//일순위접수시작일해당지역
+    private LocalDate priorityApplicableAreaEnd;//일순위접수종료일해당지역
+    private LocalDate priorityGyeonggiAreaStart;//일순위접수시작일경기지역
+    private LocalDate priorityGyeonggiAreaEnd;//일순위접수종료일경기지역
+    private LocalDate priorityOtherAreaStart;//일순위접수시작일기타지역
+    private LocalDate priorityOtherAreaEnd;//일순위접수종료일기타지역
+    private LocalDate secondApplicableAreaStart;//이순위접수시작일해당지역
+    private LocalDate secondApplicableAreaEnd;//이순위접수종료일해당지역
+    private LocalDate secondGyeonggiAreaStart;//이순위접시작수일경기지역
+    private LocalDate secondGyeonggiAreaEnd;//이순위접수종료일경기지역
+    private LocalDate secondOtherAreaStart;//이순위접수시작일기타지역
+    private LocalDate secondOtherAreaEnd;//이순위접수종료일기타지역
     private String homepage;//홈페이지
 
     @Builder

@@ -17,8 +17,6 @@ public class HouseMemberUpdateDto {
     @NotBlank
     private Relation relation; //회원과의 관계
 
-//    private Yn isHouseholderYn; //세대주여부
-
     @NotBlank
     private String name; //이름
 

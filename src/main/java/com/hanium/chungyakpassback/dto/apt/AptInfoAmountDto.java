@@ -7,9 +7,9 @@ import org.json.JSONObject;
 
 @Getter
 public class AptInfoAmountDto {
-    private Integer notificationNumber;
-    private String housingType;
-    private String supplyAmount;
+    private Integer notificationNumber; //공고번호
+    private String housingType; //주택형
+    private String supplyAmount; //공급금액
 
     @Builder
     public AptInfoAmountDto(JSONObject itemJson){

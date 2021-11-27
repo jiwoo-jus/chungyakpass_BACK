@@ -395,9 +395,11 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
-                    if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
-                        if (houseMemberProperty.getDispositionDate().isBefore(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이전에 처분했을 경우,
-                            return true; // true(2순위 신청만 가능)
+                    if (houseMemberProperty.getDispositionDate() != null) {
+                        if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
+                            if (houseMemberProperty.getDispositionDate().isBefore(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이전에 처분했을 경우,
+                                return true; // true(2순위 신청만 가능)
+                    }
                 }
             }
 
@@ -405,9 +407,11 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
                 for (HouseMemberProperty houseMemberProperty : houseMemberPropertyList) {
-                    if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
-                        if (houseMemberProperty.getDispositionDate().isBefore(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이전에 처분했을 경우,
-                            return true; // true(2순위 신청만 가능)
+                    if (houseMemberProperty.getDispositionDate() != null) {
+                        if (user.getHouseMember().getMarriageDate().isBefore(houseMemberProperty.getDispositionDate())) //혼인신고일 이후에 처분일 이력이 있고,
+                            if (houseMemberProperty.getDispositionDate().isBefore(LocalDate.of(2018, 12, 10))) // 2018년 12월 10일 이전에 처분했을 경우,
+                                return true; // true(2순위 신청만 가능)
+                    }
                 }
             }
         }
