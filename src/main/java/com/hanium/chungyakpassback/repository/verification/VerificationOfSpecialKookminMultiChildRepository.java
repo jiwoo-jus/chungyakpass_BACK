@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface VerificationOfSpecialKookminMultiChildRepository extends JpaRepository<VerificationOfSpecialKookminMultiChild, Long> {
-
     List<VerificationOfSpecialKookminMultiChild> findAllByUser(User user);
 }
