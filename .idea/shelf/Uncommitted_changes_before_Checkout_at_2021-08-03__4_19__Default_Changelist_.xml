@@ -1,0 +1,14 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_2021-08-03_오후_4_19_[Default_Changelist]" date="1627975158088" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2021-08-03_오후_4_19_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2021-08-03 오후 4:19 [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/buildOutputCleanup/buildOutputCleanup.lock" />
+    <option name="AFTER_PATH" value=".gradle/buildOutputCleanup/buildOutputCleanup.lock" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2021-08-03_오후_4_19_[Default_Changelist]/buildOutputCleanup.lock" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/7.1.1/fileHashes/fileHashes.lock" />
+    <option name="AFTER_PATH" value=".gradle/7.1.1/fileHashes/fileHashes.lock" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2021-08-03_오후_4_19_[Default_Changelist]/fileHashes.lock" />
+  </binary>
+</changelist>
