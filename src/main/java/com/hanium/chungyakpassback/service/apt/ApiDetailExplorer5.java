@@ -34,7 +34,7 @@ public class ApiDetailExplorer5 {
     private final AptInfoTargetSpecialRepository aptInfoTargetSpecialRepository;
     public static int INDENT_FACTOR = 4;
     public static String jsonPrettyPrintString;
-    public static String salesInformation  = "http://openapi.reb.or.kr/OpenAPI_ToolInstallPackage/service/rest/ApplyhomeInfoSvc/getLttotPblancList";//분양정보조회
+    public static String salesInformation = "http://openapi.reb.or.kr/OpenAPI_ToolInstallPackage/service/rest/ApplyhomeInfoSvc/getLttotPblancList";//분양정보조회
     public static String detailInformationByHousingType = "http://openapi.reb.or.kr/OpenAPI_ToolInstallPackage/service/rest/ApplyhomeInfoSvc/getAPTLttotPblancMdl";//주택형별 분양정보
     public static String detailSalesInformation = "http://openapi.reb.or.kr/OpenAPI_ToolInstallPackage/service/rest/ApplyhomeInfoSvc/getAPTLttotPblancDetail";//detailSalesInformation
     public static int cout;
@@ -45,12 +45,12 @@ public class ApiDetailExplorer5 {
         try {
             StringBuilder urlBuilder = new StringBuilder(aptUrl); /*URL*///주택번호와 url을 받는다.
             urlBuilder.append("?").append(URLEncoder.encode("ServiceKey", StandardCharsets.UTF_8)).append("=BmqDlfkTCepN%2F%2B8XBveSElPppoonFGeljKmlxIZDZV589UGOa%2B3U3sHN5fCNuT2jBnOn1iTVWFQTdDMcRdnohA%3D%3D"); /*Service Key*/
-//=BmqDlfkTCepN%2F%2B8XBveSElPppoonFGeljKmlxIZDZV589UGOa%2B3U3sHN5fCNuT2jBnOn1iTVWFQTdDMcRdnohA%3D%3D
-//=r%2B2HI8hwDijPaCvVzQvg1O6birty3yCNr1QCk30cBuFXESl9etAWiSqbfS8cCStGjXXcfT2yfcfXlEgViCgMmg%3D%3D
-            urlBuilder.append("&").append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(String.valueOf(pageNo), StandardCharsets.UTF_8));
+                                                                                                            //=BmqDlfkTCepN%2F%2B8XBveSElPppoonFGeljKmlxIZDZV589UGOa%2B3U3sHN5fCNuT2jBnOn1iTVWFQTdDMcRdnohA%3D%3D
+                                                                                                            //=r%2B2HI8hwDijPaCvVzQvg1O6birty3yCNr1QCk30cBuFXESl9etAWiSqbfS8cCStGjXXcfT2yfcfXlEgViCgMmg%3D%3D
+            urlBuilder.append("&").append(URLEncoder.encode("pageNo", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(String.valueOf(pageNo), StandardCharsets.UTF_8)); //페이지번호
 
             if (manageNo == 0) {
-                urlBuilder.append("&").append(URLEncoder.encode("startmonth", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode("202108", StandardCharsets.UTF_8)); /*월 단위 모집공고일 (검색시작월)*/
+                urlBuilder.append("&").append(URLEncoder.encode("startmonth", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode("202108", StandardCharsets.UTF_8)); /*월 단위 모집공고일 (검색시작월) 첫번째로 스케줄러 돌릴때는 가장 오래된 날짜부터 현재날짜까지 돌려서 sql에 저장하고 두번째부터는 현재날짜월 부터 현재날짜월까지 스케줄러 돌림 */
                 urlBuilder.append("&").append(URLEncoder.encode("endmonth", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(date, StandardCharsets.UTF_8)); /*월 단위 모집공고일 (검색종료월, 최대 12개월)*/
             } else {
                 urlBuilder.append("&").append(URLEncoder.encode("houseManageNo", StandardCharsets.UTF_8)).append("=").append(URLEncoder.encode(String.valueOf(manageNo), StandardCharsets.UTF_8)); /*주택관리번호*/
@@ -75,10 +75,8 @@ public class ApiDetailExplorer5 {
             }
             rd.close();
             conn.disconnect();
-            JSONObject xmlJSONObj = XML.toJSONObject(sb.toString());//xml을 json으로 변환한다.
-            jsonPrettyPrintString = xmlJSONObj.toString(INDENT_FACTOR);//json을 예쁘게 변환
-
-
+            JSONObject xmlJSONObj = XML.toJSONObject(sb.toString()); //xml을 json으로 변환한다.
+            jsonPrettyPrintString = xmlJSONObj.toString(INDENT_FACTOR); //json을 가독성 좋게 변환
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,36 +86,35 @@ public class ApiDetailExplorer5 {
     public void apiDetailExplorer5() throws IOException {
         // 아래의 전체 코드가 일정한 시간간격을 두고 실행되어야한다.
         List<Integer> numbers = new ArrayList<>();//주택관리번호만 따로 리스트에 저장
-        List<AptInfoDto> aptInfoDtoList = new ArrayList<>();
-        List<AptInfoTargetDto> aptInfoTargetDtoList = new ArrayList<>();
-        List<AptInfoTargetSpecialDto> aptInfoTargetSpecialDtoList = new ArrayList<>();
-        List<AptInfoAmountDto> aptInfoAmountDtoList = new ArrayList<>();
-        List<AptInfoReceiptDto> aptInfoReceiptDtoList = new ArrayList<>();
-        List<String> urlList = new ArrayList<>();
-        List<CrawlingAptInfoDto> crawlingAptInfoDtoList = new ArrayList<>();
+        List<AptInfoDto> aptInfoDtoList = new ArrayList<>(); //아파트분양정보 List
+        List<AptInfoTargetDto> aptInfoTargetDtoList = new ArrayList<>(); //아파트분양정보 공급대상 List
+        List<AptInfoTargetSpecialDto> aptInfoTargetSpecialDtoList = new ArrayList<>(); //아파트분양정보 특별공급대상 List
+        List<AptInfoAmountDto> aptInfoAmountDtoList = new ArrayList<>(); //아파트분양정보 공급금액 List
+        List<AptInfoReceiptDto> aptInfoReceiptDtoList = new ArrayList<>(); //아파트분양정보 접수일정 List
+        List<String> urlList = new ArrayList<>(); //아파트분양정보 url List
+        List<CrawlingAptInfoDto> crawlingAptInfoDtoList = new ArrayList<>(); //아파트분양정보 크롤링 List
 
         // 아파트분양정보 2Dto 정보를 리스트로 담는다.
         List<AptInfo2Dto> aptInfo2DtoList = new ArrayList<>();
 
 
-        int pageNo = 1;
-        // 페이지 수를 구해야한다.
+        int pageNo = 1; //페이지 번호
+
         String result = GetAptApi(salesInformation, pageNo, 0);
         JSONObject rjson = new JSONObject(result);
         JSONObject response = (JSONObject) rjson.get("response");//받아온 json에서 원하는 정보를 필터링한다.
         JSONObject body = (JSONObject) response.get("body");
-        int totalCount = body.getInt("totalCount");
-        pageNo = totalCount / 10;
-        int pagesNo = totalCount % 10;
-        if (pagesNo != 0) {
-            pageNo = pageNo + 1;
+        int totalCount = body.getInt("totalCount"); //전체 아파트공고
+        pageNo = totalCount / 10; //전체 아파트공고를 10으로 나눈 몫
+        int pagesNo = totalCount % 10; //전체 아파트공고를 10으로 나눈 나머지
+        if (pagesNo != 0) { //전체아파트공고를 10으로 나눈 나머지가 0이 아니라면
+            pageNo = pageNo + 1; //페이지 번호를 1상승한다.
         }
 
         // 공고번호만 뽑았는데
         // 문의처, 주택유형, 건설업체도 뽑아야함
         // AptInfoDto에다가 넣어주면된다.
-        for (int i = 1; i <= pageNo; i++) {
-            // apiExplorer.AptApiData(i);/페이지수만큼 AptApiData를 호출
+        for (int i = 1; i <= pageNo; i++) { // 페이지수만큼 GetAptApi를 호출
             GetAptApi(salesInformation, i, 0);
             rjson = new JSONObject(jsonPrettyPrintString);
             response = (JSONObject) rjson.get("response");//받아온 json에서 원하는 정보를 필터링한다.
@@ -139,7 +136,6 @@ public class ApiDetailExplorer5 {
                 }
             } else {//item이 object형식으로 들어올때
                 JSONObject itemJson = items.getJSONObject("item");
-                //int houseManageNo = itemJson.getInt("houseManageNo");//주택관리번호 뽑아냄
                 AptInfo2Dto aptInfo2dto = new AptInfo2Dto(itemJson);
                 aptInfo2DtoList.add(aptInfo2dto);
 
@@ -149,13 +145,15 @@ public class ApiDetailExplorer5 {
 
 
         }
-        for (Integer number : numbers) {
+
+        //아파트분양정보 크롤링
+        for (Integer number : numbers) {//공고번호 List를 하나씩 뽑아서
             String spec = "https://www.applyhome.co.kr/ai/aia/selectAPTLttotPblancDetail.do?gvPgmId=AIA01M01"
                     + "&houseManageNo="
                     + number
                     + "&pblancNo="
                     + number;
-            urlList.add(spec);
+            urlList.add(spec); //아파트공고 url List에 저장
         }
 
         for (int a = 0; a < numbers.size(); a++) {
@@ -165,9 +163,6 @@ public class ApiDetailExplorer5 {
             String[] content2 = content1.split(" ");
             String string = content2[3];
 
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM");
-//            LocalDate date = LocalDate.parse(string, formatter);
-
             Integer number = numbers.get(a);
 
             CrawlingAptInfoDto CrawlingAptInfodto = new CrawlingAptInfoDto(content, number, string);
@@ -176,13 +171,12 @@ public class ApiDetailExplorer5 {
         }
 
 
-//        // 공고번호를 가지고 API에서 데이터를 가져온다.
+        // 공고번호를 가지고 API에서 데이터를 가져온다.
         for (Integer number : numbers) {//주택관리번호 리스트를 하나씩 반복
-            //String value = apiExplorer.GetAptDetail(numbers.get(i), detailSalesInformation);//주택관리번호와 분양정보 상세 조회url을 GetAptDetail메소드에 보내서 실행
-            String value = GetAptApi(detailSalesInformation, 1, number);
+            String value = GetAptApi(detailSalesInformation, 1, number);//주택관리번호와 분양정보 상세 조회url을 GetAptDetail메소드에 보내서 실행
             rjson = new JSONObject(value);//반환값을 필터링
             response = (JSONObject) rjson.get("response");
-            if(response.has("body")) {
+            if (response.has("body")) {
                 body = (JSONObject) response.get("body");
             }
             if (body.get("items") instanceof JSONObject) {//주택번호와 url은 있는데 값이 안들어온 경우 값이 object형식으로 들어왔나 확인
@@ -197,7 +191,7 @@ public class ApiDetailExplorer5 {
                 AptInfoDto AptInfodto = new AptInfoDto(itemJson);
 
                 for (CrawlingAptInfoDto CrawlingAptInfodto : crawlingAptInfoDtoList) {
-                    if (CrawlingAptInfodto.notificationNumber.equals(AptInfodto.getNotificationNumber())) {
+                    if (CrawlingAptInfodto.notificationNumber.equals(AptInfodto.getNotificationNumber())) { //아파트분양정보 api에서 가져온 공고번호와 크롤링으로 가져온 공고번화 일치할 경우 AptInfodto에 저장
                         AptInfodto.atrophyArea = CrawlingAptInfodto.atrophyArea;
                         AptInfodto.largeDevelopmentzone = CrawlingAptInfodto.largeDevelopmentzone;
                         AptInfodto.maintenanceWork = CrawlingAptInfodto.maintenanceWork;
@@ -228,7 +222,7 @@ public class ApiDetailExplorer5 {
 
             rjson = new JSONObject(value);
             response = (JSONObject) rjson.get("response");
-            if(response.has("body")) {
+            if (response.has("body")) {
                 body = (JSONObject) response.get("body");
             }
             cout++;
@@ -255,34 +249,34 @@ public class ApiDetailExplorer5 {
             }
 
 
-                // 각 주택관리 번호별 총 item개수
-                int totalCount1 = body.getInt("totalCount");
-                // totalCount가 10개 이상이면 페이지 넘버를 1개 추가한다
-                if (totalCount1 > 10) {
-                    // 페이지 넘버를 1개 추가해서 값을 가져온다.
-                    String value2 = GetAptApi(detailInformationByHousingType, 2, number);
-                    rjson = new JSONObject(value2);
-                    response = (JSONObject) rjson.get("response");
-                    body = (JSONObject) response.get("body");
-                    cout++;
+            // 각 주택관리 번호별 총 item개수
+            int totalCount1 = body.getInt("totalCount");
+            // totalCount가 10개 이상이면 페이지 넘버를 1개 추가한다
+            if (totalCount1 > 10) {
+                // 페이지 넘버를 1개 추가해서 값을 가져온다.
+                String value2 = GetAptApi(detailInformationByHousingType, 2, number);
+                rjson = new JSONObject(value2);
+                response = (JSONObject) rjson.get("response");
+                body = (JSONObject) response.get("body");
+                cout++;
 
-                    if (body.get("items") instanceof JSONObject) {//주택번호와 url은 있는데 값이 안들어온 경우 값이 object형식으로 들어왔나 확인
-                        JSONObject items2 = body.getJSONObject("items");
+                if (body.get("items") instanceof JSONObject) {//주택번호와 url은 있는데 값이 안들어온 경우 값이 object형식으로 들어왔나 확인
+                    JSONObject items2 = body.getJSONObject("items");
 
-                        if (items2.get("item") instanceof JSONArray) {//item이 array형식인지 확인
-                            JSONArray item = (JSONArray) items2.get("item");
+                    if (items2.get("item") instanceof JSONArray) {//item이 array형식인지 확인
+                        JSONArray item = (JSONArray) items2.get("item");
 
-                            // AptInfoDtoList에 있는 AptInfoDto를 순서대로 전부 불러온다.
-                            for (int j = 0; j < item.length(); j++) {//item크기만큼 dto에 저장
-                                JSONObject itemJson = item.getJSONObject(j);
-                                objects.add(itemJson);
-                            }
-                        } else {
-                            JSONObject itemJson = items2.getJSONObject("item");//item크기만큼 dto에 저장
+                        // AptInfoDtoList에 있는 AptInfoDto를 순서대로 전부 불러온다.
+                        for (int j = 0; j < item.length(); j++) {//item크기만큼 dto에 저장
+                            JSONObject itemJson = item.getJSONObject(j);
                             objects.add(itemJson);
                         }
+                    } else {
+                        JSONObject itemJson = items2.getJSONObject("item");//item크기만큼 dto에 저장
+                        objects.add(itemJson);
                     }
                 }
+            }
 
 
             // AptInfoDtoList의 첫번째 값을 objects 개수 만큼 돌린다.
@@ -311,17 +305,18 @@ public class ApiDetailExplorer5 {
                     .map(AptInfoDto::toEntity)
                     .collect(Collectors.toList());
 
+            //아파트분양정보 repository에 공고번호가 없을 경우 아파트 아파트분양정보, 아파트 공급가격, 청약접수일정, 아파트분양정보 공급대상, 아파트분양정보 특별공급대상 저장
             aptInfoRepository.findById(aptInfodto.getNotificationNumber()).orElseGet(() -> {
                 aptInfoRepository.saveAll(aptInfoList);
                 for (AptInfoAmountDto AptInfoAmountdto : aptInfoAmountDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoAmountdto.getNotificationNumber()).get();
-                    aptInfoAmountRepository.findByHousingTypeAndAptInfo(AptInfoAmountdto.getHousingType(),aptInfo).orElseGet(() -> {
-                    AptInfoAmount aptInfoAmount = AptInfoAmount.builder()
-                            .aptInfo(aptInfo)
-                            .supplyAmount(AptInfoAmountdto.getSupplyAmount())
-                            .housingType(AptInfoAmountdto.getHousingType())
-                            .build();
-                    aptInfoAmountRepository.save(aptInfoAmount);
+                    aptInfoAmountRepository.findByHousingTypeAndAptInfo(AptInfoAmountdto.getHousingType(), aptInfo).orElseGet(() -> {
+                        AptInfoAmount aptInfoAmount = AptInfoAmount.builder()
+                                .aptInfo(aptInfo)
+                                .supplyAmount(AptInfoAmountdto.getSupplyAmount())
+                                .housingType(AptInfoAmountdto.getHousingType())
+                                .build();
+                        aptInfoAmountRepository.save(aptInfoAmount);
                         return null;
                     });
                 }
@@ -349,19 +344,19 @@ public class ApiDetailExplorer5 {
                 }
                 for (AptInfoTargetSpecialDto AptInfoTargetSpecialdto : aptInfoTargetSpecialDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetSpecialdto.getNotificationNumber()).get();
-                    aptInfoTargetSpecialRepository.findByHousingTypeAndAptInfo(AptInfoTargetSpecialdto.getHousingType(),aptInfo).orElseGet(() -> {
-                    AptInfoTargetSpecial aptInfoTargetSpecial = AptInfoTargetSpecial.builder()
-                    .aptInfo(aptInfo)
-                    .housingType(AptInfoTargetSpecialdto.getHousingType())
-                    .supplyMultiChildHousehold(AptInfoTargetSpecialdto.getSupplyMultiChildHousehold())
-                    .supplyNewlyMarriedCouple(AptInfoTargetSpecialdto.getSupplyNewlyMarriedCouple())
-                    .supplyOldParentSupport(AptInfoTargetSpecialdto.getSupplyOldParentSupport())
-                    .supplyFirstLife(AptInfoTargetSpecialdto.getSupplyFirstLife())
-                    .supplyInstitutionalRecommendation(AptInfoTargetSpecialdto.getSupplyInstitutionalRecommendation())
-                    .supplyTransferAgency(AptInfoTargetSpecialdto.getSupplyTransferAgency())
-                    .supplyOther(AptInfoTargetSpecialdto.getSupplyOther())
-                    .build();
-                    aptInfoTargetSpecialRepository.save(aptInfoTargetSpecial);
+                    aptInfoTargetSpecialRepository.findByHousingTypeAndAptInfo(AptInfoTargetSpecialdto.getHousingType(), aptInfo).orElseGet(() -> {
+                        AptInfoTargetSpecial aptInfoTargetSpecial = AptInfoTargetSpecial.builder()
+                                .aptInfo(aptInfo)
+                                .housingType(AptInfoTargetSpecialdto.getHousingType())
+                                .supplyMultiChildHousehold(AptInfoTargetSpecialdto.getSupplyMultiChildHousehold())
+                                .supplyNewlyMarriedCouple(AptInfoTargetSpecialdto.getSupplyNewlyMarriedCouple())
+                                .supplyOldParentSupport(AptInfoTargetSpecialdto.getSupplyOldParentSupport())
+                                .supplyFirstLife(AptInfoTargetSpecialdto.getSupplyFirstLife())
+                                .supplyInstitutionalRecommendation(AptInfoTargetSpecialdto.getSupplyInstitutionalRecommendation())
+                                .supplyTransferAgency(AptInfoTargetSpecialdto.getSupplyTransferAgency())
+                                .supplyOther(AptInfoTargetSpecialdto.getSupplyOther())
+                                .build();
+                        aptInfoTargetSpecialRepository.save(aptInfoTargetSpecial);
                         return null;
                     });
                 }
@@ -369,7 +364,7 @@ public class ApiDetailExplorer5 {
                 // 아파트분양정보 테이블에 공고번호가 이미 있다면 공급대상 테이블에 해당공고번호와 관련된 공급대상은 추가하지 않는다.
                 for (AptInfoTargetDto AptInfoTargetdto : aptInfoTargetDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetdto.getNotificationNumber()).get();
-                    aptInfoTargetRepository.findByHousingTypeAndAptInfo(AptInfoTargetdto.getHousingType(),aptInfo).orElseGet(() -> {
+                    aptInfoTargetRepository.findByHousingTypeAndAptInfo(AptInfoTargetdto.getHousingType(), aptInfo).orElseGet(() -> {
                         AptInfoTarget aptInfoTarget = AptInfoTarget.builder()
                                 .aptInfo(aptInfo)
                                 .housingType(AptInfoTargetdto.getHousingType())
@@ -387,9 +382,6 @@ public class ApiDetailExplorer5 {
                 return null;
             });
         }
-
-
-
 
 
     }

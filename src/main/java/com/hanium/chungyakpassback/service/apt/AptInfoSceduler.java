@@ -10,7 +10,7 @@ import java.io.IOException;
 @Component // 스프링이 필요 시 자동으로 생성하는 클래스 목록에 추가합니다.
 public class AptInfoSceduler {
     private final ApiDetailExplorer5 apiDetailExplorer5;
-    @Scheduled(cron="0 33 23 * * ?") //스케줄러 작동 시간: 왼쪽부터 초 분 시 * *
+    @Scheduled(cron="0 33 23 * * ?") //스케줄러 작동 시간: 왼쪽부터 초 분 시 일 월 요일
     public void saveData() throws IOException {
         apiDetailExplorer5.apiDetailExplorer5();
     }

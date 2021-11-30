@@ -13,9 +13,9 @@ import javax.validation.constraints.NotBlank;
 public class PointOfSpecialMinyeongMultiChildDto {
 
     @NotBlank
-    private Integer notificationNumber;
+    private Integer notificationNumber;//공고번호
 
     @NotBlank
-    private MultiChildHouseholdType multiChildHouseholdType;
+    private MultiChildHouseholdType multiChildHouseholdType; //세대구성
 
 }

@@ -73,12 +73,13 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
 
     //세대구성원별 무주택기간을 구하는 메소드
     public List periodHomeless(HouseMember houseMember, List lateDateList, LocalDate lateDate) {
-        //30세이상이거나 결혼한경우
-        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {//만나이가 30세 이상이거나 결혼했으먼
+
+        //만 나이가 30세이상이거나 결혼한경우
+        if ((generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) >= 30) || houseMember.getMarriageDate() != null) {
             LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);
 
-            //만30세 이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
-            if (houseMember.getMarriageDate() == null || birthDayAfter30Year.isBefore(houseMember.getMarriageDate())) {//(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
+            //만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
+            if (houseMember.getMarriageDate() == null || birthDayAfter30Year.isBefore(houseMember.getMarriageDate())) {
                 if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = birthDayAfter30Year;
                 } else {
@@ -147,7 +148,7 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
         LocalDate now = LocalDate.now();
         int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
 
-        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+        if (joinDate.plusYears(periodOfYear).isAfter(now))
             periodOfYear = periodOfYear - 1;
         return periodOfYear;
     }
@@ -212,8 +213,9 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
         return numberOfFamily;
     }
 
+    //직계존속과 배우자중 한명이라도 무주택자인지 판별하는 메소드
     public Integer numberOfFamily(User user, HouseMemberRelation houseMemberRelation, HouseMemberAdditionalInfo houseMemberAdditionalInfo, int numberOfFamily, int parents, List bothParentsIsHomelessYnList) {
-        //직계존속과 배우자중 한명이라도 무주택자인지 판별하는 메소드
+        //일정기간 해외 체류 or요양원 거주하고 있지 않거나 같은 세대에 속하면서 내국인인 경우 직계존속과 그 배우자가 무주택자라면 부양가족에 포함한다.
         if (houseMemberAdditionalInfo.getStayOverYn().equals(Yn.n) && houseMemberAdditionalInfo.getSameResidentRegistrationYn().equals(Yn.y) && houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n)) {
 
             if ((houseMemberRelation.getRelation().getRelation().equals(Relation.부) || houseMemberRelation.getRelation().getRelation().equals(Relation.모)) && houseMemberRelation.getUser().equals(user)) {
@@ -245,30 +247,30 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
         List<HouseMemberRelation> houseMemberRelations = houseMemberRelationRepository.findAllByUser(user);
         for(int i=0; i<houseMemberRelations.size(); i++){
             HouseMemberRelation houseMemberRelation = houseMemberRelations.get(i);
-            if(houseMemberRelation.getRelation().getRelation().equals(Relation.본인))
+            if(houseMemberRelation.getRelation().getRelation().equals(Relation.본인))//본인은 부양가족에 포함하지 않는다.
                 continue;
-            if(houseMemberRelation.getRelation().getRelation().equals(Relation.배우자)){
+            if(houseMemberRelation.getRelation().getRelation().equals(Relation.배우자)){ //배우자는 부양가족에 무조건 포함
                 numberOfFamily++;
                 continue;
             }
             HouseMember houseMember = houseMemberRelation.getOpponent();
             HouseMemberAdditionalInfo houseMemberAdditionalInfo = houseMemberAdditionalInfoRepository.findByHouseMember(houseMember);
 
-            if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
+            if (user.getSpouseHouse() == null) { //배우자와 같은 세대이거나, 미혼일 경우
                 if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) //본인이 세대주일 때 무주택직계존속 포함
                 {
                     numberOfFamily = numberOfFamily(user, houseMemberRelation, houseMemberAdditionalInfo, numberOfFamily, parents, bothParentsIsHomelessYnList);
 
                     if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && houseMemberAdditionalInfo.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
-                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
-                            if (houseMemberAdditionalInfo.getDivorceYn().equals(Yn.n)) {
-                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
-                                    if (!(houseMemberAdditionalInfo.getNowStayOverYn().equals(Yn.y) && houseMemberAdditionalInfo.getStayOverYn().equals(Yn.y))) {//현재 체류여부
+                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 직계비속이
+                            if (houseMemberAdditionalInfo.getDivorceYn().equals(Yn.n)) { //이혼하지 않았고
+                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) { //만 30세 미만일 경우
+                                    if (!(houseMemberAdditionalInfo.getNowStayOverYn().equals(Yn.y) && houseMemberAdditionalInfo.getStayOverYn().equals(Yn.y))) {//현재 해외체류여부, 과거해외체류여부가 없으면 부양가족으로 포함
                                         numberOfFamily++;
                                     }
-                                } else {
-                                    if (houseMemberAdditionalInfo.getStayOverYn().equals(Yn.n)) {// 체류여부
-                                        if (houseMemberAdditionalInfo.getSameResidentRegistrationYn().equals(Yn.y)) {
+                                } else { //만 30세 이상일 경우
+                                    if (houseMemberAdditionalInfo.getStayOverYn().equals(Yn.n)) {// 과거 해외체류여부가 없고
+                                        if (houseMemberAdditionalInfo.getSameResidentRegistrationYn().equals(Yn.y)) { //같은 거주지에 일정기간 거주중인 경우 부양가족 포함
                                             numberOfFamily++;
                                         }
                                     }
@@ -278,20 +280,20 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
                         }
                     }
                 }
-            } else if (user.getHouse() != user.getSpouseHouse()) {
+            } else {
                 if (user.getSpouseHouse().getHouseHolder().getId().equals(user.getSpouseHouseMember().getId())) { //배우자가 세대주일 때 무주택직계존속 포함
                     numberOfFamily = numberOfFamily(user, houseMemberRelation, houseMemberAdditionalInfo, numberOfFamily, parents, bothParentsIsHomelessYnList);
 
                     if (houseMemberRelation.getOpponent().getForeignerYn().equals(Yn.n) && ((houseMemberRelation.getRelation().getRelation().equals(Relation.손자녀) && houseMemberAdditionalInfo.getParentsDeathYn().equals(Yn.y)) || houseMemberRelation.getRelation().getRelation().equals(Relation.자녀_일반))) {//부모가 죽은 미혼 손자녀
-                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 자녀
-                            if (houseMemberAdditionalInfo.getDivorceYn().equals(Yn.n)) {
-                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {
-                                    if (!(houseMemberAdditionalInfo.getNowStayOverYn().equals(Yn.y) && houseMemberAdditionalInfo.getStayOverYn().equals(Yn.y))) {//현재 체류여부
+                        if (houseMemberRelation.getOpponent().getMarriageDate() == null) {//미혼 직계비속이
+                            if (houseMemberAdditionalInfo.getDivorceYn().equals(Yn.n)) {//이혼하지 않았고
+                                if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMemberRelation.getOpponent().getBirthDay()) < 30) {//30세 미만일 경우
+                                    if (!(houseMemberAdditionalInfo.getNowStayOverYn().equals(Yn.y) && houseMemberAdditionalInfo.getStayOverYn().equals(Yn.y))) {//현재 체류여부, 과거체류여부이력이 없을경우 부양가족으로 산정
                                         numberOfFamily++;
                                     }
-                                } else {
-                                    if (houseMemberAdditionalInfo.getStayOverYn().equals(Yn.n)) {// 체류여부
-                                        if (houseMemberAdditionalInfo.getSameResidentRegistrationYn().equals(Yn.y)) {
+                                } else {//30세 이상일경우
+                                    if (houseMemberAdditionalInfo.getStayOverYn().equals(Yn.n)) {// 과거체류여부가 없을때
+                                        if (houseMemberAdditionalInfo.getSameResidentRegistrationYn().equals(Yn.y)) { //같은거주지에 일정기간 거주한다면 부양가족수를 추가한다.
                                             numberOfFamily++;
                                         }
                                     }
@@ -323,9 +325,9 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean bankBookVaildYn(User user) {
+    public boolean bankBookVaildYn(User user) {//청약통장 유효여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty())
+        if (optUserBankbook.isEmpty()) //청약통장이 null이면 에러 발생
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
         //신청자 통장이 민영주택에서 신청가능한 통장이면 true반환
@@ -337,10 +339,10 @@ public class PointOfGeneralMinyeongServiceImpl implements PointOfGeneralMinyeong
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer bankbookJoinPeriod(User user) {//통장 가입기간 구하는 메소드
+    public Integer bankbookJoinPeriod(User user) {//통장 가입기간 가점
         int bankbookJoinPeriodGetPoint = 0;
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty())
+        if (optUserBankbook.isEmpty())//청약통장이 null이면 에러 발생
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         int joinPeriodOfMonth = periodOfMonth(optUserBankbook.get().getJoinDate());
         int joinPeriodOfYear = periodOfYear(optUserBankbook.get().getJoinDate());

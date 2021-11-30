@@ -9,7 +9,7 @@ import java.time.format.DateTimeParseException;
 
 @Getter
 public class AptInfoReceiptDto {
-    private Integer notificationNumber;
+    private Integer notificationNumber; //공고번호
     private LocalDate specialReceptionStartDate;//특별공급접수시작일
     private LocalDate specialReceptionEndDate;//특별공급접수종료일
     private LocalDate priorityApplicableAreaStart;//일순위접수시작일해당지역

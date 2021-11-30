@@ -68,25 +68,25 @@ public class PointOfSpecialMinyeongSingleParentsServiceImpl implements PointOfSp
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer numberOfMinors(User user) {
+    public Integer numberOfMinors(User user) {//영유아자녀수 가점
         return pointCalculationOfNewMarriedServiceImpl.numberOfMinors(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer bankbookPaymentsCount(User user) {
+    public Integer bankbookPaymentsCount(User user) { //청약통장 납입횟수 가점
         return pointCalculationOfNewMarriedServiceImpl.bankbookPaymentsCount(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) {
+    public Integer periodOfApplicableAreaResidence(User user, AptInfo aptInfo) { //해당지역 거주기간 가점
         return pointCalculationOfNewMarriedServiceImpl.periodOfApplicableAreaResidence(user, aptInfo);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer ageOfMostYoungChild(User user) {
+    public Integer ageOfMostYoungChild(User user) { //자녀나이 가점
         Integer mostYoungChildAgeGetPoint = 0;
         List<LocalDate> minorsBirthDateList = new ArrayList<>();
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);

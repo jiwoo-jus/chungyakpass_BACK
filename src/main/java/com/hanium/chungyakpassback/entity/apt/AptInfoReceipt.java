@@ -14,11 +14,11 @@ public class AptInfoReceipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "info_receipt_id")
-    private Long id;
+    private Long id; //아파트분양정보 접수일정id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo AptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo AptInfo; //아파트분양정보
 
     @Column
     private LocalDate specialReceptionStartDate;//특별공급접수시작일

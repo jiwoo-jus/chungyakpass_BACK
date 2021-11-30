@@ -80,7 +80,7 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
     }
 
 
-    public Integer numberOfChild(User user, int standardAge) {
+    public Integer numberOfChild(User user, int standardAge) { //미성년자녀수
         int Minors = 0;
         List<HouseMemberRelation> houseMemberRelationList = houseMemberRelationRepository.findAllByUser(user);
         for (HouseMemberRelation houseMemberRelation : houseMemberRelationList) {
@@ -95,7 +95,7 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
     }
 
 
-    @Override//미성년자 자녀 수
+    @Override//미성년자자녀수 가점
     @Transactional(rollbackFor = Exception.class)
     public Integer numberOfMinors(User user) {
         Integer NumberOfMinorsGetPoint = 0;
@@ -109,22 +109,22 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
         return NumberOfMinorsGetPoint;
     }
 
-    public int yearOfMerriged(LocalDate marrigedate) {
+    public int yearOfMerriged(LocalDate marrigedate) { //혼인기간 산출
         if (marrigedate == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES); //생일이 입력되지 않은 경우 경고문을 띄워줌.
+            throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES); //혼인일자가 입력되지 않은경우 에러호출
         }
 
         LocalDate now = LocalDate.now();
         int americanAge = now.minusYears(marrigedate.getYear()).getYear();
 
-        if (marrigedate.plusYears(americanAge).isAfter(now)) // 생일이 지났는지 여부를 판단
+        if (marrigedate.plusYears(americanAge).isAfter(now))
             americanAge = americanAge - 1;
 
         return americanAge;
     }
 
 
-    @Override//혼인기간
+    @Override//혼인기간 가점
     @Transactional(rollbackFor = Exception.class)
     public Integer periodOfMarriged(User user) {
         Integer periodOfMarrigedGetPoint = 0;
@@ -138,7 +138,7 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
     }
 
 
-    public Integer meetYnOfAverageMonthlyIncome(Income monthlyAverageIncome, Integer numberOfHouseMember, Integer houseMemberIncome, Integer monthOfAverageIncomeGetPoint) {
+    public Integer meetYnOfAverageMonthlyIncome(Income monthlyAverageIncome, Integer numberOfHouseMember, Integer houseMemberIncome, Integer monthOfAverageIncomeGetPoint) { //가구소득
         Integer averageMonthlyIncome3peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome3peopleLessBelow();
         Integer averageMonthlyIncome4peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome4peopleLessBelow();
         Integer averageMonthlyIncome5peopleLessBelow = monthlyAverageIncome.getAverageMonthlyIncome5peopleLessBelow();
@@ -161,7 +161,7 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer monthOfAverageIncome(User user) {
+    public Integer monthOfAverageIncome(User user) { //가구소득 가점
         Integer houseMemberIncome = 0;
         Integer monthOfAverageIncomeGetPoint = 0;
         List<HouseMember> houseMemberList = new ArrayList<>();
@@ -170,24 +170,24 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
         int numberOfHouseMember = houseMemberList.size();
         int houseCount = 0;
         for (HouseMember houseMember : houseMemberList) {
-            if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) > 19) {
+            if (generalPrivateVerificationServiceImpl.calcAmericanAge(houseMember.getBirthDay()) > 19) { //만20세 이상 구성원의 소득을 합한다.
                 if (pointOfServiceImpl.homelessYn(houseMember, houseCount)) {
                     houseMemberIncome = houseMemberIncome + houseMember.getIncome();
                 }
             }
         }
 
-        if (user.getSpouseHouseMember() != null) {
-            if (user.getSpouseHouseMember().getIncome() != null) {
+        if (user.getSpouseHouseMember() != null) { //배우자와 같은 세대에 거주하거나 미혼인경우
+            if (user.getSpouseHouseMember().getIncome() != null) {// 배우자 소득이 있을경우
                 for (Income income : incomeList) {
-                    if (income.getDualIncome().equals(Yn.y)) {
+                    if (income.getDualIncome().equals(Yn.y)) { //맞벌이인경우 meetYnOfAverageMonthlyIncome 메소드 실행
                         return monthOfAverageIncomeGetPoint = meetYnOfAverageMonthlyIncome(income, numberOfHouseMember, houseMemberIncome, monthOfAverageIncomeGetPoint);
                     }
                 }
             }
         } else {
             for (Income income : incomeList) {
-                if (income.getDualIncome().equals(Yn.n)) {
+                if (income.getDualIncome().equals(Yn.n)) { //맞벌이가 아닌경우 meetYnOfAverageMonthlyIncome메소드 실행
                     return monthOfAverageIncomeGetPoint = meetYnOfAverageMonthlyIncome(income, numberOfHouseMember, houseMemberIncome, monthOfAverageIncomeGetPoint);
                 }
             }
@@ -216,53 +216,14 @@ public class PointOfSpecialMinyeongNewlyMarriedServiceImpl implements PointOfSpe
             return bankbookPaymentsCount = 3;
         }
 
-
-//        List<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarriedResponseDtos = new ArrayList<>();
-//
-//        for(RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried : recordSpecialMinyeongPointOfNewMarriedRepository.findAllByUser(user)){
-//            SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto = new SpecialMinyeongPointOfNewMarriedResponseDto(recordSpecialMinyeongPointOfNewMarried);
-//            specialMinyeongPointOfNewMarriedResponseDtos.add(specialMinyeongPointOfNewMarriedResponseDto);
-//        }
-//
-//        for (SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto : specialMinyeongPointOfNewMarriedResponseDtos) {
-//            RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried = RecordSpecialMinyeongPointOfNewMarried.builder()
-//                    .user(user)
-//                    .bankbookPaymentsCount(specialMinyeongPointOfNewMarriedResponseDto.getBankbookPaymentsCount())
-//                    .build();
-//            recordSpecialMinyeongPointOfNewMarriedRepository.save(recordSpecialMinyeongPointOfNewMarried);
-//
-//        }
-
         return bankbookPaymentsCount;
     }
 
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public UserBankbookResponseDto userBankbook(UserBankbookDto userBankbookDto){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//        return new UserBankbookResponseDto(userBankbookRepository.save(userBankbookDto.toEntity(user)));
-//    }
-
-
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public List<UserBankbookResponseDto> readUserBankbooks(){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//        List<UserBankbookResponseDto> userBankbookResponseDtos = new ArrayList<>();
-//
-//        for(UserBankbook userBankbook : userBankbookRepository.findAllByUser(user)){
-//            UserBankbookResponseDto userBankbookResponseDto = new UserBankbookResponseDto(userBankbook);
-//            userBankbookResponseDtos.add(userBankbookResponseDto);
-//        }
-//        return userBankbookResponseDtos;
-//    }
-
-
-    public int periodOfYear(LocalDate joinDate) {
+    public int periodOfYear(LocalDate joinDate) {//만 년도 계산
         LocalDate now = LocalDate.now();
         int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
 
-        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+        if (joinDate.plusYears(periodOfYear).isAfter(now))
             periodOfYear = periodOfYear - 1;
         return periodOfYear;
     }

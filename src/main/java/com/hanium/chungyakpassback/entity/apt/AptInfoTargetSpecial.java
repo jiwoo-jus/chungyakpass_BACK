@@ -3,7 +3,6 @@ package com.hanium.chungyakpassback.entity.apt;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Getter
@@ -14,12 +13,12 @@ import java.io.Serializable;
 public class AptInfoTargetSpecial {
 
     @Id
-    private String housingType;
+    private String housingType; //주택형
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo; //아파트분양정보
 
     @Column
     private int supplyMultiChildHousehold;//공급세대수_다자녀가구;

@@ -12,6 +12,6 @@ import javax.validation.constraints.NotBlank;
 public class PointOfSpecialMinyeongSingleParentsDto {
 
     @NotBlank
-    private Integer notificationNumber;
+    private Integer notificationNumber; //공고번호
 
 }
