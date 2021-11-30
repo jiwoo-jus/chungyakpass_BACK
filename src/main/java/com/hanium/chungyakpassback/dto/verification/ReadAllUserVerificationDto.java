@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ReadAllUserVerificationDto {
 
+    // 모든 자격 유형들을 한 번에 담는 dto
     List<VerificationOfGeneralMinyeongResponseDto> verificationOfGeneralMinyeongResponseDtos;
     List<VerificationOfGeneralKookminResponseDto> verificationOfGeneralKookminResponseDtos;
     List<VerificationOfSpecialMinyeongMultiChildResponseDto> verificationOfSpecialMinyeongMultiChildResponseDtos;
@@ -18,7 +19,6 @@ public class ReadAllUserVerificationDto {
     List<VerificationOfSpecialMinyeongOldParentResponseDto> verificationOfSpecialMinyeongOldParentResponseDtos;
     List<VerificationOfSpecialKookminPublicOldParentResponseDto> verificationOfSpecialKookminPublicOldParentResponseDtos;
     List<VerificationOfSpecialMinyeongNewlyMarriedResponseDto> verificationOfSpecialMinyeongNewlyMarriedResponseDtos;
-    //    List<SpecialKookminNewlyMarriedResponseDto> specialKookminNewlyMarriedResponseDtos;
     List<VerificationOfSpecialKookminPublicNewlyMarriedResponseDto> verificationOfSpecialKookminPublicNewlyMarriedResponseDtos;
     List<VerificationOfSpecialMinyeongFirstLifeResponseDto> verificationOfSpecialMinyeongFirstLifeResponseDtos;
     List<VerificationOfSpecialKookminPublicFirstLifeResponseDto> verificationOfSpecialKookminPublicFirstLifeResponseDtos;

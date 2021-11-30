@@ -2,6 +2,7 @@ package com.hanium.chungyakpassback.dto.verification;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -11,10 +12,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class VerificationOfSpecialKookminNewlyMarriedDto {
 
-    @NotNull
-    public Integer notificationNumber;
+    @NotBlank
+    private Integer notificationNumber; //아파트공고번호
 
-    @NotNull
-    public String housingType;
+    @NotBlank
+    private String housingType; //주택형
 
 }
