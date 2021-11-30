@@ -767,7 +767,7 @@ http://3.37.99.145:8080/user/house/member/chungyak/{houseMemberId}
 | houseName                             | String                                           | 주택명                   | not null |
 | supply                                | enum(일반공급, 특별공급, 특별공급가점)           | 공급 유형                | not null |
 | specialSupply                         | enum(다자녀가구, 신혼부부, 생애최초, 노부모부양) | 특별공급 유형            | null     |
-| housingType                           | String                                           | 주택형                   | null     |
+| residentialArea                       | String                                           | 주택형(주거전용면적)        | null     |
 | ranking                               | enum(일순위, 이순위)                             | 순위                     | null     |
 | result                                | enum(당첨, 미당첨, 예비당첨)                     | 결과                     | not null |
 | preliminaryNumber                     | Integer                                          | 예비번호                 | null     |
@@ -810,7 +810,7 @@ http://3.37.99.145:8080/user/house/member/chungyak
 | houseName         | String                                           | 주택명        | not null |
 | supply            | enum(일반공급, 특별공급, 특별공급가점)           | 공급 유형     | not null |
 | specialSupply     | enum(다자녀가구, 신혼부부, 생애최초, 노부모부양) | 특별공급 유형 | null     |
-| housingType       | String                                           | 주택형        | null     |
+| residentialArea   | String                                           | 주택형(주거전용면적)| null     |
 | ranking           | enum(일순위, 이순위)                             | 순위          | null     |
 | result            | enum(당첨, 미당첨, 예비당첨)                     | 결과          | not null |
 | preliminaryNumber | Integer                                          | 예비번호      | null     |
@@ -827,7 +827,7 @@ http://3.37.99.145:8080/user/house/member/chungyak
 | houseName         | String                                           | 주택명                   | not null |
 | supply            | enum(일반공급, 특별공급, 특별공급가점)           | 공급 유형                | not null |
 | specialSupply     | enum(다자녀가구, 신혼부부, 생애최초, 노부모부양) | 특별공급 유형            | null     |
-| housingType       | String                                           | 주택형                   | null     |
+| residentialArea   | String                                           | 주택형(주거전용면적)        | null     |
 | ranking           | enum(일순위, 이순위)                             | 순위                     | null     |
 | result            | enum(당첨, 미당첨, 예비당첨)                     | 결과                     | not null |
 | preliminaryNumber | Integer                                          | 예비번호                 | null     |
@@ -854,7 +854,7 @@ http://3.37.99.145:8080/user/house/member/chungyak/{houseMemberChungyakId}
 | houseName         | String                                           | 주택명        | not null |
 | supply            | enum(일반공급, 특별공급, 특별공급가점)           | 공급 유형     | not null |
 | specialSupply     | enum(다자녀가구, 신혼부부, 생애최초, 노부모부양) | 특별공급 유형 | null     |
-| housingType       | String                                           | 주택형        | null     |
+| residentialArea   | String                                           | 주택형(주거전용면적)| null     |
 | ranking           | enum(일순위, 이순위)                             | 순위          | null     |
 | result            | enum(당첨, 미당첨, 예비당첨)                     | 결과          | null     |
 | preliminaryNumber | Integer                                          | 예비번호      | null     |
@@ -871,7 +871,7 @@ http://3.37.99.145:8080/user/house/member/chungyak/{houseMemberChungyakId}
 | houseName         | String                                           | 주택명                   | not null |
 | supply            | enum(일반공급, 특별공급, 특별공급가점)           | 공급 유형                | not null |
 | specialSupply     | enum(다자녀가구, 신혼부부, 생애최초, 노부모부양) | 특별공급 유형            | null     |
-| housingType       | String                                           | 주택형                   | null     |
+| residentialArea   | String                                           | 주택형(주거전용면적)     | null     |
 | ranking           | enum(일순위, 이순위)                             | 순위                     | null     |
 | result            | enum(당첨, 미당첨, 예비당첨)                     | 결과                     | not null |
 | preliminaryNumber | Integer                                          | 예비번호                 | null     |
@@ -1288,7 +1288,7 @@ http://3.37.99.145:8080/verification/general/minyeong
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -1397,7 +1397,7 @@ http://3.37.99.145:8080/verification/general/kookmin
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -1508,7 +1508,7 @@ http://3.37.99.145:8080/verification/special/minyeong/multi-child
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -1621,7 +1621,7 @@ http://3.37.99.145:8080/verification/special/kookmin/public/multi-child
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -1731,10 +1731,10 @@ http://3.37.99.145:8080/verification/special/minyeong/old-parent
 
 http://3.37.99.145:8080/verification/special/minyeong/old-parent
 
-| Name               | Type   | Description    | Null      |
-| ------------------ | ------ | -------------- | --------- |
-| notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| Name               | Type   | Description     | Null      |
+| ------------------ | ------ | --------------  | --------- |
+| notificationNumber | Long   | 아파트공고번호     | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -1846,7 +1846,7 @@ http://3.37.99.145:8080/verification/special/kookmin/public/old-parent
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -1965,7 +1965,7 @@ http://3.37.99.145:8080/verification/special/minyeong/newly-married
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -2086,7 +2086,7 @@ http://3.37.99.145:8080/verification/special/kookmin/newly-married
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -2175,7 +2175,7 @@ http://3.37.99.145:8080/verification/special/kookmin/public/newly-married
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -2302,7 +2302,7 @@ http://3.37.99.145:8080/verification/special/minyeong/first-life
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
@@ -2427,7 +2427,7 @@ http://3.37.99.145:8080/verification/special/kookmin/public/first-life
 | Name               | Type   | Description    | Null      |
 | ------------------ | ------ | -------------- | --------- |
 | notificationNumber | Long   | 아파트공고번호 | not blank |
-| housingType        | String | 주택형         | not blank |
+| residentialArea    | String | 주택형(주거전용면적)| not blank |
 
 ## _RESPONSE_
 
