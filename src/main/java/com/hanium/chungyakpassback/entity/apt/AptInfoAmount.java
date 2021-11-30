@@ -3,8 +3,6 @@ package com.hanium.chungyakpassback.entity.apt;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,15 +13,15 @@ import java.time.LocalDateTime;
 public class AptInfoAmount {
 
     @Id
-    private String housingType;
+    private String housingType; //주택형
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo; //아파트분양정보
 
     @Column
-    private String supplyAmount;
+    private String supplyAmount; //공급 금액
 
     @Builder
     public AptInfoAmount(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, String supplyAmount) {

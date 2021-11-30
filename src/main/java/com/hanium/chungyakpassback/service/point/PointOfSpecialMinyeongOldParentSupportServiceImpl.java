@@ -76,7 +76,7 @@ public class PointOfSpecialMinyeongOldParentSupportServiceImpl implements PointO
             LocalDate birthDayAfter30Year = houseMember.getBirthDay().plusYears(30);//세대구성원의 30세 생일
 
 
-            //(1)만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
+            //만30세이상 미혼이거나 만30세 이후 혼인신고 시 만 30세 생일과 무주택이 된 날짜중에 늦은 날
             if (houseMember.getMarriageDate() == null || birthDayAfter30Year.isBefore(houseMember.getMarriageDate())) {
                 if (birthDayAfter30Year.isAfter(houseMember.getHomelessStartDate())) {
                     lateDate = birthDayAfter30Year;
@@ -238,8 +238,7 @@ public class PointOfSpecialMinyeongOldParentSupportServiceImpl implements PointO
                 } else if (houseMemberProperty.getSaleRightYn().equals(Yn.y) && houseMemberProperty.getAcquisitionDate().isBefore(LocalDate.parse("2018-12-11"))) { //2018.12.11 이전에 취득한 분양권일 경우
                     specialCase++;
                     continue;
-                    //예외주택에 해당하는 경우
-                } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {
+                } else if (houseMemberProperty.getExceptionHouseYn().equals(Yn.y)) {//예외주택에 해당하는 경우
                     specialCase++;
                     continue;
                 } else {
@@ -390,17 +389,17 @@ public class PointOfSpecialMinyeongOldParentSupportServiceImpl implements PointO
         return numberOfDependentsGetPoint;
     }
 
-    public int periodOfMonth(LocalDate joinDate) {
+    public int periodOfMonth(LocalDate joinDate) { //만 개월 계산
         LocalDate now = LocalDate.now();
         Period period = joinDate.until(now);
         return period.getYears() * 12 + period.getMonths();
     }
 
-    public int periodOfYear(LocalDate joinDate) {
+    public int periodOfYear(LocalDate joinDate) { //만 년도 계산
         LocalDate now = LocalDate.now();
         int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
 
-        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+        if (joinDate.plusYears(periodOfYear).isAfter(now))
             periodOfYear = periodOfYear - 1;
         return periodOfYear;
     }
@@ -408,12 +407,12 @@ public class PointOfSpecialMinyeongOldParentSupportServiceImpl implements PointO
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean bankBookVaildYn(User user) {
+    public boolean bankBookVaildYn(User user) { //청약통장 유효여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty())
+        if (optUserBankbook.isEmpty()) //청약통장이 null인 경우 에러반환
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         Optional<Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
-        if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
+        if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) { //민영에서 충족가능한 통장인 경우 true 반환
             return true;
         }
         return false;

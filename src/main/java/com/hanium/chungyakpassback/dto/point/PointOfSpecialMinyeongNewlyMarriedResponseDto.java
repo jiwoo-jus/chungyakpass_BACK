@@ -12,16 +12,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PointOfSpecialMinyeongNewlyMarriedResponseDto {
 
-    private Long id;
-    private Integer aptNotificationNumber;
-    private Integer numberOfMinors;
-    private Integer periodOfMarriged;
-    private Integer bankbookPaymentsCount;
-    private Integer periodOfApplicableAreaResidence;
-    private Integer monthOfAverageIncome;
-    private Integer total;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Long id; //특별신혼부부 가점id
+    private Integer aptNotificationNumber; //공고번호
+    private Integer numberOfMinors; //미성년자녀수 가점
+    private Integer periodOfMarriged; //혼인기간 가점
+    private Integer bankbookPaymentsCount; //청약통장 납입횟수 가점
+    private Integer periodOfApplicableAreaResidence; //해당지역 거주기간 가점
+    private Integer monthOfAverageIncome; //가구소득 가점
+    private Integer total; //가점 총합
+    private LocalDateTime createdDate; //생성일자
+    private LocalDateTime modifiedDate; //수정일자
 
     @Builder
     public PointOfSpecialMinyeongNewlyMarriedResponseDto(PointOfSpecialMinyeongNewlyMarried pointOfSpecialMinyeongNewlyMarried) {

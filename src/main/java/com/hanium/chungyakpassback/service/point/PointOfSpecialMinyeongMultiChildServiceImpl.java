@@ -79,7 +79,7 @@ public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpeci
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer numberOfChild(User user) {
+    public Integer numberOfChild(User user) { //미성년자녀수 가점
         Integer NumberOfChildGetPoint = 0;
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 19);
         for (int u = 0; u <= 2; u++) {
@@ -93,7 +93,7 @@ public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpeci
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer numberOfChildUnder6Year(User user) {
+    public Integer numberOfChildUnder6Year(User user) { //영유아자녀수 가점
         Integer NumberOfChildUnder6YearGetPoint = 0;
         Integer Minors = pointCalculationOfNewMarriedServiceImpl.numberOfChild(user, 6);
         for (int u = 1; u <= 3; u++) {
@@ -104,21 +104,21 @@ public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpeci
         return NumberOfChildUnder6YearGetPoint;
     }
 
-    public int periodOfYear(LocalDate joinDate) {
+    public int periodOfYear(LocalDate joinDate) { //만년도 계산
         LocalDate now = LocalDate.now();
         int periodOfYear = now.minusYears(joinDate.getYear()).getYear();
 
-        if (joinDate.plusYears(periodOfYear).isAfter(now)) // 생일이 지났는지 여부를 판단
+        if (joinDate.plusYears(periodOfYear).isAfter(now))
             periodOfYear = periodOfYear - 1;
         return periodOfYear;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer bankbookJoinPeriod(User user) {
+    public Integer bankbookJoinPeriod(User user) { //청약통장 가입기간 가점
         Integer bankbookJoinPeriodGetPoint = 0;
-        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
-        if (optUserBankbook.isEmpty())
+        Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user); //회원 청약통장
+        if (optUserBankbook.isEmpty()) //회원 청약통장이 null이라면 에러발생
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         int joinPeriodOfYear = periodOfYear(optUserBankbook.get().getJoinDate());
         if (joinPeriodOfYear >= 10) {
@@ -159,14 +159,14 @@ public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpeci
         Integer periodOfResidenceGetPoint = 0;
         LocalDate lateDate = null;
         List<LocalDate> lateDateList = new ArrayList<>();//배우자와 본인중 무주택시점이 늦은날을 저장하는 리스트
-        AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
-        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
-        if (userAddressLevel1.getNearbyArea() == 1) {
-            if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {
+        AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1)); //회원 거주지 상세주소1
+        AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1)); //아파트 상세주소1
+        if (userAddressLevel1.getNearbyArea() == 1) { //회원의 거주지가 수도권인 경우
+            if (userAddressLevel1.getNearbyArea() == aptAddressLevel1.getNearbyArea()) {//아파트 주소가 수도권일 경우 periodOfApplicableAreaResidenceGetPoint 메소드 실행
                 lateDateList = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint, lateDate, lateDateList);
             }
-        } else {
-            if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) {
+        } else { //회원의 거주지가 수도권이 아닐 경우
+            if (userAddressLevel1.getAddressLevel1() == aptAddressLevel1.getAddressLevel1()) { // 회원거주지 상세주소1이 아파트 상세주소1과 일치할 경우 periodOfApplicableAreaResidenceGetPoint
                 lateDateList = periodOfApplicableAreaResidenceGetPoint(user, periodOfResidenceGetPoint, lateDate, lateDateList);
             }
         }
@@ -185,7 +185,7 @@ public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpeci
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)//세대구성 가점
     public Integer generationComposition(PointOfSpecialMinyeongMultiChildDto pointOfSpecialMinyeongMultiChildDto) {
         Integer generationCompositionGetPoint = 0;
         if (pointOfSpecialMinyeongMultiChildDto.getMultiChildHouseholdType() == null) {
@@ -199,8 +199,8 @@ public class PointOfSpecialMinyeongMultiChildServiceImpl implements PointOfSpeci
 
     public List periodHomeless(HouseMember houseMember, LocalDate lateDate, List lateDateList) {
         LocalDate birthDayAfter19Year = houseMember.getBirthDay().plusYears(19);
-        if (birthDayAfter19Year.isAfter(houseMember.getMarriageDate())) {
-            if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) {
+        if (birthDayAfter19Year.isAfter(houseMember.getMarriageDate())) { //세대구성원이 만19세 전에 결혼한 경우
+            if (houseMember.getMarriageDate().isAfter(houseMember.getHomelessStartDate())) { //혼인신고일과 무주택시작날짜 중에 늦은날짜 산정
                 lateDate = houseMember.getMarriageDate();
             } else {
                 lateDate = houseMember.getHomelessStartDate();

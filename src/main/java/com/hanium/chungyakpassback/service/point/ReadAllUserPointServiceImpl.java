@@ -29,7 +29,6 @@ public class ReadAllUserPointServiceImpl implements ReadAllUserPointService {
     final VerificationOfGeneralMinyeongServiceImpl generalPrivateVerificationServiceImpl;
     final PointOfSpecialMinyeongNewlyMarriedServiceImpl pointCalculationOfNewMarriedServiceImpl;
     final AddressLevel1Repository addressLevel1Repository;
-//    final RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried;
     final PointOfGeneralMinyeongRepository pointOfGeneralMinyeongRepository;
     final PointOfSpecialMinyeongNewlyMarriedRepository pointOfSpecialMinyeongNewlyMarriedRepository;
     final PointOfSpecialMinyeongSingleParentsRepository pointOfSpecialMinyeongSingleParentsRepository;
@@ -40,7 +39,6 @@ public class ReadAllUserPointServiceImpl implements ReadAllUserPointService {
     @Override
     public ReadAllUserPointDto readAllUserPointRecord(){
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//        UserPointRecordDto userPointRecordDto = new UserPointRecordDto();
 
         List<PointOfGeneralMinyeongResponseDto> pointOfGeneralMinyeongResponseDtos = new ArrayList<>();
         for (PointOfGeneralMinyeong pointOfGeneralMinyeong : pointOfGeneralMinyeongRepository.findAllByUser(user)){
@@ -80,70 +78,7 @@ public class ReadAllUserPointServiceImpl implements ReadAllUserPointService {
         return readAllUserPointDto;
     }
 
-//    @Override
-//    public List<GeneralMinyeongResponsePointDto>  recordGeneralMinyeongResponsePoint(){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//
-//        List<GeneralMinyeongResponsePointDto> generalMinyeongResponsePointDtos = new ArrayList<>();
-//        for (RecordGeneralMinyeongPoint recordGeneralMinyeongPoint : recordGeneralMinyeongPointRepository.findAllByUser(user)){
-//            GeneralMinyeongResponsePointDto generalMinyeongResponsePointDto = new GeneralMinyeongResponsePointDto(recordGeneralMinyeongPoint);
-//            generalMinyeongResponsePointDtos.add(generalMinyeongResponsePointDto);
-//        }
-//
-//        return generalMinyeongResponsePointDtos;
-//    }
-//
-//    @Override
-//    public List<SpecialMinyeongPointOfNewMarriedResponseDto> recordSpecialMinyeongPointOfNewMarried(){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//
-//        List<SpecialMinyeongPointOfNewMarriedResponseDto> specialMinyeongPointOfNewMarriedResponseDtos = new ArrayList<>();
-//        for (RecordSpecialMinyeongPointOfNewMarried recordSpecialMinyeongPointOfNewMarried : recordSpecialMinyeongPointOfNewMarriedRepository.findAllByUser(user)){
-//            SpecialMinyeongPointOfNewMarriedResponseDto specialMinyeongPointOfNewMarriedResponseDto = new SpecialMinyeongPointOfNewMarriedResponseDto(recordSpecialMinyeongPointOfNewMarried);
-//            specialMinyeongPointOfNewMarriedResponseDtos.add(specialMinyeongPointOfNewMarriedResponseDto);
-//        }
-//
-//        return specialMinyeongPointOfNewMarriedResponseDtos;
-//    }
-//
-//    @Override
-//    public  List<SpecialMinyeongPointOfSingleParentsResponseDto> recordSpecialMinyeongPointOfSingleParents(){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//
-//        List<SpecialMinyeongPointOfSingleParentsResponseDto> specialMinyeongPointOfSingleParentsResponseDtos = new ArrayList<>();
-//        for (RecordSpecialMinyeongPointOfSingleParents recordSpecialMinyeongPointOfSingleParents : recordSpecialMinyeongPointOfSingleParentsRepository.findAllByUser(user)){
-//            SpecialMinyeongPointOfSingleParentsResponseDto specialMinyeongPointOfSingleParentsResponseDto = new SpecialMinyeongPointOfSingleParentsResponseDto(recordSpecialMinyeongPointOfSingleParents);
-//            specialMinyeongPointOfSingleParentsResponseDtos.add(specialMinyeongPointOfSingleParentsResponseDto);
-//        }
-//
-//        return specialMinyeongPointOfSingleParentsResponseDtos;
-//    }
-//
-//    @Override
-//    public  List<SpecialMinyeongPointOfMultiChildResponseDto> recordSpecialMinyeongPointOfMultiChild(){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//
-//        List<SpecialMinyeongPointOfMultiChildResponseDto> specialMinyeongPointOfMultiChildResponseDtos = new ArrayList<>();
-//        for (RecordSpecialMinyeongPointOfMultiChild recordSpecialMinyeongPointOfMultiChild : recordSpecialMinyeongPointOfMultiChildRepository.findAllByUser(user)){
-//            SpecialMinyeongPointOfMultiChildResponseDto specialMinyeongPointOfMultiChildResponseDto = new SpecialMinyeongPointOfMultiChildResponseDto(recordSpecialMinyeongPointOfMultiChild);
-//            specialMinyeongPointOfMultiChildResponseDtos.add(specialMinyeongPointOfMultiChildResponseDto);
-//        }
-//
-//        return specialMinyeongPointOfMultiChildResponseDtos;
-//    }
-//
-//    @Override
-//    public List<SpecialMinyeongPointOfOldParentsSupportResponseDto> recordSpecialMinyeongPointOfOldParentsSupport(){
-//        User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
-//
-//        List<SpecialMinyeongPointOfOldParentsSupportResponseDto> specialMinyeongPointOfOldParentsSupportResponseDtos = new ArrayList<>();
-//        for (RecordSpecialMinyeongPointOfOldParentsSupport recordSpecialMinyeongPointOfOldParentsSupport : recordSpecialMinyeongPointOfOldParentsSupportRepository.findAllByUser(user)){
-//            SpecialMinyeongPointOfOldParentsSupportResponseDto specialMinyeongPointOfOldParentsSupportResponseDto = new SpecialMinyeongPointOfOldParentsSupportResponseDto(recordSpecialMinyeongPointOfOldParentsSupport);
-//            specialMinyeongPointOfOldParentsSupportResponseDtos.add(specialMinyeongPointOfOldParentsSupportResponseDto);
-//        }
-//        return specialMinyeongPointOfOldParentsSupportResponseDtos;
-//    }
-//
+
 
 
 

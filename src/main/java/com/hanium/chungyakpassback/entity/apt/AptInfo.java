@@ -23,22 +23,22 @@ import java.time.YearMonth;
 public class AptInfo {
     @Id
     @Column(name = "apt_info_id_notification_number")
-    private Integer notificationNumber;
+    private Integer notificationNumber; //공고번호
 
     @Column
     @Enumerated(EnumType.STRING)
-    private AddressLevel1 addressLevel1;
+    private AddressLevel1 addressLevel1; //상세주소1(oo시)
 
     @Column
     @Enumerated(EnumType.STRING)
-    private AddressLevel2 addressLevel2;
+    private AddressLevel2 addressLevel2; //상세주소2(oo구)
 
     @Column
-    private String detailAddress;
+    private String detailAddress; //상세주소
 
     @Column
     @Enumerated(EnumType.STRING)
-    private HousingType housingType;
+    private HousingType housingType; //주택형
 
     @Column
     @Enumerated(EnumType.STRING)

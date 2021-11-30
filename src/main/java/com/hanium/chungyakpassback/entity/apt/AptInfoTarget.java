@@ -1,11 +1,9 @@
 package com.hanium.chungyakpassback.entity.apt;
 
-import com.hanium.chungyakpassback.entity.apt.AptInfo;
-import com.hanium.chungyakpassback.entity.apt.AptInfoTargetKey;
-import lombok.*;
 
+import lombok.*;
 import javax.persistence.*;
-import java.io.Serializable;
+
 
 @Entity
 @Getter
@@ -22,7 +20,7 @@ public class AptInfoTarget {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apt_info_target_id_notification_number")
-    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo;
+    private com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo; //아파트분양정보
 
     @Column
     private Double supplyArea;//공급면적

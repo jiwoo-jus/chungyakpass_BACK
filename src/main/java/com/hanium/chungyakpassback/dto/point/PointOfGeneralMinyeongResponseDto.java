@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PointOfGeneralMinyeongResponseDto {
-    private Long id;
-    private Integer periodOfHomelessness;
-    private Integer bankbookJoinPeriod;
-    private Integer numberOfDependents;
-    private boolean bankBookVaildTf;
-    private Integer total;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Long id; //일반민영 가점id
+    private Integer periodOfHomelessness;//무주택기간 가점
+    private Integer bankbookJoinPeriod;//청약통장 가입기간 가점
+    private Integer numberOfDependents;//부양가족수 가점
+    private boolean bankBookVaildTf;//청약통장 유효여부
+    private Integer total;//가점 총합
+    private LocalDateTime createdDate; //생성일자
+    private LocalDateTime modifiedDate;//수정일자
 
     @Builder
     public PointOfGeneralMinyeongResponseDto(PointOfGeneralMinyeong pointOfGeneralMinyeong){
