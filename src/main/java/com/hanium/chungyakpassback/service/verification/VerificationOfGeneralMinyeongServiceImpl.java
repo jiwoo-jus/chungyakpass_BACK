@@ -50,7 +50,8 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
     final HouseMemberChungyakRestrictionRepository houseMemberChungyakRestrictionRepository;
     final VerificationOfGeneralMinyeongRepository verificationOfGeneralMinyeongRepository;
 
-    @Override //일반민영조회
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<VerificationOfGeneralMinyeongResponseDto> readGeneralMinyeongVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -98,6 +99,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
         return new VerificationOfGeneralMinyeongResponseDto(verificationOfGeneralMinyeong);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
 
@@ -106,7 +108,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int calcAmericanAge(LocalDate birthday) {
+    public int calcAmericanAge(LocalDate birthday) { //만나이계산
         if (birthday == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
         }
@@ -122,7 +124,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { //청약통장유형조건충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
@@ -145,7 +147,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isHouseholder(User user) {
+    public boolean isHouseholder(User user) { //세대주여부
         if (user.getHouse().getHouseHolder() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
         } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
@@ -156,7 +158,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) { //소유주택2개미만세대충족여부
         if (user.getHouseMember() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER); // 세대구성원->세대를 통해서 주소를 user의 지역_레벨1을 가져오는 것이기 때문에 user의 세대구성원이 비어있으면 안됨.
         }
@@ -172,7 +174,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) {
+    public boolean isRestrictedArea(AptInfo aptInfo) { //규제지역여
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
@@ -180,7 +182,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부확인
+    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
@@ -206,10 +208,9 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
         return false;
     }
 
-    // 예치금액충족 여부
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부확인
+    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { //예치금액충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -232,7 +233,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) { //주거전용 85 초과 공공건설임대주택, 수도권에 지정된 공공주택에서 공급하는 민영주택에 청약하는지 여부 확인
         if ((houseTypeConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
             return true;
         else if (aptInfo.getHousingType().equals(HousingType.민영) && aptInfo.getPublicHosingDistrict().equals(Yn.y) && addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).equals(addressLevel1Repository.findAllByMetropolitanAreaYn(Yn.y)))
@@ -242,7 +243,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetHouseHavingLessThan2Apt(User user) {
+    public boolean meetHouseHavingLessThan2Apt(User user) { //소유주택2개미만세대충족여부
         List<HouseMember> houseMemberList = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
         int houseCount = 0;
@@ -253,9 +254,10 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
             return false; //아니면 false
     }
 
-    public Integer countHouseHaving(User user, List<HouseMember> houseMemberList, Integer houseCount) {//세대 구성원 List가져옴
-        // 하나의 세대일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+    @Transactional(rollbackFor = Exception.class)
+    public Integer countHouseHaving(User user, List<HouseMember> houseMemberList, Integer houseCount) { //세대 구성원 List가져옴
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberList) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -397,8 +399,8 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
 
@@ -447,8 +449,8 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
 
         List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
                 List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 

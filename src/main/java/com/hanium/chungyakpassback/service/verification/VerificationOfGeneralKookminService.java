@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface VerificationOfGeneralKookminService {
 
-    List<VerificationOfGeneralKookminResponseDto> readGeneralKookminVerifications();
+    List<VerificationOfGeneralKookminResponseDto> readGeneralKookminVerifications(); //일반국민조회
 
-    VerificationOfGeneralKookminResponseDto createGeneralKookminVerification(VerificationOfGeneralKookminDto verificationOfGeneralKookminDto);
+    VerificationOfGeneralKookminResponseDto createGeneralKookminVerification(VerificationOfGeneralKookminDto verificationOfGeneralKookminDto); //일반국민저장
 
-    VerificationOfGeneralKookminResponseDto updateGeneralKookminVerification(Long verificationRecordGeneralKookminId, VerificationOfGeneralKookminUpdateDto verificationOfGeneralKookminUpdateDto);
+    VerificationOfGeneralKookminResponseDto updateGeneralKookminVerification(Long verificationRecordGeneralKookminId, VerificationOfGeneralKookminUpdateDto verificationOfGeneralKookminUpdateDto); //일반국민업데이트
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

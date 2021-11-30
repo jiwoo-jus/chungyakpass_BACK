@@ -48,7 +48,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
     final AptInfoRepository aptInfoRepository;
     final VerificationOfSpecialMinyeongNewlyMarriedRepository verificationOfSpecialMinyeongNewlyMarriedRepository;
 
-    @Override //특별신혼부부민영조회
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<VerificationOfSpecialMinyeongNewlyMarriedResponseDto> readSpecialMinyeongNewlyMarriedVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -99,6 +100,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
         return new VerificationOfSpecialMinyeongNewlyMarriedResponseDto(verificationOfSpecialMinyeongNewlyMarried);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드
         // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
@@ -106,8 +108,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
         return Integer.parseInt(housingTypeChange);
     }
 
-
-    public Long calcDate(LocalDate transferdate) { //신혼 기간 구하기
+    @Transactional(rollbackFor = Exception.class)
+    public Long calcDate(LocalDate transferdate) { //신혼기간 구하기
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime departure = transferdate.atStartOfDay();
 
@@ -118,7 +120,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int calcAmericanAge(LocalDate birthday) { //만나이계산 메소드
+    public int calcAmericanAge(LocalDate birthday) { //만나이계산
         if (birthday == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
         }
@@ -134,7 +136,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { //청약통장유형충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
@@ -166,7 +168,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 houseMemberCount++;
                 if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
@@ -249,7 +252,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 houseMemberCount++;
                 if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
@@ -322,7 +326,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetMarriagePeriodIn7years(User user) {
+    public boolean meetMarriagePeriodIn7years(User user) { //혼인기간7년이내충족여부
         if (user.getHouseMember().getMarriageDate() == null || user.getSpouseHouseMember().getMarriageDate() == null) { //혼인신고일이 null일 경우 경고문을 띄워줌
             throw new CustomException(ErrorCode.NOT_FOUND_MARRIAGES);
         } else if (calcDate(user.getHouseMember().getMarriageDate()) < 2555) { //신청자의 혼인기간이 7년 이내일 경우 true
@@ -333,10 +337,11 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean hasMinorChildren(User user) {
+    public boolean hasMinorChildren(User user) { //미성년자녀존재여부
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 HouseMemberRelation houseMemberRelation = houseMemberRelationRepository.findByUserAndOpponent(user, houseMember).get();
 
@@ -345,7 +350,6 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
                     return true;
             }
         }
-
         // 배우자 분리세대일 경우
         else {
             List<HouseMember> houseMemberListSpouse = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse());
@@ -371,10 +375,11 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean secondChungyak(User user) {
+    public boolean secondChungyak(User user) { //2순위청약신청대상여부
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -425,8 +430,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
         int houseCount = 0;
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -573,7 +578,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isHouseholder(User user) { // 세대주여부 메소드
+    public boolean isHouseholder(User user) { // 세대주여부
         if (user.getHouse().getHouseHolder() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_HOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
         } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) { // 사용자의 세대의 세대주 id가 사용자의 세대구성원id와 같으면 true
@@ -584,7 +589,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) { //인근지역거주조건충족여부 메소드
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) { //인근지역거주조건충족여부
         if (user.getHouseMember() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER); // 세대구성원->세대를 통해서 주소를 user의 지역_레벨1을 가져오는 것이기 때문에 user의 세대구성원이 비어있으면 안됨.
         }
@@ -600,7 +605,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부 메소드
+    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y)) // 사용자가 선택한 아파트분양정보가 투기과열지구 또는 청약과열지역에 해당하는 경우 true
             return true;
         return false;
@@ -608,7 +613,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부확인
+    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -634,7 +639,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부확인드 메소드
+    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user); // 사용자의 청약통장정보를 가져옴
         if (optUserBankbook.isEmpty()) // 만약 사용자의 청약통장이 입력되지 않았다면 경고문을 띄워줌
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -660,8 +665,8 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
 
         List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
                 List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 
