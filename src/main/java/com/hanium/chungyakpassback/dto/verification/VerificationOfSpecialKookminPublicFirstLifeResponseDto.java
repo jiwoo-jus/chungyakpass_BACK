@@ -17,27 +17,27 @@ public class VerificationOfSpecialKookminPublicFirstLifeResponseDto {
 
     private Long id;
 
-    private Integer americanAge;
-    private boolean meetLivingInSurroundAreaTf;
-    private boolean accountTf;
-    private boolean meetRecipientTf;
-    private boolean meetMonthlyAverageIncomePriorityTf;
-    private boolean meetMonthlyAverageIncomeGeneralTf;
-    private boolean meetPropertyTf;
-    private boolean meetHomelessHouseholdMembersTf;
-    private boolean householderTf;
+    private Integer americanAge; //만나이
+    private boolean meetLivingInSurroundAreaTf; //인근지역거주조건충족여부
+    private boolean accountTf; //청약통장유형조건충족여부
+    private boolean meetRecipientTf; //생애최초대상자충족여부
+    private boolean meetMonthlyAverageIncomePriorityTf; //월평균소득기준충족여부_우선공급
+    private boolean meetMonthlyAverageIncomeGeneralTf; //월평균소득기준충족여부_일반공급
+    private boolean meetPropertyTf; //자산기준충족여부
+    private boolean meetHomelessHouseholdMembersTf; //전세대원무주택구성원충족여부
+    private boolean householderTf; //세대주여부
     private boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    private boolean meetAllHouseMemberRewinningRestrictionTf;
-    private boolean restrictedAreaTf;
-    private boolean meetNumberOfPaymentsTf;
-    private boolean meetBankbookJoinPeriodTf;
-    private Yn sibilingSupportYn;
-    private Yn taxOver5yearsYn;
-    private KookminType kookminType;
-    private Yn firstRankHistoryYn;
-    private Ranking ranking;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private boolean meetAllHouseMemberRewinningRestrictionTf; //전세대원재당첨제한여부
+    private boolean restrictedAreaTf; //규제지역여부
+    private boolean meetNumberOfPaymentsTf; //납입횟수충족여부
+    private boolean meetBankbookJoinPeriodTf; //가입기간충족여부
+    private Yn sibilingSupportYn; //형제자매부양여부
+    private Yn taxOver5yearsYn; //5년이상소득세납부여부
+    private KookminType kookminType; //국민주택종류
+    private Yn firstRankHistoryYn; //일반공급1순위당첨이력
+    private Ranking ranking; //순위
+    private LocalDateTime createdDate; //생성일
+    private LocalDateTime modifiedDate; //수정일
 
 
     public VerificationOfSpecialKookminPublicFirstLifeResponseDto(VerificationOfSpecialKookminFirstLife verificationOfSpecialKookminFirstLife) {

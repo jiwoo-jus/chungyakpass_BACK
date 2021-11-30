@@ -17,24 +17,24 @@ public class VerificationOfSpecialKookminPublicOldParentResponseDto {
 
     private Long id;
 
-    private Integer americanAge;
-    private boolean meetLivingInSurroundAreaTf;
-    private boolean accountTf;
-    private boolean meetMonthlyAverageIncomeTf;
-    private boolean meetPropertyTf;
-    private boolean meetOldParentSupportMore3yearsTf;
-    private boolean meetHomelessHouseholdMembersTf;
-    private boolean householderTf;
-    private boolean restrictedAreaTf;
-    private boolean meetAllHouseMemberNotWinningIn5yearsTf;
-    private boolean meetAllHouseMemberRewinningRestrictionTf;
-    private boolean meetBankbookJoinPeriodTf;
-    private boolean meetNumberOfPaymentsTf;
-    private Yn sibilingSupportYn;
-    private KookminType kookminType;
-    private Ranking ranking;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Integer americanAge; //만나이
+    private boolean meetLivingInSurroundAreaTf; //인근지역거주조건충족여부
+    private boolean accountTf; //청약통장유형조건충족여부
+    private boolean meetMonthlyAverageIncomeTf; //월평균소득기준충족여부
+    private boolean meetPropertyTf; //자산기준충족여부
+    private boolean meetOldParentSupportMore3yearsTf; //3년이상노부모부양충족여부
+    private boolean meetHomelessHouseholdMembersTf; //전세대원무주택구성원충족여부
+    private boolean householderTf; //세대주여부
+    private boolean restrictedAreaTf; //규제지역여부
+    private boolean meetAllHouseMemberNotWinningIn5yearsTf; //전세대원5년이내미당첨조건충족여부
+    private boolean meetAllHouseMemberRewinningRestrictionTf; //전세대원재당첨제한여부
+    private boolean meetBankbookJoinPeriodTf; //가입기간충족여부
+    private boolean meetNumberOfPaymentsTf; //납입횟수충족여부
+    private Yn sibilingSupportYn; //형제자매부양여부
+    private KookminType kookminType; //국민주택종류
+    private Ranking ranking; //순위
+    private LocalDateTime createdDate; //생성일
+    private LocalDateTime modifiedDate; //수정일
 
     @Builder
     public VerificationOfSpecialKookminPublicOldParentResponseDto(VerificationOfSpecialKookminOldParent verificationOfSpecialKookminOldParent) {

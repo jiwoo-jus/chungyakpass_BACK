@@ -17,27 +17,27 @@ public class VerificationOfSpecialKookminPublicNewlyMarriedResponseDto {
 
     private Long id;
 
-    private Integer americanAge;
-    private boolean meetLivingInSurroundAreaTf;
-    private boolean accountTf;
-    private boolean meetRecipientTf;
-    private boolean hasMinorChildren;
-    private boolean meetMonthlyAverageIncomePriorityTf;
-    private boolean meetMonthlyAverageIncomeGeneralTf;
-    private boolean meetPropertyTf;
-    private boolean secondChungyak;
-    private boolean meetHomelessHouseholdMembersTf;
-    private boolean meetAllHouseMemberRewinningRestrictionTf;
-    private boolean householderTf;
-    private boolean restrictedAreaTf;
-    private boolean meetBankbookJoinPeriodTf;
-    private boolean meetNumberOfPaymentsTf;
-    private Yn sibilingSupportYn;
-    private Yn preNewMarriedYn;
-    private KookminType kookminType;
-    private Ranking ranking;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Integer americanAge; //만나이
+    private boolean meetLivingInSurroundAreaTf; //인근지역거주조건충족여부
+    private boolean accountTf; //청약통장유형조건충족여부
+    private boolean meetRecipientTf; //신혼부부공공주택적용국민주택대상자충족여부
+    private boolean hasMinorChildren; //미성년자녀존재여부
+    private boolean meetMonthlyAverageIncomePriorityTf; //월평균소득기준충족여부_우선공급
+    private boolean meetMonthlyAverageIncomeGeneralTf; //월평균소득기준충족여부_일반공급
+    private boolean meetPropertyTf; //자산기준충족여부
+    private boolean secondChungyak; //2순위청약신청대상여부
+    private boolean meetHomelessHouseholdMembersTf; //전세대원무주택구성원충족여부
+    private boolean meetAllHouseMemberRewinningRestrictionTf; //전세대원재당첨제한여부
+    private boolean householderTf; //세대주여부
+    private boolean restrictedAreaTf; //규제지역여부
+    private boolean meetBankbookJoinPeriodTf; //가입기간충족여부
+    private boolean meetNumberOfPaymentsTf; //납입횟수충족여부
+    private Yn sibilingSupportYn; //형제자매부양여부
+    private Yn preNewMarriedYn; //예비신혼부부여부
+    private KookminType kookminType; //국민주택종류
+    private Ranking ranking; //순위
+    private LocalDateTime createdDate; //생성일
+    private LocalDateTime modifiedDate; //수정일
 
 
     @Builder

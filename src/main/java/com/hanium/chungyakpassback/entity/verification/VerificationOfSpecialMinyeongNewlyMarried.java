@@ -42,7 +42,7 @@ public class VerificationOfSpecialMinyeongNewlyMarried extends BaseTime {
     private boolean meetMonthlyAverageIncomeGeneral; //월평균소득기준충족여부_일반공급
 
     @Column
-    private boolean meetMarriagePeriodIn7yearsTf; // 혼인기간7년이내충족여부
+    private boolean meetMarriagePeriodIn7yearsTf; //혼인기간7년이내충족여부
 
     @Column
     private boolean hasMinorChildren; //미성년자녀존재여부
@@ -73,10 +73,6 @@ public class VerificationOfSpecialMinyeongNewlyMarried extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_number_id")
     private AptInfo aptInfo; //아파트분양정보
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "info_target_id")
-//    private AptInfoTarget aptInfoTarget; //주택형
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({

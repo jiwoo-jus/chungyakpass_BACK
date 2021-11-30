@@ -13,9 +13,9 @@ import javax.validation.constraints.NotNull;
 public class VerificationOfGeneralMinyeongDto {
 
     @NotBlank
-    private Integer notificationNumber;
+    private Integer notificationNumber; //아파트공고번호
 
     @NotBlank
-    private String housingType;
+    private String housingType; //주택형
 
 }

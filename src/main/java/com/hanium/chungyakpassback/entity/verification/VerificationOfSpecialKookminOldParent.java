@@ -72,10 +72,6 @@ public class VerificationOfSpecialKookminOldParent extends BaseTime {
     @JoinColumn(name = "notification_number_id")
     private AptInfo aptInfo; //아파트분양정보
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "info_target_id")
-//    private AptInfoTarget aptInfoTarget; //주택형
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "info_target_id"),
