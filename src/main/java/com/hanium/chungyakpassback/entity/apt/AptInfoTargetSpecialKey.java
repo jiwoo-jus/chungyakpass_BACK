@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class AptInfoTargetSpecialKey implements Serializable {
 
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     private Integer aptInfo; //아파트분양정보
 }

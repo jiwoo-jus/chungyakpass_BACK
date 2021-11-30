@@ -16,6 +16,6 @@ public class VerificationOfSpecialKookminPublicFirstLifeDto {
     private Integer notificationNumber;
 
     @NotBlank
-    private String housingType;
+    private String residentialArea;
 
 }

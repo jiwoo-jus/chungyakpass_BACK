@@ -310,11 +310,11 @@ public class ApiDetailExplorer5 {
                 aptInfoRepository.saveAll(aptInfoList);
                 for (AptInfoAmountDto AptInfoAmountdto : aptInfoAmountDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoAmountdto.getNotificationNumber()).get();
-                    aptInfoAmountRepository.findByHousingTypeAndAptInfo(AptInfoAmountdto.getHousingType(), aptInfo).orElseGet(() -> {
+                    aptInfoAmountRepository.findByResidentialAreaAndAptInfo(AptInfoAmountdto.getResidentialArea(), aptInfo).orElseGet(() -> {
                         AptInfoAmount aptInfoAmount = AptInfoAmount.builder()
                                 .aptInfo(aptInfo)
                                 .supplyAmount(AptInfoAmountdto.getSupplyAmount())
-                                .housingType(AptInfoAmountdto.getHousingType())
+                                .residentialArea(AptInfoAmountdto.getResidentialArea())
                                 .build();
                         aptInfoAmountRepository.save(aptInfoAmount);
                         return null;
@@ -344,10 +344,10 @@ public class ApiDetailExplorer5 {
                 }
                 for (AptInfoTargetSpecialDto AptInfoTargetSpecialdto : aptInfoTargetSpecialDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetSpecialdto.getNotificationNumber()).get();
-                    aptInfoTargetSpecialRepository.findByHousingTypeAndAptInfo(AptInfoTargetSpecialdto.getHousingType(), aptInfo).orElseGet(() -> {
+                    aptInfoTargetSpecialRepository.findByResidentialAreaAndAptInfo(AptInfoTargetSpecialdto.getResidentialArea(), aptInfo).orElseGet(() -> {
                         AptInfoTargetSpecial aptInfoTargetSpecial = AptInfoTargetSpecial.builder()
                                 .aptInfo(aptInfo)
-                                .housingType(AptInfoTargetSpecialdto.getHousingType())
+                                .residentialArea(AptInfoTargetSpecialdto.getResidentialArea())
                                 .supplyMultiChildHousehold(AptInfoTargetSpecialdto.getSupplyMultiChildHousehold())
                                 .supplyNewlyMarriedCouple(AptInfoTargetSpecialdto.getSupplyNewlyMarriedCouple())
                                 .supplyOldParentSupport(AptInfoTargetSpecialdto.getSupplyOldParentSupport())
@@ -364,10 +364,10 @@ public class ApiDetailExplorer5 {
                 // 아파트분양정보 테이블에 공고번호가 이미 있다면 공급대상 테이블에 해당공고번호와 관련된 공급대상은 추가하지 않는다.
                 for (AptInfoTargetDto AptInfoTargetdto : aptInfoTargetDtoList) {
                     AptInfo aptInfo = aptInfoRepository.findById(AptInfoTargetdto.getNotificationNumber()).get();
-                    aptInfoTargetRepository.findByHousingTypeAndAptInfo(AptInfoTargetdto.getHousingType(), aptInfo).orElseGet(() -> {
+                    aptInfoTargetRepository.findByResidentialAreaAndAptInfo(AptInfoTargetdto.getResidentialArea(), aptInfo).orElseGet(() -> {
                         AptInfoTarget aptInfoTarget = AptInfoTarget.builder()
                                 .aptInfo(aptInfo)
-                                .housingType(AptInfoTargetdto.getHousingType())
+                                .residentialArea(AptInfoTargetdto.getResidentialArea())
                                 .supplyArea(AptInfoTargetdto.getSupplyArea())
                                 .supplyGeneral(AptInfoTargetdto.getSupplyGeneral())
                                 .supplySpecial(AptInfoTargetdto.getSupplySpecial())

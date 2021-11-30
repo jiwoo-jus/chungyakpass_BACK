@@ -36,7 +36,7 @@ public class HouseMemberChungyak extends BaseTime {
     private SpecialSupply specialSupply; //특별공급유형
 
     @Column
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -62,12 +62,12 @@ public class HouseMemberChungyak extends BaseTime {
 
 
     @Builder
-    public HouseMemberChungyak(HouseMember houseMember, String houseName, Supply supply, SpecialSupply specialSupply, String housingType, Ranking ranking, Result result, Integer preliminaryNumber, LocalDate winningDate, Raffle raffle, Yn cancelWinYn) {
+    public HouseMemberChungyak(HouseMember houseMember, String houseName, Supply supply, SpecialSupply specialSupply, String residentialArea, Ranking ranking, Result result, Integer preliminaryNumber, LocalDate winningDate, Raffle raffle, Yn cancelWinYn) {
         this.houseMember = houseMember;
         this.houseName = houseName;
         this.supply = supply;
         this.specialSupply = specialSupply;
-        this.housingType = housingType;
+        this.residentialArea = residentialArea;
         this.ranking = ranking;
         this.result = result;
         this.preliminaryNumber = preliminaryNumber;
@@ -81,7 +81,7 @@ public class HouseMemberChungyak extends BaseTime {
         this.houseName = houseMemberChungyakUpdateDto.getHouseName();
         this.supply = houseMemberChungyakUpdateDto.getSupply();
         this.specialSupply = houseMemberChungyakUpdateDto.getSpecialSupply();
-        this.housingType = houseMemberChungyakUpdateDto.getHousingType();
+        this.residentialArea = houseMemberChungyakUpdateDto.getResidentialArea();
         this.ranking = houseMemberChungyakUpdateDto.getRanking();
         this.result = houseMemberChungyakUpdateDto.getResult();
         this.preliminaryNumber = houseMemberChungyakUpdateDto.getPreliminaryNumber();

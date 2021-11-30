@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class AptInfoAmount {
 
     @Id
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,9 +24,9 @@ public class AptInfoAmount {
     private String supplyAmount; //공급 금액
 
     @Builder
-    public AptInfoAmount(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, String supplyAmount) {
+    public AptInfoAmount(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String residentialArea, String supplyAmount) {
         this.aptInfo = aptInfo;
-        this.housingType = housingType;
+        this.residentialArea = residentialArea;
         this.supplyAmount = supplyAmount;
     }
 }

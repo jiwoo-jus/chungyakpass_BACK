@@ -24,7 +24,7 @@ public class HouseMemberChungyakUpdateDto {
 
     private SpecialSupply specialSupply; //특별공급유형
 
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     private Ranking ranking; //순위
 

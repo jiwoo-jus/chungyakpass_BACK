@@ -69,7 +69,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(verificationOfGeneralMinyeongDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(verificationOfGeneralMinyeongDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByResidentialAreaAndAptInfo(verificationOfGeneralMinyeongDto.getResidentialArea(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
         boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
         boolean accountTf = meetBankbookType(user, aptInfo, aptInfoTarget);
@@ -98,10 +98,10 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
         return new VerificationOfGeneralMinyeongResponseDto(verificationOfGeneralMinyeong);
     }
 
-    public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
-        String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
+    public int residentialAreaConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
+        String residentialAreaChange = aptInfoTarget.getResidentialArea().substring(0, aptInfoTarget.getResidentialArea().indexOf("."));
 
-        return Integer.parseInt(housingTypeChange);
+        return Integer.parseInt(residentialAreaChange);
     }
 
     @Override
@@ -128,12 +128,12 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
-            int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
+            int residentialAreaChange = residentialAreaConverter(aptInfoTarget); // 주택형변환 메소드 호출
             if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
                 if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
-                    if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
+                    if (residentialAreaChange <= stdBankbook.get().getRestrictionSaleArea()) {
                         return true;
-                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
+                    } else if (residentialAreaChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
                         return false;
                     }
                 }
@@ -215,13 +215,13 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
             throw new RuntimeException("등록된 청약통장이 없습니다.");
         UserBankbook userBankbook = optUserBankbook.get();
 
-        int housingTypeChange = houseTypeConverter(aptInfoTarget);
+        int residentialAreaChange = residentialAreaConverter(aptInfoTarget);
         List<PriorityDeposit> priorityDepositList = priorityDepositRepository.findAll();
 
 
         for (PriorityDeposit priorityDeposit : priorityDepositList) {
             if (priorityDeposit.getDepositArea().equals(user.getHouse().getAddressLevel1().getDepositArea())) {
-                if (priorityDeposit.getAreaOver() < housingTypeChange && priorityDeposit.getAreaLessOrEqual() >= housingTypeChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) {
+                if (priorityDeposit.getAreaOver() < residentialAreaChange && priorityDeposit.getAreaLessOrEqual() >= residentialAreaChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) {
                     return true;
                 }
             }
@@ -233,7 +233,7 @@ public class VerificationOfGeneralMinyeongServiceImpl implements VerificationOfG
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean isPriorityApt(AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
-        if ((houseTypeConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
+        if ((residentialAreaConverter(aptInfoTarget) > 85 && aptInfo.getPublicRentalHousing().equals(Yn.y)))
             return true;
         else if (aptInfo.getHousingType().equals(HousingType.민영) && aptInfo.getPublicHosingDistrict().equals(Yn.y) && addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).equals(addressLevel1Repository.findAllByMetropolitanAreaYn(Yn.y)))
             return true;

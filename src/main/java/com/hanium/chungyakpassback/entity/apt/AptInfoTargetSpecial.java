@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class AptInfoTargetSpecial {
 
     @Id
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,9 +45,9 @@ public class AptInfoTargetSpecial {
 
 
     @Builder
-    public AptInfoTargetSpecial(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String housingType, int supplyMultiChildHousehold, int supplyNewlyMarriedCouple, int supplyFirstLife, int supplyOldParentSupport, int supplyInstitutionalRecommendation, Integer supplyTransferAgency, Integer supplyOther) {
+    public AptInfoTargetSpecial(com.hanium.chungyakpassback.entity.apt.AptInfo aptInfo, String residentialArea, int supplyMultiChildHousehold, int supplyNewlyMarriedCouple, int supplyFirstLife, int supplyOldParentSupport, int supplyInstitutionalRecommendation, Integer supplyTransferAgency, Integer supplyOther) {
         this.aptInfo = aptInfo;
-        this.housingType = housingType;
+        this.residentialArea = residentialArea;
         this.supplyMultiChildHousehold = supplyMultiChildHousehold;
         this.supplyNewlyMarriedCouple = supplyNewlyMarriedCouple;
         this.supplyFirstLife = supplyFirstLife;

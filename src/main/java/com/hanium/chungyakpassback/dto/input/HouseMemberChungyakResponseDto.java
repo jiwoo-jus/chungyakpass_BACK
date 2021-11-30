@@ -24,7 +24,7 @@ public class HouseMemberChungyakResponseDto {
 
     private SpecialSupply specialSupply; //특별공급유형
 
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     private Ranking ranking; //순위
 
@@ -50,7 +50,7 @@ public class HouseMemberChungyakResponseDto {
         this.houseName = houseMemberChungyak.getHouseName();
         this.supply = houseMemberChungyak.getSupply();
         this.specialSupply = houseMemberChungyak.getSpecialSupply();
-        this.housingType = houseMemberChungyak.getHousingType();
+        this.residentialArea = houseMemberChungyak.getResidentialArea();
         this.ranking = houseMemberChungyak.getRanking();
         this.result = houseMemberChungyak.getResult();
         this.preliminaryNumber = houseMemberChungyak.getPreliminaryNumber();

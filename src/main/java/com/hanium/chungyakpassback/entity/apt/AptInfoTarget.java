@@ -14,8 +14,8 @@ import javax.persistence.*;
 public class AptInfoTarget {
 
     @Id
-    @Column(name = "apt_info_target_id_housing_type")
-    private String housingType;//주택형
+    @Column(name = "apt_info_target_id_residential_area")
+    private String residentialArea;//주택형
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,9 +35,9 @@ public class AptInfoTarget {
     private Integer supplyTotal;//공급합
 
     @Builder
-    public AptInfoTarget(AptInfo aptInfo, String housingType, Double supplyArea, Integer supplyGeneral, Integer supplySpecial, Integer supplyTotal) {
+    public AptInfoTarget(AptInfo aptInfo, String residentialArea, Double supplyArea, Integer supplyGeneral, Integer supplySpecial, Integer supplyTotal) {
         this.aptInfo = aptInfo;
-        this.housingType = housingType;
+        this.residentialArea = residentialArea;
         this.supplyArea = supplyArea;
         this.supplyGeneral = supplyGeneral;
         this.supplySpecial = supplySpecial;

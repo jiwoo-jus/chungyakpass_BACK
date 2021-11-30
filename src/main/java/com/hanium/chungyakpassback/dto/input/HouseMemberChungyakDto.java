@@ -27,7 +27,7 @@ public class HouseMemberChungyakDto {
 
     private SpecialSupply specialSupply; //특별공급유형
 
-    private String housingType; //주택형
+    private String residentialArea; //주택형
 
     private Ranking ranking; //순위
 
@@ -48,7 +48,7 @@ public class HouseMemberChungyakDto {
                 .houseName(houseName)
                 .supply(supply)
                 .specialSupply(specialSupply)
-                .housingType(housingType)
+                .residentialArea(residentialArea)
                 .ranking(ranking)
                 .result(result)
                 .preliminaryNumber(preliminaryNumber)

@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AptInfoTargetSpecialRepository extends JpaRepository<AptInfoTargetSpecial,Long> {
-    Optional<AptInfoTargetSpecial> findByHousingTypeAndAptInfo(String housingType, AptInfo aptInfo);
+    Optional<AptInfoTargetSpecial> findByResidentialAreaAndAptInfo(String residentialArea, AptInfo aptInfo);
 }

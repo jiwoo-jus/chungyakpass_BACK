@@ -67,7 +67,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(verificationOfSpecialMinyeongNewlyMarriedDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(verificationOfSpecialMinyeongNewlyMarriedDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByResidentialAreaAndAptInfo(verificationOfSpecialMinyeongNewlyMarriedDto.getResidentialArea(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
         Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
         boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
@@ -99,11 +99,11 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
         return new VerificationOfSpecialMinyeongNewlyMarriedResponseDto(verificationOfSpecialMinyeongNewlyMarried);
     }
 
-    public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드
+    public int residentialAreaConverter(AptInfoTarget aptInfoTarget) { // 주택형 변환 메소드
         // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
-        String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
+        String residentialAreaChange = aptInfoTarget.getResidentialArea().substring(0, aptInfoTarget.getResidentialArea().indexOf("."));
 
-        return Integer.parseInt(housingTypeChange);
+        return Integer.parseInt(residentialAreaChange);
     }
 
 
@@ -140,12 +140,12 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
-            int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
+            int residentialAreaChange = residentialAreaConverter(aptInfoTarget); // 주택형변환 메소드 호출
             if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
                 if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
-                    if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
+                    if (residentialAreaChange <= stdBankbook.get().getRestrictionSaleArea()) {
                         return true;
-                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
+                    } else if (residentialAreaChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
                         return false;
                     }
                 }
@@ -640,12 +640,12 @@ public class VerificationOfSpecialMinyeongNewlyMarriedServiceImpl implements Ver
             throw new RuntimeException("등록된 청약통장이 없습니다.");
         UserBankbook userBankbook = optUserBankbook.get();
 
-        int housingTypeChange = houseTypeConverter(aptInfoTarget); // houseTypeConverter 메소드를 통해 변환한 주택형을 housingTypeChange 변수에 담음
+        int residentialAreaChange = residentialAreaConverter(aptInfoTarget); // residentialAreaConverter 메소드를 통해 변환한 주택형을 residentialAreaChange 변수에 담음
         List<PriorityDeposit> priorityDepositList = priorityDepositRepository.findAll(); // 납입금의 기준정보를 List로 가져옴
 
         for (PriorityDeposit priorityDeposit : priorityDepositList) { // 반복문을 통해 납입금 기준 정보 List를 돌면서,
             if (priorityDeposit.getDepositArea().equals(user.getHouse().getAddressLevel1().getDepositArea())) { // 기준정보의 예치금액지역구분과 사용자의 지역_레벨1의 지역이 동일하다면,
-                if (priorityDeposit.getAreaOver() < housingTypeChange && priorityDeposit.getAreaLessOrEqual() >= housingTypeChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) { // 기준정보의 면적_초과 < housingTypeChange 이고, 기준정보의 면적_이하 >= housingTypeChange 이고, 사용자의 청약통장 예치금액 >= 기준정보의 예치금액 조건들을 충족한다면 true
+                if (priorityDeposit.getAreaOver() < residentialAreaChange && priorityDeposit.getAreaLessOrEqual() >= residentialAreaChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) { // 기준정보의 면적_초과 < residentialAreaChange 이고, 기준정보의 면적_이하 >= residentialAreaChange 이고, 사용자의 청약통장 예치금액 >= 기준정보의 예치금액 조건들을 충족한다면 true
                     return true;
                 }
             }

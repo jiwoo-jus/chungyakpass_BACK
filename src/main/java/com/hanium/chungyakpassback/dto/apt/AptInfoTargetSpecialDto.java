@@ -8,7 +8,7 @@ import org.json.JSONObject;
 @Getter
 public class AptInfoTargetSpecialDto {
     private Integer notificationNumber; //공고번호
-    private String housingType; //주택형
+    private String residentialArea; //주택형
     private int supplyMultiChildHousehold;//공급세대수_다자녀가구;
     private int supplyNewlyMarriedCouple;//공급세대수_신혼부부
     private int supplyFirstLife;//공급세대수_생애최초
@@ -22,13 +22,13 @@ public class AptInfoTargetSpecialDto {
         this.notificationNumber = itemJson.getInt("pblancno");
         try {
             if (itemJson.get("housety") instanceof Double) {
-                this.housingType = String.valueOf(itemJson.getDouble("housety")); //Double -> String 1번방식
+                this.residentialArea = String.valueOf(itemJson.getDouble("housety")); //Double -> String 1번방식
             } else {
-                this.housingType = itemJson.getString("housety");
+                this.residentialArea = itemJson.getString("housety");
             }
         }
         catch (JSONException e){
-            this.housingType = String.valueOf(itemJson.getInt("housety"));
+            this.residentialArea = String.valueOf(itemJson.getInt("housety"));
         }
         this.supplyMultiChildHousehold = itemJson.getInt("mnychhshldco");
         this.supplyNewlyMarriedCouple = itemJson.getInt("nwwdshshldco");

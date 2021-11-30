@@ -18,6 +18,6 @@ public class VerificationOfSpecialMinyeongNewlyMarriedDto {
     public Integer notificationNumber;
 
     @NotBlank
-    public String housingType;
+    public String residentialArea;
 
 }

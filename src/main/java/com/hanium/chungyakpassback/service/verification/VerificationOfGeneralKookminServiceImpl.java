@@ -65,7 +65,7 @@ public class VerificationOfGeneralKookminServiceImpl implements VerificationOfGe
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(verificationOfGeneralKookminDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(verificationOfGeneralKookminDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByResidentialAreaAndAptInfo(verificationOfGeneralKookminDto.getResidentialArea(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
         Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
         boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
@@ -95,9 +95,9 @@ public class VerificationOfGeneralKookminServiceImpl implements VerificationOfGe
     }
 
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
-        String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
+        String residentialAreaChange = aptInfoTarget.getResidentialArea().substring(0, aptInfoTarget.getResidentialArea().indexOf("."));
 
-        return Integer.parseInt(housingTypeChange);
+        return Integer.parseInt(residentialAreaChange);
     }
 
     @Override
@@ -140,7 +140,7 @@ public class VerificationOfGeneralKookminServiceImpl implements VerificationOfGe
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
-            int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
+            int residentialAreaChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
             if (stdBankbook.get().getNationalHousingSupplyPossible().equals(Yn.y)) {
                 return true;
             }

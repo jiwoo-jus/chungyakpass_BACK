@@ -16,6 +16,6 @@ public class VerificationOfSpecialKookminPublicMultiChildDto {
     private Integer notificationNumber;
 
     @NotBlank
-    private String housingType;
+    private String residentialArea;
 
 }

@@ -15,6 +15,6 @@ public class VerificationOfSpecialKookminNewlyMarriedDto {
     public Integer notificationNumber;
 
     @NotNull
-    public String housingType;
+    public String residentialArea;
 
 }
