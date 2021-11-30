@@ -16,6 +16,6 @@ public class VerificationOfGeneralMinyeongDto {
     private Integer notificationNumber;
 
     @NotBlank
-    private String residentialArea;
+    private String housingType;
 
 }

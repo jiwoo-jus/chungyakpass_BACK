@@ -16,24 +16,24 @@ public class VerificationOfSpecialMinyeongNewlyMarriedResponseDto {
 
     Long id;
 
-    Integer americanAge;
-    boolean meetLivingInSurroundAreaTf;
-    boolean accountTf;
-    boolean meetMonthlyAverageIncomePriorityTf;
-    boolean meetMonthlyAverageIncomeGeneralTf;
-    boolean meetMarriagePeriodIn7yearsTf;
-    boolean hasMinorChildren;
-    boolean secondChungyak;
-    boolean meetHomelessHouseholdMembersTf;
-    boolean meetAllHouseMemberRewinningRestrictionTf;
-    boolean householderTf;
-    boolean isRestrictedAreaTf;
-    boolean meetBankbookJoinPeriodTf;
-    boolean meetDepositTf;
-    private Yn sibilingSupportYn;
-    private Ranking ranking;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Integer americanAge; //만나이
+    private boolean meetLivingInSurroundAreaTf; //인근지역거주조건충족여부
+    private boolean accountTf; //청약통장유형조건충족여부
+    boolean meetMonthlyAverageIncomePriorityTf; //월평균소득기준충족여부_우선공급
+    boolean meetMonthlyAverageIncomeGeneralTf; //월평균소득기준충족여부_일반공급
+    boolean meetMarriagePeriodIn7yearsTf; //혼인기간7년이내충족여부
+    boolean hasMinorChildren; //미성년자녀존재여부
+    boolean secondChungyak; //2순위청약신청대상여부
+    private boolean meetHomelessHouseholdMembersTf; //전세대원무주택구성원충족여부
+    private boolean meetAllHouseMemberRewinningRestrictionTf; //전세대원재당첨제한여부
+    private boolean householderTf; //세대주여부
+    private boolean restrictedAreaTf; //규제지역여부
+    private boolean meetBankbookJoinPeriodTf; //가입기간충족여부
+    private boolean meetDepositTf; //예치금액충족여부
+    private Yn sibilingSupportYn; //형제자매부양여부
+    private Ranking ranking; //순위
+    private LocalDateTime createdDate; //생성일
+    private LocalDateTime modifiedDate; //수정일
 
 
     @Builder
@@ -49,7 +49,7 @@ public class VerificationOfSpecialMinyeongNewlyMarriedResponseDto {
         this.meetHomelessHouseholdMembersTf = verificationOfSpecialMinyeongNewlyMarried.isMeetHomelessHouseholdMemberTf();
         this.meetAllHouseMemberRewinningRestrictionTf = verificationOfSpecialMinyeongNewlyMarried.isMeetAllHouseMemberRewinningRestrictionTf();
         this.householderTf = verificationOfSpecialMinyeongNewlyMarried.isHouseholderTf();
-        this.isRestrictedAreaTf = verificationOfSpecialMinyeongNewlyMarried.isRestrictedAreaTf();
+        this.restrictedAreaTf = verificationOfSpecialMinyeongNewlyMarried.isRestrictedAreaTf();
         this.meetBankbookJoinPeriodTf = verificationOfSpecialMinyeongNewlyMarried.isMeetBankbookJoinPeriodTf();
         this.meetDepositTf = verificationOfSpecialMinyeongNewlyMarried.isMeetDepositTf();
         this.id = verificationOfSpecialMinyeongNewlyMarried.getId();

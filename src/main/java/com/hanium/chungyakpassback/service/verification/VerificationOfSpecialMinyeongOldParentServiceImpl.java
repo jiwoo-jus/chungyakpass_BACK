@@ -50,7 +50,8 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
     final AptInfoRepository aptInfoRepository;
     final VerificationOfSpecialMinyeongOldParentRepository verificationOfSpecialMinyeongOldParentRepository;
 
-    @Override //특별노부모민영조회
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<VerificationOfSpecialMinyeongOldParentResponseDto> readSpecialMinyeongOldParentVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -69,7 +70,7 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
         HouseMember houseMember = user.getHouseMember();
         AptInfo aptInfo = aptInfoRepository.findById(verificationOfSpecialMinyeongOldParentDto.getNotificationNumber()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
-        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByResidentialAreaAndAptInfo(verificationOfSpecialMinyeongOldParentDto.getResidentialArea(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
+        AptInfoTarget aptInfoTarget = aptInfoTargetRepository.findByHousingTypeAndAptInfo(verificationOfSpecialMinyeongOldParentDto.getHousingType(), aptInfo).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APT));
 
         Integer americanAge = calcAmericanAge(Optional.ofNullable(houseMember.getBirthDay()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY)));
         boolean meetLivingInSurroundAreaTf = meetLivingInSurroundArea(user, aptInfo);
@@ -98,12 +99,14 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
         return new VerificationOfSpecialMinyeongOldParentResponseDto(verificationOfSpecialMinyeongOldParent);
     }
 
-    public int residentialAreaConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
-        String residentialAreaChangeChange = aptInfoTarget.getResidentialArea().substring(0, aptInfoTarget.getResidentialArea().indexOf("."));
+    @Transactional(rollbackFor = Exception.class)
+    public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
+        String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
 
-        return Integer.parseInt(residentialAreaChangeChange);
+        return Integer.parseInt(housingTypeChange);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Long calcDate(LocalDate transferdate) { //주민등록표에 등재된 기간 구하기
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime departure = transferdate.atStartOfDay();
@@ -116,7 +119,7 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int calcAmericanAge(LocalDate birthday) {
+    public int calcAmericanAge(LocalDate birthday) { //만나이계산
         if (birthday == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
         }
@@ -132,18 +135,18 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { //청약통장유형충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
         } else {
             Optional<com.hanium.chungyakpassback.entity.standard.Bankbook> stdBankbook = bankbookRepository.findByBankbook(optUserBankbook.get().getBankbook());
-            int residentialAreaChange = residentialAreaConverter(aptInfoTarget); // 주택형변환 메소드 호출
+            int housingTypeChange = houseTypeConverter(aptInfoTarget); // 주택형변환 메소드 호출
             if (stdBankbook.get().getPrivateHousingSupplyIsPossible().equals(Yn.y)) {
                 if (stdBankbook.get().getBankbook().equals(Bankbook.청약부금)) {
-                    if (residentialAreaChange <= stdBankbook.get().getRestrictionSaleArea()) {
+                    if (housingTypeChange <= stdBankbook.get().getRestrictionSaleArea()) {
                         return true;
-                    } else if (residentialAreaChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
+                    } else if (housingTypeChange > stdBankbook.get().getRestrictionSaleArea()) { // 청약부금인데, 면적이 85제곱미터를 초과할 경우 false
                         return false;
                     }
                 }
@@ -187,8 +190,8 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
         int houseCount = 0;
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -304,8 +307,6 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
             }
         }
 
-        System.out.println("주택수 :" + houseCount);
-
         if (houseCount == 0) // 주택수가 0일 경우 무주택세대구성원으로 판별
             return true;
         else // 아닐 경우 유주택세대구성원으로 판별, 탈락
@@ -314,7 +315,7 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isHouseholder(User user) {
+    public boolean isHouseholder(User user) { //세대주여부
         if (user.getHouse().getHouseHolder() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSEHOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
         } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
@@ -325,7 +326,7 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//인근지역거주조건충족여부
         AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
 
@@ -336,7 +337,7 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
+    public boolean isRestrictedArea(AptInfo aptInfo) { //규제지역여부
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
@@ -368,7 +369,7 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
         return false;
     }
 
-    // 예치금액충족 여부
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부확인
@@ -377,13 +378,13 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
             throw new RuntimeException("등록된 청약통장이 없습니다.");
         UserBankbook userBankbook = optUserBankbook.get();
 
-        int residentialAreaChange = residentialAreaConverter(aptInfoTarget);
+        int housingTypeChange = houseTypeConverter(aptInfoTarget);
         List<PriorityDeposit> priorityDepositList = priorityDepositRepository.findAll();
 
 
         for (PriorityDeposit priorityDeposit : priorityDepositList) {
             if (priorityDeposit.getDepositArea().equals(user.getHouse().getAddressLevel1().getDepositArea())) {
-                if (priorityDeposit.getAreaOver() < residentialAreaChange && priorityDeposit.getAreaLessOrEqual() >= residentialAreaChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) {
+                if (priorityDeposit.getAreaOver() < housingTypeChange && priorityDeposit.getAreaLessOrEqual() >= housingTypeChange && userBankbook.getDeposit() >= priorityDeposit.getDeposit()) {
                     return true;
                 }
             }
@@ -394,14 +395,14 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거 5년 이내에 다른 주택에 당첨된 자가 속해 있는 무주택세대구성원
+    public boolean meetAllHouseMemberNotWinningIn5years(User user) { // 과거5년이내에다른주택에당첨된자가속해있는무주택세대구성원
         LocalDate now = LocalDate.now();
         int periodYear = 0;
 
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
 
@@ -450,8 +451,8 @@ public class VerificationOfSpecialMinyeongOldParentServiceImpl implements Verifi
 
         List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
                 List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 

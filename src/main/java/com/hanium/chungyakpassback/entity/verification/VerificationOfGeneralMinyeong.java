@@ -66,17 +66,12 @@ public class VerificationOfGeneralMinyeong extends BaseTime {
     @JoinColumn(name = "notification_number_id")
     private AptInfo aptInfo; //아파트분양정보
 
-    //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "info_target_id")
-//    private AptInfoTarget aptInfoTarget; //주택형
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "info_target_id"),
             @JoinColumn(name = "id")
     })
     private AptInfoTarget aptInfoTarget; //주택형
-
 
     //아래는 프론트한테 추가로 받는 항목들
 

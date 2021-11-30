@@ -12,11 +12,11 @@ import java.util.List;
 
 public interface VerificationOfSpecialMinyeongFirstLifeService {
 
-    List<VerificationOfSpecialMinyeongFirstLifeResponseDto> readSpecialMinyeongFirstLifeVerifications();
+    List<VerificationOfSpecialMinyeongFirstLifeResponseDto> readSpecialMinyeongFirstLifeVerifications(); //특별생애최초민영조회
 
-    VerificationOfSpecialMinyeongFirstLifeResponseDto createSpecialMinyeongFirstLifeVerification(VerificationOfSpecialMinyeongFirstLifeDto verificationOfSpecialMinyeongFirstLifeDto);
+    VerificationOfSpecialMinyeongFirstLifeResponseDto createSpecialMinyeongFirstLifeVerification(VerificationOfSpecialMinyeongFirstLifeDto verificationOfSpecialMinyeongFirstLifeDto); //특별생애최초민영저장
 
-    VerificationOfSpecialMinyeongFirstLifeResponseDto updateSpecialMinyeongFirstLifeVerification(Long verificationRecordSpecialMinyeongFirstLifeId, VerificationOfSpecialMinyeongFirstLifeUpdateDto verificationOfSpecialMinyeongFirstLifeUpdateDto);
+    VerificationOfSpecialMinyeongFirstLifeResponseDto updateSpecialMinyeongFirstLifeVerification(Long verificationRecordSpecialMinyeongFirstLifeId, VerificationOfSpecialMinyeongFirstLifeUpdateDto verificationOfSpecialMinyeongFirstLifeUpdateDto); //특별생애최초민영업데이트
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

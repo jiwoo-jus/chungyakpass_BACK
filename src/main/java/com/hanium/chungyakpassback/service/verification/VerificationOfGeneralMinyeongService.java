@@ -13,11 +13,11 @@ import java.util.List;
 
 public interface VerificationOfGeneralMinyeongService {
 
-    List<VerificationOfGeneralMinyeongResponseDto> readGeneralMinyeongVerifications();
+    List<VerificationOfGeneralMinyeongResponseDto> readGeneralMinyeongVerifications(); //일반민영조회
 
-    VerificationOfGeneralMinyeongResponseDto createGeneralMinyeongVerification(VerificationOfGeneralMinyeongDto verificationOfGeneralMinyeongDto);
+    VerificationOfGeneralMinyeongResponseDto createGeneralMinyeongVerification(VerificationOfGeneralMinyeongDto verificationOfGeneralMinyeongDto); //일반민영저장
 
-    VerificationOfGeneralMinyeongResponseDto updateGeneralMinyeongVerification(Long verificationRecordGeneralMinyeongId, VerificationOfGeneralMinyeongUpdateDto verificationOfGeneralMinyeongUpdateDto);
+    VerificationOfGeneralMinyeongResponseDto updateGeneralMinyeongVerification(Long verificationRecordGeneralMinyeongId, VerificationOfGeneralMinyeongUpdateDto verificationOfGeneralMinyeongUpdateDto); //일반민영업데이트
 
     int calcAmericanAge(LocalDate birthday); //만나이
 

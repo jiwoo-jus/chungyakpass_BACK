@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface VerificationOfSpecialMinyeongMultiChildService {
 
-    List<VerificationOfSpecialMinyeongMultiChildResponseDto> readSpecialMinyeongMultiChildVerifications();
+    List<VerificationOfSpecialMinyeongMultiChildResponseDto> readSpecialMinyeongMultiChildVerifications(); //특별다자녀민영조회
 
-    VerificationOfSpecialMinyeongMultiChildResponseDto createSpecialMinyeongMultiChildVerification(VerificationOfSpecialMinyeongMultiChildDto verificationOfSpecialMinyeongMultiChildDto);
+    VerificationOfSpecialMinyeongMultiChildResponseDto createSpecialMinyeongMultiChildVerification(VerificationOfSpecialMinyeongMultiChildDto verificationOfSpecialMinyeongMultiChildDto); //특별다자녀민영저장
 
-    VerificationOfSpecialMinyeongMultiChildResponseDto updateSpecialMinyeongMultiChildVerification(Long verificationRecordSpecialMinyeongMultiChildId, VerificationOfSpecialMinyeongMultiChildUpdateDto verificationOfSpecialMinyeongMultiChildUpdateDto);
+    VerificationOfSpecialMinyeongMultiChildResponseDto updateSpecialMinyeongMultiChildVerification(Long verificationRecordSpecialMinyeongMultiChildId, VerificationOfSpecialMinyeongMultiChildUpdateDto verificationOfSpecialMinyeongMultiChildUpdateDto); //특별다자녀민영업데이트
 
     int calcAmericanAge(LocalDate birthday); //만나이
 
