@@ -46,7 +46,8 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
     final AptInfoRepository aptInfoRepository;
     final VerificationOfSpecialMinyeongFirstLifeRepository verificationOfSpecialMinyeongFirstLifeRepository;
 
-    @Override //특별생애최초민영조회
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<VerificationOfSpecialMinyeongFirstLifeResponseDto> readSpecialMinyeongFirstLifeVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -98,6 +99,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
         return new VerificationOfSpecialMinyeongFirstLifeResponseDto(verificationOfSpecialMinyeongFirstLife);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
 
@@ -106,7 +108,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int calcAmericanAge(LocalDate birthday) {
+    public int calcAmericanAge(LocalDate birthday) { //만나이계산
         if (birthday == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
         }
@@ -122,7 +124,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
+    public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) { //청약통장유형충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_BANKBOOK);
@@ -178,7 +180,8 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 houseMemberCount++;
                 if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
@@ -203,11 +206,6 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
         System.out.println("세대구성원 수 : " + houseMemberCount);
         System.out.println("소득합산 : " + sumIncome);
-
-//        // 배우자가 세대구성원에 등록되어 있지 않을 경우 경고문을 띄워줌.
-//        if (user.getSpouseHouseMember() == null) {
-//            throw new CustomException(ErrorCode.NOT_FOUND_SPOUSE);
-//        }
 
         if (!(user.getSpouseHouseMember() == null)) { // 배우자가 있을 경우
             if (user.getHouseMember().getIncome() == null || user.getSpouseHouseMember().getIncome() == null) {
@@ -253,13 +251,15 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 houseMemberCount++;
                 if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
                     sumIncome += houseMember.getIncome();
             }
-        } //배우자 분리세대일 경우
+        }
+        //배우자 분리세대일 경우
         else {
             List<HouseMember> spouseHouseMemberList = houseMemberRepository.findAllByHouse(user.getSpouseHouseMember().getHouse()); // 신청자의 배우자의 전세대구성원의 자산 정보를 List로 가져옴
 
@@ -277,11 +277,6 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
         System.out.println("세대구성원 수 : " + houseMemberCount);
         System.out.println("소득합산 : " + sumIncome);
-
-//        // 배우자가 세대구성원에 등록되어 있지 않을 경우 경고문을 띄워줌.
-//        if (user.getSpouseHouseMember() == null) {
-//            throw new CustomException(ErrorCode.NOT_FOUND_SPOUSE);
-//        }
 
         if (!(user.getSpouseHouseMember() == null)) { // 배우자가 있을 경우
             if (user.getHouseMember().getIncome() == null || user.getSpouseHouseMember().getIncome() == null) {
@@ -319,13 +314,13 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetHomelessHouseholdMembers(User user) { //전세대원무주택세대구성원충족여부 메소드
+    public boolean meetHomelessHouseholdMembers(User user) { //전세대원무주택세대구성원충족여부
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
         int houseCount = 0;
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -472,7 +467,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isHouseholder(User user) {
+    public boolean isHouseholder(User user) { //세대주여부
         if (user.getHouse().getHouseHolder() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSEHOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
         } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
@@ -483,7 +478,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) { //인근지역거주조건충족여부
         com.hanium.chungyakpassback.entity.standard.AddressLevel1 userAddressLevel1 = Optional.ofNullable(user.getHouseMember().getHouse().getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
         com.hanium.chungyakpassback.entity.standard.AddressLevel1 aptAddressLevel1 = addressLevel1Repository.findByAddressLevel1(aptInfo.getAddressLevel1()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ADDRESS_LEVEL1));
 
@@ -494,7 +489,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
+    public boolean isRestrictedArea(AptInfo aptInfo) { //규제지역여부
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
@@ -502,7 +497,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부확인
+    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -528,7 +523,7 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부확인
+    public boolean meetDeposit(User user, AptInfoTarget aptInfoTarget) { // 예치금액충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -556,8 +551,8 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
 
@@ -606,8 +601,8 @@ public class VerificationOfSpecialMinyeongFirstLifeServiceImpl implements Verifi
 
         List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
                 List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 

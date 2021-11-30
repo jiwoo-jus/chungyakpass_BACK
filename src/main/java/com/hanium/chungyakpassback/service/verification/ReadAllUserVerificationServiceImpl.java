@@ -9,6 +9,7 @@ import com.hanium.chungyakpassback.repository.verification.*;
 import com.hanium.chungyakpassback.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ReadAllUserVerificationServiceImpl implements ReadAllUserVerificati
     final VerificationOfSpecialKookminFirstLifeRepository verificationOfSpecialKookminFirstLifeRepository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ReadAllUserVerificationDto readAllVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 

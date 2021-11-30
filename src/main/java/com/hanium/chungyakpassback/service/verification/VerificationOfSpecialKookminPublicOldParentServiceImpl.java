@@ -48,7 +48,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
     final AptInfoRepository aptInfoRepository;
     final VerificationOfSpecialKookminOldParentRepository verificationOfSpecialKookminOldParentRepository;
 
-    @Override //특별노부모국민조회
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<VerificationOfSpecialKookminPublicOldParentResponseDto> readSpecialKookminOldParentVerifications() {
         User user = userRepository.findOneWithAuthoritiesByEmail(SecurityUtil.getCurrentEmail().get()).get();
 
@@ -99,12 +100,14 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
         return new VerificationOfSpecialKookminPublicOldParentResponseDto(verificationOfSpecialKookminOldParent);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int houseTypeConverter(AptInfoTarget aptInfoTarget) { // . 기준으로 주택형 자른후 면적 비교를 위해서 int 형으로 형변환
         String housingTypeChange = aptInfoTarget.getHousingType().substring(0, aptInfoTarget.getHousingType().indexOf("."));
 
         return Integer.parseInt(housingTypeChange);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Long calcDate(LocalDate transferdate) { //주민등록표에 등재된 기간 구하기
         LocalDateTime today = LocalDate.now().atStartOfDay();
         LocalDateTime departure = transferdate.atStartOfDay();
@@ -116,7 +119,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int calcAmericanAge(LocalDate birthday) {
+    public int calcAmericanAge(LocalDate birthday) { //만나이계산
         if (birthday == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_BIRTHDAY); //생일이 입력되지 않은 경우 경고문을 띄워줌.
         }
@@ -131,7 +134,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class) //청약통장유형충족여부
     public boolean meetBankbookType(User user, AptInfo aptInfo, AptInfoTarget aptInfoTarget) {
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty()) {
@@ -155,7 +158,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
         int houseMemberCount = 0; //세대구성원수
         int sumIncome = 0; // 소득합산
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 houseMemberCount++;
                 if (!(houseMember.getBirthDay() == null) && calcAmericanAge(houseMember.getBirthDay()) >= 19 && houseMember.getIncome() != null) //만19세 이상만 소득 산정
@@ -181,7 +185,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
         System.out.println("세대구성원 수 : " + houseMemberCount);
         System.out.println("소득합산 : " + sumIncome);
 
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 for (Income income : incomeList) {
                     if (income.getSpecialSupply().equals(SpecialSupply.노부모부양)) {
@@ -294,8 +299,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
         int sumEstateProperty = 0; //부동산자산합
         int sumCarProperty = 0; //자동차자산합
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -375,13 +380,13 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetHomelessHouseholdMembers(User user) { //전세대원무주택세대구성원충족여부 메소드
+    public boolean meetHomelessHouseholdMembers(User user) { //전세대원무주택세대구성원충족여부
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse()); //신청자의 세대구성원 가져오기
 
         int houseCount = 0;
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberProperty> houseMemberPropertyList = houseMemberPropertyRepository.findAllByHouseMember(houseMember);
 
@@ -507,7 +512,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isHouseholder(User user) {
+    public boolean isHouseholder(User user) { //세대주여부
         if (user.getHouse().getHouseHolder() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSEHOLDER); //세대주 지정이 안되어있을 경우 경고를 띄움.
         } else if (user.getHouse().getHouseHolder().getId().equals(user.getHouseMember().getId())) {
@@ -518,7 +523,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean isRestrictedArea(AptInfo aptInfo) { // 규제지역여부
+    public boolean isRestrictedArea(AptInfo aptInfo) { //규제지역여부
         if (aptInfo.getSpeculationOverheated().equals(Yn.y) || aptInfo.getSubscriptionOverheated().equals(Yn.y))
             return true;
         return false;
@@ -532,8 +537,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
         List<HouseMember> houseMemberListUser = houseMemberRepository.findAllByHouse(user.getHouseMember().getHouse());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMember houseMember : houseMemberListUser) {
                 List<HouseMemberChungyak> houseMemberChungyakList = houseMemberChungyakRepository.findAllByHouseMember(houseMember);
 
@@ -577,7 +582,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) {//아파트 분양정보의 인근지역과 거주지의 인근지역이 같다면
+    public boolean meetLivingInSurroundArea(User user, AptInfo aptInfo) { //인근지역거주조건충족여부
         if (user.getHouseMember() == null) {
             throw new CustomException(ErrorCode.NOT_FOUND_HOUSE_MEMBER); // 세대구성원->세대를 통해서 주소를 user의 지역_레벨1을 가져오는 것이기 때문에 user의 세대구성원이 비어있으면 안됨.
         }
@@ -593,7 +598,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부확인
+    public boolean meetBankbookJoinPeriod(User user, AptInfo aptInfo) { //가입기간충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -619,7 +624,7 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean meetNumberOfPayments(User user, AptInfo aptInfo) { //납입횟수충족여부확인
+    public boolean meetNumberOfPayments(User user, AptInfo aptInfo) { //납입횟수충족여부
         Optional<UserBankbook> optUserBankbook = userBankbookRepository.findByUser(user);
         if (optUserBankbook.isEmpty())
             throw new RuntimeException("등록된 청약통장이 없습니다.");
@@ -646,8 +651,8 @@ public class VerificationOfSpecialKookminPublicOldParentServiceImpl implements V
 
         List<HouseMemberChungyak> houseMemberListUser = houseMemberChungyakRepository.findAllByHouseMember(user.getHouseMember());
 
-        //배우자와 같은 세대이거나, 미혼일 경우
-        if (user.getHouse() == user.getSpouseHouse() || user.getSpouseHouse() == null) {
+        //배우자 분리세대가 아닌 경우(배우자와 같은 세대이거나,미혼일 경우)
+        if (user.getSpouseHouse() == null) {
             for (HouseMemberChungyak houseMemberChungyak : houseMemberListUser) {
                 List<HouseMemberChungyakRestriction> houseMemberChungyakRestrictionList = houseMemberChungyakRestrictionRepository.findAllByHouseMemberChungyak(houseMemberChungyak);
 
