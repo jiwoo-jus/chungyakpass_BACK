@@ -1,6 +1,6 @@
 # chungyakpass
 
-# Error Codes
+# Error Code
 
 - 400 BAD_REQUEST
 
@@ -40,8 +40,10 @@
     - DUPLICATE_HOUSE(CONFLICT, "해당 세대가 이미 등록되어 있습니다"),
     - DUPLICATE_RELATION(CONFLICT, "해당 관계의 세대구성원이 이미 등록되어 있습니다");
 
-<br>
-<br>
+# API
+
+<details>
+<summary>회원가입</summary>
 
 # 회원가입
 
@@ -76,8 +78,10 @@ http://3.37.99.145:8080/account/signup
 | ------------- | ------ | ----------- | -------- |
 | authorityName | String | 권한명      | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>로그인</summary>
 
 # 로그인
 
@@ -97,9 +101,10 @@ http://3.37.99.145:8080/account/authenticate
 | Name  | Type   | Description | Null     |
 | ----- | ------ | ----------- | -------- |
 | token | String | 토큰        | not null |
+</details>
 
-<br>
-<br>
+<details>
+<summary>회원청약통장 조회</summary>
 
 # 회원청약통장 조회
 
@@ -122,8 +127,10 @@ http://3.37.99.145:8080/user/bankbook
 | createdDate   | DateTime                                                     | 생성일               | not null |
 | modifiedDate  | DateTime                                                     | 마지막 수정일        | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>회원청약통장 저장</summary>
 
 # 회원청약통장 저장
 
@@ -154,8 +161,10 @@ http://3.37.99.145:8080/user/bankbook
 | createdDate   | DateTime                                                     | 생성일               | not null |
 | modifiedDate  | DateTime                                                     | 마지막 수정일        | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>회원청약통장 수정</summary>
 
 # 회원청약통장 수정
 
@@ -186,8 +195,10 @@ http://3.37.99.145:8080/user/bankbook/{user_bankbook_id}
 | createdDate   | DateTime                                                     | 생성일               | not null |
 | modifiedDate  | DateTime                                                     | 마지막 수정일        | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>회원청약통장 삭제</summary>
 
 # 회원청약통장 삭제
 
@@ -201,8 +212,10 @@ http://3.37.99.145:8080/user/bankbook/{user_bankbook_id}
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대 조회</summary>
 
 # 세대 조회
 
@@ -232,8 +245,10 @@ http://3.37.99.145:8080/user/house
 | createdDate   | DateTime                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | 생성일             | not null |
 | modifiedDate  | DateTime                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | 마지막 수정일      | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대 저장</summary>
 
 # 세대 저장
 
@@ -270,9 +285,10 @@ http://3.37.99.145:8080/user/house
 
   회원 세대에 배우자 세대구성원이 등록되어 있는데 배우자분리세대 등록을 시도할 경우 발생
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>세대 수정</summary>
 
 # 세대 수정
 
@@ -308,8 +324,10 @@ http://3.37.99.145:8080/user/{house_id}
 
   회원 세대에 배우자 세대구성원이 등록되어 있는데 배우자분리세대 등록을 시도할 경우 발생
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대 삭제</summary>
 
 # 세대 삭제
 
@@ -323,8 +341,10 @@ http://3.37.99.145:8080/user/{house_id}
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 조회</summary>
 
 # 세대구성원 조회
 
@@ -354,8 +374,10 @@ http://3.37.99.145:8080/user/house/member/{house_id}
 | createdDate       | DateTime                                                                                                                                                                             | 생성일                 | not null |
 | modifiedDate      | DateTime                                                                                                                                                                             | 마지막 수정일          | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 저장</summary>
 
 # 세대구성원 저장
 
@@ -410,8 +432,10 @@ http://3.37.99.145:8080/user/house/member
 
   배우자분리세대가 존재하는데 회원의 세대에 배우자를 세대구성원으로 등록 시도할 경우 발생
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 수정</summary>
 
 # 세대구성원 수정
 
@@ -465,8 +489,10 @@ http://3.37.99.145:8080/user/house/member/{house_member_id}
 
   배우자분리세대가 존재하는데 회원의 세대에 배우자를 세대구성원으로 등록 시도할 경우 발생
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 삭제</summary>
 
 # 세대구성원 삭제
 
@@ -480,8 +506,10 @@ http://3.37.99.145:8080/user/house/member/{house_member_id}
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대주 지정</summary>
 
 # 세대주 지정
 
@@ -501,8 +529,10 @@ http://3.37.99.145:8080/user/house/holder/{house_id}
 | ------------- | ---- | ------------------- | -------- |
 | houseMemberId | Long | 세대주 세대구성원id | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 무주택 시작일 수정</summary>
 
 # 세대구성원 무주택시작일 수정
 
@@ -522,8 +552,10 @@ http://3.37.99.145:8080/user/house/member/homeless-start-date/{houseMemberId}
 | ----------------- | ---- | ------------ | -------- |
 | homelessStartDate | Date | 무주택시작일 | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 추가정보 저장</summary>
 
 # 세대구성원 추가정보 저장
 
@@ -554,8 +586,10 @@ http://3.37.99.145:8080/user/house/member/additional-info
 | stayOverYn                  | enum('y', 'n') | 해외 or 요양시설 체류 여부      | not null |
 | nowStayOverYn               | enum('y', 'n') | 현재 해외 or 요양시설 체류 여부 | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 추가정보 수정</summary>
 
 # 세대구성원 추가정보 수정
 
@@ -586,8 +620,10 @@ http://3.37.99.145:8080/user/house/member/additional-info/{houseMemberAdditional
 | stayOverYn                  | enum('y', 'n') | 해외 or 요양시설 체류 여부      | not null |
 | nowStayOverYn               | enum('y', 'n') | 현재 해외 or 요양시설 체류 여부 | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 추가정보 삭제</summary>
 
 # 세대구성원 추가정보 삭제
 
@@ -601,8 +637,10 @@ http://3.37.99.145:8080/user/house/member/additional-info/{houseMemberAdditional
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 자산 조회</summary>
 
 # 세대구성원 자산 조회
 
@@ -635,8 +673,10 @@ http://3.37.99.145:8080/user/house/member/property/{houseMemberId}
 | createdDate            | DateTime                           | 생성일             | not null |
 | modifiedDate           | DateTime                           | 마지막 수정일      | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 자산 저장</summary>
 
 # 세대구성원자산 저장
 
@@ -683,8 +723,10 @@ http://3.37.99.145:8080/user/house/member/property
 | createdDate            | DateTime                           | 생성일             | not null |
 | modifiedDate           | DateTime                           | 마지막 수정일      | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 자산 수정</summary>
 
 # 세대구성원자산 수정
 
@@ -731,8 +773,10 @@ http://3.37.99.145:8080/user/house/member/property/{houseMemberPropertyId}
 | createdDate            | DateTime                           | 생성일             | not null |
 | modifiedDate           | DateTime                           | 마지막 수정일      | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 자산 삭제</summary>
 
 # 세대구성원자산 삭제
 
@@ -746,8 +790,10 @@ http://3.37.99.145:8080/user/house/member/property/{houseMemberPropertyId}
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약신청이력 조회</summary>
 
 # 세대구성원청약신청이력 조회
 
@@ -793,8 +839,10 @@ http://3.37.99.145:8080/user/house/member/chungyak/{houseMemberId}
 | createdDate                              | DateTime                                         | 생성일                                      | not null |
 | modifiedDate                             | DateTime                                         | 마지막 수정일                               | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약신청이력 저장</summary>
 
 # 세대구성원청약신청이력 저장
 
@@ -837,8 +885,10 @@ http://3.37.99.145:8080/user/house/member/chungyak
 | createdDate       | DateTime                                         | 생성일                   | not null |
 | modifiedDate      | DateTime                                         | 마지막 수정일            | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약신청이력 수정</summary>
 
 # 세대구성원청약신청이력 수정
 
@@ -881,8 +931,10 @@ http://3.37.99.145:8080/user/house/member/chungyak/{houseMemberChungyakId}
 | createdDate       | DateTime                                         | 생성일                   | not null |
 | modifiedDate      | DateTime                                         | 마지막 수정일            | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약신청이력 삭제</summary>
 
 # 세대구성원청약신청이력 삭제
 
@@ -896,8 +948,10 @@ http://3.37.99.145:8080/user/house/member/chungyak/{houseMemberChungyakId}
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약제한사항 저장</summary>
 
 # 세대구성원청약제한사항 저장
 
@@ -930,8 +984,10 @@ http://3.37.99.145:8080/user/house/member/chungyak/restriction
 | createdDate                              | DateTime   | 생성일                                | not null |
 | modifiedDate                             | DateTime   | 마지막 수정일                         | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약제한사항 수정</summary>
 
 # 세대구성원청약제한사항 수정
 
@@ -964,8 +1020,10 @@ http://3.37.99.145:8080/user/house/member/chungyak/restriction/{houseMemberChung
 | createdDate                              | DateTime   | 생성일                                | not null |
 | modifiedDate                             | DateTime   | 마지막 수정일                         | not null |
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>세대구성원 청약제한사항 삭제</summary>
 
 # 세대구성원청약제한사항 삭제
 
@@ -979,8 +1037,10 @@ http://3.37.99.145:8080/user/house/member/chungyak/restriction/{houseMemberChung
 
 nothing
 
-<br>
-<br>
+</details>
+
+<details>
+<summary>청약자격결과 전체 조회</summary>
 
 # 청약자격결과 전체 조회
 
@@ -1240,9 +1300,10 @@ http://3.37.99.145:8080/verification/record/all
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 일반 민영 조회</summary>
 
 # 일반민영 조회
 
@@ -1273,9 +1334,10 @@ http://3.37.99.145:8080/verification/general/minyeong
 | createdDate                              | DateTime                         | 생성일                                                                                        | null |
 | modifiedDate                             | DateTime                         | 마지막 수정일                                                                                 | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 일반 민영 저장</summary>
 
 # 일반민영 저장
 
@@ -1311,9 +1373,10 @@ http://3.37.99.145:8080/verification/general/minyeong
 | createdDate                              | DateTime                         | 생성일                                                                                        | null |
 | modifiedDate                             | DateTime                         | 마지막 수정일                                                                                 | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 일반 민영 수정</summary>
 
 # 일반민영 수정
 
@@ -1349,9 +1412,10 @@ http://3.37.99.145:8080/verification/general/minyeong/{verificationRecordGeneral
 | createdDate                              | DateTime                         | 생성일                                                                                        | null |
 | modifiedDate                             | DateTime                         | 마지막 수정일                                                                                 | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 일반 국민 조회</summary>
 
 # 일반국민 조회
 
@@ -1382,9 +1446,10 @@ http://3.37.99.145:8080/verification/general/kookmin
 | createdDate                              | DateTime                         | 생성일                            | null |
 | modifiedDate                             | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 일반 국민 저장</summary>
 
 # 일반국민 저장
 
@@ -1420,9 +1485,10 @@ http://3.37.99.145:8080/verification/general/kookmin
 | createdDate                              | DateTime                         | 생성일                            | null |
 | modifiedDate                             | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 일반 국민 수정</summary>
 
 # 일반국민 수정
 
@@ -1459,9 +1525,10 @@ http://3.37.99.145:8080/verification/general/kookmin/{verificationRecordGeneralK
 | createdDate                              | DateTime                         | 생성일                            | null |
 | modifiedDate                             | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 다자녀 민영 조회</summary>
 
 # 특별다자녀민영 조회
 
@@ -1493,9 +1560,10 @@ http://3.37.99.145:8080/verification/special/minyeong/multi-child
 | createdDate                                   | DateTime                         | 생성일                                                                                        | null |
 | modifiedDate                                  | DateTime                         | 마지막 수정일                                                                                 | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 다자녀 민영 저장</summary>
 
 # 특별다자녀민영 저장
 
@@ -1532,9 +1600,10 @@ http://3.37.99.145:8080/verification/special/minyeong/multi-child
 | createdDate                                   | DateTime                         | 생성일                                                                                        | null |
 | modifiedDate                                  | DateTime                         | 마지막 수정일                                                                                 | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 다자녀 민영 수정</summary>
 
 # 특별다자녀민영 수정
 
@@ -1571,9 +1640,10 @@ http://3.37.99.145:8080/verification/special/minyeong/multi-child/{verificationR
 | createdDate                                   | DateTime                         | 생성일                                                                                        | null |
 | modifiedDate                                  | DateTime                         | 마지막 수정일                                                                                 | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 다자녀 국민 조회</summary>
 
 # 특별다자녀국민 조회
 
@@ -1606,9 +1676,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/multi-child
 | createdDate                                  | DateTime                                                           | 생성일                           | null |
 | modifiedDate                                 | DateTime                                                           | 마지막 수정일                    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 다자녀 국민 저장</summary>
 
 # 특별다자녀국민 저장
 
@@ -1646,9 +1717,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/multi-child
 | createdDate                                  | DateTime                                                           | 생성일                           | null |
 | modifiedDate                                 | DateTime                                                           | 마지막 수정일                    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 다자녀 국민 수정</summary>
 
 # 특별다자녀국민 수정
 
@@ -1686,9 +1758,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/multi-child/{verific
 | createdDate                                  | DateTime                                                           | 생성일                           | null |
 | modifiedDate                                 | DateTime                                                           | 마지막 수정일                    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 노부모 민영 조회</summary>
 
 # 특별노부모민영 조회
 
@@ -1719,10 +1792,10 @@ http://3.37.99.145:8080/verification/special/minyeong/old-parent
 | createdDate                                  | DateTime                         | 생성일                            | null |
 | modifiedDate                                 | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
-
+<details>
+<summary>청약자격결과 특별 노부모 민영 저장</summary>
 # 특별노부모민영 저장
 
 ## _REQUEST_
@@ -1757,9 +1830,10 @@ http://3.37.99.145:8080/verification/special/minyeong/old-parent
 | createdDate                                  | DateTime                         | 생성일                            | null |
 | modifiedDate                                 | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 노부모 민영 수정</summary>
 
 # 특별노부모민영 수정
 
@@ -1795,9 +1869,10 @@ http://3.37.99.145:8080/verification/special/minyeong/old-parent/{verificationRe
 | createdDate                                  | DateTime                         | 생성일                            | null |
 | modifiedDate                                 | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 노부모 국민 조회</summary>
 
 # 특별노부모국민 조회
 
@@ -1831,9 +1906,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/old-parent
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 노부모 국민 저장</summary>
 
 # 특별노부모국민 저장
 
@@ -1872,9 +1948,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/old-parent
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 노부모 국민 수정</summary>
 
 # 특별노부모국민 수정
 
@@ -1914,9 +1991,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/old-parent/{verifica
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 민영 조회</summary>
 
 # 특별신혼부부민영 조회
 
@@ -1950,9 +2028,10 @@ http://3.37.99.145:8080/verification/special/minyeong/newly-married
 | createdDate                                     | DateTime                         | 생성일                           | null |
 | modifiedDate                                    | DateTime                         | 마지막 수정일                    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 민영 저장</summary>
 
 # 특별신혼부부민영 저장
 
@@ -1991,9 +2070,10 @@ http://3.37.99.145:8080/verification/special/minyeong/newly-married
 | createdDate                                     | DateTime                         | 생성일                           | null |
 | modifiedDate                                    | DateTime                         | 마지막 수정일                    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 민영 수정</summary>
 
 # 특별신혼부부민영 수정
 
@@ -2032,9 +2112,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/newly-married/{verif
 | createdDate                                     | DateTime                         | 생성일                           | null |
 | modifiedDate                                    | DateTime                         | 마지막 수정일                    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 국민 조회</summary>
 
 # 특별신혼부부국민 조회
 
@@ -2071,9 +2152,10 @@ http://3.37.99.145:8080/verification/special/kookmin/newly-married
 | createdDate                                    | DateTime                                                           | 생성일                                     | null |
 | modifiedDate                                   | DateTime                                                           | 마지막 수정일                              | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 국민 저장</summary>
 
 # 특별신혼부부국민 저장
 
@@ -2115,9 +2197,10 @@ http://3.37.99.145:8080/verification/special/kookmin/newly-married
 | createdDate                                    | DateTime                                                           | 생성일                                     | null |
 | modifiedDate                                   | DateTime                                                           | 마지막 수정일                              | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 국민 수정</summary>
 
 # 특별신혼부부국민 수정
 
@@ -2160,9 +2243,10 @@ http://3.37.99.145:8080/verification/special/kookmin/newly-married/{verification
 | createdDate                                    | DateTime                                                           | 생성일                                     | null |
 | modifiedDate                                   | DateTime                                                           | 마지막 수정일                              | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 국민 공특법적용 조회</summary>
 
 # 특별신혼부부국민공특법적용 저장
 
@@ -2204,9 +2288,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/newly-married
 | createdDate                                    | DateTime                                                           | 생성일                                     | null |
 | modifiedDate                                   | DateTime                                                           | 마지막 수정일                              | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 신혼부부 국민 공특법적용 수정</summary>
 
 # 특별신혼부부국민공특법적용 수정
 
@@ -2250,9 +2335,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/newly-married/{verif
 | createdDate                                    | DateTime                                                           | 생성일                                     | null |
 | modifiedDate                                   | DateTime                                                           | 마지막 수정일                              | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 생애최초 민영 조회</summary>
 
 # 특별생애최초민영 조회
 
@@ -2287,9 +2373,10 @@ http://3.37.99.145:8080/verification/special/minyeong/first-life
 | createdDate                                  | DateTime                         | 생성일                            | null |
 | modifiedDate                                 | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 생애최초 민영 저장</summary>
 
 # 특별생애최초민영 저장
 
@@ -2329,9 +2416,10 @@ http://3.37.99.145:8080/verification/special/minyeong/first-life
 | createdDate                                  | DateTime                         | 생성일                            | null |
 | modifiedDate                                 | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 생애최초 민영 수정</summary>
 
 # 특별생애최초민영 수정
 
@@ -2373,9 +2461,10 @@ http://3.37.99.145:8080/verification/special/minyeong/first-life/{verificationRe
 | createdDate                                  | DateTime                         | 생성일                            | null |
 | modifiedDate                                 | DateTime                         | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 생애최초 국민 조회</summary>
 
 # 특별생애최초국민 조회
 
@@ -2412,9 +2501,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/first-life
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 생애최초 국민 저장</summary>
 
 # 특별생애최초국민 저장
 
@@ -2456,9 +2546,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/first-life
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약자격결과 특별 생애최초 국민 수정</summary>
 
 # 특별생애최초국민 수정
 
@@ -2503,9 +2594,10 @@ http://3.37.99.145:8080/verification/special/kookmin/public/first-life/{http://3
 | createdDate                                 | DateTime                                                           | 생성일                            | null |
 | modifiedDate                                | DateTime                                                           | 마지막 수정일                     | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 전체 조회</summary>
 
 # 청약가배점결과 전체 조회
 
@@ -2598,9 +2690,10 @@ http://3.37.99.145:8080/point/record/all
 | createdDate          | DateTime | 생성일           | null |
 | modifiedDate         | DateTime | 마지막 수정일    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 일반 민영 조회</summary>
 
 # 일반민영가점 조회
 
@@ -2623,9 +2716,10 @@ http://3.37.99.145:8080/point/general/minyeong
 | createdDate          | DateTime | 생성일           | null |
 | modifiedDate         | DateTime | 마지막 수정일    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 일반 민영 저장</summary>
 
 # 일반민영가점 저장
 
@@ -2648,9 +2742,10 @@ http://3.37.99.145:8080/point/general/minyeong
 | createdDate          | DateTime | 생성일           | null |
 | modifiedDate         | DateTime | 마지막 수정일    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 다자녀 조회</summary>
 
 # 특별다자녀가점 조회
 
@@ -2677,9 +2772,10 @@ http://3.37.99.145:8080/point/special/multi-child
 | createdDate                     | DateTime                         | 생성일               | null |
 | modifiedDate                    | DateTime                         | 마지막 수정일        | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 다자녀 저장</summary>
 
 # 특별다자녀가점 저장
 
@@ -2711,9 +2807,10 @@ http://3.37.99.145:8080/point/special/multi-child
 | createdDate                     | DateTime                         | 생성일               | null |
 | modifiedDate                    | DateTime                         | 마지막 수정일        | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 신혼부부 조회</summary>
 
 # 특별신혼부부가점 조회
 
@@ -2738,9 +2835,10 @@ http://3.37.99.145:8080/point/special/newly-married
 | createdDate                     | DateTime | 생성일               | null |
 | modifiedDate                    | DateTime | 마지막 수정일        | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 신혼부부 저장</summary>
 
 # 특별신혼부부가점 저장
 
@@ -2769,9 +2867,10 @@ http://3.37.99.145:8080/point/special/newly-married
 | createdDate                     | DateTime | 생성일               | null |
 | modifiedDate                    | DateTime | 마지막 수정일        | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 한부모 조회</summary>
 
 # 특별한부모가점 조회
 
@@ -2796,9 +2895,10 @@ http://3.37.99.145:8080/point/special/single-parents
 | createdDate                     | DateTime | 생성일               | null |
 | modifiedDate                    | DateTime | 마지막 수정일        | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 한부모 저장</summary>
 
 # 특별한부모가점 저장
 
@@ -2827,9 +2927,10 @@ http://3.37.99.145:8080/point/special/single-parents
 | createdDate                     | DateTime | 생성일               | null |
 | modifiedDate                    | DateTime | 마지막 수정일        | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 노부모 조회</summary>
 
 # 특별노부모가점 조회
 
@@ -2852,9 +2953,10 @@ http://3.37.99.145:8080/point/special/old-parents-support
 | createdDate          | DateTime | 생성일           | null |
 | modifiedDate         | DateTime | 마지막 수정일    | null |
 
-<br>
+</details>
 
-<br>
+<details>
+<summary>청약가배점결과 특별 노부모 저장</summary>
 
 # 특별노부모가점 저장
 
@@ -2877,6 +2979,4 @@ http://3.37.99.145:8080/point/special/old-parents-support
 | createdDate          | DateTime | 생성일           | null |
 | modifiedDate         | DateTime | 마지막 수정일    | null |
 
-<br>
-
-<br>
+</details>
